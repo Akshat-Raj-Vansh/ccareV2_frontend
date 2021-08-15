@@ -4,7 +4,7 @@ import 'package:auth/auth.dart';
 import 'package:profile/profile.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
 import '../../components/default_button.dart';
-import '../../pages/auth/authPage_adapter.dart';
+import '../auth/auth_page_adapter.dart';
 import '../../state_management/profile/profile_Cubit.dart';
 import '../../state_management/profile/profile_State.dart';
 import '../../utils/constants.dart';

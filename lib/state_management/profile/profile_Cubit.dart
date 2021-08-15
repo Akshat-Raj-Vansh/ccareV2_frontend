@@ -3,7 +3,7 @@ import 'package:async/src/result/result.dart';
 import '../../../state_management/profile/profile_State.dart';
 import 'package:cubit/cubit.dart';
 
-import '../../cache/IlocalStore.dart';
+import '../../cache/ilocal_store.dart';
 import 'package:profile/profile.dart';
 import 'package:auth/auth.dart' as auth;
 

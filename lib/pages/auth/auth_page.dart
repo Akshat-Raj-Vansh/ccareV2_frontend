@@ -5,7 +5,7 @@ import 'package:flutter_cubit/flutter_cubit.dart';
 import '../../models/users.dart';
 import 'otp/otp_screen.dart';
 import '../../customBuilds/customtextformfield.dart';
-import '../../pages/auth/authPage_adapter.dart';
+import 'auth_page_adapter.dart';
 import '../../pages/auth/otp/components/otp_form.dart';
 import '../../pages/profile/profile_update_screen.dart';
 import '../../state_management/auth/auth_cubit.dart';

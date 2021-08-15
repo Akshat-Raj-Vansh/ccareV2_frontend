@@ -1,6 +1,6 @@
 //@dart=2.9
 import 'package:auth/auth.dart';
-import '../cache/IlocalStore.dart';
+import 'cache/ilocal_store.dart';
 import '../pages/Home/tabPage.dart';
 import '../pages/Home/tapPageAdapter.dart';
 import '../pages/splash/splash_screen.dart';
@@ -12,10 +12,10 @@ import 'package:flutter_cubit/flutter_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart';
 import 'package:profile/profile.dart';
-import 'cache/localStore.dart';
-import 'pages/auth/authPage.dart';
+import 'cache/local_store.dart';
+import 'pages/auth/auth_page.dart';
 import 'package:extras/extras.dart';
-import 'pages/auth/authPage_adapter.dart';
+import 'pages/auth/auth_page_adapter.dart';
 import 'state_management/auth/auth_cubit.dart';
 import 'decorators/secure_client.dart';
 

@@ -1,5 +1,5 @@
 //@dart=2.9
-import '../cache/IlocalStore.dart';
+import '../cache/ilocal_store.dart';
 import 'package:common/common.dart';
 
 class SecureClient implements IHttpClient {

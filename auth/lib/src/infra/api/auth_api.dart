@@ -25,14 +25,8 @@ class AuthApi implements IAuthApi {
     return _post(endpoint, credential);
   }
 
-  @override
-  Future<Result<String>> signUp(Credential credential) async {
-    String endpoint = baseUrl + "/auth/signup";
-    return _post(endpoint, credential);
-  }
-
   Future<Result<String>> _post(String endpoint, Credential credential) async {
-    print(credential.email);
+    print(credential.phone);
     dynamic response = await _client.post(endpoint,
         body: jsonEncode(Mapper.toJson(credential)), headers: header);
     print(response.statusCode);

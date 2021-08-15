@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'components/body.dart';
-import '../../pages/auth/authPage_adapter.dart';
+import '../auth/auth_page_adapter.dart';
 import '../../utils/size_config.dart';
 
 class SplashScreen extends StatelessWidget {

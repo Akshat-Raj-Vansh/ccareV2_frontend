@@ -8,14 +8,13 @@ import '../../domain/auth_service_contract.dart';
 import '../../domain/token.dart';
 import '../api/auth_api_contract.dart';
 
-class EmailAuth implements IAuthService {
+class PhoneAuth implements IAuthService {
   final IAuthApi iAuthApi;
   Credential _credential;
-  EmailAuth(this.iAuthApi);
+  PhoneAuth(this.iAuthApi);
 
-  void credential({@required String email, @required String password}) {
-    _credential =
-        Credential(email: email, password: password, type: AuthType.email);
+  void credential({@required String phone, @required String name}) {
+    _credential = Credential(phone: phone, name: name, type: UserType.patient);
   }
 
   @override
@@ -24,7 +23,10 @@ class EmailAuth implements IAuthService {
   }
 
   @override
-  Future<Result<Details>> signIn() async {
+  Future<Result<Details>> signIn(String phone, String name) async {
+    Credential _credential =
+        Credential(phone: phone, name: name, type: UserType.patient);
+    print(_credential.phone + " " + _credential.type.toString());
     assert(_credential != null);
     dynamic result = await iAuthApi.signIn(_credential);
     if (result.isError)

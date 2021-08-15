@@ -1,14 +1,13 @@
 import 'package:flutter/foundation.dart';
 
 class Credential {
-  final String name, email, password;
-  final AuthType type;
+  final String name, phone;
+  final UserType type;
   Credential({
-    @required this.email,
+    @required this.phone,
     @required this.type,
-    this.password,
-    this.name,
+    @required this.name,
   });
 }
 
-enum AuthType { email, google }
+enum UserType { patient, doctor }

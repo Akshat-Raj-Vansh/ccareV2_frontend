@@ -2,7 +2,7 @@
 import 'package:async/src/result/result.dart';
 import 'package:cubit/cubit.dart';
 import 'package:extras/extras.dart';
-import '../../cache/IlocalStore.dart';
+import '../../cache/ilocal_store.dart';
 import 'main_state.dart';
 
 class MainCubit extends Cubit<MainState> {
