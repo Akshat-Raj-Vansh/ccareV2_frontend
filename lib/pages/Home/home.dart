@@ -7,8 +7,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
 
 import '../../components/default_button.dart';
-import '../../pages/Suggestions/Exercise/exercise.dart';
-import '../../pages/Suggestions/Food/food_suggestion.dart';
 import '../../state_management/main_app/main_cubit.dart';
 import '../../utils/size_config.dart';
 
@@ -27,12 +25,7 @@ class _HomeState extends State<Home> {
     Icons.dangerous,
     Icons.fitness_center
   ];
-  List<Widget> suggestion_pages = [
-    ExercisePage(),
-    Food(),
-    Food(),
-    ExercisePage()
-  ];
+
   List<Color> colors = [Colors.green, Colors.amber, Colors.red, Colors.purple];
   List<String> footers = ["Medication", "Food", "First Aid", "Exercises"];
   List<String> res = [
@@ -84,7 +77,6 @@ class _HomeState extends State<Home> {
               style: TextStyle(fontSize: 24),
             ),
           ),
-          _buildSuggestions(context),
           //
         ]),
       ),
@@ -142,36 +134,6 @@ class _HomeState extends State<Home> {
                   style: TextStyle(color: Colors.white, fontSize: 16)))
         ]),
       ));
-
-  _buildSuggestions(BuildContext context) => Container(
-        padding: EdgeInsets.all(16),
-        margin: EdgeInsets.only(bottom: 50),
-        child: GridView.builder(
-            physics: NeverScrollableScrollPhysics(),
-            itemCount: footers.length,
-            shrinkWrap: true,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2, childAspectRatio: 1.5),
-            itemBuilder: (context, index) {
-              return GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => suggestion_pages[index]));
-                },
-                child: Card(
-                  color: colors[index],
-                  child: GridTile(
-                      child: Icon(icons[index], size: 60, color: Colors.white),
-                      footer: Center(
-                          child: Text(footers[index],
-                              style: TextStyle(
-                                  color: Colors.white, fontSize: 16)))),
-                ),
-              );
-            }),
-      );
 
   _buildResources() => Container(
       padding: EdgeInsets.symmetric(horizontal: 20),
