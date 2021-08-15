@@ -1,4 +1,4 @@
-# ccarev2_frontend
+# CardioCare Frontend
 
 A new Flutter project.
 
