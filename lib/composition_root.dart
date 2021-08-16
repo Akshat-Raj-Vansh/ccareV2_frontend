@@ -59,7 +59,7 @@ class CompositionRoot {
   static Widget createAuthUI() {
     AuthCubit authCubit = AuthCubit(localStore);
 
-    ISignUpService signUpService = SignUpService(authApi);
+    IRegisterService registerService = RegisterService(authApi);
 
     ProfileCubit profileCubit = ProfileCubit(localStore, profileApi);
     return MultiCubitProvider(
@@ -69,7 +69,7 @@ class CompositionRoot {
       ],
       child: AuthPage(
         authManger: _manager,
-        signUpService: signUpService,
+        registerService: registerService,
         pageAdatper: pageAdapter,
       ),
     );

@@ -38,6 +38,21 @@ class LocalStore implements ILocalStore {
   }
 
   @override
+  saveAuthType(AuthType type) {
+    return this.sharedPreferences.setString(auth_key, type.toString());
+  }
+
+  @override
+  Future<AuthType> fetchAuthType() {
+    String auth_String = this.sharedPreferences.getString(auth_key);
+    print(auth_String);
+    if (auth_String != null)
+      return Future.value(AuthType.values
+          .firstWhere((element) => element.toString() == auth_String));
+    return null;
+  }
+
+  @override
   Future<Token> fetchTempToken() {
     String data = this.sharedPreferences.getString(temp_token_key);
     print(data);

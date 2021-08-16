@@ -6,4 +6,6 @@ abstract class ILocalStore {
   save(Details details);
   saveTempToken(String token);
   Future<Token> fetchTempToken();
+  saveAuthType(AuthType type);
+  Future<AuthType> fetchAuthType();
 }
