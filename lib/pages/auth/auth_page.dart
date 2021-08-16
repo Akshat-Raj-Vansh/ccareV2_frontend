@@ -15,11 +15,11 @@ import '../../state_management/profile/profile_State.dart' as profileState;
 
 class AuthPage extends StatefulWidget {
   final AuthManger authManger;
-  final ISignUpService signUpService;
+  // final ISignUpService signUpService;
   final IAuthPageAdapter pageAdatper;
   const AuthPage({
     required this.authManger,
-    required this.signUpService,
+    // required this.signUpService,
     required this.pageAdatper,
   });
   @override
@@ -86,8 +86,8 @@ class _AuthPageState extends State<AuthPage> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => OtpScreen(cubit, email,
-                                widget.authManger.service(AuthType.email))));
+                            builder: (context) => OtpScreen(
+                                cubit, email, widget.authManger.service())));
                   } else {
                     _hideLoader();
                     if (state is ErrorState) {
@@ -114,8 +114,8 @@ class _AuthPageState extends State<AuthPage> {
                     print("LoadingStateCalled");
                     _showLoader();
                   } else if (state is profileState.ProfileUpdateState) {
-                    widget.pageAdatper.onAuthSuccess(
-                        context, widget.authManger.service(AuthType.email));
+                    widget.pageAdatper
+                        .onAuthSuccess(context, widget.authManger.service());
                   } else {
                     _hideLoader();
                     if (state is profileState.ErrorState) {
@@ -168,22 +168,7 @@ class _AuthPageState extends State<AuthPage> {
                 width: 300,
                 height: 280,
                 fit: BoxFit.fill),
-            SizedBox(height: 10),
-            // RichText(
-            //   text: TextSpan(
-            //       text: "Cardio",
-            //       style: Theme.of(context).textTheme.caption!.copyWith(
-            //           color: Colors.lightGreen[500],
-            //           fontSize: 32.0,
-            //           fontWeight: FontWeight.bold),
-            //       children: [
-            //         TextSpan(
-            //           text: " Care",
-            //           style: TextStyle(color: Theme.of(context).accentColor),
-            //         )
-            //       ]),
-            // ),
-            SizedBox(height: 30)
+            SizedBox(height: 40),
           ],
         ),
       );
@@ -217,13 +202,12 @@ class _AuthPageState extends State<AuthPage> {
             RaisedButton(
               onPressed: () async {
                 setState(() {
-                  service = widget.authManger.service(AuthType.email);
+                  service = widget.authManger.service();
                 });
                 (service as EmailAuth)
                     .credential(email: email, password: password);
                 if (_formkey.currentState!.validate()) {
-                  CubitProvider.of<AuthCubit>(context)
-                      .signin(service, AuthType.email);
+                  CubitProvider.of<AuthCubit>(context).signin(service);
                 }
               },
               shape: RoundedRectangleBorder(

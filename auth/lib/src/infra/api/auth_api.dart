@@ -25,8 +25,14 @@ class AuthApi implements IAuthApi {
     return _post(endpoint, credential);
   }
 
+  @override
+  Future<Result<String>> signUp(Credential credential) async {
+    String endpoint = baseUrl + "/auth/signup";
+    return _post(endpoint, credential);
+  }
+
   Future<Result<String>> _post(String endpoint, Credential credential) async {
-    print(credential.phone);
+    print(credential.email);
     dynamic response = await _client.post(endpoint,
         body: jsonEncode(Mapper.toJson(credential)), headers: header);
     print(response.statusCode);
@@ -100,5 +106,11 @@ class AuthApi implements IAuthApi {
     return json['authToken'] != null
         ? Result.value(jsonEncode(json))
         : Result.error(json["message"]);
+  }
+
+  @override
+  Future<Result<String>> register(Credential credential) {
+    String endpoint = baseUrl + "/auth/register";
+    return _post(endpoint, credential);
   }
 }

@@ -5,19 +5,20 @@ import 'package:auth/src/domain/token.dart';
 class Details {
   final Token token;
   final String name;
-  final String phone;
+  final String email;
 
   Details(
     this.token,
     this.name,
-    this.phone,
+    this.email,
   );
 
+ 
   Map<String, dynamic> toMap() {
     return {
       'authToken': token.value,
       'name': name,
-      'phone': phone,
+      'email': email,
     };
   }
 
@@ -25,29 +26,27 @@ class Details {
     return Details(
       new Token(map["authToken"]),
       map['name'],
-      map['phone'],
+      map['email'],
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory Details.fromJson(String source) =>
-      Details.fromMap(json.decode(source));
+  factory Details.fromJson(String source) => Details.fromMap(json.decode(source));
 
   @override
-  String toString() =>
-      'Details(authToken: ${token.value}, name: $name, phone: $phone)';
+  String toString() => 'Details(authToken: ${token.value}, name: $name, email: $email)';
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-
+  
     return other is Details &&
-        other.token == token &&
-        other.name == name &&
-        other.phone == phone;
+      other.token == token &&
+      other.name == name &&
+      other.email == email;
   }
 
   @override
-  int get hashCode => token.hashCode ^ name.hashCode ^ phone.hashCode;
+  int get hashCode => token.hashCode ^ name.hashCode ^ email.hashCode;
 }
