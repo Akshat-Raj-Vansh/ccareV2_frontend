@@ -13,15 +13,16 @@ class AuthCubit extends Cubit<AuthState> {
     this.localStore,
   ) : super(IntialState());
 
-  signin(IAuthService iAuthService, AuthType type) async {
+  login(IRegisterService iRegisterService, String phone) async {
     _startLoading();
-    final result = await iAuthService.signIn();
+    //emit(OTPState("123456"));
+    final result = await iRegisterService.register(phone);
     if (result == null) print("result is null");
-    localStore.saveAuthType(type);
+
     _setResultOfAuthState(result);
   }
 
-  verify(EmailAuth authService, String otp) async {
+  verify(PhoneAuth authService, String otp) async {
     _startLoading();
     final tempToken = await localStore.fetchTempToken();
 
@@ -30,12 +31,12 @@ class AuthCubit extends Cubit<AuthState> {
       emit(ErrorState("Error fetching the token"));
     } else {
       final result = await authService.verify(otp, tempToken);
-      localStore.save(result.asValue.value as Details);
-      emit(SignUpSuccessState(result.asValue.value));
+      localStore.save(result.asValue.value as PDetails);
+      emit(LoginSuccessState(result.asValue.value));
     }
   }
 
-  resend(EmailAuth authService) async {
+  resend(PhoneAuth authService) async {
     _startLoading();
     final tempToken = await localStore.fetchTempToken();
 
@@ -70,21 +71,13 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  signup(ISignUpService iSignUpService, User user) async {
-    _startLoading();
-    final result =
-        await iSignUpService.signUp(user.email, user.password, user.name);
-
-    _setResultOfAuthState(result);
-  }
-
   void _setResultOfAuthState(Result<dynamic> result) {
     if (result.asError != null) {
       emit(ErrorState(result.asError.error));
       return;
     }
-    if (result.asValue.value is Details) {
-      localStore.save(result.asValue.value as Details);
+    if (result.asValue.value is PDetails) {
+      localStore.save(result.asValue.value as PDetails);
       emit(AuthSuccessState(result.asValue.value));
     }
     if (result.asValue.value is OtpMessage) {

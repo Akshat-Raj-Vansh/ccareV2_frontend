@@ -6,14 +6,12 @@ import 'package:auth/auth.dart';
 
 class OtpScreen extends StatelessWidget {
   final AuthCubit cubit;
-  final IAuthService authService;
-  final String email;
-  OtpScreen(this.cubit, this.email, this.authService);
+  final PhoneAuth authService;
+  final String phone;
+  OtpScreen(this.cubit, this.phone, this.authService);
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    return Scaffold(
-      body: SafeArea(child: Body(this.cubit, this.email, this.authService)),
-    );
+    return Body(this.cubit, this.phone, this.authService);
   }
 }

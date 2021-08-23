@@ -28,41 +28,47 @@ class CustomTextFormField extends StatelessWidget {
     this.validator,
     this.onSubmitted,
   }) : super(key: key);
-      
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      width:width,
-      padding:EdgeInsets.symmetric(horizontal: 20),
-      decoration:BoxDecoration(
-        color:backgroundColor,
-        borderRadius: BorderRadius.circular(30)
-      ),
+      width: width,
+      padding: EdgeInsets.symmetric(horizontal: 20),
+      decoration: BoxDecoration(
+          color: backgroundColor, borderRadius: BorderRadius.circular(30)),
       child: TextFormField(
         textInputAction: textInputAction,
-        validator:validator,
+        validator: validator,
         onFieldSubmitted: onSubmitted,
         keyboardType: keyboardType,
         obscureText: obscureText,
-        onChanged:onChanged,
-        cursorColor:color,
-        style:Theme.of(context).textTheme.overline.copyWith(color: color,
-        fontSize:16),
+        onChanged: onChanged,
+        cursorColor: color,
+        style: Theme.of(context)
+            .textTheme
+            .overline
+            .copyWith(color: color, fontSize: 16),
         decoration: InputDecoration(
-          errorStyle:Theme.of(context).textTheme.overline.copyWith(
-            color: color,
-            fontSize:12
-          ),
-          border: InputBorder.none,
+          labelText: hint,
+          errorStyle: Theme.of(context)
+              .textTheme
+              .overline
+              .copyWith(color: color, fontSize: 12),
           icon: icon,
-          hintText: hint,
-          hintStyle: TextStyle(
-            color:color,
-            fontSize: 16
-          )
+          // hintText: hint,
+          // hintStyle: TextStyle(color: color, fontSize: 16),
+          labelStyle: Theme.of(context)
+              .textTheme
+              .overline
+              .copyWith(color: color, fontSize: 16),
+          enabledBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.blue),
+          ),
+          focusedBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.blue),
+          ),
         ),
       ),
-      
     );
   }
 }

@@ -10,8 +10,9 @@ import '../../../../utils/size_config.dart';
 
 class OtpForm extends StatefulWidget {
   final AuthCubit authCubit;
-  final IAuthService authService;
-  const OtpForm(this.authCubit, this.authService);
+  // final RegisterService registerService;
+  final PhoneAuth phoneAuth;
+  const OtpForm(this.authCubit, this.phoneAuth);
 
   @override
   _OtpFormState createState() => _OtpFormState();
@@ -65,7 +66,7 @@ class _OtpFormState extends State<OtpForm> {
     return Form(
       child: Column(
         children: [
-          SizedBox(height: SizeConfig.screenHeight * 0.07),
+          SizedBox(height: SizeConfig.screenHeight * 0.02),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: Row(
@@ -170,19 +171,31 @@ class _OtpFormState extends State<OtpForm> {
               ],
             ),
           ),
-          SizedBox(height: SizeConfig.screenHeight * 0.04),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-                elevation: 1,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20))),
-            child: Text("Continue",
-                style: TextStyle(fontSize: 24, color: Colors.white)),
+          SizedBox(height: SizeConfig.screenHeight * 0.02),
+          RaisedButton(
             onPressed: () {
-              if (!otp.join().contains("?"))
-                this.widget.authCubit.verify(widget.authService, otp.join());
+              if (!otp.join().contains("?")) {
+                this.widget.authCubit.verify(widget.phoneAuth, otp.join());
+              }
             },
-          )
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+            padding: const EdgeInsets.all(0),
+            child: Container(
+              width: MediaQuery.of(context).size.width / 1.5,
+              alignment: Alignment.center,
+              padding: const EdgeInsets.only(top: 8, bottom: 8),
+              decoration: ShapeDecoration(
+                color: Colors.blue,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30)),
+              ),
+              child: const Text(
+                "Continue",
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+            ),
+          ),
         ],
       ),
     );

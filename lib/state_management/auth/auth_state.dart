@@ -1,59 +1,53 @@
-
 import 'package:auth/auth.dart';
 import 'package:equatable/equatable.dart';
 
+abstract class AuthState extends Equatable {}
 
-abstract class AuthState extends Equatable{}
-
-class IntialState extends AuthState{
-  @override
-  // TODO: implement props
-  List<Object> get props => [];}
-
-  class LoadingState extends AuthState{
+class IntialState extends AuthState {
   @override
   // TODO: implement props
   List<Object> get props => [];
+}
 
-  }
+class LoadingState extends AuthState {
+  @override
+  // TODO: implement props
+  List<Object> get props => [];
+}
 
-  class AuthSuccessState extends AuthState{
+class AuthSuccessState extends AuthState {
   final Details details;
-  AuthSuccessState(this.details){}
+  AuthSuccessState(this.details) {}
   @override
   // TODO: implement props
   List<Object> get props => [this.details];
+}
 
-  }
-  class SignUpSuccessState extends AuthState{
-  final Details details;
-  SignUpSuccessState(this.details){}
+class LoginSuccessState extends AuthState {
+  final PDetails details;
+  LoginSuccessState(this.details) {}
   @override
-  // TODO: implement props
   List<Object> get props => [this.details];
+}
 
-  }
-  class ErrorState extends AuthState{
+class ErrorState extends AuthState {
   final String error;
-  ErrorState(this.error){}
+  ErrorState(this.error) {}
   @override
   // TODO: implement props
   List<Object> get props => [this.error];
+}
 
-  }
-
-  class SignOutSuccesState extends AuthState{
+class SignOutSuccesState extends AuthState {
   @override
   // TODO: implement props
   List<Object> get props => [];
+}
 
-  }
-
-  class OTPState extends AuthState{
+class OTPState extends AuthState {
   String message;
-  OTPState(this.message){}
+  OTPState(this.message) {}
   @override
   // TODO: implement props
   List<Object> get props => [this.message];
-
-  }
+}

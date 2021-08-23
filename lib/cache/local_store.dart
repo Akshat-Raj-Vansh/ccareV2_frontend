@@ -33,7 +33,7 @@ class LocalStore implements ILocalStore {
   }
 
   @override
-  Future save(Details details) {
+  Future save(PDetails details) {
     this.sharedPreferences.setString(token_key, jsonEncode(details.toMap()));
   }
 

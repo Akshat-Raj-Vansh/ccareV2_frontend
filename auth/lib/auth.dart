@@ -13,4 +13,5 @@ export './src/infra/adapters/phone_auth.dart';
 export './src/domain/credential.dart';
 export './src/infra/adapters/email_auth.dart';
 export './src/domain/details.dart';
+export './src/domain/pdetails.dart';
 export './src/domain/otpMessage.dart';
