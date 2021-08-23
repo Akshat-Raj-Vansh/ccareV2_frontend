@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'components/body.dart';
 import '../auth/auth_page_adapter.dart';
+import '../../pages/splash/components/body.dart';
 import '../../utils/size_config.dart';
 
 class SplashScreen extends StatelessWidget {
@@ -13,7 +13,7 @@ class SplashScreen extends StatelessWidget {
     // You have to call it on your starting screen
     SizeConfig().init(context);
     return Scaffold(
-      body: Body(this.pageAdatper),
+      body: Body(pageAdatper),
     );
   }
 }

@@ -1,18 +1,17 @@
 //@dart=2.9
+import 'package:ccarev2_frontend/state_management/user/user_cubit.dart';
+import 'package:ccarev2_frontend/user/infra/user_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
-import 'package:auth/auth.dart';
-import '../../../../state_management/auth/auth_cubit.dart';
-import '../../../../state_management/auth/auth_state.dart';
 import '../../../../utils/constants.dart';
 import '../../../../utils/size_config.dart';
 
 class OtpForm extends StatefulWidget {
-  final AuthCubit authCubit;
+  final UserCubit userCubit;
   // final RegisterService registerService;
-  final PhoneAuth phoneAuth;
-  const OtpForm(this.authCubit, this.phoneAuth);
+  final UserAPI userAPI;
+  const OtpForm(this.userCubit, this.userAPI);
 
   @override
   _OtpFormState createState() => _OtpFormState();
@@ -175,7 +174,7 @@ class _OtpFormState extends State<OtpForm> {
           RaisedButton(
             onPressed: () {
               if (!otp.join().contains("?")) {
-                this.widget.authCubit.verify(widget.phoneAuth, otp.join());
+                this.widget.userCubit.verify(widget.userAPI, otp.join());
               }
             },
             shape:

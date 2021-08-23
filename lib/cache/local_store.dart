@@ -1,9 +1,9 @@
 // @dart=2.9
 import 'dart:convert';
 
-import 'package:auth/auth.dart';
-import 'package:auth/src/domain/credential.dart';
-import 'package:auth/src/domain/token.dart';
+import 'package:ccarev2_frontend/user/domain/credential.dart';
+import 'package:ccarev2_frontend/user/domain/token.dart';
+
 import 'ilocal_store.dart';
 import 'package:ccarev2_frontend/cache/ilocal_store.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -19,50 +19,50 @@ class LocalStore implements ILocalStore {
 
   @override
   delete() {
-    this.sharedPreferences.remove(token_key);
+    sharedPreferences.remove(token_key);
   }
 
   @override
   Future<Token> fetch() {
-    String data = this.sharedPreferences.getString(token_key);
+    String data = sharedPreferences.getString(token_key);
     print(data);
-    if (data != null)
-      return Future.value(Token(Details.fromJson(data).token.value));
-
+    if (data != null) {
+      return Future.value(Token(Credential.fromJson(data).token.value));
+    }
     return null;
   }
 
   @override
-  Future save(PDetails details) {
-    this.sharedPreferences.setString(token_key, jsonEncode(details.toMap()));
+  Future save(Credential details) {
+    sharedPreferences.setString(token_key, jsonEncode(details.toMap()));
   }
 
   @override
-  saveAuthType(AuthType type) {
-    return this.sharedPreferences.setString(auth_key, type.toString());
-  }
-
-  @override
-  Future<AuthType> fetchAuthType() {
-    String auth_String = this.sharedPreferences.getString(auth_key);
-    print(auth_String);
-    if (auth_String != null)
-      return Future.value(AuthType.values
-          .firstWhere((element) => element.toString() == auth_String));
-    return null;
+  saveUserType(UserType type) {
+    return sharedPreferences.setString(auth_key, type.toString());
   }
 
   @override
   Future<Token> fetchTempToken() {
-    String data = this.sharedPreferences.getString(temp_token_key);
+    String data = sharedPreferences.getString(temp_token_key);
     print(data);
     if (data != null) return Future.value(Token(data));
-
     return null;
   }
 
   @override
   saveTempToken(String token) {
-    this.sharedPreferences.setString(temp_token_key, token);
+    sharedPreferences.setString(temp_token_key, token);
+  }
+
+  @override
+  Future<UserType> fetchUserType() {
+    String auth_String = sharedPreferences.getString(auth_key);
+    print(auth_String);
+    if (auth_String != null) {
+      return Future.value(UserType.values
+          .firstWhere((element) => element.toString() == auth_String));
+    }
+    return null;
   }
 }

@@ -1,31 +1,29 @@
-import 'package:ccarev2_frontend/pages/auth/otp/components/body.dart';
+import 'package:ccarev2_frontend/customBuilds/customtextformfield.dart';
+import 'package:ccarev2_frontend/pages/auth/otp/otp_screen.dart';
+import 'package:ccarev2_frontend/state_management/profile/profile_cubit.dart';
+import 'package:ccarev2_frontend/state_management/profile/profile_state.dart'
+    as profileState;
+import 'package:ccarev2_frontend/state_management/user/user_cubit.dart';
+import 'package:ccarev2_frontend/state_management/user/user_state.dart';
+import 'package:ccarev2_frontend/user/domain/credential.dart';
+import 'package:ccarev2_frontend/user/domain/token.dart';
+import 'package:ccarev2_frontend/user/domain/user_service_contract.dart';
+import 'package:ccarev2_frontend/user/infra/firebase_auth.dart';
+import 'package:ccarev2_frontend/user/infra/user_api.dart';
 
 import 'auth_page_adapter.dart';
-import 'package:auth/auth.dart';
-import '../../customBuilds/customtextformfield.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
 import '../../utils/size_config.dart';
 import 'package:flutter/material.dart';
-import 'otp/otp_screen.dart';
 import 'package:flutter/gestures.dart';
-import '../../models/users.dart';
-import '../../pages/auth/otp/components/otp_form.dart';
-import '../../pages/profile/profile_update_screen.dart';
-import '../../state_management/auth/auth_cubit.dart';
-import '../../state_management/auth/auth_state.dart';
-import '../../state_management/profile/profile_Cubit.dart';
-import '../../state_management/profile/profile_State.dart' as profileState;
 
 class AuthPage extends StatefulWidget {
-  final AuthManger authManger;
-  // final ISignUpService signUpService;
-  final IRegisterService registerService;
-  final PhoneAuth phoneAuth;
+  final UserService userService;
+  final UserAPI userAPI;
   final IAuthPageAdapter pageAdatper;
   const AuthPage({
-    required this.authManger,
-    required this.phoneAuth,
-    required this.registerService,
+    required this.userService,
+    required this.userAPI,
     required this.pageAdatper,
   });
   @override
@@ -34,7 +32,7 @@ class AuthPage extends StatefulWidget {
 
 class _AuthPageState extends State<AuthPage> {
   String phone = "";
-  late IAuthService service;
+  late UserService service;
   int hex(String color) {
     return int.parse("FF" + color.toUpperCase(), radix: 16);
   }
@@ -63,32 +61,32 @@ class _AuthPageState extends State<AuthPage> {
               ),
               Positioned(
                 bottom: 0,
-                child: CubitConsumer<AuthCubit, AuthState>(
+                child: CubitConsumer<UserCubit, UserState>(
                   builder: (_, state) {
-                    var cubit = CubitProvider.of<AuthCubit>(context);
-                    return _buildUI(context, cubit, widget.phoneAuth);
+                    var cubit = CubitProvider.of<UserCubit>(context);
+                    return _buildUI(context, cubit, widget.userAPI);
                   },
                   listener: (context, state) {
                     if (state is LoadingState) {
                       print("LoadingStateCalled");
                       _showLoader();
-                    } else if (state is AuthSuccessState) {
+                    } else if (state is LoginSuccessState) {
                       _hideLoader();
-                      widget.pageAdatper.onAuthSuccess(context, service);
+                      widget.pageAdatper.onAuthSuccess(context);
                       print(state.details.toString());
                     } else if (state is LoginSuccessState) {
                       _hideLoader();
-                      var cubit = CubitProvider.of<ProfileCubit>(context);
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  ProfileUpdateScreen(cubit)));
+                      // var cubit = CubitProvider.of<ProfileCubit>(context);
+                      // Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //         builder: (context) =>
+                      //             ProfileUpdateScreen(cubit)));
                       print(state.details.toString());
                     } else if (state is OTPState) {
                       _hideLoader();
                       print("otpstate");
-                      var cubit = CubitProvider.of<AuthCubit>(context);
+                      var cubit = CubitProvider.of<UserCubit>(context);
                       _controller.nextPage(
                           duration: const Duration(microseconds: 1000),
                           curve: Curves.elasticIn);
@@ -124,8 +122,7 @@ class _AuthPageState extends State<AuthPage> {
                     print("LoadingStateCalled");
                     _showLoader();
                   } else if (state is profileState.ProfileUpdateState) {
-                    widget.pageAdatper.onAuthSuccess(
-                        context, widget.authManger.service(AuthType.phone));
+                    widget.pageAdatper.onAuthSuccess(context);
                   } else {
                     _hideLoader();
                     if (state is profileState.ErrorState) {
@@ -196,15 +193,15 @@ class _AuthPageState extends State<AuthPage> {
         ),
       );
 
-  _buildUI(BuildContext context, AuthCubit cubit, PhoneAuth phoneAuth) =>
-      Container(
+  _buildUI(BuildContext context, UserCubit cubit, UserAPI userAPI) => Container(
         height: 300,
         width: MediaQuery.of(context).size.width,
         color: Colors.white,
         child: PageView(
           controller: _controller,
           physics: NeverScrollableScrollPhysics(),
-          children: [_phoneForm(context), _otpForm(context, cubit, phoneAuth)],
+          children: [_phoneForm(context), PhoneSignInSection()],
+          // _otpForm(context, cubit, userAPI)
         ),
       );
 
@@ -248,8 +245,10 @@ class _AuthPageState extends State<AuthPage> {
                   onPressed: () async {
                     if (_formkey.currentState!.validate()) {
                       // final user = User(name: "ABCD", phone: phone);
-                      CubitProvider.of<AuthCubit>(context)
-                          .login(widget.registerService, phone);
+                      Credential credential = Credential(
+                          phone, UserType.patient, "fcmtoken", Token("token"));
+                      CubitProvider.of<UserCubit>(context)
+                          .login(widget.userService, credential);
                       // _controller.nextPage(
                       //     duration: const Duration(microseconds: 1000),
                       //     curve: Curves.elasticIn);
@@ -279,7 +278,7 @@ class _AuthPageState extends State<AuthPage> {
         ),
       );
 
-  _otpForm(BuildContext context, AuthCubit cubit, PhoneAuth authService) =>
+  _otpForm(BuildContext context, UserCubit cubit, UserService userService) =>
       Center(
         child: RaisedButton(
           onPressed: () {
@@ -287,7 +286,7 @@ class _AuthPageState extends State<AuthPage> {
                 duration: Duration(microseconds: 1000),
                 curve: Curves.elasticIn);
           },
-          child: OtpScreen(cubit, phone, authService),
+          child: OtpScreen(cubit, phone, userService),
         ),
       );
 }

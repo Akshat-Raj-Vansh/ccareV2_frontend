@@ -1,6 +1,8 @@
 //@dart=2.9
-import 'package:auth/auth.dart';
-import '../../../../state_management/auth/auth_cubit.dart';
+import 'package:ccarev2_frontend/state_management/user/user_cubit.dart';
+import 'package:ccarev2_frontend/user/domain/user_service_contract.dart';
+import 'package:ccarev2_frontend/user/infra/user_api.dart';
+
 import '../../../../utils/constants.dart';
 import '../../../../utils/size_config.dart';
 import 'package:flutter/material.dart';
@@ -8,13 +10,13 @@ import 'package:flutter/material.dart';
 import 'otp_form.dart';
 
 class Body extends StatefulWidget {
-  final AuthCubit cubit;
+  final UserCubit cubit;
   final String phone;
-  final PhoneAuth phoneAuth;
+  final UserService userService;
   Body(
     this.cubit,
     this.phone,
-    this.phoneAuth,
+    this.userService,
   );
 
   @override
@@ -79,7 +81,7 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
                       from: animationController.value == 0
                           ? 1.0
                           : animationController.value);
-                  widget.cubit.resend(widget.phoneAuth);
+                  // widget.cubit.resend(widget.phoneAuth);
                 },
                 child: const Text(
                   "Resend OTP Code",
@@ -88,7 +90,7 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
                       decoration: TextDecoration.underline),
                 ),
               ),
-              OtpForm(widget.cubit, widget.phoneAuth),
+              OtpForm(widget.cubit, widget.userService),
               SizedBox(height: SizeConfig.screenHeight * 0.02),
             ],
           ),

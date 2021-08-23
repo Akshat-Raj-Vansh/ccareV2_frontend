@@ -1,24 +1,26 @@
-import 'package:auth/auth.dart';
+import 'package:ccarev2_frontend/user/domain/user_service_contract.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 abstract class IAuthPageAdapter {
-  void onAuthSuccess(BuildContext context, IAuthService authService);
+  void onAuthSuccess(BuildContext context); //, UserService userService
   void onSplashScreenComplete(BuildContext context);
 }
 
 class AuthPageAdapter extends IAuthPageAdapter {
-  final Widget Function(IAuthService authService) onUserAuthenticated;
+  final Widget Function() onUserAuthenticated; //UserService userService
   final Widget Function() authPage;
 
-  AuthPageAdapter(this.onUserAuthenticated,this.authPage);
+  AuthPageAdapter(this.onUserAuthenticated, this.authPage);
   @override
-  void onAuthSuccess(BuildContext context, IAuthService authService) {
-   
+  void onAuthSuccess(
+    BuildContext context,
+  ) {
+    //     UserService userService) {
     Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
-            builder: (context) => this.onUserAuthenticated(authService)),
+            builder: (context) => onUserAuthenticated()), //     userService)),
         (Route<dynamic> route) => false);
   }
 
@@ -26,8 +28,7 @@ class AuthPageAdapter extends IAuthPageAdapter {
   void onSplashScreenComplete(BuildContext context) {
     Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(
-            builder: (context) => this.authPage()),
+        MaterialPageRoute(builder: (context) => authPage()),
         (Route<dynamic> route) => false);
   }
 }

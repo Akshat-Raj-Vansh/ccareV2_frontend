@@ -1,23 +1,20 @@
 //@dart=2.9
-import 'package:auth/auth.dart';
-import 'cache/ilocal_store.dart';
-import '../pages/Home/tabPage.dart';
-import '../pages/Home/tapPageAdapter.dart';
-import '../pages/splash/splash_screen.dart';
-import '../state_management/main_app/main_cubit.dart';
-import '../state_management/profile/profile_Cubit.dart';
+import 'package:ccarev2_frontend/pages/auth/auth_page.dart';
+import 'package:ccarev2_frontend/state_management/profile/profile_cubit.dart';
+import 'package:ccarev2_frontend/state_management/user/user_cubit.dart';
 import 'package:common/infra/MHttpClient.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart';
-import 'package:profile/profile.dart';
-import 'cache/local_store.dart';
-import 'pages/auth/auth_page.dart';
-import 'package:extras/extras.dart';
+
+import '../cache/ilocal_store.dart';
+import '../cache/local_store.dart';
 import 'pages/auth/auth_page_adapter.dart';
-import 'state_management/auth/auth_cubit.dart';
-import 'decorators/secure_client.dart';
+import '../network_service/secure_client.dart';
+import '../pages/splash/splash_screen.dart';
+import '../user/domain/user_service_contract.dart';
+import '../user/infra/user_api.dart';
 
 class CompositionRoot {
   static SharedPreferences sharedPreferences;
@@ -25,11 +22,9 @@ class CompositionRoot {
   static String baseUrl;
   static Client client;
   static SecureClient secureClient;
-  static AuthManger _manager;
-  static IAuthApi authApi;
-  static IMainApi mainApi;
-  static IProfileApi profileApi;
+  static UserAPI userAPI;
   static IAuthPageAdapter pageAdapter;
+  static UserService userService;
 
   static configure() async {
     sharedPreferences = await SharedPreferences.getInstance();
@@ -37,56 +32,59 @@ class CompositionRoot {
     client = Client();
     secureClient = SecureClient(MHttpClient(client), localStore);
     baseUrl = "http://192.168.0.139:3000";
-    authApi = AuthApi(client, baseUrl);
-    mainApi = MainApi(client, baseUrl);
-    profileApi = ProfileApi(client, baseUrl);
-    _manager = AuthManger(authApi);
-    pageAdapter = AuthPageAdapter(createHomeUI, createAuthUI);
+    userAPI = UserAPI(client, baseUrl);
+    pageAdapter = AuthPageAdapter(createHomeUI, createLoginScreen);
+    // pageAdapter = AuthPageAdapter(createHomeUI, createLoginScreen);
   }
 
   static Future<Widget> start() async {
     var token = await localStore.fetch();
-    var authType = await localStore.fetchAuthType();
-    var service = _manager.service(authType);
+    var userType = await localStore.fetchUserType();
 
-    return token == null ? splashScreen() : createHomeUI(service);
+    return token == null ? splashScreen() : createHomeUI();
   }
 
   static Widget splashScreen() {
     return SplashScreen(pageAdapter);
   }
 
-  static Widget createAuthUI() {
-    AuthCubit authCubit = AuthCubit(localStore);
+  static Widget createLoginScreen() {
+    UserCubit userCubit = UserCubit(localStore, userAPI);
+    ProfileCubit profileCubit = ProfileCubit(localStore, userAPI);
 
-    IRegisterService registerService = RegisterService(authApi);
-
-    ProfileCubit profileCubit = ProfileCubit(localStore, profileApi);
     return MultiCubitProvider(
       providers: [
-        CubitProvider<AuthCubit>(create: (context) => authCubit),
+        CubitProvider<UserCubit>(create: (context) => userCubit),
         CubitProvider<ProfileCubit>(create: (context) => profileCubit),
       ],
       child: AuthPage(
-        authManger: _manager,
-        registerService: registerService,
+        userService: userService,
+        userAPI: userAPI,
         pageAdatper: pageAdapter,
       ),
     );
   }
 
-  static Widget createHomeUI(IAuthService authService) {
-    MainCubit mainCubit = MainCubit(localStore, mainApi);
-    ProfileCubit profileCubit = ProfileCubit(localStore, profileApi);
-    AuthCubit authCubit = AuthCubit(localStore);
-    return MultiCubitProvider(providers: [
-      CubitProvider<AuthCubit>(
-        create: (context) => authCubit,
-      ),
-      CubitProvider<MainCubit>(create: (context) => mainCubit),
-      CubitProvider<ProfileCubit>(
-        create: (context) => profileCubit,
-      )
-    ], child: TabPage(authService, TabPageAdapter(createAuthUI)));
+  static Widget createHomeUI() {
+    // MainCubit mainCubit = MainCubit(localStore, mainApi);
+    // ProfileCubit profileCubit = ProfileCubit(localStore, profileApi);
+    // AuthCubit authCubit = AuthCubit(localStore);
+    UserCubit userCubit = UserCubit(localStore, userAPI);
+    return MultiCubitProvider(
+      providers: [
+        CubitProvider<UserCubit>(
+          create: (context) => userCubit,
+        ),
+        // CubitProvider<MainCubit>(create: (context) => mainCubit),
+        // CubitProvider<ProfileCubit>(
+        //   create: (context) => profileCubit,
+        // )
+      ],
+      child: Text('HOME UI'),
+      //  TabPage(
+      //   userService,
+      //   TabPageAdapter(createLoginScreen),
+      // ),
+    );
   }
 }
