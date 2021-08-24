@@ -1,4 +1,5 @@
 //@dart=2.9
+import 'package:ccarev2_frontend/user/domain/credential.dart';
 import 'package:flutter/material.dart';
 
 // This is the best practice
@@ -47,10 +48,21 @@ class _BodyState extends State<Body> {
                 child: Column(
                   children: <Widget>[
                     Spacer(flex: 1),
-                    DefaultButton(
-                      text: "Get Started",
-                      press: () =>
-                          widget.pageAdapter.onSplashScreenComplete(context),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        DefaultButton(
+                          text: "I'm a Patient",
+                          press: () => widget.pageAdapter
+                              .onSplashScreenComplete(
+                                  context, UserType.patient),
+                        ),
+                        DefaultButton(
+                          text: "I'm a Doctor",
+                          press: () => widget.pageAdapter
+                              .onSplashScreenComplete(context, UserType.doctor),
+                        ),
+                      ],
                     ),
                     Spacer(),
                   ],

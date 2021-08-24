@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'composition_root.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await CompositionRoot.configure();
   var startPage = await CompositionRoot.start();
+  await Firebase.initializeApp();
+
   runApp(MyApp(startPage));
 }
 

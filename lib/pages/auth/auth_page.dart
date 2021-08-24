@@ -1,16 +1,15 @@
-import 'package:ccarev2_frontend/customBuilds/customtextformfield.dart';
-import 'package:ccarev2_frontend/pages/auth/otp/otp_screen.dart';
-import 'package:ccarev2_frontend/state_management/profile/profile_cubit.dart';
-import 'package:ccarev2_frontend/state_management/profile/profile_state.dart'
-    as profileState;
-import 'package:ccarev2_frontend/state_management/user/user_cubit.dart';
-import 'package:ccarev2_frontend/state_management/user/user_state.dart';
-import 'package:ccarev2_frontend/user/domain/credential.dart';
-import 'package:ccarev2_frontend/user/domain/token.dart';
-import 'package:ccarev2_frontend/user/domain/user_service_contract.dart';
-import 'package:ccarev2_frontend/user/infra/firebase_auth.dart';
-import 'package:ccarev2_frontend/user/infra/user_api.dart';
-
+import '../../customBuilds/customtextformfield.dart';
+import '../../state_management/profile/profile_cubit.dart';
+import '../../state_management/profile/profile_state.dart' as profileState;
+import '../../state_management/user/user_state.dart';
+import '../../user/domain/credential.dart';
+import '../../user/domain/token.dart';
+import '../../user/domain/user_service_contract.dart';
+import '../../pages/auth/otp/otp_screen.dart';
+import '../../user/infra/firebase_auth.dart';
+import '../../user/infra/user_api.dart';
+import '../../state_management/user/user_cubit.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'auth_page_adapter.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
 import '../../utils/size_config.dart';
@@ -21,10 +20,12 @@ class AuthPage extends StatefulWidget {
   final UserService userService;
   final UserAPI userAPI;
   final IAuthPageAdapter pageAdatper;
+  final UserType userType;
   const AuthPage({
     required this.userService,
     required this.userAPI,
     required this.pageAdatper,
+    required this.userType,
   });
   @override
   _AuthPageState createState() => _AuthPageState();
@@ -32,6 +33,7 @@ class AuthPage extends StatefulWidget {
 
 class _AuthPageState extends State<AuthPage> {
   String phone = "";
+  String _verificationCode = "";
   late UserService service;
   int hex(String color) {
     return int.parse("FF" + color.toUpperCase(), radix: 16);
@@ -200,7 +202,7 @@ class _AuthPageState extends State<AuthPage> {
         child: PageView(
           controller: _controller,
           physics: NeverScrollableScrollPhysics(),
-          children: [_phoneForm(context), PhoneSignInSection()],
+          children: [_phoneForm(context), _otpForm(context, cubit, userAPI)],
           // _otpForm(context, cubit, userAPI)
         ),
       );
@@ -224,7 +226,7 @@ class _AuthPageState extends State<AuthPage> {
                 child: CustomTextFormField(
                     hint: "Mobile Number",
                     obscureText: false,
-                    keyboardType: TextInputType.number,
+                    keyboardType: TextInputType.text,
                     color: Colors.blue,
                     // icon: const Icon(
                     //   Icons.phone,
@@ -246,9 +248,8 @@ class _AuthPageState extends State<AuthPage> {
                     if (_formkey.currentState!.validate()) {
                       // final user = User(name: "ABCD", phone: phone);
                       Credential credential = Credential(
-                          phone, UserType.patient, "fcmtoken", Token("token"));
-                      CubitProvider.of<UserCubit>(context)
-                          .login(widget.userService, credential);
+                          phone, widget.userType, "fcmtoken", Token("token"));
+                      CubitProvider.of<UserCubit>(context).login(credential);
                       // _controller.nextPage(
                       //     duration: const Duration(microseconds: 1000),
                       //     curve: Curves.elasticIn);

@@ -17,15 +17,15 @@ class UserCubit extends Cubit<UserState> {
     this.userAPI,
   ) : super(InitialState());
 
-  login(UserService userService, Credential credential) async {
+  login(Credential credential) async {
     _startLoading();
     emit(OTPState("123456"));
-    final result = await userService.login(credential);
+    final result = await userAPI.login(credential);
     if (result == null) print("result is null");
     _setResultOfAuthState(result);
   }
 
-  verify(UserService userService, String otp) async {
+  verify(String otp) async {
     _startLoading();
     emit(LoginSuccessState(
       Credential(
@@ -37,7 +37,7 @@ class UserCubit extends Cubit<UserState> {
       print("Error fetching the token");
       emit(ErrorState("Error fetching the token"));
     } else {
-      final result = await userService.verify(otp);
+      final result = await userAPI.verify(otp);
       localStore.save(result.asValue.value as Credential);
       emit(LoginSuccessState(result.asValue.value as Credential));
     }
@@ -61,14 +61,14 @@ class UserCubit extends Cubit<UserState> {
   //   }
   // }
 
-  signout(UserService userService) async {
+  signout() async {
     _startLoading();
     final token = await localStore.fetch();
     if (token == null) {
       print("Error fetching the token");
       emit(ErrorState("Error fetching the token"));
     } else {
-      final result = await userService.logout(token);
+      final result = await userAPI.logout(token);
 
       if (result.asValue.value) {
         localStore.delete();

@@ -2,6 +2,7 @@
 import 'package:ccarev2_frontend/pages/auth/auth_page.dart';
 import 'package:ccarev2_frontend/state_management/profile/profile_cubit.dart';
 import 'package:ccarev2_frontend/state_management/user/user_cubit.dart';
+import 'package:ccarev2_frontend/user/domain/credential.dart';
 import 'package:common/infra/MHttpClient.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
@@ -48,7 +49,7 @@ class CompositionRoot {
     return SplashScreen(pageAdapter);
   }
 
-  static Widget createLoginScreen() {
+  static Widget createLoginScreen(UserType userType) {
     UserCubit userCubit = UserCubit(localStore, userAPI);
     ProfileCubit profileCubit = ProfileCubit(localStore, userAPI);
 
@@ -61,6 +62,7 @@ class CompositionRoot {
         userService: userService,
         userAPI: userAPI,
         pageAdatper: pageAdapter,
+        userType: userType,
       ),
     );
   }

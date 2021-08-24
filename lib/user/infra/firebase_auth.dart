@@ -1,6 +1,5 @@
 //@dart=2.9
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -20,7 +19,6 @@ class PhoneSignInSectionState extends State<PhoneSignInSection> {
 
   String _message = '';
   String _verificationId;
-  ConfirmationResult webConfirmationResult;
 
   @override
   Widget build(BuildContext context) {

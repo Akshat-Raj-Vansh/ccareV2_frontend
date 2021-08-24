@@ -11,7 +11,9 @@ class OtpForm extends StatefulWidget {
   final UserCubit userCubit;
   // final RegisterService registerService;
   final UserAPI userAPI;
-  const OtpForm(this.userCubit, this.userAPI);
+  final Function validateOTP;
+  final String iotp;
+  const OtpForm(this.userCubit, this.userAPI, this.validateOTP, this.iotp);
 
   @override
   _OtpFormState createState() => _OtpFormState();
@@ -19,6 +21,8 @@ class OtpForm extends StatefulWidget {
 
 class _OtpFormState extends State<OtpForm> {
   List<String> otp = new List.filled(6, "?");
+  List<String> result;
+
   FocusNode pin2FocusNode;
   FocusNode pin3FocusNode;
   FocusNode pin4FocusNode;
@@ -58,6 +62,8 @@ class _OtpFormState extends State<OtpForm> {
 
   @override
   Widget build(BuildContext context) {
+    String kotp = "123456";
+    result = kotp.split('');
     return buildForm();
   }
 
@@ -77,6 +83,7 @@ class _OtpFormState extends State<OtpForm> {
                     focusNode: pin1FocusNode,
                     maxLength: 1,
                     autofocus: true,
+                    initialValue: result[0],
                     style: TextStyle(fontSize: 18, color: Colors.green),
                     keyboardType: TextInputType.number,
                     textAlign: TextAlign.center,
@@ -95,6 +102,7 @@ class _OtpFormState extends State<OtpForm> {
                     style: TextStyle(fontSize: 18, color: Colors.green),
                     keyboardType: TextInputType.number,
                     textAlign: TextAlign.center,
+                    initialValue: result[1],
                     decoration: otpInputDecoration,
                     onChanged: (value) {
                       otp[1] = value;
@@ -112,6 +120,7 @@ class _OtpFormState extends State<OtpForm> {
                     keyboardType: TextInputType.number,
                     textAlign: TextAlign.center,
                     decoration: otpInputDecoration,
+                    initialValue: result[2],
                     onChanged: (value) {
                       otp[2] = value;
                       nextField(value, pin4FocusNode, pin2FocusNode);
@@ -128,6 +137,7 @@ class _OtpFormState extends State<OtpForm> {
                     keyboardType: TextInputType.number,
                     textAlign: TextAlign.center,
                     decoration: otpInputDecoration,
+                    initialValue: result[3],
                     onChanged: (value) {
                       otp[3] = value;
                       nextField(value, pin5FocusNode, pin3FocusNode);
@@ -144,6 +154,7 @@ class _OtpFormState extends State<OtpForm> {
                     keyboardType: TextInputType.number,
                     textAlign: TextAlign.center,
                     decoration: otpInputDecoration,
+                    initialValue: result[4],
                     onChanged: (value) {
                       otp[4] = value;
                       nextField(value, pin6FocusNode, pin4FocusNode);
@@ -159,6 +170,7 @@ class _OtpFormState extends State<OtpForm> {
                       keyboardType: TextInputType.number,
                       textAlign: TextAlign.center,
                       decoration: otpInputDecoration,
+                      initialValue: result[5],
                       onChanged: (value) {
                         otp[5] = value;
                         if (value.length == 1)
@@ -174,7 +186,9 @@ class _OtpFormState extends State<OtpForm> {
           RaisedButton(
             onPressed: () {
               if (!otp.join().contains("?")) {
-                this.widget.userCubit.verify(widget.userAPI, otp.join());
+                // this.widget.userCubit.verify(widget.userAPI, otp.join());
+                widget.validateOTP(otp.join());
+                print('Validate OTP Function called');
               }
             },
             shape:

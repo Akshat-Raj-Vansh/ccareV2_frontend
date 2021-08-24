@@ -28,18 +28,16 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   cupertino_icons: ^1.0.2
+  firebase_auth: ^3.0.2
+  firebase_core: ^1.5.0
   flutter:
     sdk: flutter
- 
 
 dev_dependencies:
   common:
     path: ./common
   cubit: null
   equatable: ^1.2.5
-  firebase_auth: ^3.0.2
-  google_fonts: ^2.1.0
-  http: ^0.13.3
   flutter_cubit: null
 
   # The "flutter_lints" package below contains a set of recommended lints to
@@ -54,7 +52,10 @@ dev_dependencies:
     sdk: flutter
   font_awesome_flutter: null
 
+  google_fonts: ^2.1.0
+
   google_sign_in: null
+  http: ^0.13.3
   shared_preferences: null
   transparent_image: null
 

@@ -41,6 +41,72 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:797374976435:android:572f1fc2e2afb5add27bc6",
+        "android_client_info": {
+          "package_name": "com.example.cardiocare_frontend"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "797374976435-aj8rjaq0f870iv670nqhuui2s6pp91mb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAETuHg9gqL7-feu3GdMmc4UEH3bjabZr4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "797374976435-aj8rjaq0f870iv670nqhuui2s6pp91mb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:797374976435:android:e06b280dd3e3a7e4d27bc6",
+        "android_client_info": {
+          "package_name": "com.example.ccarev2_frontend"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "797374976435-7i6a8mio62m57841qvmqsb1stelpjv8u.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ccarev2_frontend",
+            "certificate_hash": "93a3d1603261fc888ed391ce1a198613f03e3fa4"
+          }
+        },
+        {
+          "client_id": "797374976435-aj8rjaq0f870iv670nqhuui2s6pp91mb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAETuHg9gqL7-feu3GdMmc4UEH3bjabZr4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "797374976435-aj8rjaq0f870iv670nqhuui2s6pp91mb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"
