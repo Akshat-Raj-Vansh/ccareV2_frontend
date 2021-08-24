@@ -1,8 +1,10 @@
+//@dart=2.9
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'composition_root.dart';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -10,9 +12,16 @@ void main() async {
   var startPage = await CompositionRoot.start();
   await Firebase.initializeApp();
 
+  FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+
+  print("FCM Token " + await FirebaseMessaging.instance.getToken());
   runApp(MyApp(startPage));
 }
+Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+   
 
+  print("Handling a background message: ${message.data}");
+}
 class MyApp extends StatelessWidget {
   final Widget startPage;
 
