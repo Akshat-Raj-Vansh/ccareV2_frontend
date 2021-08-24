@@ -34,7 +34,7 @@ class UserAPI implements UserService {
       return Result.error(transformError(map));
     }
     dynamic json = jsonDecode(response.body);
-    return Result.value(Details.fromJson(json));
+    return Result.value(Details.fromJson(jsonEncode(json)));
   }
 
   // @override

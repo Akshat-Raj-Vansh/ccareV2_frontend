@@ -82,16 +82,16 @@ class DoctorProfile {
 class PatientProfile {
   final String firstName;
   final String lastName;
-  final int age;
   final Gender gender;
+  final int age;
 
-  PatientProfile(this.firstName, this.lastName, this.age, this.gender);
+  PatientProfile(this.firstName, this.lastName, this.gender, this.age);
   Map<String, dynamic> toMap() {
     return {
       'firstName': firstName,
       'lastName': lastName,
-      'age': age,
       'gender': gender,
+      'age': age,
     };
   }
 
@@ -99,8 +99,8 @@ class PatientProfile {
     return PatientProfile(
       map['firstName'],
       map['lastName'],
-      map['age'],
       map['gender'],
+      map['age'],
     );
   }
 
@@ -111,7 +111,7 @@ class PatientProfile {
 
   @override
   String toString() {
-    return 'PatientProfile(firstName: $firstName, lastName: $lastName, age: $age, gender: $gender)';
+    return 'PatientProfile(firstName: $firstName, lastName: $lastName, gender: $gender, age: $age)';
   }
 
   @override
@@ -122,16 +122,16 @@ class PatientProfile {
     return other is PatientProfile &&
         other.firstName == firstName &&
         other.lastName == lastName &&
-        other.age == age &&
-        other.gender == gender;
+        other.gender == gender &&
+        other.age == age;
   }
 
   @override
   int get hashCode {
     return firstName.hashCode ^
         lastName.hashCode ^
-        age.hashCode ^
-        gender.hashCode;
+        gender.hashCode ^
+        age.hashCode;
   }
 }
 

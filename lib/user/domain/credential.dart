@@ -4,15 +4,15 @@ import 'package:ccarev2_frontend/user/domain/token.dart';
 class Credential {
   final String phone;
   final UserType type;
-  final String fcmtoken;
+  final String fcmToken;
   final Token token;
-  Credential(this.phone, this.type, this.fcmtoken, this.token);
+  Credential(this.phone, this.type, this.fcmToken, this.token);
 
   Map<String, dynamic> toMap() {
     return {
       'phoneNumber': phone,
       'user_type': type == UserType.patient ? "patient" : "doctor",
-      'fcmtoken': fcmtoken,
+      'fcmToken': fcmToken,
       'fireBaseToken': token.value,
     };
   }
@@ -23,7 +23,7 @@ class Credential {
     return Credential(
       map['phoneNumber'],
       map['user_type'],
-      map['fcmtoken'],
+      map['fcmToken'],
       Token(map["fireBaseToken"]),
     );
   }

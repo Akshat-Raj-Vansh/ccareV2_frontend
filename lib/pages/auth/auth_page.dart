@@ -82,7 +82,8 @@ class _AuthPageState extends State<AuthPage> {
                               MaterialPageRoute(
                                   builder: (context) => ProfileUpdateScreen(
                                       cubit, state.details)))
-                          : widget.pageAdatper.onAuthSuccess(context);
+                          : widget.pageAdatper
+                              .onAuthSuccess(context, widget.userType);
                       print(state.details.toString());
                     } else if (state is PhoneVerificationState) {
                       _hideLoader();
@@ -119,7 +120,7 @@ class _AuthPageState extends State<AuthPage> {
                     _showLoader();
                   } else if (state is profileState.AddDoctorProfileState ||
                       state is profileState.AddPatientProfileState) {
-                    widget.pageAdatper.onAuthSuccess(context);
+                    widget.pageAdatper.onAuthSuccess(context, widget.userType);
                   } else {
                     _hideLoader();
                     if (state is profileState.ErrorState) {
@@ -244,7 +245,7 @@ class _AuthPageState extends State<AuthPage> {
                   onPressed: () async {
                     if (_formkey.currentState!.validate()) {
                       Credential credential = Credential(
-                          phone, widget.userType, "fcmtoken", Token("token"));
+                          phone, widget.userType, "fcmToken", Token("token"));
                       CubitProvider.of<UserCubit>(context).getOTP(credential);
                       // _controller.nextPage(
                       //     duration: const Duration(microseconds: 1000),
@@ -277,7 +278,7 @@ class _AuthPageState extends State<AuthPage> {
 
   _otpForm(BuildContext context, UserCubit cubit, UserService userService) {
     Credential credential =
-        Credential(phone, widget.userType, "fcmtoken", Token("token"));
+        Credential(phone, widget.userType, "fcmToken", Token("token"));
     return Center(
       child: OtpScreen(cubit, credential, widget.userAPI),
     );

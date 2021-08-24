@@ -1,5 +1,6 @@
 //@dart=2.9
 import 'package:ccarev2_frontend/pages/auth/auth_page.dart';
+import 'package:ccarev2_frontend/pages/home/home_screen.dart';
 import 'package:ccarev2_frontend/state_management/profile/profile_cubit.dart';
 import 'package:ccarev2_frontend/state_management/user/user_cubit.dart';
 import 'package:ccarev2_frontend/user/domain/credential.dart';
@@ -42,7 +43,7 @@ class CompositionRoot {
     var token = await localStore.fetch();
     var userType = await localStore.fetchUserType();
 
-    return token == null ? splashScreen() : createHomeUI();
+    return token == null ? splashScreen() : createHomeUI(userType);
   }
 
   static Widget splashScreen() {
@@ -66,22 +67,22 @@ class CompositionRoot {
     );
   }
 
-  static Widget createHomeUI() {
+  static Widget createHomeUI(UserType userType) {
     // MainCubit mainCubit = MainCubit(localStore, mainApi);
-    // ProfileCubit profileCubit = ProfileCubit(localStore, profileApi);
     // AuthCubit authCubit = AuthCubit(localStore);
     UserCubit userCubit = UserCubit(localStore, userAPI);
+    ProfileCubit profileCubit = ProfileCubit(localStore, userAPI);
     return MultiCubitProvider(
       providers: [
         CubitProvider<UserCubit>(
           create: (context) => userCubit,
         ),
         // CubitProvider<MainCubit>(create: (context) => mainCubit),
-        // CubitProvider<ProfileCubit>(
-        //   create: (context) => profileCubit,
-        // )
+        CubitProvider<ProfileCubit>(
+          create: (context) => profileCubit,
+        )
       ],
-      child: Text('HOME UI'),
+      child: HomeScreen(userType),
       //  TabPage(
       //   userService,
       //   TabPageAdapter(createLoginScreen),

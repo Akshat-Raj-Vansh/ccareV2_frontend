@@ -4,24 +4,28 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 abstract class IAuthPageAdapter {
-  void onAuthSuccess(BuildContext context); //, UserService userService
+  void onAuthSuccess(
+      BuildContext context, UserType userType); //, UserService userService
   void onSplashScreenComplete(BuildContext context, UserType userType);
 }
 
 class AuthPageAdapter extends IAuthPageAdapter {
-  final Widget Function() onUserAuthenticated; //UserService userService
+  final Widget Function(UserType userType)
+      onUserAuthenticated; //UserService userService
   final Widget Function(UserType userType) authPage;
 
   AuthPageAdapter(this.onUserAuthenticated, this.authPage);
   @override
   void onAuthSuccess(
     BuildContext context,
+    UserType userType,
   ) {
     //     UserService userService) {
     Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
-            builder: (context) => onUserAuthenticated()), //     userService)),
+            builder: (context) =>
+                onUserAuthenticated(userType)), //     userService)),
         (Route<dynamic> route) => false);
   }
 
