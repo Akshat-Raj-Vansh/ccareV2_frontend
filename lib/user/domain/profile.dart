@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:html';
 import 'package:collection/collection.dart';
 
 class DoctorProfile {
@@ -10,7 +9,7 @@ class DoctorProfile {
   final String specialization;
   final String uniqueCode;
   final String email;
-  final Location location;
+  final String location;
 
   DoctorProfile(this.firstName, this.lastName, this.gender, this.age,
       this.specialization, this.uniqueCode, this.email, this.location);

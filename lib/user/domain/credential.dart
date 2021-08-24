@@ -10,9 +10,9 @@ class Credential {
 
   Map<String, dynamic> toJson() => {
         "user_type": type,
-        "phone": phone,
+        "phoneNumber": phone,
         "fcmtoken": fcmtoken,
-        "token": token,
+        "fireBaseToken": token,
       };
 
   Map<String, dynamic> toMap() {
@@ -26,10 +26,10 @@ class Credential {
 
   factory Credential.fromMap(Map<String, dynamic> map) {
     return Credential(
-      map['phone'],
-      map['type'],
+      map['phoneNumber'],
+      map['user_type'],
       map['fcmtoken'],
-      Token(map["token"]),
+      Token(map["fireBaseToken"]),
     );
   }
   factory Credential.fromJson(String source) =>

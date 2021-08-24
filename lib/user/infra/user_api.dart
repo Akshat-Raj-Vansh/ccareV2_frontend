@@ -41,44 +41,44 @@ class UserAPI implements UserService {
     throw UnimplementedError();
   }
 
-  @override
-  Future<Result<DoctorProfile>> getDoctorProfile(Token token) async {
-    String endpoint = baseUrl + "/user/doctor";
-    var header = {
-      "Content-Type": "application/json",
-      "Authorization": token.value
-    };
-    var response = await _client.get(Uri.parse(endpoint), headers: header);
-    if (response.statusCode != 200) {
-      Map map = jsonDecode(response.body);
-      print(transformError(map));
-      return Result.error(transformError(map));
-    }
-    dynamic json = jsonDecode(response.body);
-    return Result.value(DoctorProfile.fromJson(json));
-  }
+  // @override
+  // Future<Result<DoctorProfile>> getDoctorProfile(Token token) async {
+  //   String endpoint = baseUrl + "/user/doctor";
+  //   var header = {
+  //     "Content-Type": "application/json",
+  //     "Authorization": token.value
+  //   };
+  //   var response = await _client.get(Uri.parse(endpoint), headers: header);
+  //   if (response.statusCode != 200) {
+  //     Map map = jsonDecode(response.body);
+  //     print(transformError(map));
+  //     return Result.error(transformError(map));
+  //   }
+  //   dynamic json = jsonDecode(response.body);
+  //   return Result.value(DoctorProfile.fromJson(json));
+  // }
+
+  // @override
+  // Future<Result<PatientProfile>> getPatientProfile(Token token) async {
+  //   String endpoint = baseUrl + "/user/patient";
+  //   var header = {
+  //     "Content-Type": "application/json",
+  //     "Authorization": token.value
+  //   };
+  //   var response = await _client.get(Uri.parse(endpoint), headers: header);
+  //   if (response.statusCode != 200) {
+  //     Map map = jsonDecode(response.body);
+  //     print(transformError(map));
+  //     return Result.error(transformError(map));
+  //   }
+  //   dynamic json = jsonDecode(response.body);
+  //   return Result.value(PatientProfile.fromJson(json));
+  // }
 
   @override
-  Future<Result<PatientProfile>> getPatientProfile(Token token) async {
-    String endpoint = baseUrl + "/user/patient";
-    var header = {
-      "Content-Type": "application/json",
-      "Authorization": token.value
-    };
-    var response = await _client.get(Uri.parse(endpoint), headers: header);
-    if (response.statusCode != 200) {
-      Map map = jsonDecode(response.body);
-      print(transformError(map));
-      return Result.error(transformError(map));
-    }
-    dynamic json = jsonDecode(response.body);
-    return Result.value(PatientProfile.fromJson(json));
-  }
-
-  @override
-  Future<Result<String>> updateDoctorProfile(
+  Future<Result<String>> addDoctorProfile(
       Token token, DoctorProfile profile) async {
-    String endpoint = baseUrl + "/user/doctor";
+    String endpoint = baseUrl + "/user/addProfile";
     var header = {
       "Content-Type": "application/json",
       "Authorization": token.value
@@ -95,9 +95,9 @@ class UserAPI implements UserService {
   }
 
   @override
-  Future<Result<String>> updatePatientProfile(
+  Future<Result<String>> addPatientProfile(
       Token token, PatientProfile profile) async {
-    String endpoint = baseUrl + "/user/patient";
+    String endpoint = baseUrl + "/user/addProfile";
     var header = {
       "Content-Type": "application/json",
       "Authorization": token.value

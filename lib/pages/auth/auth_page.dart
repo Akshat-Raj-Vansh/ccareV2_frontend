@@ -193,7 +193,7 @@ class _AuthPageState extends State<AuthPage> {
       );
 
   _buildUI(BuildContext context, UserCubit cubit, UserAPI userAPI) => Container(
-        height: 300,
+        height: 400,
         width: MediaQuery.of(context).size.width,
         color: Colors.white,
         child: PageView(
@@ -205,7 +205,7 @@ class _AuthPageState extends State<AuthPage> {
       );
 
   _phoneForm(BuildContext context) => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
+        padding: const EdgeInsets.symmetric(horizontal: 12),
         child: Form(
           key: _formkey,
           child: Stack(
@@ -246,10 +246,10 @@ class _AuthPageState extends State<AuthPage> {
                       // final user = User(name: "ABCD", phone: phone);
                       Credential credential = Credential(
                           phone, widget.userType, "fcmtoken", Token("token"));
-                      CubitProvider.of<UserCubit>(context).login(credential);
-                      // _controller.nextPage(
-                      //     duration: const Duration(microseconds: 1000),
-                      //     curve: Curves.elasticIn);
+                      // CubitProvider.of<UserCubit>(context).login(credential);
+                      _controller.nextPage(
+                          duration: const Duration(microseconds: 1000),
+                          curve: Curves.elasticIn);
                     }
                   },
                   shape: RoundedRectangleBorder(

@@ -161,7 +161,7 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
                   widget.credential.type,
                   "fcmtoken",
                   Token(value.user.uid.toString()));
-              print(value.user.uid.toString());
+              print(value.user.getIdToken());
               widget.cubit.login(credential);
               print('Successs BODY');
             }
