@@ -15,9 +15,17 @@ class LoadingState extends ProfileState {
   List<Object> get props => [];
 }
 
-class ProfileUpdateState extends ProfileState {
+class AddPatientProfileState extends ProfileState {
   final String message;
-  ProfileUpdateState(this.message) {}
+  AddPatientProfileState(this.message) {}
+  @override
+  // TODO: implement props
+  List<Object> get props => [this.message];
+}
+
+class AddDoctorProfileState extends ProfileState {
+  final String message;
+  AddDoctorProfileState(this.message) {}
   @override
   // TODO: implement props
   List<Object> get props => [this.message];

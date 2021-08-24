@@ -1,5 +1,6 @@
 //@dart=2.9
 import 'package:async/src/result/result.dart';
+import 'package:ccarev2_frontend/user/domain/details.dart';
 import 'package:ccarev2_frontend/user/domain/token.dart';
 import 'package:ccarev2_frontend/user/infra/user_api.dart';
 import 'package:cubit/cubit.dart';
@@ -24,19 +25,24 @@ class UserCubit extends Cubit<UserState> {
     _setResultOfAuthState(result);
   }
 
-  verify(String otp) async {
+  getOTP(Credential credential) async {
     _startLoading();
-    final tempToken = await localStore.fetchTempToken();
-
-    if (tempToken == null) {
-      print("Error fetching the token");
-      emit(ErrorState("Error fetching the token"));
-    } else {
-      final result = await userAPI.verify(otp);
-      localStore.save(result.asValue.value as Credential);
-      emit(LoginSuccessState(result.asValue.value as Credential));
-    }
+    emit(PhoneVerificationState(credential));
   }
+
+  // verify(String otp) async {
+  //   _startLoading();
+  //   final tempToken = await localStore.fetchTempToken();
+
+  //   if (tempToken == null) {
+  //     print("Error fetching the token");
+  //     emit(ErrorState("Error fetching the token"));
+  //   } else {
+  //     final result = await userAPI.verify(otp);
+  //     localStore.save(result.asValue.value as Credential);
+  //     emit(LoginSuccessState(result.asValue.value as Credential));
+  //   }
+  // }
 
   // resend(UserService userService) async {
   //   _startLoading();
@@ -56,31 +62,31 @@ class UserCubit extends Cubit<UserState> {
   //   }
   // }
 
-  signout() async {
-    _startLoading();
-    final token = await localStore.fetch();
-    if (token == null) {
-      print("Error fetching the token");
-      emit(ErrorState("Error fetching the token"));
-    } else {
-      final result = await userAPI.logout(token);
+  // signout() async {
+  //   _startLoading();
+  //   final token = await localStore.fetch();
+  //   if (token == null) {
+  //     print("Error fetching the token");
+  //     emit(ErrorState("Error fetching the token"));
+  //   } else {
+  //     final result = await userAPI.logout(token);
 
-      if (result.asValue.value) {
-        localStore.delete();
-        emit(SignOutSuccesState());
-      } else
-        emit(ErrorState("Error logging out"));
-    }
-  }
+  //     if (result.asValue.value) {
+  //       localStore.delete();
+  //       emit(SignOutSuccesState());
+  //     } else
+  //       emit(ErrorState("Error logging out"));
+  //   }
+  // }
 
   void _setResultOfAuthState(Result<dynamic> result) {
     if (result.asError != null) {
       emit(ErrorState(result.asError.error));
       return;
     }
-    if (result.asValue.value is Credential) {
-      localStore.save(result.asValue.value as Credential);
-      emit(LoginSuccessState(result.asValue.value as Credential));
+    if (result.asValue.value is Details) {
+      localStore.save(result.asValue.value as Details);
+      emit(LoginSuccessState(result.asValue.value as Details));
     }
     // if (result.asValue.value is OtpMessage) {
     //   print(result.asValue.value);

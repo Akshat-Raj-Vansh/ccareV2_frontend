@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:ccarev2_frontend/user/domain/credential.dart';
+import 'package:ccarev2_frontend/user/domain/details.dart';
 import 'package:ccarev2_frontend/user/domain/token.dart';
 import 'package:ccarev2_frontend/user/domain/profile.dart';
 import 'package:ccarev2_frontend/user/domain/user_service_contract.dart';
@@ -18,28 +19,41 @@ class UserAPI implements UserService {
   );
 
   @override
-  Future<Result<String>> login(Credential credential) {
+  Future<Result<Details>> login(Credential credential) async {
     String endpoint = baseUrl + "/user/signin";
-    return _post(endpoint, credential);
-  }
-
-  @override
-  Future<Result<bool>> logout(Token token) async {
-    String endpoint = baseUrl + "/auth/signout";
+    print(credential.phone);
     var header = {
       "Content-Type": "application/json",
-      "Authorization": token.value
     };
-    var res = await _client.post(Uri.parse(endpoint), headers: header);
-    if (res.statusCode != 200) return Result.value(false);
-    return Result.value(true);
+    dynamic response = await _client.post(Uri.parse(endpoint),
+        body: credential.toJson(), headers: header);
+    print(response.statusCode);
+    if (response.statusCode != 200) {
+      Map map = jsonDecode(response.body);
+      print(transformError(map));
+      return Result.error(transformError(map));
+    }
+    dynamic json = jsonDecode(response.body);
+    return Result.value(Details.fromJson(json));
   }
 
-  @override
-  Future<Result<String>> verify(String phone) {
-    //USE FIREBASE AUTHs
-    throw UnimplementedError();
-  }
+  // @override
+  // Future<Result<bool>> logout(Token token) async {
+  //   String endpoint = baseUrl + "/auth/signout";
+  //   var header = {
+  //     "Content-Type": "application/json",
+  //     "Authorization": token.value
+  //   };
+  //   var res = await _client.post(Uri.parse(endpoint), headers: header);
+  //   if (res.statusCode != 200) return Result.value(false);
+  //   return Result.value(true);
+  // }
+
+  // @override
+  // Future<Result<String>> verify(String phone) {
+  //   //USE FIREBASE AUTHs
+  //   throw UnimplementedError();
+  // }
 
   // @override
   // Future<Result<DoctorProfile>> getDoctorProfile(Token token) async {
@@ -111,25 +125,6 @@ class UserAPI implements UserService {
     }
     dynamic json = jsonDecode(response.body);
     return Result.value(json["message"]);
-  }
-
-  Future<Result<String>> _post(String endpoint, Credential credential) async {
-    print(credential.phone);
-    var header = {
-      "Content-Type": "application/json",
-    };
-    dynamic response = await _client.post(Uri.parse(endpoint),
-        body: credential.toJson(), headers: header);
-    print(response.statusCode);
-    if (response.statusCode != 200) {
-      Map map = jsonDecode(response.body);
-      print(transformError(map));
-      return Result.error(transformError(map));
-    }
-    dynamic json = jsonDecode(response.body);
-
-    if (json['authToken'] != null) return Result.value(jsonEncode(json));
-    return Result.error(json["message"]);
   }
 
   transformError(Map map) {

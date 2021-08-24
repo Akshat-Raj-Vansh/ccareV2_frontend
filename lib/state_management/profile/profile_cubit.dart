@@ -23,7 +23,7 @@ class ProfileCubit extends Cubit<ProfileState> {
       emit(ErrorState(result.asError.error));
       return;
     }
-    emit(ProfileUpdateState(result.asValue.value));
+    emit(AddPatientProfileState(result.asValue.value));
   }
 
   addDoctorProfile(DoctorProfile profile) async {
@@ -36,7 +36,7 @@ class ProfileCubit extends Cubit<ProfileState> {
       emit(ErrorState(result.asError.error));
       return;
     }
-    emit(ProfileUpdateState(result.asValue.value));
+    emit(AddDoctorProfileState(result.asValue.value));
   }
 
   // getProfile(PatientProfile profile) async {

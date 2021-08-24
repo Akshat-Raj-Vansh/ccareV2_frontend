@@ -137,20 +137,21 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
               widget.credential.type,
               "fcmtoken",
               Token(value.user.uid.toString()));
-          print(value.user.uid.toString());
+          // print('token' + value.credential.token.toString());
           widget.cubit.login(credential);
           print('Success validate');
         }
       });
     } catch (e) {
       print('invalid OTP');
+      print(e);
     }
   }
 
   _verifyPhone() async {
     print('Inside verify phone');
     await FirebaseAuth.instance.verifyPhoneNumber(
-        phoneNumber: widget.credential.phone,
+        phoneNumber: "+91 " + widget.credential.phone,
         verificationCompleted: (PhoneAuthCredential credential) async {
           await FirebaseAuth.instance
               .signInWithCredential(credential)
@@ -161,7 +162,7 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
                   widget.credential.type,
                   "fcmtoken",
                   Token(value.user.uid.toString()));
-              print(value.user.getIdToken());
+              // print('token' + value.credential.token.toString());
               widget.cubit.login(credential);
               print('Successs BODY');
             }
@@ -178,7 +179,7 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
         codeAutoRetrievalTimeout: (String verificationID) {
           setState(() {
             _verificationCode = verificationID;
-            print(_verificationCode);
+            print("verification id" + _verificationCode);
           });
         },
         timeout: Duration(seconds: 120));

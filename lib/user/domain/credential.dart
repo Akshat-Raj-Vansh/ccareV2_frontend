@@ -8,21 +8,16 @@ class Credential {
   final Token token;
   Credential(this.phone, this.type, this.fcmtoken, this.token);
 
-  Map<String, dynamic> toJson() => {
-        "user_type": type,
-        "phoneNumber": phone,
-        "fcmtoken": fcmtoken,
-        "fireBaseToken": token,
-      };
-
   Map<String, dynamic> toMap() {
     return {
-      'phone': phone,
-      'type': type,
+      'phoneNumber': phone,
+      'user_type': type == UserType.patient ? "patient" : "doctor",
       'fcmtoken': fcmtoken,
-      'token': token.value,
+      'fireBaseToken': token.value,
     };
   }
+
+  String toJson() => json.encode(toMap());
 
   factory Credential.fromMap(Map<String, dynamic> map) {
     return Credential(

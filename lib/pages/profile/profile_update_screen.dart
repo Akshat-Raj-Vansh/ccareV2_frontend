@@ -4,6 +4,7 @@ import 'package:ccarev2_frontend/user/domain/credential.dart';
 import 'package:ccarev2_frontend/user/domain/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
+import '../../user/domain/details.dart';
 import '../../components/default_button.dart';
 import '../auth/auth_page_adapter.dart';
 import '../../utils/constants.dart';
@@ -11,7 +12,8 @@ import '../../utils/size_config.dart';
 
 class ProfileUpdateScreen extends StatefulWidget {
   final ProfileCubit cubit;
-  const ProfileUpdateScreen(this.cubit);
+  final Details details;
+  const ProfileUpdateScreen(this.cubit, this.details);
 
   @override
   _ProfileUpdateScreenState createState() => _ProfileUpdateScreenState();
@@ -29,24 +31,12 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
           topRight: Radius.circular(30),
           bottomRight: Radius.circular(30)));
 
-  PageController _controller = PageController();
   String firstName;
   String lastName;
-
-  String phone;
-
   int age;
   Gender gender;
-
-  String hospitalAddress;
-  String city;
-  String district;
-  String state = "Himachal Pradesh";
-  int pincode;
-
   String uniqueCode;
   bool remember = false;
-  UserType type = UserType.patient;
   List<String> districts = [
     "Bilaspur",
     "Chamba",
@@ -71,13 +61,13 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
     "Psychiatrists"
   ];
   List<String> selected = [];
-  DateTime currentDate = DateTime.now();
 
   TextStyle styles = const TextStyle(color: Colors.white, fontSize: 18);
 
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
+
     return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
@@ -93,9 +83,6 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                     setState(() {
                       remember = false;
                     });
-                    _controller.previousPage(
-                        duration: const Duration(microseconds: 1000),
-                        curve: Curves.elasticIn);
                   },
                 ),
           title: Text(
@@ -135,7 +122,7 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
 
   _buildUI(BuildContext context) => Expanded(
         child: PageView(
-          controller: _controller,
+          //     controller: _controller,
           physics: NeverScrollableScrollPhysics(),
           children: [
             buildPersonalDetails(context),
@@ -262,34 +249,6 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
 
           // SizedBox(height: getProportionateScreenHeight(10)),
           // Text(state, style: TextStyle(color: Colors.black, fontSize: 16)),
-
-          SizedBox(height: getProportionateScreenHeight(40)),
-          Center(
-            child: DefaultButton(
-              text: "Next",
-              press: () {
-                if (_formKey.currentState.validate()) {
-                  if (district != null) {
-                    setState(() {
-                      remember = true;
-                    });
-                    _formKey.currentState.save();
-                    _controller.nextPage(
-                        duration: Duration(microseconds: 1000),
-                        curve: Curves.elasticIn);
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      content: Text("All Fields are required"),
-                    ));
-                  }
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                    content: Text("All Fields are required"),
-                  ));
-                }
-              },
-            ),
-          ),
         ],
       ),
     );
@@ -313,7 +272,7 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
             itemBuilder: (context, index) => GestureDetector(
                   onTap: () {
                     setState(() {
-                      district = districts[index];
+                      // district = districts[index];
                     });
                     _hideAlert();
                   },
