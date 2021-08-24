@@ -19,7 +19,6 @@ class UserCubit extends Cubit<UserState> {
 
   login(Credential credential) async {
     _startLoading();
-    emit(OTPState("123456"));
     final result = await userAPI.login(credential);
     if (result == null) print("result is null");
     _setResultOfAuthState(result);
@@ -27,10 +26,6 @@ class UserCubit extends Cubit<UserState> {
 
   verify(String otp) async {
     _startLoading();
-    emit(LoginSuccessState(
-      Credential(
-          "1234567890", UserType.patient, "fcmtoken", const Token('token')),
-    ));
     final tempToken = await localStore.fetchTempToken();
 
     if (tempToken == null) {

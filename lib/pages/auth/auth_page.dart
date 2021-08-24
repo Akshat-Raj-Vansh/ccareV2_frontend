@@ -17,12 +17,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 
 class AuthPage extends StatefulWidget {
-  final UserService userService;
   final UserAPI userAPI;
   final IAuthPageAdapter pageAdatper;
   final UserType userType;
   const AuthPage({
-    required this.userService,
     required this.userAPI,
     required this.pageAdatper,
     required this.userType,
@@ -279,15 +277,17 @@ class _AuthPageState extends State<AuthPage> {
         ),
       );
 
-  _otpForm(BuildContext context, UserCubit cubit, UserService userService) =>
-      Center(
-        child: RaisedButton(
-          onPressed: () {
-            _controller.previousPage(
-                duration: Duration(microseconds: 1000),
-                curve: Curves.elasticIn);
-          },
-          child: OtpScreen(cubit, phone, userService),
-        ),
-      );
+  _otpForm(BuildContext context, UserCubit cubit, UserService userService) {
+    Credential credential =
+        Credential(phone, widget.userType, "fcmtoken", Token("token"));
+    return Center(
+      child: RaisedButton(
+        onPressed: () {
+          _controller.previousPage(
+              duration: Duration(microseconds: 1000), curve: Curves.elasticIn);
+        },
+        child: OtpScreen(cubit, credential, widget.userAPI),
+      ),
+    );
+  }
 }

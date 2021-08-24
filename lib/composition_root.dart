@@ -59,7 +59,6 @@ class CompositionRoot {
         CubitProvider<ProfileCubit>(create: (context) => profileCubit),
       ],
       child: AuthPage(
-        userService: userService,
         userAPI: userAPI,
         pageAdatper: pageAdapter,
         userType: userType,

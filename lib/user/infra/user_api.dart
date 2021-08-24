@@ -19,7 +19,7 @@ class UserAPI implements UserService {
 
   @override
   Future<Result<String>> login(Credential credential) {
-    String endpoint = baseUrl + "/user/doctor";
+    String endpoint = baseUrl + "/user/signin";
     return _post(endpoint, credential);
   }
 

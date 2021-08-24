@@ -1,5 +1,7 @@
 //@dart=2.9
 import 'package:ccarev2_frontend/state_management/user/user_cubit.dart';
+import 'package:ccarev2_frontend/user/domain/credential.dart';
+import 'package:ccarev2_frontend/user/domain/token.dart';
 import 'package:ccarev2_frontend/user/domain/user_service_contract.dart';
 import 'package:ccarev2_frontend/user/infra/user_api.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -11,12 +13,12 @@ import 'otp_form.dart';
 
 class Body extends StatefulWidget {
   final UserCubit cubit;
-  final String phone;
-  final UserService userService;
+  final Credential credential;
+  final UserAPI userAPI;
   Body(
     this.cubit,
-    this.phone,
-    this.userService,
+    this.credential,
+    this.userAPI,
   );
 
   @override
@@ -73,7 +75,7 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
               ),
               const SizedBox(height: 20),
               Text(
-                "We sent your code to - ${widget.phone}",
+                "We sent your code to - ${widget.credential.phone}",
                 style: const TextStyle(color: Colors.green, fontSize: 16),
               ),
               buildTimer(),
@@ -92,8 +94,8 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
                       decoration: TextDecoration.underline),
                 ),
               ),
-              OtpForm(widget.cubit, widget.userService, validateOTP,
-                  _verificationCode),
+              OtpForm(
+                  widget.cubit, widget.userAPI, validateOTP, _verificationCode),
               SizedBox(height: SizeConfig.screenHeight * 0.02),
             ],
           ),
@@ -102,33 +104,6 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
     );
   }
 
-  // _showLogo(BuildContext context) => Container(
-  //       alignment: Alignment.center,
-  //       child: Column(
-  //         children: [
-  //           Image(
-  //               image: AssetImage("assets/logo.png"),
-  //               width: 250,
-  //               height: 230,
-  //               fit: BoxFit.fill),
-  //           // RichText(
-  //           //   text: TextSpan(
-  //           //       text: "Cardio",
-  //           //       style: Theme.of(context).textTheme.caption!.copyWith(
-  //           //           color: Colors.lightGreen[500],
-  //           //           fontSize: 32.0,
-  //           //           fontWeight: FontWeight.bold),
-  //           //       children: [
-  //           //         TextSpan(
-  //           //           text: " Care",
-  //           //           style: TextStyle(color: Theme.of(context).accentColor),
-  //           //         )
-  //           //       ]),
-  //           // ),
-  //           SizedBox(height: 30)
-  //         ],
-  //       ),
-  //     );
   Row buildTimer() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -157,6 +132,13 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
               verificationId: _verificationCode, smsCode: pin))
           .then((value) async {
         if (value.user != null) {
+          Credential credential = Credential(
+              widget.credential.phone,
+              widget.credential.type,
+              "fcmtoken",
+              Token(value.user.uid.toString()));
+          print(value.user.uid.toString());
+          widget.cubit.login(credential);
           print('Success validate');
         }
       });
@@ -168,16 +150,19 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
   _verifyPhone() async {
     print('Inside verify phone');
     await FirebaseAuth.instance.verifyPhoneNumber(
-        phoneNumber: '${widget.phone}',
+        phoneNumber: widget.credential.phone,
         verificationCompleted: (PhoneAuthCredential credential) async {
           await FirebaseAuth.instance
               .signInWithCredential(credential)
               .then((value) async {
             if (value.user != null) {
-              // Navigator.pushAndRemoveUntil(
-              //     context,
-              //     MaterialPageRoute(builder: (context) => Home()),
-              //     (route) => false);
+              Credential credential = Credential(
+                  widget.credential.phone,
+                  widget.credential.type,
+                  "fcmtoken",
+                  Token(value.user.uid.toString()));
+              print(value.user.uid.toString());
+              widget.cubit.login(credential);
               print('Successs BODY');
             }
           });
