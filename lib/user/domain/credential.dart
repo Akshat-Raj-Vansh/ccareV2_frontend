@@ -22,7 +22,7 @@ class Credential {
   factory Credential.fromMap(Map<String, dynamic> map) {
     return Credential(
       map['phoneNumber'],
-      map['user_type'],
+      map['user_type'] == 'doctor' ? UserType.doctor : UserType.patient,
       map['fcmToken'],
       Token(map["fireBaseToken"]),
     );

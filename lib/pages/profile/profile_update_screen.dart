@@ -214,7 +214,7 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
 
   Form buildPatientProfile(BuildContext context) {
     return Form(
-      key: _formKeyDoctor,
+      key: _formKeyPatient,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -265,6 +265,7 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
               floatingLabelBehavior: FloatingLabelBehavior.always,
             ),
           ),
+          SizedBox(height: getProportionateScreenHeight(10)),
           Center(
             child: DefaultButton(
               text: "Save",

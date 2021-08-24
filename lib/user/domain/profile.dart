@@ -18,7 +18,7 @@ class DoctorProfile {
     return {
       'firstName': firstName,
       'lastName': lastName,
-      'gender': gender,
+      'gender': gender == Gender.male ? "Male" : "Female",
       'age': age,
       'specialisation': specialization,
       'uniqueCode': uniqueCode,
@@ -31,7 +31,7 @@ class DoctorProfile {
     return DoctorProfile(
       map['firstName'],
       map['lastName'],
-      map['gender'],
+      map['gender'] == "Male" ? Gender.male : Gender.female,
       map['age'],
       map['specialization'],
       map['uniqueCode'],
@@ -90,7 +90,7 @@ class PatientProfile {
     return {
       'firstName': firstName,
       'lastName': lastName,
-      'gender': gender,
+      'gender': gender == Gender.male ? "Male" : "Female",
       'age': age,
     };
   }
