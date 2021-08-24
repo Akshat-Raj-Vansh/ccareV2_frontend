@@ -6,7 +6,6 @@ import '../../user/domain/credential.dart';
 import '../../user/domain/token.dart';
 import '../../user/domain/user_service_contract.dart';
 import '../../pages/auth/otp/otp_screen.dart';
-import '../../user/infra/firebase_auth.dart';
 import '../../user/infra/user_api.dart';
 import '../../state_management/user/user_cubit.dart';
 import 'package:firebase_auth/firebase_auth.dart';

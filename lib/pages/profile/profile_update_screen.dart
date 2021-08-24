@@ -36,7 +36,7 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
   String phone;
 
   int age;
-  Sex sex;
+  Gender gender;
 
   String hospitalAddress;
   String city;
