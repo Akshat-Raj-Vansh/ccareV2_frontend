@@ -1,13 +1,12 @@
 import 'package:ccarev2_frontend/pages/profile/profile_update_screen.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:sms_retriever/sms_retriever.dart';
 import '../../customBuilds/customtextformfield.dart';
 import '../../state_management/profile/profile_cubit.dart';
 import '../../state_management/profile/profile_state.dart' as profileState;
 import '../../state_management/user/user_state.dart';
 import '../../user/domain/credential.dart';
 import '../../user/domain/token.dart';
-import '../../user/domain/user_service_contract.dart';
-import '../../pages/auth/otp/otp_screen.dart';
 import '../../user/infra/user_api.dart';
 import '../../state_management/user/user_cubit.dart';
 import 'auth_page_adapter.dart';
@@ -19,7 +18,7 @@ class AuthPage extends StatefulWidget {
   final UserAPI userAPI;
   final IAuthPageAdapter pageAdatper;
   final UserType userType;
-  const AuthPage({
+  AuthPage({
     required this.userAPI,
     required this.pageAdatper,
     required this.userType,
@@ -28,15 +27,38 @@ class AuthPage extends StatefulWidget {
   _AuthPageState createState() => _AuthPageState();
 }
 
-class _AuthPageState extends State<AuthPage> {
-  String phone = "";
+class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
+  String _verificationCode = "";
+  String _otp = "";
+  String _phone = "";
   int hex(String color) {
     return int.parse("FF" + color.toUpperCase(), radix: 16);
   }
 
-  PageController _controller = PageController();
+  String get timeString {
+    Duration duration =
+        animationController.duration! * animationController.value;
+    return '${duration.inMinutes}:${(duration.inSeconds % 60).toString().padLeft(2, '0')}';
+  }
+
+  late AnimationController animationController;
+  final PageController _controller = PageController();
 
   final _formkey = GlobalKey<FormState>();
+  @override
+  void initState() {
+    super.initState();
+    animationController =
+        AnimationController(vsync: this, duration: const Duration(minutes: 2));
+    animationController.reverse(
+        from: animationController.value == 0 ? 1.0 : animationController.value);
+  }
+
+  @override
+  void dispose() {
+    animationController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,19 +83,14 @@ class _AuthPageState extends State<AuthPage> {
                 child: CubitConsumer<UserCubit, UserState>(
                   builder: (_, state) {
                     var cubit = CubitProvider.of<UserCubit>(context);
-                    return _buildUI(context, cubit, widget.userAPI);
+                    return _buildUI(context, cubit);
                   },
                   listener: (context, state) {
                     if (state is LoadingState) {
-                      print("LoadingStateCalled");
+                      print("Loading State Called");
                       _showLoader();
-                    }
-                    // else if (state is LoginSuccessState) {
-                    //   _hideLoader();
-                    //   widget.pageAdatper.onAuthSuccess(context);
-                    //   print(state.details.toString());
-                    // }
-                    else if (state is LoginSuccessState) {
+                    } else if (state is LoginSuccessState) {
+                      print("Login Success State Called");
                       _hideLoader();
                       var cubit = CubitProvider.of<ProfileCubit>(context);
                       state.details.newUser
@@ -87,26 +104,21 @@ class _AuthPageState extends State<AuthPage> {
                       print(state.details.toString());
                     } else if (state is PhoneVerificationState) {
                       _hideLoader();
-                      print("PhoneVerification State");
-                      // var cubit = CubitProvider.of<UserCubit>(context);
+                      print("PhoneVerification State Called");
+                      _showLoader();
+                      _verifyPhone(_phone);
+                    } else if (state is OTPVerificationState) {
+                      print("OTP State Called");
+                      _hideLoader();
                       _controller.nextPage(
                           duration: const Duration(microseconds: 1000),
                           curve: Curves.elasticIn);
                     } else {
                       _hideLoader();
                       if (state is ErrorState) {
-                        print("ErrorState");
+                        print("Error State Called");
                         print(state.error);
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          backgroundColor: Theme.of(context).accentColor,
-                          content: Text(
-                            state.error,
-                            style: Theme.of(context)
-                                .textTheme
-                                .caption!
-                                .copyWith(color: Colors.white, fontSize: 16),
-                          ),
-                        ));
+                        _showMessage(state.error);
                       }
                     }
                   },
@@ -146,7 +158,6 @@ class _AuthPageState extends State<AuthPage> {
   }
 
   _showLoader() {
-    // print("Loader Called");
     var alert = const AlertDialog(
       backgroundColor: Colors.transparent,
       elevation: 0,
@@ -162,6 +173,19 @@ class _AuthPageState extends State<AuthPage> {
 
   _hideLoader() {
     Navigator.of(context, rootNavigator: true).pop();
+  }
+
+  _showMessage(String msg) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      backgroundColor: Theme.of(context).accentColor,
+      content: Text(
+        msg,
+        style: Theme.of(context)
+            .textTheme
+            .caption!
+            .copyWith(color: Colors.white, fontSize: 16),
+      ),
+    ));
   }
 
   _showBackground(BuildContext context) => Container(
@@ -191,19 +215,21 @@ class _AuthPageState extends State<AuthPage> {
         ),
       );
 
-  _buildUI(BuildContext context, UserCubit cubit, UserAPI userAPI) => Container(
-        height: 400,
+  _buildUI(BuildContext context, UserCubit cubit) => Container(
+        height: 300,
+        margin:
+            EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
         width: MediaQuery.of(context).size.width,
         color: Colors.white,
         child: PageView(
           controller: _controller,
           physics: NeverScrollableScrollPhysics(),
-          children: [_phoneForm(context), _otpForm(context, cubit, userAPI)],
+          children: [_phoneForm(context, cubit), _otpForm(context, cubit)],
           // _otpForm(context, cubit, userAPI)
         ),
       );
 
-  _phoneForm(BuildContext context) => Padding(
+  _phoneForm(BuildContext context, UserCubit cubit) => Container(
         padding: const EdgeInsets.symmetric(horizontal: 12),
         child: Form(
           key: _formkey,
@@ -221,16 +247,23 @@ class _AuthPageState extends State<AuthPage> {
                 top: 100,
                 child: Row(
                   children: [
-                    Text('+91'),
+                    const Text(
+                      '+91',
+                      style: TextStyle(
+                        color: Colors.blue,
+                        fontSize: 16,
+                      ),
+                    ),
                     CustomTextFormField(
                         hint: "Mobile Number",
                         obscureText: false,
                         keyboardType: TextInputType.number,
                         color: Colors.blue,
-                        width: MediaQuery.of(context).size.width / 1.5,
+                        width: MediaQuery.of(context).size.width * 0.70,
                         backgroundColor: Colors.white,
+                        textAlign: TextAlign.center,
                         onChanged: (value) {
-                          phone = value;
+                          _phone = value;
                         },
                         validator: (phone) => phone.isEmpty
                             ? "Please enter a Phone Number"
@@ -238,18 +271,12 @@ class _AuthPageState extends State<AuthPage> {
                   ],
                 ),
               ),
-              // const SizedBox(height: 80),
               Positioned(
-                bottom: 40,
+                bottom: SizeConfig.screenHeight * 0.02,
                 child: RaisedButton(
                   onPressed: () async {
                     if (_formkey.currentState!.validate()) {
-                      Credential credential = Credential(
-                          phone, widget.userType, "fcmToken", Token("token"));
-                      CubitProvider.of<UserCubit>(context).getOTP(credential);
-                      // _controller.nextPage(
-                      //     duration: const Duration(microseconds: 1000),
-                      //     curve: Curves.elasticIn);
+                      cubit.verifyPhone();
                     }
                   },
                   shape: RoundedRectangleBorder(
@@ -276,11 +303,192 @@ class _AuthPageState extends State<AuthPage> {
         ),
       );
 
-  _otpForm(BuildContext context, UserCubit cubit, UserService userService) {
-    Credential credential =
-        Credential(phone, widget.userType, "fcmToken", Token("token"));
-    return Center(
-      child: OtpScreen(cubit, credential, widget.userAPI),
+  _otpForm(BuildContext context, UserCubit cubit) {
+    animationController.reverse(
+        from: animationController.value == 0 ? 1.0 : animationController.value);
+    return Container(
+      height: 300,
+      color: Colors.white,
+      width: double.infinity,
+      child: Padding(
+        padding:
+            EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(height: SizeConfig.screenHeight * 0.02),
+              Row(
+                children: [
+                  IconButton(
+                    onPressed: () => _controller.previousPage(
+                        duration: const Duration(microseconds: 1000),
+                        curve: Curves.elasticIn),
+                    icon: const Icon(
+                      Icons.arrow_back_ios,
+                      color: Colors.black,
+                    ),
+                  ),
+                  const Text(
+                    'Enter OTP',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 30),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  CustomTextFormField(
+                      hint: "OTP",
+                      obscureText: false,
+                      keyboardType: TextInputType.number,
+                      color: Colors.blue,
+                      width: MediaQuery.of(context).size.width * 0.40,
+                      backgroundColor: Colors.white,
+                      textAlign: TextAlign.center,
+                      initialValue: _otp,
+                      onChanged: (value) {
+                        _otp = value;
+                      },
+                      validator: (otp) =>
+                          otp.isEmpty ? "Please enter the OTP" : null),
+                  buildTimer(),
+                ],
+              ),
+              SizedBox(height: SizeConfig.screenHeight * 0.02),
+              Text(
+                "We sent your code to - $_phone",
+                style: const TextStyle(color: Colors.green, fontSize: 16),
+              ),
+              GestureDetector(
+                onTap: () {
+                  animationController.reverse(
+                      from: animationController.value == 0
+                          ? 1.0
+                          : animationController.value);
+                  cubit.verifyPhone();
+                },
+                child: const Text(
+                  "Resend OTP Code",
+                  style: TextStyle(
+                      color: Colors.green,
+                      decoration: TextDecoration.underline),
+                ),
+              ),
+              SizedBox(height: SizeConfig.screenHeight * 0.02),
+              RaisedButton(
+                onPressed: () async {
+                  _verifyOTP(_otp, _verificationCode);
+                },
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30)),
+                padding: const EdgeInsets.all(0),
+                child: Container(
+                  width: MediaQuery.of(context).size.width / 1.5,
+                  alignment: Alignment.center,
+                  padding: const EdgeInsets.only(top: 8, bottom: 8),
+                  decoration: ShapeDecoration(
+                    color: Colors.blue,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30)),
+                  ),
+                  child: const Text(
+                    "Verify",
+                    style: TextStyle(color: Colors.white, fontSize: 20),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
+  }
+
+  Row buildTimer() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Text("Resend OTP in ",
+            style: TextStyle(fontSize: 16, color: Colors.blue)),
+        AnimatedBuilder(
+          animation: animationController,
+          builder: (_, child) {
+            return Text(timeString,
+                style: const TextStyle(
+                    fontSize: 16,
+                    color: Colors.blue,
+                    fontWeight: FontWeight.bold));
+          },
+        )
+      ],
+    );
+  }
+
+  _verifyPhone(String phone) async {
+    print('INSIDE VERIFY PHONE');
+    String _msg = "VERIFICATION INCOMPLETE";
+    try {
+      await FirebaseAuth.instance.verifyPhoneNumber(
+          phoneNumber: "+91 " + _phone,
+          verificationCompleted: (PhoneAuthCredential credential) async {
+            await FirebaseAuth.instance
+                .signInWithCredential(credential)
+                .then((value) async {
+              if (value.user != null) {
+                _msg = "VERIFICATION SUCCESSFUL " + value.user!.uid;
+                CubitProvider.of<UserCubit>(context).login(Credential(
+                    _phone,
+                    widget.userType,
+                    "fcmToken",
+                    Token(value.user!.uid.toString())));
+              }
+            });
+          },
+          verificationFailed: (FirebaseAuthException e) {
+            _msg = "VERIFICATION FAILED " + e.toString();
+            _hideLoader();
+            _showMessage(_msg);
+          },
+          codeSent: (String verificationID, int? resendToken) {
+            setState(() {
+              _msg = "CODE SENT " + verificationID;
+              _verificationCode = verificationID;
+              CubitProvider.of<UserCubit>(context).verifyOTP();
+            });
+          },
+          codeAutoRetrievalTimeout: (String verificationID) {
+            _msg = "CODE SENT " + verificationID;
+            _verificationCode = verificationID;
+            CubitProvider.of<UserCubit>(context).verifyOTP();
+          },
+          timeout: const Duration(seconds: 120));
+    } catch (e) {
+      _msg = "VERIFICATION FAILED " + e.toString();
+      _hideLoader();
+      _showMessage(_msg);
+    }
+  }
+
+  _verifyOTP(String otp, String vid) async {
+    String _msg = "OTP VERIFICATION INCOMPLETE";
+    print('INSIDE VERIFY OTP');
+    try {
+      await FirebaseAuth.instance
+          .signInWithCredential(
+              PhoneAuthProvider.credential(verificationId: vid, smsCode: otp))
+          .then((value) async {
+        if (value.user != null) {
+          _msg = "VERIFICATION SUCCESSFUL " + value.user!.uid;
+          CubitProvider.of<UserCubit>(context).login(Credential(_phone,
+              widget.userType, "fcmToken", Token(value.user!.uid.toString())));
+        }
+      });
+    } catch (e) {
+      _msg = "VERIFICATION FAILED " + e.toString();
+      _hideLoader();
+      _showMessage(_msg);
+    }
   }
 }

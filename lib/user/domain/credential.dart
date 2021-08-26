@@ -29,6 +29,28 @@ class Credential {
   }
   factory Credential.fromJson(String source) =>
       Credential.fromMap(json.decode(source));
+
+  String getStringType(UserType type) {
+    switch (type) {
+      case UserType.doctor:
+        return "doctor";
+      case UserType.patient:
+        return "patient";
+      default:
+        return "ambulance";
+    }
+  }
+
+  UserType getEnumType(String type) {
+    switch (type) {
+      case "doctor":
+        return UserType.doctor;
+      case "patient":
+        return UserType.patient;
+      default:
+        return UserType.ambulance;
+    }
+  }
 }
 
-enum UserType { doctor, patient }
+enum UserType { doctor, patient, ambulance }

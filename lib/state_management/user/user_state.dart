@@ -15,17 +15,32 @@ class LoadingState extends UserState {
 }
 
 class PhoneVerificationState extends UserState {
+  @override
+  List<Object> get props => [];
+}
+
+class OTPVerificationState extends UserState {
+  @override
+  List<Object> get props => [];
+}
+
+class VerificationSuccess extends UserState {
   final Credential credential;
-  PhoneVerificationState(this.credential);
+  VerificationSuccess(this.credential);
   @override
   List<Object> get props => [credential];
 }
 
-class OTPVerificationState extends UserState {
+class ResendOTPState extends UserState {
   final Credential credential;
-  OTPVerificationState(this.credential);
+  ResendOTPState(this.credential);
   @override
   List<Object> get props => [credential];
+}
+
+class OTPState extends UserState {
+  @override
+  List<Object> get props => [];
 }
 
 class LoginSuccessState extends UserState {
@@ -41,15 +56,3 @@ class ErrorState extends UserState {
   @override
   List<Object> get props => [error];
 }
-
-// class SignOutSuccesState extends UserState {
-//   @override
-//   List<Object> get props => [];
-// }
-
-// class OTPState extends UserState {
-//   String message;
-//   OTPState(this.message) {}
-//   @override
-//   List<Object> get props => [message];
-// }
