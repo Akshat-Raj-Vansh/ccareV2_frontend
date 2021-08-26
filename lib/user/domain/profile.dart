@@ -1,26 +1,43 @@
 import 'dart:convert';
+
 import 'package:collection/collection.dart';
+import 'package:flutter/foundation.dart';
+import 'package:location/location.dart';
 
 class DoctorProfile {
-  final String firstName;
-  final String lastName;
-  final Gender gender;
-  final int age;
+  final String name;
   final String specialization;
   final String uniqueCode;
   final String email;
-  final String location;
+  final Map<String, LocationData> location;
+  DoctorProfile({
+    required this.name,
+    required this.specialization,
+    required this.uniqueCode,
+    required this.email,
+    required this.location,
+  });
 
-  DoctorProfile(this.firstName, this.lastName, this.gender, this.age,
-      this.specialization, this.uniqueCode, this.email, this.location);
+  DoctorProfile copyWith({
+    String? name,
+    String? specialization,
+    String? uniqueCode,
+    String? email,
+    Map<String, LocationData>? location,
+  }) {
+    return DoctorProfile(
+      name: name ?? this.name,
+      specialization: specialization ?? this.specialization,
+      uniqueCode: uniqueCode ?? this.uniqueCode,
+      email: email ?? this.email,
+      location: location ?? this.location,
+    );
+  }
 
   Map<String, dynamic> toMap() {
     return {
-      'firstName': firstName,
-      'lastName': lastName,
-      'gender': gender == Gender.male ? "Male" : "Female",
-      'age': age,
-      'specialisation': specialization,
+      'name': name,
+      'specialization': specialization,
       'uniqueCode': uniqueCode,
       'email': email,
       'location': location,
@@ -29,14 +46,11 @@ class DoctorProfile {
 
   factory DoctorProfile.fromMap(Map<String, dynamic> map) {
     return DoctorProfile(
-      map['firstName'],
-      map['lastName'],
-      map['gender'] == "Male" ? Gender.male : Gender.female,
-      map['age'],
-      map['specialization'],
-      map['uniqueCode'],
-      map['email'],
-      map['location'],
+      name: map['name'],
+      specialization: map['specialization'],
+      uniqueCode: map['uniqueCode'],
+      email: map['email'],
+      location: Map<String, LocationData>.from(map['location']),
     );
   }
 
@@ -47,31 +61,24 @@ class DoctorProfile {
 
   @override
   String toString() {
-    return 'DoctorProfile(firstName: $firstName, lastName: $lastName, gender: $gender, age:$age, specialization:$specialization, uniqueCode:$uniqueCode, email: $email, location: $location)';
+    return 'DoctorProfile(name: $name, specialization: $specialization, uniqueCode: $uniqueCode, email: $email, location: $location)';
   }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-    final listEquals = const DeepCollectionEquality().equals;
 
     return other is DoctorProfile &&
-        other.firstName == firstName &&
-        other.lastName == lastName &&
-        other.gender == gender &&
-        other.age == age &&
+        other.name == name &&
         other.specialization == specialization &&
         other.uniqueCode == uniqueCode &&
         other.email == email &&
-        other.location == location;
+        mapEquals(other.location, location);
   }
 
   @override
   int get hashCode {
-    return firstName.hashCode ^
-        lastName.hashCode ^
-        gender.hashCode ^
-        age.hashCode ^
+    return name.hashCode ^
         specialization.hashCode ^
         uniqueCode.hashCode ^
         email.hashCode ^
@@ -80,27 +87,40 @@ class DoctorProfile {
 }
 
 class PatientProfile {
-  final String firstName;
-  final String lastName;
-  final Gender gender;
+  final String name;
+  final String gender;
   final int age;
+  PatientProfile({
+    required this.name,
+    required this.gender,
+    required this.age,
+  });
 
-  PatientProfile(this.firstName, this.lastName, this.gender, this.age);
+  PatientProfile copyWith({
+    String? name,
+    String? gender,
+    int? age,
+  }) {
+    return PatientProfile(
+      name: name ?? this.name,
+      gender: gender ?? this.gender,
+      age: age ?? this.age,
+    );
+  }
+
   Map<String, dynamic> toMap() {
     return {
-      'firstName': firstName,
-      'lastName': lastName,
-      'gender': gender == Gender.male ? "Male" : "Female",
+      'name': name,
+      'gender': gender,
       'age': age,
     };
   }
 
   factory PatientProfile.fromMap(Map<String, dynamic> map) {
     return PatientProfile(
-      map['firstName'],
-      map['lastName'],
-      map['gender'],
-      map['age'],
+      name: map['name'],
+      gender: map['gender'],
+      age: map['age'],
     );
   }
 
@@ -110,29 +130,93 @@ class PatientProfile {
       PatientProfile.fromMap(json.decode(source));
 
   @override
-  String toString() {
-    return 'PatientProfile(firstName: $firstName, lastName: $lastName, gender: $gender, age: $age)';
-  }
+  String toString() =>
+      'PatientProfile(name: $name, gender: $gender, age: $age)';
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-    final listEquals = const DeepCollectionEquality().equals;
 
     return other is PatientProfile &&
-        other.firstName == firstName &&
-        other.lastName == lastName &&
+        other.name == name &&
         other.gender == gender &&
         other.age == age;
   }
 
   @override
-  int get hashCode {
-    return firstName.hashCode ^
-        lastName.hashCode ^
-        gender.hashCode ^
-        age.hashCode;
-  }
+  int get hashCode => name.hashCode ^ gender.hashCode ^ age.hashCode;
 }
 
-enum Gender { male, female, other }
+class AmbulanceProfile {
+  final String name;
+  final String uniqueCode;
+  final String plateNumber;
+  final Map<String, LocationData> location;
+  AmbulanceProfile({
+    required this.name,
+    required this.uniqueCode,
+    required this.plateNumber,
+    required this.location,
+  });
+
+  AmbulanceProfile copyWith({
+    String? name,
+    String? uniqueCode,
+    String? plateNumber,
+    Map<String, LocationData>? location,
+  }) {
+    return AmbulanceProfile(
+      name: name ?? this.name,
+      uniqueCode: uniqueCode ?? this.uniqueCode,
+      plateNumber: plateNumber ?? this.plateNumber,
+      location: location ?? this.location,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'name': name,
+      'uniqueCode': uniqueCode,
+      'plateNumber': plateNumber,
+      'location': location,
+    };
+  }
+
+  factory AmbulanceProfile.fromMap(Map<String, dynamic> map) {
+    return AmbulanceProfile(
+      name: map['name'],
+      uniqueCode: map['uniqueCode'],
+      plateNumber: map['plateNumber'],
+      location: Map<String, LocationData>.from(map['location']),
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory AmbulanceProfile.fromJson(String source) =>
+      AmbulanceProfile.fromMap(json.decode(source));
+
+  @override
+  String toString() {
+    return 'AmbulanceProfile(name: $name, uniqueCode: $uniqueCode, plateNumber: $plateNumber, location: $location)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is AmbulanceProfile &&
+        other.name == name &&
+        other.uniqueCode == uniqueCode &&
+        other.plateNumber == plateNumber &&
+        mapEquals(other.location, location);
+  }
+
+  @override
+  int get hashCode {
+    return name.hashCode ^
+        uniqueCode.hashCode ^
+        plateNumber.hashCode ^
+        location.hashCode;
+  }
+}

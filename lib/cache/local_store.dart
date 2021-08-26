@@ -28,7 +28,7 @@ class LocalStore implements ILocalStore {
     String data = sharedPreferences.getString(token_key);
     print(data);
     if (data != null) {
-      Details details = Details.fromJson(jsonDecode(data));
+      Details details = Details.fromMap(jsonDecode(data));
       return Future.value(Token(details.user_token));
     }
     return null;

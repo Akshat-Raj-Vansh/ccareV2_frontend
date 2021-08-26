@@ -1,6 +1,6 @@
 import 'package:ccarev2_frontend/pages/profile/profile_update_screen.dart';
+import 'package:ccarev2_frontend/pages/splash/splash_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:sms_retriever/sms_retriever.dart';
 import '../../customBuilds/customtextformfield.dart';
 import '../../state_management/profile/profile_cubit.dart';
 import '../../state_management/profile/profile_state.dart' as profileState;
@@ -62,100 +62,111 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: SafeArea(
-            child: Container(
-          width: double.infinity,
-          color: const Color(0xFFE1D9D9),
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              Positioned(
-                top: 10,
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 30),
-                  child: _showBackground(context),
+    return WillPopScope(
+      onWillPop: () async {
+        return await _onBackPressed(context);
+      },
+      child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          body: SafeArea(
+              child: Container(
+            width: double.infinity,
+            color: const Color(0xFFE1D9D9),
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                Positioned(
+                  top: 10,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 30),
+                    child: _showBackground(context),
+                  ),
                 ),
-              ),
-              Positioned(
-                bottom: 0,
-                child: CubitConsumer<UserCubit, UserState>(
-                  builder: (_, state) {
-                    var cubit = CubitProvider.of<UserCubit>(context);
-                    return _buildUI(context, cubit);
-                  },
+                Positioned(
+                  bottom: 0,
+                  child: CubitConsumer<UserCubit, UserState>(
+                    builder: (_, state) {
+                      var cubit = CubitProvider.of<UserCubit>(context);
+                      return _buildUI(context, cubit);
+                    },
+                    listener: (context, state) {
+                      if (state is LoadingState) {
+                        print("Loading State Called");
+                        _showLoader();
+                      } else if (state is LoginSuccessState) {
+                        print("Login Success State Called");
+                        _hideLoader();
+                        var cubit = CubitProvider.of<ProfileCubit>(context);
+                        state.details.newUser
+                            ? Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ProfileUpdateScreen(
+                                        cubit, state.details)))
+                            : widget.pageAdatper
+                                .onAuthSuccess(context, widget.userType);
+                        print(state.details.toString());
+                      } else if (state is PhoneVerificationState) {
+                        _hideLoader();
+                        print("PhoneVerification State Called");
+                        _showLoader();
+                        _verifyPhone(_phone);
+                      } else if (state is OTPVerificationState) {
+                        print("OTP State Called");
+                        _hideLoader();
+                        _controller.nextPage(
+                            duration: const Duration(microseconds: 1000),
+                            curve: Curves.elasticIn);
+                      } else {
+                        _hideLoader();
+                        if (state is ErrorState) {
+                          print("Error State Called");
+                          print(state.error);
+                          _showMessage(state.error);
+                        }
+                      }
+                    },
+                  ),
+                ),
+                CubitListener<ProfileCubit, profileState.ProfileState>(
+                  child: Container(),
                   listener: (context, state) {
-                    if (state is LoadingState) {
-                      print("Loading State Called");
+                    if (state is profileState.LoadingState) {
+                      print("LoadingStateCalled");
                       _showLoader();
-                    } else if (state is LoginSuccessState) {
-                      print("Login Success State Called");
-                      _hideLoader();
-                      var cubit = CubitProvider.of<ProfileCubit>(context);
-                      state.details.newUser
-                          ? Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ProfileUpdateScreen(
-                                      cubit, state.details)))
-                          : widget.pageAdatper
-                              .onAuthSuccess(context, widget.userType);
-                      print(state.details.toString());
-                    } else if (state is PhoneVerificationState) {
-                      _hideLoader();
-                      print("PhoneVerification State Called");
-                      _showLoader();
-                      _verifyPhone(_phone);
-                    } else if (state is OTPVerificationState) {
-                      print("OTP State Called");
-                      _hideLoader();
-                      _controller.nextPage(
-                          duration: const Duration(microseconds: 1000),
-                          curve: Curves.elasticIn);
+                    } else if (state is profileState.AddDoctorProfileState ||
+                        state is profileState.AddPatientProfileState) {
+                      widget.pageAdatper
+                          .onAuthSuccess(context, widget.userType);
                     } else {
                       _hideLoader();
-                      if (state is ErrorState) {
-                        print("Error State Called");
+                      if (state is profileState.ErrorState) {
+                        print("ErrorState");
                         print(state.error);
-                        _showMessage(state.error);
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          backgroundColor: Theme.of(context).accentColor,
+                          content: Text(
+                            state.error,
+                            style: Theme.of(context)
+                                .textTheme
+                                .caption!
+                                .copyWith(color: Colors.white, fontSize: 16),
+                          ),
+                        ));
                       }
                     }
                   },
-                ),
-              ),
-              CubitListener<ProfileCubit, profileState.ProfileState>(
-                child: Container(),
-                listener: (context, state) {
-                  if (state is profileState.LoadingState) {
-                    print("LoadingStateCalled");
-                    _showLoader();
-                  } else if (state is profileState.AddDoctorProfileState ||
-                      state is profileState.AddPatientProfileState) {
-                    widget.pageAdatper.onAuthSuccess(context, widget.userType);
-                  } else {
-                    _hideLoader();
-                    if (state is profileState.ErrorState) {
-                      print("ErrorState");
-                      print(state.error);
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        backgroundColor: Theme.of(context).accentColor,
-                        content: Text(
-                          state.error,
-                          style: Theme.of(context)
-                              .textTheme
-                              .caption!
-                              .copyWith(color: Colors.white, fontSize: 16),
-                        ),
-                      ));
-                    }
-                  }
-                },
-              )
-            ],
-          ),
-        )));
+                )
+              ],
+            ),
+          ))),
+    );
   }
+
+  _onBackPressed(BuildContext context) => Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => SplashScreen(widget.pageAdatper)),
+      (Route<dynamic> route) => false);
 
   _showLoader() {
     var alert = const AlertDialog(
@@ -230,75 +241,90 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
       );
 
   _phoneForm(BuildContext context, UserCubit cubit) => Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12),
-        child: Form(
-          key: _formkey,
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              const Positioned(
-                top: 40,
-                child: Text(
-                  'Enter Mobile Number',
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                ),
-              ),
-              Positioned(
-                top: 100,
-                child: Row(
-                  children: [
-                    const Text(
-                      '+91',
-                      style: TextStyle(
+        height: 300,
+        color: Colors.white,
+        width: double.infinity,
+        child: Padding(
+          padding:
+              EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
+          child: SingleChildScrollView(
+            child: Form(
+              key: _formkey,
+              child: Column(
+                children: [
+                  SizedBox(height: SizeConfig.screenHeight * 0.02),
+                  Row(
+                    children: [
+                      IconButton(
+                        onPressed: () => _onBackPressed(context),
+                        icon: const Icon(
+                          Icons.close,
+                          color: Colors.black,
+                        ),
+                      ),
+                      const Text(
+                        'Enter Mobile Number',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontSize: 24, fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 30),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      const Text(
+                        '+91',
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontSize: 18,
+                        ),
+                      ),
+                      CustomTextFormField(
+                          hint: "Mobile Number",
+                          obscureText: false,
+                          keyboardType: TextInputType.number,
+                          color: Colors.blue,
+                          width: MediaQuery.of(context).size.width * 0.70,
+                          backgroundColor: Colors.white,
+                          textAlign: TextAlign.center,
+                          onChanged: (value) {
+                            _phone = value;
+                          },
+                          validator: (phone) => phone.isEmpty
+                              ? "Please enter a Phone Number"
+                              : null),
+                    ],
+                  ),
+                  SizedBox(height: SizeConfig.screenHeight * 0.06),
+                  RaisedButton(
+                    onPressed: () async {
+                      if (_formkey.currentState!.validate()) {
+                        cubit.verifyPhone();
+                      }
+                    },
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30)),
+                    padding: const EdgeInsets.all(0),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width / 1.5,
+                      alignment: Alignment.center,
+                      padding: const EdgeInsets.only(top: 8, bottom: 8),
+                      decoration: ShapeDecoration(
                         color: Colors.blue,
-                        fontSize: 16,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30)),
+                      ),
+                      child: const Text(
+                        "Login",
+                        style: TextStyle(color: Colors.white, fontSize: 20),
                       ),
                     ),
-                    CustomTextFormField(
-                        hint: "Mobile Number",
-                        obscureText: false,
-                        keyboardType: TextInputType.number,
-                        color: Colors.blue,
-                        width: MediaQuery.of(context).size.width * 0.70,
-                        backgroundColor: Colors.white,
-                        textAlign: TextAlign.center,
-                        onChanged: (value) {
-                          _phone = value;
-                        },
-                        validator: (phone) => phone.isEmpty
-                            ? "Please enter a Phone Number"
-                            : null),
-                  ],
-                ),
-              ),
-              Positioned(
-                bottom: SizeConfig.screenHeight * 0.02,
-                child: RaisedButton(
-                  onPressed: () async {
-                    if (_formkey.currentState!.validate()) {
-                      cubit.verifyPhone();
-                    }
-                  },
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30)),
-                  padding: const EdgeInsets.all(0),
-                  child: Container(
-                    width: MediaQuery.of(context).size.width / 1.5,
-                    alignment: Alignment.center,
-                    padding: const EdgeInsets.only(top: 8, bottom: 8),
-                    decoration: ShapeDecoration(
-                      color: Colors.blue,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30)),
-                    ),
-                    child: const Text(
-                      "Login",
-                      style: TextStyle(color: Colors.white, fontSize: 20),
-                    ),
                   ),
-                ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       );
@@ -459,9 +485,9 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
             });
           },
           codeAutoRetrievalTimeout: (String verificationID) {
-            _msg = "CODE SENT " + verificationID;
-            _verificationCode = verificationID;
-            CubitProvider.of<UserCubit>(context).verifyOTP();
+            // _msg = "CODE SENT " + verificationID;
+            // _verificationCode = verificationID;
+            // CubitProvider.of<UserCubit>(context).verifyOTP();
           },
           timeout: const Duration(seconds: 120));
     } catch (e) {

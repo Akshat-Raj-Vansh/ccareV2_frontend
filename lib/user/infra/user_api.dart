@@ -59,6 +59,25 @@ class UserAPI implements UserService {
   }
 
   @override
+  Future<Result<String>> addAmbulanceProfile(
+      Token token, DoctorProfile profile) async {
+    String endpoint = baseUrl + "/user/addProfile";
+    var header = {
+      "Content-Type": "application/json",
+      "Authorization": token.value
+    };
+    var response = await _client.post(Uri.parse(endpoint),
+        headers: header, body: profile.toJson());
+    if (response.statusCode != 200) {
+      Map map = jsonDecode(response.body);
+      print(transformError(map));
+      return Result.error(transformError(map));
+    }
+    dynamic json = jsonDecode(response.body);
+    return Result.value(json["message"]);
+  }
+
+  @override
   Future<Result<String>> addPatientProfile(
       Token token, PatientProfile profile) async {
     String endpoint = baseUrl + "/user/addProfile";
