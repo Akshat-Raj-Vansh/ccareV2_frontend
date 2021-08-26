@@ -1,3 +1,5 @@
+import 'package:ccarev2_frontend/pages/profile/profile_update_screen.dart';
+
 import '../../customBuilds/customtextformfield.dart';
 import '../../state_management/profile/profile_cubit.dart';
 import '../../state_management/profile/profile_state.dart' as profileState;
@@ -6,23 +8,18 @@ import '../../user/domain/credential.dart';
 import '../../user/domain/token.dart';
 import '../../user/domain/user_service_contract.dart';
 import '../../pages/auth/otp/otp_screen.dart';
-import '../../user/infra/firebase_auth.dart';
 import '../../user/infra/user_api.dart';
 import '../../state_management/user/user_cubit.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'auth_page_adapter.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
 import '../../utils/size_config.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/gestures.dart';
 
 class AuthPage extends StatefulWidget {
-  final UserService userService;
   final UserAPI userAPI;
   final IAuthPageAdapter pageAdatper;
   final UserType userType;
   const AuthPage({
-    required this.userService,
     required this.userAPI,
     required this.pageAdatper,
     required this.userType,
@@ -33,8 +30,6 @@ class AuthPage extends StatefulWidget {
 
 class _AuthPageState extends State<AuthPage> {
   String phone = "";
-  String _verificationCode = "";
-  late UserService service;
   int hex(String color) {
     return int.parse("FF" + color.toUpperCase(), radix: 16);
   }
@@ -72,31 +67,31 @@ class _AuthPageState extends State<AuthPage> {
                     if (state is LoadingState) {
                       print("LoadingStateCalled");
                       _showLoader();
-                    } else if (state is LoginSuccessState) {
+                    }
+                    // else if (state is LoginSuccessState) {
+                    //   _hideLoader();
+                    //   widget.pageAdatper.onAuthSuccess(context);
+                    //   print(state.details.toString());
+                    // }
+                    else if (state is LoginSuccessState) {
                       _hideLoader();
-                      widget.pageAdatper.onAuthSuccess(context);
+                      var cubit = CubitProvider.of<ProfileCubit>(context);
+                      state.details.newUser
+                          ? Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ProfileUpdateScreen(
+                                      cubit, state.details)))
+                          : widget.pageAdatper
+                              .onAuthSuccess(context, widget.userType);
                       print(state.details.toString());
-                    } else if (state is LoginSuccessState) {
+                    } else if (state is PhoneVerificationState) {
                       _hideLoader();
-                      // var cubit = CubitProvider.of<ProfileCubit>(context);
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //         builder: (context) =>
-                      //             ProfileUpdateScreen(cubit)));
-                      print(state.details.toString());
-                    } else if (state is OTPState) {
-                      _hideLoader();
-                      print("otpstate");
-                      var cubit = CubitProvider.of<UserCubit>(context);
+                      print("PhoneVerification State");
+                      // var cubit = CubitProvider.of<UserCubit>(context);
                       _controller.nextPage(
                           duration: const Duration(microseconds: 1000),
                           curve: Curves.elasticIn);
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //         builder: (context) =>
-                      //             OtpScreen(cubit, phone, widget.phoneAuth)));
                     } else {
                       _hideLoader();
                       if (state is ErrorState) {
@@ -123,8 +118,9 @@ class _AuthPageState extends State<AuthPage> {
                   if (state is profileState.LoadingState) {
                     print("LoadingStateCalled");
                     _showLoader();
-                  } else if (state is profileState.ProfileUpdateState) {
-                    widget.pageAdatper.onAuthSuccess(context);
+                  } else if (state is profileState.AddDoctorProfileState ||
+                      state is profileState.AddPatientProfileState) {
+                    widget.pageAdatper.onAuthSuccess(context, widget.userType);
                   } else {
                     _hideLoader();
                     if (state is profileState.ErrorState) {
@@ -196,7 +192,7 @@ class _AuthPageState extends State<AuthPage> {
       );
 
   _buildUI(BuildContext context, UserCubit cubit, UserAPI userAPI) => Container(
-        height: 300,
+        height: 400,
         width: MediaQuery.of(context).size.width,
         color: Colors.white,
         child: PageView(
@@ -208,7 +204,7 @@ class _AuthPageState extends State<AuthPage> {
       );
 
   _phoneForm(BuildContext context) => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
+        padding: const EdgeInsets.symmetric(horizontal: 12),
         child: Form(
           key: _formkey,
           child: Stack(
@@ -223,22 +219,24 @@ class _AuthPageState extends State<AuthPage> {
               ),
               Positioned(
                 top: 100,
-                child: CustomTextFormField(
-                    hint: "Mobile Number",
-                    obscureText: false,
-                    keyboardType: TextInputType.text,
-                    color: Colors.blue,
-                    // icon: const Icon(
-                    //   Icons.phone,
-                    //   color: Colors.blue,
-                    // ),
-                    width: MediaQuery.of(context).size.width / 1.5,
-                    backgroundColor: Colors.white,
-                    onChanged: (value) {
-                      phone = value;
-                    },
-                    validator: (phone) =>
-                        phone.isEmpty ? "Please enter a Phone Number" : null),
+                child: Row(
+                  children: [
+                    Text('+91'),
+                    CustomTextFormField(
+                        hint: "Mobile Number",
+                        obscureText: false,
+                        keyboardType: TextInputType.number,
+                        color: Colors.blue,
+                        width: MediaQuery.of(context).size.width / 1.5,
+                        backgroundColor: Colors.white,
+                        onChanged: (value) {
+                          phone = value;
+                        },
+                        validator: (phone) => phone.isEmpty
+                            ? "Please enter a Phone Number"
+                            : null),
+                  ],
+                ),
               ),
               // const SizedBox(height: 80),
               Positioned(
@@ -246,10 +244,9 @@ class _AuthPageState extends State<AuthPage> {
                 child: RaisedButton(
                   onPressed: () async {
                     if (_formkey.currentState!.validate()) {
-                      // final user = User(name: "ABCD", phone: phone);
                       Credential credential = Credential(
-                          phone, widget.userType, "fcmtoken", Token("token"));
-                      CubitProvider.of<UserCubit>(context).login(credential);
+                          phone, widget.userType, "fcmToken", Token("token"));
+                      CubitProvider.of<UserCubit>(context).getOTP(credential);
                       // _controller.nextPage(
                       //     duration: const Duration(microseconds: 1000),
                       //     curve: Curves.elasticIn);
@@ -279,15 +276,11 @@ class _AuthPageState extends State<AuthPage> {
         ),
       );
 
-  _otpForm(BuildContext context, UserCubit cubit, UserService userService) =>
-      Center(
-        child: RaisedButton(
-          onPressed: () {
-            _controller.previousPage(
-                duration: Duration(microseconds: 1000),
-                curve: Curves.elasticIn);
-          },
-          child: OtpScreen(cubit, phone, userService),
-        ),
-      );
+  _otpForm(BuildContext context, UserCubit cubit, UserService userService) {
+    Credential credential =
+        Credential(phone, widget.userType, "fcmToken", Token("token"));
+    return Center(
+      child: OtpScreen(cubit, credential, widget.userAPI),
+    );
+  }
 }

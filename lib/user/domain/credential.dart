@@ -4,32 +4,27 @@ import 'package:ccarev2_frontend/user/domain/token.dart';
 class Credential {
   final String phone;
   final UserType type;
-  final String fcmtoken;
+  final String fcmToken;
   final Token token;
-  Credential(this.phone, this.type, this.fcmtoken, this.token);
-
-  Map<String, dynamic> toJson() => {
-        "user_type": type,
-        "phone": phone,
-        "fcmtoken": fcmtoken,
-        "token": token,
-      };
+  Credential(this.phone, this.type, this.fcmToken, this.token);
 
   Map<String, dynamic> toMap() {
     return {
-      'phone': phone,
-      'type': type,
-      'fcmtoken': fcmtoken,
-      'token': token.value,
+      'phoneNumber': phone,
+      'user_type': type == UserType.patient ? "patient" : "doctor",
+      'fcmToken': fcmToken,
+      'fireBaseToken': token.value,
     };
   }
 
+  String toJson() => json.encode(toMap());
+
   factory Credential.fromMap(Map<String, dynamic> map) {
     return Credential(
-      map['phone'],
-      map['type'],
-      map['fcmtoken'],
-      Token(map["token"]),
+      map['phoneNumber'],
+      map['user_type'] == 'doctor' ? UserType.doctor : UserType.patient,
+      map['fcmToken'],
+      Token(map["fireBaseToken"]),
     );
   }
   factory Credential.fromJson(String source) =>

@@ -4,22 +4,26 @@ import 'package:collection/collection.dart';
 class DoctorProfile {
   final String firstName;
   final String lastName;
-  final Address address;
-  final String email;
-  final String phone;
+  final Gender gender;
+  final int age;
+  final String specialization;
   final String uniqueCode;
+  final String email;
+  final String location;
 
-  DoctorProfile(this.firstName, this.lastName, this.address, this.email,
-      this.phone, this.uniqueCode);
+  DoctorProfile(this.firstName, this.lastName, this.gender, this.age,
+      this.specialization, this.uniqueCode, this.email, this.location);
 
   Map<String, dynamic> toMap() {
     return {
       'firstName': firstName,
       'lastName': lastName,
-      'address': address.toMap(),
-      'email': email,
-      'phone': phone,
+      'gender': gender == Gender.male ? "Male" : "Female",
+      'age': age,
+      'specialisation': specialization,
       'uniqueCode': uniqueCode,
+      'email': email,
+      'location': location,
     };
   }
 
@@ -27,10 +31,12 @@ class DoctorProfile {
     return DoctorProfile(
       map['firstName'],
       map['lastName'],
-      Address.fromMap(map['address']),
-      map['email'],
-      map['phone'],
+      map['gender'] == "Male" ? Gender.male : Gender.female,
+      map['age'],
+      map['specialization'],
       map['uniqueCode'],
+      map['email'],
+      map['location'],
     );
   }
 
@@ -41,7 +47,7 @@ class DoctorProfile {
 
   @override
   String toString() {
-    return 'DoctorProfile(firstName: $firstName, lastName: $lastName, address: $address, email: $email, uniqueCode: $uniqueCode, phone: $phone,)';
+    return 'DoctorProfile(firstName: $firstName, lastName: $lastName, gender: $gender, age:$age, specialization:$specialization, uniqueCode:$uniqueCode, email: $email, location: $location)';
   }
 
   @override
@@ -52,121 +58,40 @@ class DoctorProfile {
     return other is DoctorProfile &&
         other.firstName == firstName &&
         other.lastName == lastName &&
-        other.address == address &&
-        other.email == email &&
+        other.gender == gender &&
+        other.age == age &&
+        other.specialization == specialization &&
         other.uniqueCode == uniqueCode &&
-        other.phone == phone;
+        other.email == email &&
+        other.location == location;
   }
 
   @override
   int get hashCode {
     return firstName.hashCode ^
         lastName.hashCode ^
-        address.hashCode ^
-        email.hashCode ^
+        gender.hashCode ^
+        age.hashCode ^
+        specialization.hashCode ^
         uniqueCode.hashCode ^
-        phone.hashCode;
-  }
-}
-
-class Address {
-  final String hospitalAddress;
-  final String city;
-  final String district;
-  final String state;
-  final int pincode;
-
-  Address({
-    required this.hospitalAddress,
-    required this.city,
-    required this.district,
-    required this.state,
-    required this.pincode,
-  });
-
-  Address copyWith({
-    String? hospitalAddress,
-    String? city,
-    String? district,
-    String? state,
-    int? pincode,
-  }) {
-    return Address(
-      hospitalAddress: hospitalAddress ?? this.hospitalAddress,
-      city: city ?? this.city,
-      district: district ?? this.district,
-      state: state ?? this.state,
-      pincode: pincode ?? this.pincode,
-    );
-  }
-
-  Map<String, dynamic> toMap() {
-    return {
-      'hospitalAddress': hospitalAddress,
-      'city': city,
-      'district': district,
-      'state': state,
-      'pincode': pincode,
-    };
-  }
-
-  factory Address.fromMap(Map<String, dynamic> map) {
-    return Address(
-      hospitalAddress: map['hospitalAddress'],
-      city: map['city'],
-      district: map['district'],
-      state: map['state'],
-      pincode: map['pincode'],
-    );
-  }
-
-  String toJson() => json.encode(toMap());
-
-  factory Address.fromJson(String source) =>
-      Address.fromMap(json.decode(source));
-
-  @override
-  String toString() {
-    return 'Address(hospitalAddress: $hospitalAddress, city: $city, district: $district, state: $state, pincode: $pincode)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is Address &&
-        other.hospitalAddress == hospitalAddress &&
-        other.city == city &&
-        other.district == district &&
-        other.state == state &&
-        other.pincode == pincode;
-  }
-
-  @override
-  int get hashCode {
-    return hospitalAddress.hashCode ^
-        city.hashCode ^
-        district.hashCode ^
-        state.hashCode ^
-        pincode.hashCode;
+        email.hashCode ^
+        location.hashCode;
   }
 }
 
 class PatientProfile {
   final String firstName;
   final String lastName;
+  final Gender gender;
   final int age;
-  final Sex sex;
-  final String phone;
 
-  PatientProfile(this.firstName, this.lastName, this.age, this.sex, this.phone);
+  PatientProfile(this.firstName, this.lastName, this.gender, this.age);
   Map<String, dynamic> toMap() {
     return {
       'firstName': firstName,
       'lastName': lastName,
+      'gender': gender == Gender.male ? "Male" : "Female",
       'age': age,
-      'sex': sex,
-      'phone': phone,
     };
   }
 
@@ -174,9 +99,8 @@ class PatientProfile {
     return PatientProfile(
       map['firstName'],
       map['lastName'],
+      map['gender'],
       map['age'],
-      map['sex'],
-      map['phone'],
     );
   }
 
@@ -187,7 +111,7 @@ class PatientProfile {
 
   @override
   String toString() {
-    return 'PatientProfile(firstName: $firstName, lastName: $lastName, age: $age, sex: $sex, phone: $phone,)';
+    return 'PatientProfile(firstName: $firstName, lastName: $lastName, gender: $gender, age: $age)';
   }
 
   @override
@@ -198,19 +122,17 @@ class PatientProfile {
     return other is PatientProfile &&
         other.firstName == firstName &&
         other.lastName == lastName &&
-        other.age == age &&
-        other.sex == sex &&
-        other.phone == phone;
+        other.gender == gender &&
+        other.age == age;
   }
 
   @override
   int get hashCode {
     return firstName.hashCode ^
         lastName.hashCode ^
-        age.hashCode ^
-        sex.hashCode ^
-        phone.hashCode;
+        gender.hashCode ^
+        age.hashCode;
   }
 }
 
-enum Sex { male, female, other }
+enum Gender { male, female, other }

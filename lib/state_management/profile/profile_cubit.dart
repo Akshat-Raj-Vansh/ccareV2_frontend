@@ -13,31 +13,44 @@ class ProfileCubit extends Cubit<ProfileState> {
   final UserAPI api;
   ProfileCubit(this.localStore, this.api) : super(IntialState());
 
-  updateProfile(PatientProfile profile) async {
+  addPatientProfile(PatientProfile profile) async {
     _startLoading();
 
     final token = await this.localStore.fetch();
-    final result = await api.updatePatientProfile(Token(token.value), profile);
+    final result = await api.addPatientProfile(Token(token.value), profile);
     if (result == null) emit(ErrorState("Server Error"));
     if (result.isError) {
       emit(ErrorState(result.asError.error));
       return;
     }
-    emit(ProfileUpdateState(result.asValue.value));
+    emit(AddPatientProfileState(result.asValue.value));
   }
 
-  getProfile(PatientProfile profile) async {
+  addDoctorProfile(DoctorProfile profile) async {
     _startLoading();
 
     final token = await this.localStore.fetch();
-    final result = await api.getPatientProfile(Token(token.value));
+    final result = await api.addDoctorProfile(Token(token.value), profile);
     if (result == null) emit(ErrorState("Server Error"));
     if (result.isError) {
       emit(ErrorState(result.asError.error));
       return;
     }
-    emit(ProfileGetState(result.asValue.value));
+    emit(AddDoctorProfileState(result.asValue.value));
   }
+
+  // getProfile(PatientProfile profile) async {
+  //   _startLoading();
+
+  //   final token = await this.localStore.fetch();
+  //   final result = await api.getPatientProfile(Token(token.value));
+  //   if (result == null) emit(ErrorState("Server Error"));
+  //   if (result.isError) {
+  //     emit(ErrorState(result.asError.error));
+  //     return;
+  //   }
+  //   emit(ProfileGetState(result.asValue.value));
+  // }
 
   void _startLoading() {
     emit(LoadingState());

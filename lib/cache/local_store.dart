@@ -2,6 +2,7 @@
 import 'dart:convert';
 
 import 'package:ccarev2_frontend/user/domain/credential.dart';
+import 'package:ccarev2_frontend/user/domain/details.dart';
 import 'package:ccarev2_frontend/user/domain/token.dart';
 
 import 'ilocal_store.dart';
@@ -27,13 +28,14 @@ class LocalStore implements ILocalStore {
     String data = sharedPreferences.getString(token_key);
     print(data);
     if (data != null) {
-      return Future.value(Token(Credential.fromJson(data).token.value));
+      Details details = Details.fromJson(jsonDecode(data));
+      return Future.value(Token(details.user_token));
     }
     return null;
   }
 
   @override
-  Future save(Credential details) {
+  Future save(Details details) {
     sharedPreferences.setString(token_key, jsonEncode(details.toMap()));
   }
 
