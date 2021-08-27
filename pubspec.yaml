@@ -30,12 +30,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   firebase_auth: ^3.0.2
   firebase_core: ^1.5.0
-<<<<<<< HEAD
   firebase_messaging: ^10.0.4
-  location:
-=======
-  firebase_messaging: ^10.0.6
->>>>>>> a5d6830502fbeadaaa7b426cfad815707f0a6384
   flutter:
     sdk: flutter
   location: ^4.3.0
