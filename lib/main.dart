@@ -13,7 +13,6 @@ void main() async {
   await Firebase.initializeApp();
   FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
 
-  FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
 
   print("FCM Token " + await FirebaseMessaging.instance.getToken());
   runApp(MyApp(startPage));

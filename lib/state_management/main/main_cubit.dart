@@ -2,6 +2,7 @@
 import 'package:async/src/result/result.dart';
 import 'package:ccarev2_frontend/cache/ilocal_store.dart';
 import 'package:ccarev2_frontend/main/domain/main_api_contract.dart';
+import 'package:ccarev2_frontend/user/domain/location.dart';
 import 'package:ccarev2_frontend/user/domain/token.dart';
 import 'package:cubit/cubit.dart';
 import 'main_state.dart';
@@ -31,7 +32,7 @@ class MainCubit extends Cubit<MainState> {
     print("Inside Notify");
     _startLoading();
     final token = await localStore.fetch();
-    final result = await api.notify(Token(token.value));
+    final result = await api.notify(Token(token.value),Location(latitude:70,longitude:40));
     print(result);
     if (result == null) emit(ErrorState("Server Error"));
     if (result.isError) {
@@ -41,11 +42,11 @@ class MainCubit extends Cubit<MainState> {
     emit(EmergencyState(result.asValue.value));
   }
 
-  acceptPatientByDoctor() async {
+  acceptPatientByDoctor(String patientID) async {
     print("Inside Accept patient by doctor");
     _startLoading();
     final token = await localStore.fetch();
-    final result = await api.acceptPatientbyDoctor(Token(token.value));
+    final result = await api.acceptPatientbyDoctor(Token(token.value),Token(patientID));
     print(result);
     if (result == null) emit(ErrorState("Server Error"));
     if (result.isError) {
@@ -55,11 +56,11 @@ class MainCubit extends Cubit<MainState> {
     emit(AcceptState(result.asValue.value));
   }
 
-  acceptPatientByDriver() async {
+  acceptPatientByDriver(String patientID) async {
     print("Inside accept patient by driver");
     _startLoading();
     final token = await localStore.fetch();
-    final result = await api.acceptPatientbyDriver(Token(token.value));
+    final result = await api.acceptPatientbyDriver(Token(token.value),Token(patientID));
     print(result);
     if (result == null) emit(ErrorState("Server Error"));
     if (result.isError) {
