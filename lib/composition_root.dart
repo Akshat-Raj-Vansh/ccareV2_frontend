@@ -46,7 +46,7 @@ class CompositionRoot {
   static Future<Widget> start() async {
     var token = await localStore.fetch();
     var userType = await localStore.fetchUserType();
-
+    print("user type ${userType}");
     return token == null ? splashScreen() : createHomeUI(userType);
   }
 
@@ -87,7 +87,7 @@ class CompositionRoot {
           create: (context) => profileCubit,
         )
       ],
-      child: HomeScreen(userType),
+      child: HomeScreen(userType,splashScreen())
       //  TabPage(
       //   userService,
       //   TabPageAdapter(createLoginScreen),

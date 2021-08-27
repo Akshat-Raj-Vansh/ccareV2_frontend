@@ -1,3 +1,6 @@
+### Bugs
+- [ ] Screen BlackOut on empty otp field
+- [ ] Doesn't check the new_user field while signup. Multiple profiles are created.
 
 ### Todo
 - [ ] Home Frontend

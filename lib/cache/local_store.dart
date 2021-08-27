@@ -59,11 +59,14 @@ class LocalStore implements ILocalStore {
 
   @override
   Future<UserType> fetchUserType() {
-    String auth_String = sharedPreferences.getString(auth_key);
-    print(auth_String);
-    if (auth_String != null) {
-      return Future.value(UserType.values
-          .firstWhere((element) => element.toString() == auth_String));
+   String data = sharedPreferences.getString(token_key);
+  
+    if (data != null) {
+      Details details = Details.fromMap(jsonDecode(data));
+      print(details.user_type.toLowerCase());
+      UserType.values.forEach((element) {print(element.toString());});
+     return Future.value(UserType.values
+          .firstWhere((element) => element.toString() == "UserType."+details.user_type.toLowerCase()));
     }
     return null;
   }
