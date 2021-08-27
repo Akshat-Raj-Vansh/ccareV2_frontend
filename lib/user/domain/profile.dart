@@ -1,15 +1,14 @@
 import 'dart:convert';
 
-import 'package:collection/collection.dart';
+import 'package:ccarev2_frontend/user/domain/location.dart';
 import 'package:flutter/foundation.dart';
-import 'package:location/location.dart';
 
 class DoctorProfile {
   final String name;
   final String specialization;
   final String uniqueCode;
   final String email;
-  final Map<String, String> location;
+  final Location location;
   DoctorProfile({
     required this.name,
     required this.specialization,
@@ -23,7 +22,7 @@ class DoctorProfile {
     String? specialization,
     String? uniqueCode,
     String? email,
-    Map<String, String>? location,
+    Location? location,
   }) {
     return DoctorProfile(
       name: name ?? this.name,
@@ -50,7 +49,7 @@ class DoctorProfile {
       specialization: map['specialization'],
       uniqueCode: map['uniqueCode'],
       email: map['email'],
-      location: Map<String, String>.from(map['location']),
+      location: map['location'],
     );
   }
 
@@ -73,7 +72,7 @@ class DoctorProfile {
         other.specialization == specialization &&
         other.uniqueCode == uniqueCode &&
         other.email == email &&
-        mapEquals(other.location, location);
+        other.location == location;
   }
 
   @override
@@ -151,7 +150,7 @@ class DriverProfile {
   final String name;
   final String uniqueCode;
   final String plateNumber;
-  final Map<String, String> location;
+  final Location location;
   DriverProfile({
     required this.name,
     required this.uniqueCode,
@@ -163,7 +162,7 @@ class DriverProfile {
     String? name,
     String? uniqueCode,
     String? plateNumber,
-    Map<String, String>? location,
+    Location? location,
   }) {
     return DriverProfile(
       name: name ?? this.name,
@@ -187,7 +186,7 @@ class DriverProfile {
       name: map['name'],
       uniqueCode: map['uniqueCode'],
       plateNumber: map['plateNumber'],
-      location: Map<String, String>.from(map['location']),
+      location: map['location'],
     );
   }
 
@@ -209,7 +208,7 @@ class DriverProfile {
         other.name == name &&
         other.uniqueCode == uniqueCode &&
         other.plateNumber == plateNumber &&
-        mapEquals(other.location, location);
+        other.location == location;
   }
 
   @override
