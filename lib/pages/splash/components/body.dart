@@ -3,6 +3,7 @@ import 'package:ccarev2_frontend/components/rounded_image_btn.dart';
 import 'package:ccarev2_frontend/user/domain/credential.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:location/location.dart';
 
 // This is the best practice
 import '../components/splash_content.dart';
@@ -22,12 +23,39 @@ class Body extends StatefulWidget {
 class _BodyState extends State<Body> {
   int currentPage = 0;
   PageController controller = PageController();
+  Location location = Location();
+  bool _serviceEnabled;
+  PermissionStatus _permissionGranted;
   List<Map<String, String>> splashData = [
     {
       "text": "Welcome to CardioCare,\n Let’s take care of your heart!",
       "image": "assets/images/sp1.png"
     },
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    _getLocationPermission();
+  }
+
+  _getLocationPermission() async {
+    _serviceEnabled = await location.serviceEnabled();
+    if (!_serviceEnabled) {
+      _serviceEnabled = await location.requestService();
+      if (!_serviceEnabled) {
+        return;
+      }
+    }
+    _permissionGranted = await location.hasPermission();
+    if (_permissionGranted == PermissionStatus.denied) {
+      _permissionGranted = await location.requestPermission();
+      if (_permissionGranted != PermissionStatus.granted) {
+        return;
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(

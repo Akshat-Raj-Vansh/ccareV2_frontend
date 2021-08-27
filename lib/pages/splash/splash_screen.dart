@@ -8,6 +8,7 @@ class SplashScreen extends StatelessWidget {
   final IAuthPageAdapter pageAdatper;
 
   const SplashScreen(this.pageAdatper);
+
   @override
   Widget build(BuildContext context) {
     // You have to call it on your starting screen

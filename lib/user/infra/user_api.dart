@@ -59,8 +59,8 @@ class UserAPI implements UserService {
   }
 
   @override
-  Future<Result<String>> addAmbulanceProfile(
-      Token token, DoctorProfile profile) async {
+  Future<Result<String>> addDriverProfile(
+      Token token, DriverProfile profile) async {
     String endpoint = baseUrl + "/user/addProfile";
     var header = {
       "Content-Type": "application/json",

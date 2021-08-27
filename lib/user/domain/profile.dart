@@ -147,25 +147,25 @@ class PatientProfile {
   int get hashCode => name.hashCode ^ gender.hashCode ^ age.hashCode;
 }
 
-class AmbulanceProfile {
+class DriverProfile {
   final String name;
   final String uniqueCode;
   final String plateNumber;
   final Map<String, LocationData> location;
-  AmbulanceProfile({
+  DriverProfile({
     required this.name,
     required this.uniqueCode,
     required this.plateNumber,
     required this.location,
   });
 
-  AmbulanceProfile copyWith({
+  DriverProfile copyWith({
     String? name,
     String? uniqueCode,
     String? plateNumber,
     Map<String, LocationData>? location,
   }) {
-    return AmbulanceProfile(
+    return DriverProfile(
       name: name ?? this.name,
       uniqueCode: uniqueCode ?? this.uniqueCode,
       plateNumber: plateNumber ?? this.plateNumber,
@@ -182,8 +182,8 @@ class AmbulanceProfile {
     };
   }
 
-  factory AmbulanceProfile.fromMap(Map<String, dynamic> map) {
-    return AmbulanceProfile(
+  factory DriverProfile.fromMap(Map<String, dynamic> map) {
+    return DriverProfile(
       name: map['name'],
       uniqueCode: map['uniqueCode'],
       plateNumber: map['plateNumber'],
@@ -193,19 +193,19 @@ class AmbulanceProfile {
 
   String toJson() => json.encode(toMap());
 
-  factory AmbulanceProfile.fromJson(String source) =>
-      AmbulanceProfile.fromMap(json.decode(source));
+  factory DriverProfile.fromJson(String source) =>
+      DriverProfile.fromMap(json.decode(source));
 
   @override
   String toString() {
-    return 'AmbulanceProfile(name: $name, uniqueCode: $uniqueCode, plateNumber: $plateNumber, location: $location)';
+    return 'DriverProfile(name: $name, uniqueCode: $uniqueCode, plateNumber: $plateNumber, location: $location)';
   }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is AmbulanceProfile &&
+    return other is DriverProfile &&
         other.name == name &&
         other.uniqueCode == uniqueCode &&
         other.plateNumber == plateNumber &&

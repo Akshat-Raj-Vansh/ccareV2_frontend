@@ -134,8 +134,7 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
                     if (state is profileState.LoadingState) {
                       print("LoadingStateCalled");
                       _showLoader();
-                    } else if (state is profileState.AddDoctorProfileState ||
-                        state is profileState.AddPatientProfileState) {
+                    } else if (state is profileState.AddProfileState) {
                       widget.pageAdatper
                           .onAuthSuccess(context, widget.userType);
                     } else {
