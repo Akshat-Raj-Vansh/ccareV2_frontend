@@ -1,10 +1,12 @@
 //@dart=2.9
 import 'package:ccarev2_frontend/state_management/profile/profile_cubit.dart';
 import 'package:ccarev2_frontend/user/domain/credential.dart';
+import 'package:ccarev2_frontend/user/domain/location.dart';
 import 'package:ccarev2_frontend/user/domain/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
-import 'package:location/location.dart';
+import 'package:location/location.dart' as lloc;
+import 'package:ccarev2_frontend/user/domain/location.dart' as loc;
 import '../../user/domain/details.dart';
 import '../../components/default_button.dart';
 import '../auth/auth_page_adapter.dart';
@@ -40,8 +42,6 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
   String specialization;
   String email;
   String plateNumber;
-  LocationData locationData;
-  Location location;
   TextStyle styles = const TextStyle(color: Colors.white, fontSize: 18);
 
   @override
@@ -169,26 +169,22 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                 floatingLabelBehavior: FloatingLabelBehavior.always,
               ),
             ),
-            SizedBox(height: getProportionateScreenHeight(10)),
-            TextButton(
-              child: const Text("Get Location"),
-              onPressed: () async {
-                locationData = await _getLocation();
-              },
-            ),
             const Spacer(flex: 1),
             Center(
               child: DefaultButton(
                 text: "Save",
-                press: () {
+                press: () async {
                   if (_formKeyDoctor.currentState.validate()) {
                     _formKeyDoctor.currentState.save();
+                    lloc.LocationData locationData = await _getLocation();
                     var profile = DoctorProfile(
                         name: name,
                         specialization: specialization,
                         uniqueCode: uniqueCode,
                         email: email,
-                        location: {"coordinates": locationData});
+                        location: loc.Location(
+                            latitude: locationData.latitude,
+                            longitude: locationData.longitude));
                     print(profile.toString());
                     widget.cubit.addDoctorProfile(profile);
                   } else {
@@ -305,25 +301,21 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                 floatingLabelBehavior: FloatingLabelBehavior.always,
               ),
             ),
-            SizedBox(height: getProportionateScreenHeight(10)),
-            TextButton(
-              child: const Text("Get Location"),
-              onPressed: () async {
-                locationData = await _getLocation();
-              },
-            ),
             const Spacer(flex: 1),
             Center(
               child: DefaultButton(
                 text: "Save",
-                press: () {
+                press: () async {
                   if (_formKeyDoctor.currentState.validate()) {
                     _formKeyDoctor.currentState.save();
+                    lloc.LocationData locationData = await _getLocation();
                     var profile = DriverProfile(
                         name: name,
                         uniqueCode: uniqueCode,
                         plateNumber: plateNumber,
-                        location: {"coordinates": locationData});
+                        location: loc.Location(
+                            latitude: locationData.latitude,
+                            longitude: locationData.longitude));
                     print(profile.toString());
                     widget.cubit.addDriverProfile(profile);
                   } else {
@@ -339,8 +331,9 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
         ),
       );
 
-  Future<LocationData> _getLocation() async {
-    LocationData _location = await location.getLocation();
+  Future<lloc.LocationData> _getLocation() async {
+    lloc.LocationData _location = await lloc.Location().getLocation();
+    print(_location.latitude.toString() + "," + _location.longitude.toString());
     return _location;
   }
 }

@@ -1,6 +1,8 @@
+//@dart=2.9
 import 'package:ccarev2_frontend/pages/profile/profile_update_screen.dart';
 import 'package:ccarev2_frontend/pages/splash/splash_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import '../../customBuilds/customtextformfield.dart';
 import '../../state_management/profile/profile_cubit.dart';
 import '../../state_management/profile/profile_state.dart' as profileState;
@@ -19,9 +21,9 @@ class AuthPage extends StatefulWidget {
   final IAuthPageAdapter pageAdatper;
   final UserType userType;
   AuthPage({
-    required this.userAPI,
-    required this.pageAdatper,
-    required this.userType,
+    this.userAPI,
+    this.pageAdatper,
+    this.userType,
   });
   @override
   _AuthPageState createState() => _AuthPageState();
@@ -37,11 +39,11 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
 
   String get timeString {
     Duration duration =
-        animationController.duration! * animationController.value;
+        animationController.duration * animationController.value;
     return '${duration.inMinutes}:${(duration.inSeconds % 60).toString().padLeft(2, '0')}';
   }
 
-  late AnimationController animationController;
+  AnimationController animationController;
   final PageController _controller = PageController();
 
   final _formkey = GlobalKey<FormState>();
@@ -148,7 +150,7 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
                             state.error,
                             style: Theme.of(context)
                                 .textTheme
-                                .caption!
+                                .caption
                                 .copyWith(color: Colors.white, fontSize: 16),
                           ),
                         ));
@@ -192,7 +194,7 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
         msg,
         style: Theme.of(context)
             .textTheme
-            .caption!
+            .caption
             .copyWith(color: Colors.white, fontSize: 16),
       ),
     ));
@@ -299,7 +301,7 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
                   SizedBox(height: SizeConfig.screenHeight * 0.06),
                   RaisedButton(
                     onPressed: () async {
-                      if (_formkey.currentState!.validate()) {
+                      if (_formkey.currentState.validate()) {
                         cubit.verifyPhone();
                       }
                     },
@@ -462,12 +464,12 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
                 .signInWithCredential(credential)
                 .then((value) async {
               if (value.user != null) {
-                _msg = "VERIFICATION SUCCESSFUL " + value.user!.uid;
+                _msg = "VERIFICATION SUCCESSFUL " + value.user.uid;
                 CubitProvider.of<UserCubit>(context).login(Credential(
                     _phone,
                     widget.userType,
                     "fcmToken",
-                    Token(value.user!.uid.toString())));
+                    Token(value.user.uid.toString())));
               }
             });
           },
@@ -476,7 +478,7 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
             _hideLoader();
             _showMessage(_msg);
           },
-          codeSent: (String verificationID, int? resendToken) {
+          codeSent: (String verificationID, int resendToken) {
             setState(() {
               _msg = "CODE SENT " + verificationID;
               _verificationCode = verificationID;
@@ -505,9 +507,10 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
               PhoneAuthProvider.credential(verificationId: vid, smsCode: otp))
           .then((value) async {
         if (value.user != null) {
-          _msg = "VERIFICATION SUCCESSFUL " + value.user!.uid;
+          _msg = "VERIFICATION SUCCESSFUL " + value.user.uid;
+          String fcmtoken = await FirebaseMessaging.instance.getToken();
           CubitProvider.of<UserCubit>(context).login(Credential(_phone,
-              widget.userType, "fcmToken", Token(value.user!.uid.toString())));
+              widget.userType, fcmtoken, Token(value.user.uid.toString())));
         }
       });
     } catch (e) {
