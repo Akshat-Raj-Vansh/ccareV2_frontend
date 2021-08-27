@@ -39,7 +39,7 @@ class DoctorProfile {
       'specialization': specialization,
       'uniqueCode': uniqueCode,
       'email': email,
-      'location': location,
+      'location': location.toMap(),
     };
   }
 
@@ -49,7 +49,7 @@ class DoctorProfile {
       specialization: map['specialization'],
       uniqueCode: map['uniqueCode'],
       email: map['email'],
-      location: map['location'],
+      location: Location.fromMap(map['location']),
     );
   }
 
@@ -177,7 +177,7 @@ class DriverProfile {
       'name': name,
       'uniqueCode': uniqueCode,
       'plateNumber': plateNumber,
-      'location': location,
+      'location': location.toMap(),
     };
   }
 
@@ -186,7 +186,7 @@ class DriverProfile {
       name: map['name'],
       uniqueCode: map['uniqueCode'],
       plateNumber: map['plateNumber'],
-      location: map['location'],
+      location: Location.fromMap(map['location']),
     );
   }
 

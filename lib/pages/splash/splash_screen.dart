@@ -24,8 +24,7 @@ class SplashScreen extends StatelessWidget {
     );
   }
 
-  _onBackPressed(BuildContext context) =>
-      showDialog(
+  _onBackPressed(BuildContext context) => showDialog(
         context: context,
         builder: (context) => AlertDialog(
           title: const Padding(
@@ -54,6 +53,5 @@ class SplashScreen extends StatelessWidget {
             ),
           ],
         ),
-      ) ??
-      false;
+      );
 }

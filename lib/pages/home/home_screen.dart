@@ -1,4 +1,7 @@
 //@dart=2.9s
+import 'package:ccarev2_frontend/pages/home/components/doctor.dart';
+import 'package:ccarev2_frontend/pages/home/components/driver.dart';
+import 'package:ccarev2_frontend/pages/home/components/patient.dart';
 import 'package:ccarev2_frontend/state_management/profile/profile_cubit.dart';
 import 'package:ccarev2_frontend/user/domain/credential.dart';
 import 'package:flutter/material.dart';
@@ -18,44 +21,10 @@ class HomeScreen extends StatelessWidget {
         title: const Text('Cardio Care'),
       ),
       body: userType == UserType.patient
-          ? _buildPatientSide(context)
-          : _buildDoctorSide(context),
+          ? PatientSide()
+          : userType == UserType.doctor
+              ? DoctorSide()
+              : DriverSide(),
     );
   }
-
-  _buildPatientSide(context) => Center(
-        child: RaisedButton(
-          onPressed: () async {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              backgroundColor: Theme.of(context).accentColor,
-              content: Text(
-                'This button is used for sending emergency SOS',
-                style: Theme.of(context)
-                    .textTheme
-                    .caption!
-                    .copyWith(color: Colors.white, fontSize: 16),
-              ),
-            ));
-          },
-          child: const Text('Emergency Button'),
-        ),
-      );
-
-  _buildDoctorSide(context) => Center(
-        child: RaisedButton(
-          onPressed: () async {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              backgroundColor: Theme.of(context).accentColor,
-              content: Text(
-                'This button is used for accepting emergency SOS',
-                style: Theme.of(context)
-                    .textTheme
-                    .caption!
-                    .copyWith(color: Colors.white, fontSize: 16),
-              ),
-            ));
-          },
-          child: const Text('Alert Button'),
-        ),
-      );
 }

@@ -10,8 +10,4 @@ abstract class UserService {
   Future<Result<String>> addPatientProfile(Token token, PatientProfile profile);
   Future<Result<String>> addDoctorProfile(Token token, DoctorProfile profile);
   Future<Result<String>> addDriverProfile(Token token, DriverProfile profile);
-
-  // Future<Result<String>> emergency
-  // Future<Result<String>> verifyPhone(String phone);
-  // Future<Result<String>> verifyOTP(String otp, String vid);
 }
