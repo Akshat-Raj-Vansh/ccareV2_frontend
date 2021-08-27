@@ -9,7 +9,7 @@ class DoctorProfile {
   final String specialization;
   final String uniqueCode;
   final String email;
-  final Map<String, LocationData> location;
+  final Map<String, String> location;
   DoctorProfile({
     required this.name,
     required this.specialization,
@@ -23,7 +23,7 @@ class DoctorProfile {
     String? specialization,
     String? uniqueCode,
     String? email,
-    Map<String, LocationData>? location,
+    Map<String, String>? location,
   }) {
     return DoctorProfile(
       name: name ?? this.name,
@@ -50,7 +50,7 @@ class DoctorProfile {
       specialization: map['specialization'],
       uniqueCode: map['uniqueCode'],
       email: map['email'],
-      location: Map<String, LocationData>.from(map['location']),
+      location: Map<String, String>.from(map['location']),
     );
   }
 
@@ -151,7 +151,7 @@ class DriverProfile {
   final String name;
   final String uniqueCode;
   final String plateNumber;
-  final Map<String, LocationData> location;
+  final Map<String, String> location;
   DriverProfile({
     required this.name,
     required this.uniqueCode,
@@ -163,7 +163,7 @@ class DriverProfile {
     String? name,
     String? uniqueCode,
     String? plateNumber,
-    Map<String, LocationData>? location,
+    Map<String, String>? location,
   }) {
     return DriverProfile(
       name: name ?? this.name,
@@ -187,7 +187,7 @@ class DriverProfile {
       name: map['name'],
       uniqueCode: map['uniqueCode'],
       plateNumber: map['plateNumber'],
-      location: Map<String, LocationData>.from(map['location']),
+      location: Map<String, String>.from(map['location']),
     );
   }
 

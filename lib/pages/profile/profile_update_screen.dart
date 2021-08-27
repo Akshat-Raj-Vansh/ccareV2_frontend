@@ -188,7 +188,7 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                         specialization: specialization,
                         uniqueCode: uniqueCode,
                         email: email,
-                        location: {"coordinates": locationData});
+                        location: {"latitude": "82", "longitude": "82"});
                     print(profile.toString());
                     widget.cubit.addDoctorProfile(profile);
                   } else {
@@ -323,7 +323,7 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                         name: name,
                         uniqueCode: uniqueCode,
                         plateNumber: plateNumber,
-                        location: {"coordinates": locationData});
+                        location: {"latitude": "82", "longitude": "82"});
                     print(profile.toString());
                     widget.cubit.addDriverProfile(profile);
                   } else {
