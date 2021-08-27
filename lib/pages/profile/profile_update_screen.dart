@@ -4,6 +4,7 @@ import 'package:ccarev2_frontend/user/domain/credential.dart';
 import 'package:ccarev2_frontend/user/domain/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
+import 'package:location/location.dart';
 import '../../user/domain/details.dart';
 import '../../components/default_button.dart';
 import '../auth/auth_page_adapter.dart';
@@ -22,6 +23,7 @@ class ProfileUpdateScreen extends StatefulWidget {
 class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
   final _formKeyDoctor = GlobalKey<FormState>();
   final _formKeyPatient = GlobalKey<FormState>();
+  final _formKeyDriver = GlobalKey<FormState>();
 
   EdgeInsets pad = const EdgeInsets.symmetric(vertical: 5, horizontal: 15);
   BoxDecoration decC = const BoxDecoration(
@@ -31,14 +33,15 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
           topRight: Radius.circular(30),
           bottomRight: Radius.circular(30)));
 
-  String firstName;
-  String lastName;
+  String name;
   int age;
-  Gender gender;
+  String gender;
   String uniqueCode;
   String specialization;
   String email;
-  String location;
+  String plateNumber;
+  LocationData locationData;
+  Location location;
   TextStyle styles = const TextStyle(color: Colors.white, fontSize: 18);
 
   @override
@@ -47,14 +50,14 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
 
     return Scaffold(
         resizeToAvoidBottomInset: false,
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          title: Text(
-            "CardioCare",
-            style: headingStyle,
-          ),
-          centerTitle: true,
-        ),
+        // appBar: AppBar(
+        //   backgroundColor: Colors.white,
+        //   title: Text(
+        //     "CardioCare",
+        //     style: headingStyle,
+        //   ),
+        //   centerTitle: true,
+        // ),
         body: buildbody());
   }
 
@@ -67,13 +70,7 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
         child: Column(
           children: [
             SizedBox(height: SizeConfig.screenHeight * 0.04),
-            const Text(
-              "Personal Details",
-              style: TextStyle(
-                  fontSize: 24,
-                  color: Colors.blue,
-                  fontWeight: FontWeight.bold),
-            ),
+            _showLogo(context),
             _buildUI(context),
             SizedBox(height: SizeConfig.screenHeight * 0.02),
           ],
@@ -83,209 +80,267 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
   }
 
   _buildUI(BuildContext context) => Expanded(
-        child: widget.details.user_type == 'doctor'
-            ? buildDoctorProfile(context)
-            : buildPatientProfile(context),
+        child: widget.details.user_type == 'DOCTOR'
+            ? _buildDoctorProfile(context)
+            : widget.details.user_type == 'PATIENT'
+                ? _buildPatientProfile(context)
+                : _buildDriverProfile(context),
       );
 
-  Form buildDoctorProfile(BuildContext context) {
-    return Form(
-      key: _formKeyDoctor,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(height: getProportionateScreenHeight(20)),
-          TextFormField(
-            keyboardType: TextInputType.text,
-            onSaved: (newValue) => firstName = newValue,
-            validator: (value) =>
-                value.isEmpty ? "First Name is required" : null,
-            decoration: const InputDecoration(
-              labelText: "First Name",
-              hintText: "Enter your First Name",
-              floatingLabelBehavior: FloatingLabelBehavior.always,
+  _showLogo(BuildContext context) => Container(
+        alignment: Alignment.center,
+        child: Column(
+          children: [
+            const Image(
+                image: AssetImage("assets/logo.png"),
+                width: 192,
+                height: 180,
+                fit: BoxFit.fill),
+            const SizedBox(height: 10),
+            RichText(
+              text: TextSpan(
+                  text: "Personal",
+                  style: Theme.of(context).textTheme.caption.copyWith(
+                      color: Colors.lightGreen[500],
+                      fontSize: 32.0,
+                      fontWeight: FontWeight.bold),
+                  children: [
+                    TextSpan(
+                      text: " Details",
+                      style: TextStyle(color: Theme.of(context).accentColor),
+                    )
+                  ]),
             ),
-          ),
-          SizedBox(height: getProportionateScreenHeight(10)),
-          TextFormField(
-            keyboardType: TextInputType.text,
-            onSaved: (newValue) => lastName = newValue,
-            validator: (value) =>
-                value.isEmpty ? "Last Name is required" : null,
-            decoration: const InputDecoration(
-              labelText: "Last Name",
-              hintText: "Enter your Last Name",
-              floatingLabelBehavior: FloatingLabelBehavior.always,
-            ),
-          ),
-          SizedBox(height: getProportionateScreenHeight(10)),
-          TextFormField(
-            keyboardType: TextInputType.number,
-            onSaved: (newValue) => age = int.parse(newValue),
-            validator: (value) => value.isEmpty ? "Age is required" : null,
-            decoration: const InputDecoration(
-              labelText: "Age ",
-              hintText: "Enter your Age",
-              floatingLabelBehavior: FloatingLabelBehavior.always,
-            ),
-          ),
-          SizedBox(height: getProportionateScreenHeight(10)),
-          TextFormField(
-            keyboardType: TextInputType.text,
-            onSaved: (newValue) =>
-                gender = newValue == 'male' ? Gender.male : Gender.female,
-            validator: (value) => value.isEmpty ? "Gender is required" : null,
-            decoration: const InputDecoration(
-              labelText: "Gender",
-              hintText: "Enter your Gender",
-              floatingLabelBehavior: FloatingLabelBehavior.always,
-            ),
-          ),
-          SizedBox(height: getProportionateScreenHeight(10)),
-          TextFormField(
-            keyboardType: TextInputType.text,
-            onSaved: (newValue) => specialization = newValue,
-            validator: (value) =>
-                value.isEmpty ? "Specialization is required" : null,
-            decoration: const InputDecoration(
-              labelText: "Specialization",
-              hintText: "Enter your Specialization",
-              floatingLabelBehavior: FloatingLabelBehavior.always,
-            ),
-          ),
-          SizedBox(height: getProportionateScreenHeight(10)),
-          TextFormField(
-            keyboardType: TextInputType.text,
-            onSaved: (newValue) => uniqueCode = newValue,
-            validator: (value) =>
-                value.isEmpty ? "Unique Code is required" : null,
-            decoration: const InputDecoration(
-              labelText: "Unique Code",
-              hintText: "Enter your Unique Code",
-              floatingLabelBehavior: FloatingLabelBehavior.always,
-            ),
-          ),
-          SizedBox(height: getProportionateScreenHeight(10)),
-          TextFormField(
-            keyboardType: TextInputType.text,
-            onSaved: (newValue) => email = newValue,
-            validator: (value) => value.isEmpty || !value.contains('@')
-                ? "Email is required"
-                : null,
-            decoration: const InputDecoration(
-              labelText: "Email",
-              hintText: "Enter your Email",
-              floatingLabelBehavior: FloatingLabelBehavior.always,
-            ),
-          ),
-          SizedBox(height: getProportionateScreenHeight(10)),
-          TextFormField(
-            keyboardType: TextInputType.text,
-            onSaved: (newValue) => email = newValue,
-            validator: (value) => value.isEmpty ? "Location is required" : null,
-            decoration: const InputDecoration(
-              labelText: "Location",
-              hintText: "Enter your Location",
-              floatingLabelBehavior: FloatingLabelBehavior.always,
-            ),
-          ),
-          Center(
-            child: DefaultButton(
-              text: "Save",
-              press: () {
-                if (_formKeyDoctor.currentState.validate()) {
-                  _formKeyDoctor.currentState.save();
-                  var profile = DoctorProfile(firstName, lastName, gender, age,
-                      specialization, uniqueCode, email, location);
-                  print(profile.toString());
-                  widget.cubit.addDoctorProfile(profile);
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                    content: Text("All Fields are required"),
-                  ));
-                }
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+            SizedBox(height: 30)
+          ],
+        ),
+      );
 
-  Form buildPatientProfile(BuildContext context) {
-    return Form(
-      key: _formKeyPatient,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(height: getProportionateScreenHeight(20)),
-          TextFormField(
-            keyboardType: TextInputType.text,
-            onSaved: (newValue) => firstName = newValue,
-            validator: (value) =>
-                value.isEmpty ? "First Name is required" : null,
-            decoration: const InputDecoration(
-              labelText: "First Name",
-              hintText: "Enter your First Name",
-              floatingLabelBehavior: FloatingLabelBehavior.always,
+  _buildDoctorProfile(BuildContext context) => Form(
+        key: _formKeyDoctor,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: getProportionateScreenHeight(20)),
+            TextFormField(
+              keyboardType: TextInputType.text,
+              onSaved: (newValue) => name = newValue,
+              validator: (value) => value.isEmpty ? "Name is required" : null,
+              decoration: const InputDecoration(
+                labelText: "Full Name",
+                hintText: "Enter your Full Name",
+                floatingLabelBehavior: FloatingLabelBehavior.always,
+              ),
             ),
-          ),
-          SizedBox(height: getProportionateScreenHeight(10)),
-          TextFormField(
-            keyboardType: TextInputType.text,
-            onSaved: (newValue) => lastName = newValue,
-            validator: (value) =>
-                value.isEmpty ? "Last Name is required" : null,
-            decoration: const InputDecoration(
-              labelText: "Last Name",
-              hintText: "Enter your Last Name",
-              floatingLabelBehavior: FloatingLabelBehavior.always,
+            SizedBox(height: getProportionateScreenHeight(10)),
+            TextFormField(
+              keyboardType: TextInputType.text,
+              onSaved: (newValue) => specialization = newValue.toUpperCase(),
+              validator: (value) =>
+                  value.isEmpty ? "Specialization is required" : null,
+              decoration: const InputDecoration(
+                labelText: "Specialization",
+                hintText: "Enter your Specialization",
+                floatingLabelBehavior: FloatingLabelBehavior.always,
+              ),
             ),
-          ),
-          SizedBox(height: getProportionateScreenHeight(10)),
-          TextFormField(
-            keyboardType: TextInputType.number,
-            onSaved: (newValue) => age = int.parse(newValue),
-            validator: (value) => value.isEmpty ? "Age is required" : null,
-            decoration: const InputDecoration(
-              labelText: "Age ",
-              hintText: "Enter your Age",
-              floatingLabelBehavior: FloatingLabelBehavior.always,
+            SizedBox(height: getProportionateScreenHeight(10)),
+            TextFormField(
+              keyboardType: TextInputType.text,
+              onSaved: (newValue) => uniqueCode = newValue.toUpperCase(),
+              validator: (value) =>
+                  value.isEmpty ? "Unique Code is required" : null,
+              decoration: const InputDecoration(
+                labelText: "Unique Code",
+                hintText: "Enter your Unique Code",
+                floatingLabelBehavior: FloatingLabelBehavior.always,
+              ),
             ),
-          ),
-          SizedBox(height: getProportionateScreenHeight(10)),
-          TextFormField(
-            keyboardType: TextInputType.text,
-            onSaved: (newValue) =>
-                gender = newValue == 'male' ? Gender.male : Gender.female,
-            validator: (value) => value.isEmpty ? "Gender is required" : null,
-            decoration: const InputDecoration(
-              labelText: "Gender",
-              hintText: "Enter your Gender",
-              floatingLabelBehavior: FloatingLabelBehavior.always,
+            SizedBox(height: getProportionateScreenHeight(10)),
+            TextFormField(
+              keyboardType: TextInputType.text,
+              onSaved: (newValue) => email = newValue.toLowerCase(),
+              validator: (value) => value.isEmpty || !value.contains('@')
+                  ? "Email is required"
+                  : null,
+              decoration: const InputDecoration(
+                labelText: "Email",
+                hintText: "Enter your Email",
+                floatingLabelBehavior: FloatingLabelBehavior.always,
+              ),
             ),
-          ),
-          SizedBox(height: getProportionateScreenHeight(10)),
-          Center(
-            child: DefaultButton(
-              text: "Save",
-              press: () {
-                if (_formKeyPatient.currentState.validate()) {
-                  _formKeyPatient.currentState.save();
-                  var profile =
-                      PatientProfile(firstName, lastName, gender, age);
-                  print(profile.toString());
-                  widget.cubit.addPatientProfile(profile);
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                    content: Text("All Fields are required"),
-                  ));
-                }
+            SizedBox(height: getProportionateScreenHeight(10)),
+            TextButton(
+              child: const Text("Get Location"),
+              onPressed: () async {
+                locationData = await _getLocation();
               },
             ),
-          ),
-        ],
-      ),
-    );
+            const Spacer(flex: 1),
+            Center(
+              child: DefaultButton(
+                text: "Save",
+                press: () {
+                  if (_formKeyDoctor.currentState.validate()) {
+                    _formKeyDoctor.currentState.save();
+                    var profile = DoctorProfile(
+                        name: name,
+                        specialization: specialization,
+                        uniqueCode: uniqueCode,
+                        email: email,
+                        location: {"coordinates": locationData});
+                    print(profile.toString());
+                    widget.cubit.addDoctorProfile(profile);
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      content: Text("All Fields are required"),
+                    ));
+                  }
+                },
+              ),
+            ),
+            SizedBox(height: 30),
+          ],
+        ),
+      );
+
+  _buildPatientProfile(BuildContext context) => Form(
+        key: _formKeyPatient,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: getProportionateScreenHeight(20)),
+            TextFormField(
+              keyboardType: TextInputType.text,
+              onSaved: (newValue) => name = newValue,
+              validator: (value) => value.isEmpty ? "Name is required" : null,
+              decoration: const InputDecoration(
+                labelText: "Full Name",
+                hintText: "Enter your Full Name",
+                floatingLabelBehavior: FloatingLabelBehavior.always,
+              ),
+            ),
+            SizedBox(height: getProportionateScreenHeight(10)),
+            TextFormField(
+              keyboardType: TextInputType.number,
+              onSaved: (newValue) => age = int.parse(newValue),
+              validator: (value) => value.isEmpty ? "Age is required" : null,
+              decoration: const InputDecoration(
+                labelText: "Age ",
+                hintText: "Enter your Age",
+                floatingLabelBehavior: FloatingLabelBehavior.always,
+              ),
+            ),
+            SizedBox(height: getProportionateScreenHeight(10)),
+            TextFormField(
+              keyboardType: TextInputType.text,
+              onSaved: (newValue) => gender = newValue.toUpperCase(),
+              validator: (value) => value.isEmpty ? "Gender is required" : null,
+              decoration: const InputDecoration(
+                labelText: "Gender",
+                hintText: "Enter your Gender",
+                floatingLabelBehavior: FloatingLabelBehavior.always,
+              ),
+            ),
+            SizedBox(height: getProportionateScreenHeight(10)),
+            Center(
+              child: DefaultButton(
+                text: "Save",
+                press: () {
+                  if (_formKeyPatient.currentState.validate()) {
+                    _formKeyPatient.currentState.save();
+                    var profile =
+                        PatientProfile(name: name, gender: gender, age: age);
+                    print(profile.toString());
+                    widget.cubit.addPatientProfile(profile);
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      content: Text("All Fields are required"),
+                    ));
+                  }
+                },
+              ),
+            ),
+          ],
+        ),
+      );
+
+  _buildDriverProfile(BuildContext context) => Form(
+        key: _formKeyDriver,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: getProportionateScreenHeight(20)),
+            TextFormField(
+              keyboardType: TextInputType.text,
+              onSaved: (newValue) => name = newValue,
+              validator: (value) => value.isEmpty ? "Name is required" : null,
+              decoration: const InputDecoration(
+                labelText: "Full Name",
+                hintText: "Enter your Full Name",
+                floatingLabelBehavior: FloatingLabelBehavior.always,
+              ),
+            ),
+            SizedBox(height: getProportionateScreenHeight(10)),
+            TextFormField(
+              keyboardType: TextInputType.text,
+              onSaved: (newValue) => uniqueCode = newValue.toUpperCase(),
+              validator: (value) =>
+                  value.isEmpty ? "Unique Code is required" : null,
+              decoration: const InputDecoration(
+                labelText: "Unique Code",
+                hintText: "Enter your Unique Code",
+                floatingLabelBehavior: FloatingLabelBehavior.always,
+              ),
+            ),
+            SizedBox(height: getProportionateScreenHeight(10)),
+            TextFormField(
+              keyboardType: TextInputType.text,
+              onSaved: (newValue) => plateNumber = newValue.toUpperCase(),
+              validator: (value) =>
+                  value.isEmpty ? "Plate Number is required" : null,
+              decoration: const InputDecoration(
+                labelText: "Plate Number",
+                hintText: "Enter your Plate Number",
+                floatingLabelBehavior: FloatingLabelBehavior.always,
+              ),
+            ),
+            SizedBox(height: getProportionateScreenHeight(10)),
+            TextButton(
+              child: const Text("Get Location"),
+              onPressed: () async {
+                locationData = await _getLocation();
+              },
+            ),
+            const Spacer(flex: 1),
+            Center(
+              child: DefaultButton(
+                text: "Save",
+                press: () {
+                  if (_formKeyDoctor.currentState.validate()) {
+                    _formKeyDoctor.currentState.save();
+                    var profile = DriverProfile(
+                        name: name,
+                        uniqueCode: uniqueCode,
+                        plateNumber: plateNumber,
+                        location: {"coordinates": locationData});
+                    print(profile.toString());
+                    widget.cubit.addDriverProfile(profile);
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      content: Text("All Fields are required"),
+                    ));
+                  }
+                },
+              ),
+            ),
+            const SizedBox(height: 30),
+          ],
+        ),
+      );
+
+  Future<LocationData> _getLocation() async {
+    LocationData _location = await location.getLocation();
+    return _location;
   }
 }

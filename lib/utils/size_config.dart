@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 class SizeConfig {
   static MediaQueryData _mediaQueryData;
+  static double bottomInsets;
   static double screenWidth;
   static double screenHeight;
   static double defaultSize;
@@ -13,7 +14,7 @@ class SizeConfig {
     screenWidth = _mediaQueryData.size.width;
     screenHeight = _mediaQueryData.size.height;
     orientation = _mediaQueryData.orientation;
-      
+    bottomInsets = _mediaQueryData.viewInsets.bottom;
   }
 }
 

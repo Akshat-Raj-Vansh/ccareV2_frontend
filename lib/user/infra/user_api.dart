@@ -1,3 +1,5 @@
+//@dart=2.9
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:ccarev2_frontend/user/domain/credential.dart';
@@ -37,61 +39,28 @@ class UserAPI implements UserService {
     return Result.value(Details.fromJson(jsonEncode(json)));
   }
 
-  // @override
-  // Future<Result<bool>> logout(Token token) async {
-  //   String endpoint = baseUrl + "/auth/signout";
-  //   var header = {
-  //     "Content-Type": "application/json",
-  //     "Authorization": token.value
-  //   };
-  //   var res = await _client.post(Uri.parse(endpoint), headers: header);
-  //   if (res.statusCode != 200) return Result.value(false);
-  //   return Result.value(true);
-  // }
-
-  // @override
-  // Future<Result<String>> verify(String phone) {
-  //   //USE FIREBASE AUTHs
-  //   throw UnimplementedError();
-  // }
-
-  // @override
-  // Future<Result<DoctorProfile>> getDoctorProfile(Token token) async {
-  //   String endpoint = baseUrl + "/user/doctor";
-  //   var header = {
-  //     "Content-Type": "application/json",
-  //     "Authorization": token.value
-  //   };
-  //   var response = await _client.get(Uri.parse(endpoint), headers: header);
-  //   if (response.statusCode != 200) {
-  //     Map map = jsonDecode(response.body);
-  //     print(transformError(map));
-  //     return Result.error(transformError(map));
-  //   }
-  //   dynamic json = jsonDecode(response.body);
-  //   return Result.value(DoctorProfile.fromJson(json));
-  // }
-
-  // @override
-  // Future<Result<PatientProfile>> getPatientProfile(Token token) async {
-  //   String endpoint = baseUrl + "/user/patient";
-  //   var header = {
-  //     "Content-Type": "application/json",
-  //     "Authorization": token.value
-  //   };
-  //   var response = await _client.get(Uri.parse(endpoint), headers: header);
-  //   if (response.statusCode != 200) {
-  //     Map map = jsonDecode(response.body);
-  //     print(transformError(map));
-  //     return Result.error(transformError(map));
-  //   }
-  //   dynamic json = jsonDecode(response.body);
-  //   return Result.value(PatientProfile.fromJson(json));
-  // }
-
   @override
   Future<Result<String>> addDoctorProfile(
       Token token, DoctorProfile profile) async {
+    String endpoint = baseUrl + "/user/addProfile";
+    var header = {
+      "Content-Type": "application/json",
+      "Authorization": token.value
+    };
+    var response = await _client.post(Uri.parse(endpoint),
+        headers: header, body: profile.toJson());
+    if (response.statusCode != 200) {
+      Map map = jsonDecode(response.body);
+      print(transformError(map));
+      return Result.error(transformError(map));
+    }
+    dynamic json = jsonDecode(response.body);
+    return Result.value(json["message"]);
+  }
+
+  @override
+  Future<Result<String>> addDriverProfile(
+      Token token, DriverProfile profile) async {
     String endpoint = baseUrl + "/user/addProfile";
     var header = {
       "Content-Type": "application/json",
