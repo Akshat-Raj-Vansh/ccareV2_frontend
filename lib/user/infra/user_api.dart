@@ -47,6 +47,7 @@ class UserAPI implements UserService {
       "Content-Type": "application/json",
       "Authorization": token.value
     };
+    print(profile.toJson());
     var response = await _client.post(Uri.parse(endpoint),
         headers: header, body: profile.toJson());
     if (response.statusCode != 200) {
