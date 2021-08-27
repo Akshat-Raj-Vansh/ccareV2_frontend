@@ -1,6 +1,8 @@
 //@dart=2.9
+import 'package:ccarev2_frontend/main/infra/main_api.dart';
 import 'package:ccarev2_frontend/pages/auth/auth_page.dart';
 import 'package:ccarev2_frontend/pages/home/home_screen.dart';
+import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
 import 'package:ccarev2_frontend/state_management/profile/profile_cubit.dart';
 import 'package:ccarev2_frontend/state_management/user/user_cubit.dart';
 import 'package:ccarev2_frontend/user/domain/credential.dart';
@@ -25,6 +27,7 @@ class CompositionRoot {
   static Client client;
   static SecureClient secureClient;
   static UserAPI userAPI;
+  static MainAPI mainAPI;
   static IAuthPageAdapter pageAdapter;
   static UserService userService;
 
@@ -35,6 +38,7 @@ class CompositionRoot {
     secureClient = SecureClient(MHttpClient(client), localStore);
     baseUrl = "http://192.168.3.151:3000";
     userAPI = UserAPI(client, baseUrl);
+    mainAPI = MainAPI(client, baseUrl);
     pageAdapter = AuthPageAdapter(createHomeUI, createLoginScreen);
     // pageAdapter = AuthPageAdapter(createHomeUI, createLoginScreen);
   }
@@ -68,8 +72,7 @@ class CompositionRoot {
   }
 
   static Widget createHomeUI(UserType userType) {
-    // MainCubit mainCubit = MainCubit(localStore, mainApi);
-    // AuthCubit authCubit = AuthCubit(localStore);
+    MainCubit mainCubit = MainCubit(localStore, mainAPI);
     UserCubit userCubit = UserCubit(localStore, userAPI);
     ProfileCubit profileCubit = ProfileCubit(localStore, userAPI);
     return MultiCubitProvider(
@@ -77,7 +80,9 @@ class CompositionRoot {
         CubitProvider<UserCubit>(
           create: (context) => userCubit,
         ),
-        // CubitProvider<MainCubit>(create: (context) => mainCubit),
+        CubitProvider<MainCubit>(
+          create: (context) => mainCubit,
+        ),
         CubitProvider<ProfileCubit>(
           create: (context) => profileCubit,
         )
