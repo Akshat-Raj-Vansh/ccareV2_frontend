@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
 
 class PatientSide extends StatefulWidget {
-  const PatientSide({Key? key}) : super(key: key);
+  final MainCubit cubit;
+  const PatientSide(this.cubit);
 
   @override
   State<PatientSide> createState() => _PatientSideState();
@@ -13,18 +14,20 @@ class PatientSide extends StatefulWidget {
 class _PatientSideState extends State<PatientSide> {
   @override
   Widget build(BuildContext context) {
-    return CubitConsumer<MainCubit, MainState>(builder: (_, state) {
-      var cubit = CubitProvider.of<MainCubit>(context);
-      return _buildUI(context, cubit);
-    }, listener: (context, state) {
-      if (state is LoadingState) {
-        print("Loading State Called");
-        _showLoader();
-      } else if (state is EmergencyState) {
-        print("Emergency State Called");
-        _hideLoader();
-      }
-    });
+    return CubitConsumer<MainCubit, MainState>(
+        cubit: widget.cubit,
+        builder: (_, state) {
+          return _buildUI(context);
+        },
+        listener: (context, state) {
+          if (state is LoadingState) {
+            print("Loading State Called");
+            _showLoader();
+          } else if (state is EmergencyState) {
+            print("Emergency State Called");
+            _hideLoader();
+          }
+        });
   }
 
   _showLoader() {
@@ -44,8 +47,8 @@ class _PatientSideState extends State<PatientSide> {
     Navigator.of(context, rootNavigator: true).pop();
   }
 
-  _buildUI(BuildContext context, MainCubit cubit) => Center(
-        child: RaisedButton(
+  _buildUI(BuildContext context) => Center(
+        child: ElevatedButton(
           onPressed: () async {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               backgroundColor: Theme.of(context).accentColor,
@@ -57,9 +60,9 @@ class _PatientSideState extends State<PatientSide> {
                     .copyWith(color: Colors.white, fontSize: 16),
               ),
             ));
-            cubit.notify();
+            await widget.cubit.notify();
           },
-          child: const Text('Alert Button'),
+          child: const Text('Emergency'),
         ),
       );
 }

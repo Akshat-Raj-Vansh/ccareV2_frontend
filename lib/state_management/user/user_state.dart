@@ -50,6 +50,12 @@ class LoginSuccessState extends UserState {
   List<Object> get props => [details];
 }
 
+class SignOutSuccessState extends UserState {
+  
+  @override
+  List<Object> get props => [];
+}
+
 class ErrorState extends UserState {
   final String error;
   ErrorState(this.error);

@@ -17,7 +17,7 @@ class MainAPI extends IMainAPI {
   MainAPI(this._client, this.baseUrl);
   @override
   Future<Result<List<QuestionTree>>> getAll(Token token) async {
-    String endpoint = baseUrl + "emergency/patient/getAllQuestions";
+    String endpoint = baseUrl + "/emergency/patient/getAllQuestions";
     var header = {
       "Content-Type": "application/json",
       "Authorization": token.value
@@ -47,7 +47,8 @@ class MainAPI extends IMainAPI {
 
   @override
   Future<Result<String>> notify(Token token, Location location) async {
-    String endpoint = baseUrl + "emergency/patient/notify";
+    String endpoint = baseUrl + "/emergency/patient/notify";
+    print(endpoint);
     var header = {
       "Content-Type": "application/json",
       "Authorization": token.value
@@ -67,8 +68,9 @@ class MainAPI extends IMainAPI {
   }
 
   @override
-  Future<Result<String>> acceptPatientbyDoctor(Token token) async {
-    String endpoint = baseUrl + "emergency/doctor/acceptPatient";
+  Future<Result<String>> acceptPatientbyDoctor(
+      Token token, Token patient) async {
+    String endpoint = baseUrl + "/emergency/doctor/acceptPatient";
     var header = {
       "Content-Type": "application/json",
       "Authorization": token.value
@@ -85,8 +87,9 @@ class MainAPI extends IMainAPI {
   }
 
   @override
-  Future<Result<String>> acceptPatientbyDriver(Token token) async {
-    String endpoint = baseUrl + "emergency/driver/acceptPatient";
+  Future<Result<String>> acceptPatientbyDriver(
+      Token token, Token patient) async {
+    String endpoint = baseUrl + "/emergency/driver/acceptPatient";
     var header = {
       "Content-Type": "application/json",
       "Authorization": token.value
@@ -104,7 +107,7 @@ class MainAPI extends IMainAPI {
 
   @override
   Future<Result<String>> getAllPatients(Token token) async {
-    String endpoint = baseUrl + "emergency/doctor/getAllPatients";
+    String endpoint = baseUrl + "/emergency/doctor/getAllPatients";
     var header = {
       "Content-Type": "application/json",
       "Authorization": token.value

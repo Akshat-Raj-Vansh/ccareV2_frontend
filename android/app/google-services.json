@@ -14,14 +14,6 @@
       },
       "oauth_client": [
         {
-          "client_id": "797374976435-7i6a8mio62m57841qvmqsb1stelpjv8u.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.ccarev2_frontend",
-            "certificate_hash": "93a3d1603261fc888ed391ce1a198613f03e3fa4"
-          }
-        },
-        {
           "client_id": "797374976435-s93dig9m5p9f2qp99ugv6kt1l99bn2i8.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

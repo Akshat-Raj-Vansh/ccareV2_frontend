@@ -36,7 +36,7 @@ class CompositionRoot {
     localStore = LocalStore(sharedPreferences);
     client = Client();
     secureClient = SecureClient(MHttpClient(client), localStore);
-    baseUrl = "http://192.168.0.139:3000";
+    baseUrl = "http://192.168.3.151:3000";
     userAPI = UserAPI(client, baseUrl);
     mainAPI = MainAPI(client, baseUrl);
     pageAdapter = AuthPageAdapter(createHomeUI, createLoginScreen);
@@ -46,7 +46,7 @@ class CompositionRoot {
   static Future<Widget> start() async {
     var token = await localStore.fetch();
     var userType = await localStore.fetchUserType();
-
+    print("user type ${userType}");
     return token == null ? splashScreen() : createHomeUI(userType);
   }
 
@@ -87,7 +87,7 @@ class CompositionRoot {
           create: (context) => profileCubit,
         )
       ],
-      child: HomeScreen(userType),
+      child: HomeScreen(userType,splashScreen())
       //  TabPage(
       //   userService,
       //   TabPageAdapter(createLoginScreen),

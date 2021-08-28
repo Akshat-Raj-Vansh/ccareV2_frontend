@@ -43,11 +43,12 @@ class MainCubit extends Cubit<MainState> {
     emit(EmergencyState(result.asValue.value));
   }
 
-  acceptPatientByDoctor() async {
+  acceptPatientByDoctor(String patientID) async {
     print("Inside Accept patient by doctor");
     _startLoading();
     final token = await localStore.fetch();
-    final result = await api.acceptPatientbyDoctor(Token(token.value));
+    final result =
+        await api.acceptPatientbyDoctor(Token(token.value), Token(patientID));
     print(result);
     if (result == null) emit(ErrorState("Server Error"));
     if (result.isError) {
@@ -57,11 +58,12 @@ class MainCubit extends Cubit<MainState> {
     emit(AcceptState(result.asValue.value));
   }
 
-  acceptPatientByDriver() async {
+  acceptPatientByDriver(String patientID) async {
     print("Inside accept patient by driver");
     _startLoading();
     final token = await localStore.fetch();
-    final result = await api.acceptPatientbyDriver(Token(token.value));
+    final result =
+        await api.acceptPatientbyDriver(Token(token.value), Token(patientID));
     print(result);
     if (result == null) emit(ErrorState("Server Error"));
     if (result.isError) {
