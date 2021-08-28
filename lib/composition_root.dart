@@ -36,11 +36,10 @@ class CompositionRoot {
     localStore = LocalStore(sharedPreferences);
     client = Client();
     secureClient = SecureClient(MHttpClient(client), localStore);
-    baseUrl = "http://192.168.3.151:3000";
+    baseUrl = "http://192.168.0.139:3000";
     userAPI = UserAPI(client, baseUrl);
     mainAPI = MainAPI(client, baseUrl);
     pageAdapter = AuthPageAdapter(createHomeUI, createLoginScreen);
-    // pageAdapter = AuthPageAdapter(createHomeUI, createLoginScreen);
   }
 
   static Future<Widget> start() async {
@@ -75,23 +74,16 @@ class CompositionRoot {
     MainCubit mainCubit = MainCubit(localStore, mainAPI);
     UserCubit userCubit = UserCubit(localStore, userAPI);
     ProfileCubit profileCubit = ProfileCubit(localStore, userAPI);
-    return MultiCubitProvider(
-      providers: [
-        CubitProvider<UserCubit>(
-          create: (context) => userCubit,
-        ),
-        CubitProvider<MainCubit>(
-          create: (context) => mainCubit,
-        ),
-        CubitProvider<ProfileCubit>(
-          create: (context) => profileCubit,
-        )
-      ],
-      child: HomeScreen(userType,splashScreen())
-      //  TabPage(
-      //   userService,
-      //   TabPageAdapter(createLoginScreen),
-      // ),
-    );
+    return MultiCubitProvider(providers: [
+      CubitProvider<UserCubit>(
+        create: (context) => userCubit,
+      ),
+      CubitProvider<MainCubit>(
+        create: (context) => mainCubit,
+      ),
+      CubitProvider<ProfileCubit>(
+        create: (context) => profileCubit,
+      )
+    ], child: HomeScreen(userType, splashScreen()));
   }
 }
