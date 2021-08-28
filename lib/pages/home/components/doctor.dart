@@ -3,6 +3,7 @@ import 'package:ccarev2_frontend/state_management/main/main_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 class DoctorSide extends StatefulWidget {
   final MainCubit cubit;
   const DoctorSide(this.cubit);
@@ -12,11 +13,40 @@ class DoctorSide extends StatefulWidget {
 }
 
 class _DoctorSideState extends State<DoctorSide> {
+   Future<void> setupInteractedMessage() async {
+    // Get any messages which caused the application to open from
+    // a terminated state.
+    RemoteMessage? initialMessage =
+        await FirebaseMessaging.instance.getInitialMessage();
+
+    // If the message also contains a data property with a "type" of "chat",
+    // navigate to a chat screen
+    if (initialMessage != null) {
+      _handleMessage(initialMessage);
+    }
+
+    // Also handle any interaction when the app is in the background via a
+    // Stream listener
+    FirebaseMessaging.onMessageOpenedApp.listen(_handleMessage);
+  }
+  
+  void _handleMessage(RemoteMessage message) async  {
+    if (message.data['type'] == 'Emergency') {
+      await widget.cubit.acceptPatientByDoctor(message.data["_patientID"]);
+    }
+  }
+
+
+  @override
+  void initState() {
+    super.initState();
+    setupInteractedMessage();
+  }
   @override
   Widget build(BuildContext context) {
     return CubitConsumer<MainCubit, MainState>(builder: (_, state) {
-      var cubit = CubitProvider.of<MainCubit>(context);
-      return _buildUI(context, cubit);
+   
+      return _buildUI(context);
     }, listener: (context, state) {
       if (state is LoadingState) {
         print("Loading State Called");
@@ -48,7 +78,7 @@ class _DoctorSideState extends State<DoctorSide> {
     Navigator.of(context, rootNavigator: true).pop();
   }
 
-  _buildUI(BuildContext context, MainCubit cubit) => Center(
+  _buildUI(BuildContext buildContext) => Center(
         child: RaisedButton(
           onPressed: () async {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(

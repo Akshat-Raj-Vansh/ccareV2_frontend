@@ -78,7 +78,7 @@ class MainAPI extends IMainAPI {
       "Authorization": token.value
     };
     var response = await _client
-        .post(Uri.parse(endpoint), headers: header, body: {"json": "json"});
+        .post(Uri.parse(endpoint), headers: header, body: jsonEncode({"patID":patient.value}));
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
       print(transformError(map));

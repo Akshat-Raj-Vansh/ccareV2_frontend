@@ -10,14 +10,21 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_cubit/flutter_cubit.dart';
 
-class HomeScreen extends StatelessWidget {
+import 'package:firebase_messaging/firebase_messaging.dart';
+class HomeScreen extends StatefulWidget {
   final UserType userType;
   final Widget AuthPage;
   HomeScreen(this.userType, this.AuthPage);
 
   @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+   
+  @override
   Widget build(BuildContext context) {
-    print(userType);
+    print(widget.userType);
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -26,7 +33,7 @@ class HomeScreen extends StatelessWidget {
 
             Navigator.pushAndRemoveUntil(
                 context,
-                MaterialPageRoute(builder: (_) => this.AuthPage),
+                MaterialPageRoute(builder: (_) => this.widget.AuthPage),
                 (route) => false);
           },
           icon: Icon(
@@ -36,9 +43,9 @@ class HomeScreen extends StatelessWidget {
         ),
         title: const Text('Cardio Care'),
       ),
-      body: userType == UserType.patient
+      body: widget.userType == UserType.patient
           ? PatientSide(CubitProvider.of<MainCubit>(context))
-          : userType == UserType.doctor
+          : widget.userType == UserType.doctor
               ? DoctorSide(CubitProvider.of<MainCubit>(context))
               : DriverSide(CubitProvider.of<MainCubit>(context)),
     );
