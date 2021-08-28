@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
 
 class DoctorSide extends StatefulWidget {
-  const DoctorSide({Key? key}) : super(key: key);
+  final MainCubit cubit;
+  const DoctorSide(this.cubit);
 
   @override
   State<DoctorSide> createState() => _DoctorSideState();

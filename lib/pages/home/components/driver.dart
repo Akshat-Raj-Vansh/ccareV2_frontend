@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
 
 class DriverSide extends StatefulWidget {
-  const DriverSide({Key? key}) : super(key: key);
+  final MainCubit cubit;
+  const DriverSide(this.cubit);
 
   @override
   State<DriverSide> createState() => _DriverSideState();
