@@ -33,6 +33,8 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
   String _verificationCode = "";
   String _otp = "";
   String _phone = "";
+  String _fcmToken = "";
+
   int hex(String color) {
     return int.parse("FF" + color.toUpperCase(), radix: 16);
   }
@@ -54,6 +56,7 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
         AnimationController(vsync: this, duration: const Duration(minutes: 2));
     animationController.reverse(
         from: animationController.value == 0 ? 1.0 : animationController.value);
+    FirebaseMessaging.instance.getToken().then((value) => _fcmToken = value);
   }
 
   @override
@@ -378,8 +381,11 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
                       onChanged: (value) {
                         _otp = value;
                       },
-                      validator: (otp) =>
-                          otp.isEmpty ? "Please enter the OTP" : null),
+                      validator: (otp) => otp.isEmpty
+                          ? "Please enter the OTP"
+                          : otp.length != 6
+                              ? "Please enter a valid OTP"
+                              : null),
                   buildTimer(),
                 ],
               ),
@@ -468,7 +474,7 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
                 CubitProvider.of<UserCubit>(context).login(Credential(
                     _phone,
                     widget.userType,
-                    "fcmToken",
+                    _fcmToken,
                     Token(value.user.uid.toString())));
               }
             });
@@ -485,11 +491,7 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
               CubitProvider.of<UserCubit>(context).verifyOTP();
             });
           },
-          codeAutoRetrievalTimeout: (String verificationID) {
-            // _msg = "CODE SENT " + verificationID;
-            // _verificationCode = verificationID;
-            // CubitProvider.of<UserCubit>(context).verifyOTP();
-          },
+          codeAutoRetrievalTimeout: (String verificationID) {},
           timeout: const Duration(seconds: 120));
     } catch (e) {
       _msg = "VERIFICATION FAILED " + e.toString();
@@ -508,9 +510,12 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
           .then((value) async {
         if (value.user != null) {
           _msg = "VERIFICATION SUCCESSFUL " + value.user.uid;
-          String fcmtoken = await FirebaseMessaging.instance.getToken();
           CubitProvider.of<UserCubit>(context).login(Credential(_phone,
-              widget.userType, fcmtoken, Token(value.user.uid.toString())));
+              widget.userType, _fcmToken, Token(value.user.uid.toString())));
+        } else {
+          _msg = "VERIFICATION FAILED. INVALID OTP.";
+          _hideLoader();
+          _showMessage(_msg);
         }
       });
     } catch (e) {

@@ -1,6 +1,7 @@
 //@dart=2.9
 import 'package:ccarev2_frontend/main/infra/main_api.dart';
 import 'package:ccarev2_frontend/pages/auth/auth_page.dart';
+import 'package:ccarev2_frontend/pages/home/home_page_adapter.dart';
 import 'package:ccarev2_frontend/pages/home/home_screen.dart';
 import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
 import 'package:ccarev2_frontend/state_management/profile/profile_cubit.dart';
@@ -29,6 +30,7 @@ class CompositionRoot {
   static UserAPI userAPI;
   static MainAPI mainAPI;
   static IAuthPageAdapter pageAdapter;
+  static IHomePageAdapter homePageAdapter;
   static UserService userService;
 
   static configure() async {
@@ -74,6 +76,8 @@ class CompositionRoot {
     MainCubit mainCubit = MainCubit(localStore, mainAPI);
     UserCubit userCubit = UserCubit(localStore, userAPI);
     ProfileCubit profileCubit = ProfileCubit(localStore, userAPI);
+    homePageAdapter =
+        HomePageAdapter(userType, mainCubit, userCubit, splashScreen);
     return MultiCubitProvider(providers: [
       CubitProvider<UserCubit>(
         create: (context) => userCubit,
@@ -84,6 +88,6 @@ class CompositionRoot {
       CubitProvider<ProfileCubit>(
         create: (context) => profileCubit,
       )
-    ], child: HomeScreen(userType, splashScreen()));
+    ], child: HomeScreen(homePageAdapter));
   }
 }
