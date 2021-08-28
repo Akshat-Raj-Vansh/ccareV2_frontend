@@ -63,7 +63,6 @@ class LocalStore implements ILocalStore {
   
     if (data != null) {
       Details details = Details.fromMap(jsonDecode(data));
-      print(details.user_type.toLowerCase());
       UserType.values.forEach((element) {print(element.toString());});
      return Future.value(UserType.values
           .firstWhere((element) => element.toString() == "UserType."+details.user_type.toLowerCase()));
