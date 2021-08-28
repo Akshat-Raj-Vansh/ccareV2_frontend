@@ -21,7 +21,7 @@
 ### In Progress
 - [ ] Main API
     - [ ] Emergency API
-    - [x] Questinnare API
+    - [x] Questionnaire API
 
 - [ ] Profile Frontend
     - [x] Doctor
