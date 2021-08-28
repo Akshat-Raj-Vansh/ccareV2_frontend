@@ -15,7 +15,7 @@
         - [ ] Questinnare
         - [ ] Home Display
         - [ ] Notification Hander
-    - [ ] Home Adapter
+    - [X] Home Adapter
 
 
 ### In Progress
