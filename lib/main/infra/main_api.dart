@@ -38,10 +38,11 @@ class MainAPI extends IMainAPI {
 
   transformError(Map map) {
     var contents = map["error"] ?? map['errors'];
-    print(contents);
+   print(contents);
     if (contents is String) return contents;
-    var errStr =
-        contents.fold('', (prev, ele) => prev + ele.values.first + '\n');
+    String errStr ="ERRORS";
+      (contents as Map<dynamic,dynamic>).forEach((key, value) {print("${key} : ${value}\n");});
+ 
     return errStr;
   }
 
@@ -59,6 +60,7 @@ class MainAPI extends IMainAPI {
       body: location.toJson(),
     );
     if (response.statusCode != 200) {
+      print("error");
       Map map = jsonDecode(response.body);
       print(transformError(map));
       return Result.error(transformError(map));

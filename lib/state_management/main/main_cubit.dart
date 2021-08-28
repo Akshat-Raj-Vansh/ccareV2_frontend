@@ -33,7 +33,7 @@ class MainCubit extends Cubit<MainState> {
     _startLoading();
     final token = await localStore.fetch();
     final result = await api.notify(
-        Token(token.value), Location(latitude: 70, longitude: 40));
+        Token(token.value), Location(latitude: 32.82, longitude: 76.14));
     print(result);
     if (result == null) emit(ErrorState("Server Error"));
     if (result.isError) {
