@@ -57,7 +57,7 @@ class _PatientSideState extends State<PatientSide> {
                     .copyWith(color: Colors.white, fontSize: 16),
               ),
             ));
-            //  cubit.api.notify(token);
+            cubit.notify();
           },
           child: const Text('Alert Button'),
         ),

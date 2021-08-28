@@ -2,6 +2,7 @@
 import 'package:async/src/result/result.dart';
 import 'package:ccarev2_frontend/cache/ilocal_store.dart';
 import 'package:ccarev2_frontend/main/domain/main_api_contract.dart';
+import 'package:ccarev2_frontend/user/domain/location.dart';
 import 'package:ccarev2_frontend/user/domain/token.dart';
 import 'package:cubit/cubit.dart';
 import 'main_state.dart';
@@ -15,9 +16,9 @@ class MainCubit extends Cubit<MainState> {
     print("inside");
     _startLoading();
 
-    final token = await this.localStore.fetch();
+    final token = await localStore.fetch();
 
-    final result = await this.api.getAll(Token(token.value));
+    final result = await api.getAll(Token(token.value));
     print(result);
     if (result == null) emit(ErrorState("Server Error"));
     if (result.isError) {
@@ -31,7 +32,8 @@ class MainCubit extends Cubit<MainState> {
     print("Inside Notify");
     _startLoading();
     final token = await localStore.fetch();
-    final result = await api.notify(Token(token.value));
+    final result = await api.notify(
+        Token(token.value), Location(latitude: 70, longitude: 40));
     print(result);
     if (result == null) emit(ErrorState("Server Error"));
     if (result.isError) {
