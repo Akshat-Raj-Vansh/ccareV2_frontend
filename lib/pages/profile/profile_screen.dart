@@ -1,23 +1,17 @@
 //@dart=2.9
 import 'package:ccarev2_frontend/pages/profile/profile_page_adapter.dart';
 import 'package:ccarev2_frontend/state_management/profile/profile_cubit.dart';
+import 'package:ccarev2_frontend/state_management/profile/profile_state.dart';
 import 'package:ccarev2_frontend/user/domain/credential.dart';
-import 'package:ccarev2_frontend/user/domain/location.dart';
-import 'package:ccarev2_frontend/user/domain/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
-import 'package:location/location.dart' as lloc;
-import 'package:ccarev2_frontend/user/domain/location.dart' as loc;
-import '../../user/domain/details.dart';
-import '../../components/default_button.dart';
-import '../auth/auth_page_adapter.dart';
-import '../../utils/constants.dart';
 import '../../utils/size_config.dart';
 
 class ProfileScreen extends StatefulWidget {
+  final ProfileCubit cubit;
   final IProfilePageAdapter pageAdapter;
-  final UserType user;
-  const ProfileScreen(this.pageAdapter, this.user);
+  final UserType userType;
+  const ProfileScreen(this.pageAdapter, this.userType, this.cubit);
 
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
@@ -48,9 +42,56 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  _buildUI(BuildContext context) {
-    return Expanded(
-        child: widget.pageAdapter.loadProfiles(context, widget.user));
+  _buildUI(BuildContext context) =>
+      CubitConsumer<ProfileCubit, ProfileState>(builder: (_, state) {
+        return Expanded(
+            child: widget.pageAdapter
+                .loadProfiles(context, widget.userType, widget.cubit));
+      }, listener: (context, state) {
+        if (state is LoadingState) {
+          print("Loading State Called");
+          _showLoader();
+        } else if (state is AddProfileState) {
+          print("Add Profile State Called");
+          _hideLoader();
+          _showMessage(state.message);
+          widget.pageAdapter.onProfileCompletion(context, widget.userType);
+        } else if (state is ErrorState) {
+          print('Error State Called');
+          _hideLoader();
+          _showMessage(state.error);
+        }
+      });
+
+  _showLoader() {
+    var alert = const AlertDialog(
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      content: Center(
+          child: CircularProgressIndicator(
+        backgroundColor: Colors.green,
+      )),
+    );
+
+    showDialog(
+        context: context, barrierDismissible: true, builder: (_) => alert);
+  }
+
+  _hideLoader() {
+    Navigator.of(context, rootNavigator: true).pop();
+  }
+
+  _showMessage(String msg) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      backgroundColor: Theme.of(context).accentColor,
+      content: Text(
+        msg,
+        style: Theme.of(context)
+            .textTheme
+            .caption
+            .copyWith(color: Colors.white, fontSize: 16),
+      ),
+    ));
   }
 
   _showLogo(BuildContext context) => Container(
@@ -81,225 +122,4 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ],
         ),
       );
-
-  // _buildDoctorProfile(BuildContext context) => Form(
-  //       key: _formKeyDoctor,
-  //       child: Column(
-  //         crossAxisAlignment: CrossAxisAlignment.start,
-  //         children: [
-  //           SizedBox(height: getProportionateScreenHeight(20)),
-  //           TextFormField(
-  //             keyboardType: TextInputType.text,
-  //             onSaved: (newValue) => name = newValue,
-  //             validator: (value) => value.isEmpty ? "Name is required" : null,
-  //             decoration: const InputDecoration(
-  //               labelText: "Full Name",
-  //               hintText: "Enter your Full Name",
-  //               floatingLabelBehavior: FloatingLabelBehavior.always,
-  //             ),
-  //           ),
-  //           SizedBox(height: getProportionateScreenHeight(10)),
-  //           TextFormField(
-  //             keyboardType: TextInputType.text,
-  //             onSaved: (newValue) => specialization = newValue.toUpperCase(),
-  //             validator: (value) =>
-  //                 value.isEmpty ? "Specialization is required" : null,
-  //             decoration: const InputDecoration(
-  //               labelText: "Specialization",
-  //               hintText: "Enter your Specialization",
-  //               floatingLabelBehavior: FloatingLabelBehavior.always,
-  //             ),
-  //           ),
-  //           SizedBox(height: getProportionateScreenHeight(10)),
-  //           TextFormField(
-  //             keyboardType: TextInputType.text,
-  //             onSaved: (newValue) => uniqueCode = newValue.toUpperCase(),
-  //             validator: (value) =>
-  //                 value.isEmpty ? "Unique Code is required" : null,
-  //             decoration: const InputDecoration(
-  //               labelText: "Unique Code",
-  //               hintText: "Enter your Unique Code",
-  //               floatingLabelBehavior: FloatingLabelBehavior.always,
-  //             ),
-  //           ),
-  //           SizedBox(height: getProportionateScreenHeight(10)),
-  //           TextFormField(
-  //             keyboardType: TextInputType.text,
-  //             onSaved: (newValue) => email = newValue.toLowerCase(),
-  //             validator: (value) => value.isEmpty || !value.contains('@')
-  //                 ? "Email is required"
-  //                 : null,
-  //             decoration: const InputDecoration(
-  //               labelText: "Email",
-  //               hintText: "Enter your Email",
-  //               floatingLabelBehavior: FloatingLabelBehavior.always,
-  //             ),
-  //           ),
-  //           const Spacer(flex: 1),
-  //           Center(
-  //             child: DefaultButton(
-  //               text: "Save",
-  //               press: () async {
-  //                 if (_formKeyDoctor.currentState.validate()) {
-  //                   _formKeyDoctor.currentState.save();
-  //                   lloc.LocationData locationData = await _getLocation();
-  //                   var profile = DoctorProfile(
-  //                       name: name,
-  //                       specialization: specialization,
-  //                       uniqueCode: uniqueCode,
-  //                       email: email,
-  //                       location: loc.Location(
-  //                           latitude: locationData.latitude,
-  //                           longitude: locationData.longitude));
-  //                   print(profile.toString());
-  //                   widget.cubit.addDoctorProfile(profile);
-  //                 } else {
-  //                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-  //                     content: Text("All Fields are required"),
-  //                   ));
-  //                 }
-  //               },
-  //             ),
-  //           ),
-  //           SizedBox(height: 30),
-  //         ],
-  //       ),
-  //     );
-
-  // _buildPatientProfile(BuildContext context) => Form(
-  //       key: _formKeyPatient,
-  //       child: Column(
-  //         crossAxisAlignment: CrossAxisAlignment.start,
-  //         children: [
-  //           SizedBox(height: getProportionateScreenHeight(20)),
-  //           TextFormField(
-  //             keyboardType: TextInputType.text,
-  //             onSaved: (newValue) => name = newValue,
-  //             validator: (value) => value.isEmpty ? "Name is required" : null,
-  //             decoration: const InputDecoration(
-  //               labelText: "Full Name",
-  //               hintText: "Enter your Full Name",
-  //               floatingLabelBehavior: FloatingLabelBehavior.always,
-  //             ),
-  //           ),
-  //           SizedBox(height: getProportionateScreenHeight(10)),
-  //           TextFormField(
-  //             keyboardType: TextInputType.number,
-  //             onSaved: (newValue) => age = int.parse(newValue),
-  //             validator: (value) => value.isEmpty ? "Age is required" : null,
-  //             decoration: const InputDecoration(
-  //               labelText: "Age ",
-  //               hintText: "Enter your Age",
-  //               floatingLabelBehavior: FloatingLabelBehavior.always,
-  //             ),
-  //           ),
-  //           SizedBox(height: getProportionateScreenHeight(10)),
-  //           TextFormField(
-  //             keyboardType: TextInputType.text,
-  //             onSaved: (newValue) => gender = newValue.toUpperCase(),
-  //             validator: (value) => value.isEmpty ? "Gender is required" : null,
-  //             decoration: const InputDecoration(
-  //               labelText: "Gender",
-  //               hintText: "Enter your Gender",
-  //               floatingLabelBehavior: FloatingLabelBehavior.always,
-  //             ),
-  //           ),
-  //           SizedBox(height: getProportionateScreenHeight(10)),
-  //           Center(
-  //             child: DefaultButton(
-  //               text: "Save",
-  //               press: () {
-  //                 if (_formKeyPatient.currentState.validate()) {
-  //                   _formKeyPatient.currentState.save();
-  //                   var profile =
-  //                       PatientProfile(name: name, gender: gender, age: age);
-  //                   print(profile.toString());
-  //                   widget.cubit.addPatientProfile(profile);
-  //                 } else {
-  //                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-  //                     content: Text("All Fields are required"),
-  //                   ));
-  //                 }
-  //               },
-  //             ),
-  //           ),
-  //         ],
-  //       ),
-  //     );
-
-  // _buildDriverProfile(BuildContext context) => Form(
-  //       key: _formKeyDriver,
-  //       child: Column(
-  //         crossAxisAlignment: CrossAxisAlignment.start,
-  //         children: [
-  //           SizedBox(height: getProportionateScreenHeight(20)),
-  //           TextFormField(
-  //             keyboardType: TextInputType.text,
-  //             onSaved: (newValue) => name = newValue,
-  //             validator: (value) => value.isEmpty ? "Name is required" : null,
-  //             decoration: const InputDecoration(
-  //               labelText: "Full Name",
-  //               hintText: "Enter your Full Name",
-  //               floatingLabelBehavior: FloatingLabelBehavior.always,
-  //             ),
-  //           ),
-  //           SizedBox(height: getProportionateScreenHeight(10)),
-  //           TextFormField(
-  //             keyboardType: TextInputType.text,
-  //             onSaved: (newValue) => uniqueCode = newValue.toUpperCase(),
-  //             validator: (value) =>
-  //                 value.isEmpty ? "Unique Code is required" : null,
-  //             decoration: const InputDecoration(
-  //               labelText: "Unique Code",
-  //               hintText: "Enter your Unique Code",
-  //               floatingLabelBehavior: FloatingLabelBehavior.always,
-  //             ),
-  //           ),
-  //           SizedBox(height: getProportionateScreenHeight(10)),
-  //           TextFormField(
-  //             keyboardType: TextInputType.text,
-  //             onSaved: (newValue) => plateNumber = newValue.toUpperCase(),
-  //             validator: (value) =>
-  //                 value.isEmpty ? "Plate Number is required" : null,
-  //             decoration: const InputDecoration(
-  //               labelText: "Plate Number",
-  //               hintText: "Enter your Plate Number",
-  //               floatingLabelBehavior: FloatingLabelBehavior.always,
-  //             ),
-  //           ),
-  //           const Spacer(flex: 1),
-  //           Center(
-  //             child: DefaultButton(
-  //               text: "Save",
-  //               press: () async {
-  //                 if (_formKeyDoctor.currentState.validate()) {
-  //                   _formKeyDoctor.currentState.save();
-  //                   lloc.LocationData locationData = await _getLocation();
-  //                   var profile = DriverProfile(
-  //                       name: name,
-  //                       uniqueCode: uniqueCode,
-  //                       plateNumber: plateNumber,
-  //                       location: loc.Location(
-  //                           latitude: locationData.latitude,
-  //                           longitude: locationData.longitude));
-  //                   print(profile.toString());
-  //                   widget.cubit.addDriverProfile(profile);
-  //                 } else {
-  //                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-  //                     content: Text("All Fields are required"),
-  //                   ));
-  //                 }
-  //               },
-  //             ),
-  //           ),
-  //           const SizedBox(height: 30),
-  //         ],
-  //       ),
-  //     );
-
-  // Future<lloc.LocationData> _getLocation() async {
-  //   lloc.LocationData _location = await lloc.Location().getLocation();
-  //   print(_location.latitude.toString() + "," + _location.longitude.toString());
-  //   return _location;
-  // }
 }

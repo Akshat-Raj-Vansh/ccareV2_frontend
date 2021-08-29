@@ -9,17 +9,19 @@ import 'package:location/location.dart' as lloc;
 import '../../../user/domain/location.dart' as loc;
 
 class DoctorProfileScreen extends StatefulWidget {
-  const DoctorProfileScreen();
+  final ProfileCubit cubit;
+  const DoctorProfileScreen(this.cubit);
 
   @override
   State<DoctorProfileScreen> createState() => _DoctorProfileScreenState();
 }
 
 class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
+  final _formKeyDoctor = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
-    final _formKeyDoctor = GlobalKey<FormState>();
-    final cubit = CubitProvider.of<ProfileCubit>(context);
+    var cubit = CubitProvider.of<ProfileCubit>(context);
     String name;
     String uniqueCode;
     String specialization;

@@ -1,20 +1,22 @@
 //@dart=2.9
-import 'package:ccarev2_frontend/main/infra/main_api.dart';
-import 'package:ccarev2_frontend/pages/auth/auth_page.dart';
-import 'package:ccarev2_frontend/pages/home/home_page_adapter.dart';
-import 'package:ccarev2_frontend/pages/home/home_screen.dart';
-import 'package:ccarev2_frontend/pages/profile/profile_page_adapter.dart';
-import 'package:ccarev2_frontend/pages/profile/profile_screen.dart';
-import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
-import 'package:ccarev2_frontend/state_management/profile/profile_cubit.dart';
-import 'package:ccarev2_frontend/state_management/user/user_cubit.dart';
-import 'package:ccarev2_frontend/user/domain/credential.dart';
-import 'package:ccarev2_frontend/user/domain/details.dart';
 import 'package:common/infra/MHttpClient.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart';
+
+import '../../main/infra/main_api.dart';
+import '../../pages/auth/auth_page.dart';
+import '../../pages/home/components/doctor.dart';
+import '../../pages/home/components/driver.dart';
+import '../../pages/home/components/patient.dart';
+import '../../pages/home/home_page_adapter.dart';
+import '../../pages/profile/profile_page_adapter.dart';
+import '../../pages/profile/profile_screen.dart';
+import '../../state_management/main/main_cubit.dart';
+import '../../state_management/profile/profile_cubit.dart';
+import '../../state_management/user/user_cubit.dart';
+import '../../user/domain/credential.dart';
 
 import '../cache/ilocal_store.dart';
 import '../cache/local_store.dart';
@@ -45,15 +47,23 @@ class CompositionRoot {
     baseUrl = "http://192.168.0.139:3000";
     userAPI = UserAPI(client, baseUrl);
     mainAPI = MainAPI(client, baseUrl);
-    profilePageAdapter = ProfilePageAdapter(createHomeUI, createProfileScreen);
+    homePageAdapter = HomePageAdapter(createPatientHomeUI, createDoctorHomeUI,
+        createDriverHomeUI, splashScreen);
+    profilePageAdapter =
+        ProfilePageAdapter(homePageAdapter, createProfileScreen);
     authPageAdapter = AuthPageAdapter(profilePageAdapter, createLoginScreen);
   }
 
   static Future<Widget> start() async {
     var token = await localStore.fetch();
+    var isnewUser = await localStore.fetchNewUser();
     var userType = await localStore.fetchUserType();
     print("user type ${userType}");
-    return token == null ? splashScreen() : createHomeUI(userType);
+    return token == null
+        ? splashScreen()
+        : isnewUser
+            ? createProfileScreen(userType)
+            : createHomeUI(userType);
   }
 
   static Widget splashScreen() {
@@ -76,6 +86,15 @@ class CompositionRoot {
     );
   }
 
+  static Widget createHomeUI(UserType userType) {
+    if (userType == UserType.patient)
+      return createPatientHomeUI();
+    else if (userType == UserType.doctor)
+      return createDoctorHomeUI();
+    else
+      return createDriverHomeUI();
+  }
+
   static Widget createProfileScreen(UserType userType) {
     UserCubit userCubit = UserCubit(localStore, userAPI);
     ProfileCubit profileCubit = ProfileCubit(localStore, userAPI);
@@ -85,16 +104,13 @@ class CompositionRoot {
         CubitProvider<UserCubit>(create: (context) => userCubit),
         CubitProvider<ProfileCubit>(create: (context) => profileCubit),
       ],
-      child: ProfileScreen(profilePageAdapter, userType),
+      child: ProfileScreen(profilePageAdapter, userType, profileCubit),
     );
   }
 
-  static Widget createHomeUI(UserType userType) {
+  static Widget createPatientHomeUI() {
     MainCubit mainCubit = MainCubit(localStore, mainAPI);
     UserCubit userCubit = UserCubit(localStore, userAPI);
-    ProfileCubit profileCubit = ProfileCubit(localStore, userAPI);
-    homePageAdapter =
-        HomePageAdapter(userType, mainCubit, userCubit, splashScreen);
     return MultiCubitProvider(providers: [
       CubitProvider<UserCubit>(
         create: (context) => userCubit,
@@ -102,9 +118,32 @@ class CompositionRoot {
       CubitProvider<MainCubit>(
         create: (context) => mainCubit,
       ),
-      CubitProvider<ProfileCubit>(
-        create: (context) => profileCubit,
-      )
-    ], child: HomeScreen(homePageAdapter));
+    ], child: PatientHomeUI(mainCubit, userCubit, homePageAdapter));
+  }
+
+  static Widget createDoctorHomeUI() {
+    MainCubit mainCubit = MainCubit(localStore, mainAPI);
+    UserCubit userCubit = UserCubit(localStore, userAPI);
+    return MultiCubitProvider(providers: [
+      CubitProvider<UserCubit>(
+        create: (context) => userCubit,
+      ),
+      CubitProvider<MainCubit>(
+        create: (context) => mainCubit,
+      ),
+    ], child: DoctorHomeUI(mainCubit, userCubit, homePageAdapter));
+  }
+
+  static Widget createDriverHomeUI() {
+    MainCubit mainCubit = MainCubit(localStore, mainAPI);
+    UserCubit userCubit = UserCubit(localStore, userAPI);
+    return MultiCubitProvider(providers: [
+      CubitProvider<UserCubit>(
+        create: (context) => userCubit,
+      ),
+      CubitProvider<MainCubit>(
+        create: (context) => mainCubit,
+      ),
+    ], child: DriverHomeUI(mainCubit, userCubit, homePageAdapter));
   }
 }

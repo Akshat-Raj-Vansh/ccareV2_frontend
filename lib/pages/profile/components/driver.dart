@@ -4,22 +4,21 @@ import 'package:ccarev2_frontend/state_management/profile/profile_cubit.dart';
 import 'package:ccarev2_frontend/user/domain/profile.dart';
 import 'package:ccarev2_frontend/utils/size_config.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_cubit/flutter_cubit.dart';
 import 'package:location/location.dart' as lloc;
 import '../../../user/domain/location.dart' as loc;
 
 class DriverProfileScreen extends StatefulWidget {
-  const DriverProfileScreen();
+  final ProfileCubit cubit;
+  const DriverProfileScreen(this.cubit);
 
   @override
   State<DriverProfileScreen> createState() => _DriverProfileScreenState();
 }
 
 class _DriverProfileScreenState extends State<DriverProfileScreen> {
+  final _formKeyDriver = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    final _formKeyDriver = GlobalKey<FormState>();
-    final cubit = CubitProvider.of<ProfileCubit>(context);
     String name;
     String uniqueCode;
     String plateNumber;
@@ -79,7 +78,7 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
                           latitude: locationData.latitude,
                           longitude: locationData.longitude));
                   print(profile.toString());
-                  cubit.addDriverProfile(profile);
+                  widget.cubit.addDriverProfile(profile);
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                     content: Text("All Fields are required"),
