@@ -2,8 +2,8 @@
 
 ### Bugs
 
-- [ ] Screen BlackOut on empty otp field
-- [ ] Doesn't check the new_user field while signup. Multiple profiles are created.
+- [x] Screen BlackOut on empty otp field
+- [x] Doesn't check the new_user field while signup. Multiple profiles are created.
 
 ### Todo
 
@@ -31,7 +31,7 @@
   - [x] Doctor
   - [x] Patient
   - [x] Driver
-  - [ ] Profile Adapter
+  - [x] Profile Adapter
 
 ### Done
 
