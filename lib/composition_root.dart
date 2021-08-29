@@ -3,10 +3,13 @@ import 'package:ccarev2_frontend/main/infra/main_api.dart';
 import 'package:ccarev2_frontend/pages/auth/auth_page.dart';
 import 'package:ccarev2_frontend/pages/home/home_page_adapter.dart';
 import 'package:ccarev2_frontend/pages/home/home_screen.dart';
+import 'package:ccarev2_frontend/pages/profile/profile_page_adapter.dart';
+import 'package:ccarev2_frontend/pages/profile/profile_screen.dart';
 import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
 import 'package:ccarev2_frontend/state_management/profile/profile_cubit.dart';
 import 'package:ccarev2_frontend/state_management/user/user_cubit.dart';
 import 'package:ccarev2_frontend/user/domain/credential.dart';
+import 'package:ccarev2_frontend/user/domain/details.dart';
 import 'package:common/infra/MHttpClient.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
@@ -29,7 +32,8 @@ class CompositionRoot {
   static SecureClient secureClient;
   static UserAPI userAPI;
   static MainAPI mainAPI;
-  static IAuthPageAdapter pageAdapter;
+  static IAuthPageAdapter authPageAdapter;
+  static IProfilePageAdapter profilePageAdapter;
   static IHomePageAdapter homePageAdapter;
   static UserService userService;
 
@@ -41,7 +45,8 @@ class CompositionRoot {
     baseUrl = "http://192.168.0.139:3000";
     userAPI = UserAPI(client, baseUrl);
     mainAPI = MainAPI(client, baseUrl);
-    pageAdapter = AuthPageAdapter(createHomeUI, createLoginScreen);
+    profilePageAdapter = ProfilePageAdapter(createHomeUI, createProfileScreen);
+    authPageAdapter = AuthPageAdapter(profilePageAdapter, createLoginScreen);
   }
 
   static Future<Widget> start() async {
@@ -52,7 +57,7 @@ class CompositionRoot {
   }
 
   static Widget splashScreen() {
-    return SplashScreen(pageAdapter);
+    return SplashScreen(authPageAdapter);
   }
 
   static Widget createLoginScreen(UserType userType) {
@@ -65,10 +70,22 @@ class CompositionRoot {
         CubitProvider<ProfileCubit>(create: (context) => profileCubit),
       ],
       child: AuthPage(
-        userAPI: userAPI,
-        pageAdatper: pageAdapter,
         userType: userType,
+        pageAdatper: authPageAdapter,
       ),
+    );
+  }
+
+  static Widget createProfileScreen(UserType userType) {
+    UserCubit userCubit = UserCubit(localStore, userAPI);
+    ProfileCubit profileCubit = ProfileCubit(localStore, userAPI);
+
+    return MultiCubitProvider(
+      providers: [
+        CubitProvider<UserCubit>(create: (context) => userCubit),
+        CubitProvider<ProfileCubit>(create: (context) => profileCubit),
+      ],
+      child: ProfileScreen(profilePageAdapter, userType),
     );
   }
 

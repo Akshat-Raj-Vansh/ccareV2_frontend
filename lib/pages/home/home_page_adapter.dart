@@ -35,10 +35,6 @@ class HomePageAdapter extends IHomePageAdapter {
 
   @override
   Widget onLoginSuccess(BuildContext context) {
-    // Navigator.pushAndRemoveUntil(
-    //     context,
-    //     MaterialPageRoute(builder: (context) => getScreen()),
-    //     (Route<dynamic> route) => false);
     return getScreen();
   }
 

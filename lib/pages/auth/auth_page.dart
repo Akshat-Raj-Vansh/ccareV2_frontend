@@ -1,5 +1,6 @@
 //@dart=2.9
-import 'package:ccarev2_frontend/pages/profile/profile_update_screen.dart';
+import 'package:ccarev2_frontend/pages/profile/profile_page_adapter.dart';
+import 'package:ccarev2_frontend/pages/profile/profile_screen.dart';
 import 'package:ccarev2_frontend/pages/splash/splash_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -17,11 +18,9 @@ import '../../utils/size_config.dart';
 import 'package:flutter/material.dart';
 
 class AuthPage extends StatefulWidget {
-  final UserAPI userAPI;
   final IAuthPageAdapter pageAdatper;
   final UserType userType;
   AuthPage({
-    this.userAPI,
     this.pageAdatper,
     this.userType,
   });
@@ -101,13 +100,15 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
                       } else if (state is LoginSuccessState) {
                         print("Login Success State Called");
                         _hideLoader();
-                        var cubit = CubitProvider.of<ProfileCubit>(context);
+                        // var cubit = CubitProvider.of<ProfileCubit>(context);
                         state.details.newUser
-                            ? Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => ProfileUpdateScreen(
-                                        cubit, state.details)))
+                            ? widget.pageAdatper
+                                .onAuthSuccess(context, widget.userType)
+                            // Navigator.push(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //         builder: (context) =>
+                            //             ProfileScreen(cubit, state.details)))
                             : widget.pageAdatper
                                 .onAuthSuccess(context, widget.userType);
                         print(state.details.toString());
@@ -240,7 +241,6 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
           controller: _controller,
           physics: NeverScrollableScrollPhysics(),
           children: [_phoneForm(context, cubit), _otpForm(context, cubit)],
-          // _otpForm(context, cubit, userAPI)
         ),
       );
 

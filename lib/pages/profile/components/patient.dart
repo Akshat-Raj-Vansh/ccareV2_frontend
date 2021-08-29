@@ -1,15 +1,24 @@
 //@dart=2.9
 import 'package:ccarev2_frontend/components/default_button.dart';
+import 'package:ccarev2_frontend/state_management/profile/profile_cubit.dart';
 import 'package:ccarev2_frontend/user/domain/profile.dart';
 import 'package:ccarev2_frontend/utils/size_config.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_cubit/flutter_cubit.dart';
 
-class PatientProfileScreen extends StatelessWidget {
+class PatientProfileScreen extends StatefulWidget {
   const PatientProfileScreen();
 
   @override
+  State<PatientProfileScreen> createState() => _PatientProfileScreenState();
+}
+
+class _PatientProfileScreenState extends State<PatientProfileScreen> {
+  @override
   Widget build(BuildContext context) {
     final _formKeyPatient = GlobalKey<FormState>();
+
+    final cubit = CubitProvider.of<ProfileCubit>(context);
     String name;
     int age;
     String gender;
@@ -61,7 +70,7 @@ class PatientProfileScreen extends StatelessWidget {
                   var profile =
                       PatientProfile(name: name, gender: gender, age: age);
                   print(profile.toString());
-                  //    widget.cubit.addPatientProfile(profile);
+                  cubit.addPatientProfile(profile);
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                     content: Text("All Fields are required"),

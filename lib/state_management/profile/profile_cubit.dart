@@ -52,19 +52,6 @@ class ProfileCubit extends Cubit<ProfileState> {
     emit(AddProfileState(result.asValue.value));
   }
 
-  // getProfile(PatientProfile profile) async {
-  //   _startLoading();
-
-  //   final token = await this.localStore.fetch();
-  //   final result = await api.getPatientProfile(Token(token.value));
-  //   if (result == null) emit(ErrorState("Server Error"));
-  //   if (result.isError) {
-  //     emit(ErrorState(result.asError.error));
-  //     return;
-  //   }
-  //   emit(ProfileGetState(result.asValue.value));
-  // }
-
   void _startLoading() {
     emit(LoadingState());
   }

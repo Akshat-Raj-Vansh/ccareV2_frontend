@@ -18,11 +18,12 @@
     - [ ] Questinnare
     - [ ] Home Display
     - [ ] Notification Hander
-  - [X] Home Adapter
+  - [x] Home Adapter
 
 ### In Progress
 
 - [ ] Main API
+
   - [ ] Emergency API
   - [x] Questionnaire API
 

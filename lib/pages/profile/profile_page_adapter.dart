@@ -1,31 +1,50 @@
+import 'package:ccarev2_frontend/pages/profile/components/doctor.dart';
+import 'package:ccarev2_frontend/pages/profile/components/driver.dart';
+import 'package:ccarev2_frontend/pages/profile/components/patient.dart';
+import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
+import 'package:ccarev2_frontend/state_management/profile/profile_cubit.dart';
+import 'package:ccarev2_frontend/user/domain/credential.dart';
+import 'package:ccarev2_frontend/user/domain/details.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:location/location.dart';
-import '../../pages/home/components/driver.dart';
-import '../../pages/home/components/doctor.dart';
-import '../../pages/home/components/patient.dart';
-import '../../user/domain/credential.dart';
-import '../../state_management/user/user_cubit.dart';
-import '../../state_management/main/main_cubit.dart';
 
 abstract class IProfilePageAdapter {
-  void loadProfile(BuildContext context);
-  void saveProfile(BuildContext context);
+  void onProfileCompletion(BuildContext context, UserType userType);
+  Widget loadProfiles(BuildContext context, UserType userType);
+  void onLoginSuccess(BuildContext context, UserType userType);
 }
 
 class ProfilePageAdapter extends IProfilePageAdapter {
-  final UserType userType;
-  final UserCubit userCubit;
+  final Widget Function(UserType userType) homePage;
+  final Widget Function(UserType userType) profilePage;
 
-  ProfilePageAdapter(this.userType, this.userCubit);
+  ProfilePageAdapter(this.homePage, this.profilePage);
 
   @override
-  void saveProfile(BuildContext context) {
-    // TODO: implement saveProfile
+  void onProfileCompletion(BuildContext context, UserType userType) {
+    Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => homePage(userType)),
+        (Route<dynamic> route) => false);
   }
 
   @override
-  void loadProfile(BuildContext context) {
-    // TODO: implement loadProfile
+  void onLoginSuccess(BuildContext context, UserType userType) {
+    Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => profilePage(userType)),
+        (Route<dynamic> route) => false);
+  }
+
+  @override
+  Widget loadProfiles(BuildContext context, UserType userType) {
+    switch (userType) {
+      case UserType.patient:
+        return PatientProfileScreen();
+      case UserType.doctor:
+        return DoctorProfileScreen();
+      default:
+        return DriverProfileScreen();
+    }
   }
 }

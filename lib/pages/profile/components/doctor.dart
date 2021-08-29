@@ -1,17 +1,25 @@
 //@dart=2.9
 import 'package:ccarev2_frontend/components/default_button.dart';
+import 'package:ccarev2_frontend/state_management/profile/profile_cubit.dart';
 import 'package:ccarev2_frontend/user/domain/profile.dart';
 import 'package:ccarev2_frontend/utils/size_config.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_cubit/flutter_cubit.dart';
 import 'package:location/location.dart' as lloc;
 import '../../../user/domain/location.dart' as loc;
 
-class DoctorProfileScreen extends StatelessWidget {
+class DoctorProfileScreen extends StatefulWidget {
   const DoctorProfileScreen();
 
   @override
+  State<DoctorProfileScreen> createState() => _DoctorProfileScreenState();
+}
+
+class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
+  @override
   Widget build(BuildContext context) {
     final _formKeyDoctor = GlobalKey<FormState>();
+    final cubit = CubitProvider.of<ProfileCubit>(context);
     String name;
     String uniqueCode;
     String specialization;
@@ -86,7 +94,7 @@ class DoctorProfileScreen extends StatelessWidget {
                           latitude: locationData.latitude,
                           longitude: locationData.longitude));
                   print(profile.toString());
-                  // widget.cubit.addDoctorProfile(profile);
+                  cubit.addDoctorProfile(profile);
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                     content: Text("All Fields are required"),
