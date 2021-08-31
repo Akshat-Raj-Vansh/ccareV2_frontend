@@ -31,6 +31,7 @@ dependencies:
   firebase_auth: ^3.0.2
   firebase_core: ^1.5.0
   firebase_messaging: ^10.0.4
+  flutter_local_notifications: ^8.1.1+1
   flutter:
     sdk: flutter
   location: ^4.3.0

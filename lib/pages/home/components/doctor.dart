@@ -32,6 +32,7 @@ class _DoctorSideState extends State<DoctorSide> {
   
   void _handleMessage(RemoteMessage message) async  {
     if (message.data['type'] == 'Emergency') {
+      print(message.data);
       await widget.cubit.acceptPatientByDoctor(message.data["_patientID"]);
     }
   }
