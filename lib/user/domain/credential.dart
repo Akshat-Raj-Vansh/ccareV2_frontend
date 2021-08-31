@@ -15,7 +15,7 @@ class Credential {
           ? "PATIENT"
           : type == UserType.doctor
               ? "DOCTOR"
-              : "AMBULANCE",
+              : "DRIVER",
       'fcmToken': fcmToken,
       'fireBaseToken': token.value,
     };
@@ -30,7 +30,7 @@ class Credential {
           ? UserType.doctor
           : map['user_type'] == 'PATIENT'
               ? UserType.patient
-              : UserType.ambulance,
+              : UserType.driver,
       map['fcmToken'],
       Token(map["fireBaseToken"]),
     );
@@ -39,4 +39,4 @@ class Credential {
       Credential.fromMap(json.decode(source));
 }
 
-enum UserType { doctor, patient, ambulance }
+enum UserType { doctor, patient, driver }

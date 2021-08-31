@@ -23,12 +23,12 @@ class ProfileCubit extends Cubit<ProfileState> {
       emit(ErrorState(result.asError.error));
       return;
     }
+    await this.localStore.updateDetail(false);
     emit(AddProfileState(result.asValue.value));
   }
 
   addDoctorProfile(DoctorProfile profile) async {
     _startLoading();
-
     final token = await this.localStore.fetch();
     final result = await api.addDoctorProfile(Token(token.value), profile);
     if (result == null) emit(ErrorState("Server Error"));
@@ -36,6 +36,7 @@ class ProfileCubit extends Cubit<ProfileState> {
       emit(ErrorState(result.asError.error));
       return;
     }
+    await this.localStore.updateDetail(false);
     emit(AddProfileState(result.asValue.value));
   }
 
@@ -49,21 +50,9 @@ class ProfileCubit extends Cubit<ProfileState> {
       emit(ErrorState(result.asError.error));
       return;
     }
+    await this.localStore.updateDetail(false);
     emit(AddProfileState(result.asValue.value));
   }
-
-  // getProfile(PatientProfile profile) async {
-  //   _startLoading();
-
-  //   final token = await this.localStore.fetch();
-  //   final result = await api.getPatientProfile(Token(token.value));
-  //   if (result == null) emit(ErrorState("Server Error"));
-  //   if (result.isError) {
-  //     emit(ErrorState(result.asError.error));
-  //     return;
-  //   }
-  //   emit(ProfileGetState(result.asValue.value));
-  // }
 
   void _startLoading() {
     emit(LoadingState());

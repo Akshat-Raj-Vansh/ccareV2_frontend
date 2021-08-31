@@ -29,11 +29,3 @@ class ErrorState extends ProfileState {
   // TODO: implement props
   List<Object> get props => [this.error];
 }
-
-class ProfileGetState extends ProfileState {
-  final PatientProfile profile;
-  ProfileGetState(this.profile) {}
-  @override
-  // TODO: implement props
-  List<Object> get props => [this.profile];
-}

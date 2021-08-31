@@ -1,16 +1,40 @@
 # CardioCare Frontend
 
-A new Flutter project.
+## Bugs
 
-## Getting Started
+- [x] Screen BlackOut on empty otp field
+- [x] Doesn't check the new_user field while signup. Multiple profiles are created.
 
-This project is a starting point for a Flutter application.
+### Todo
 
-A few resources to get you started if this is your first Flutter project:
+- [ ] Home Frontend
+  - [ ] Doctor
+    - [ ] Home Display
+  - [ ] Notification Hander
+  - [ ] Driver
+    - [ ] Home Display
+    - [ ] Notification Hander
+  - [ ] Patient
+    - [ ] Questinnare
+    - [ ] Home Display
+    - [ ] Notification Hander
+  - [x] Home Adapter
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+### In Progress
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- [ ] Main API
+
+  - [ ] Emergency API
+  - [x] Questionnaire API
+
+- [ ] Profile Frontend
+  - [x] Doctor
+  - [x] Patient
+  - [x] Driver
+  - [x] Profile Adapter
+
+### Done
+
+- [x] Auth API
+- [x] Auth Frontend
+- [x] Profile API
