@@ -35,6 +35,20 @@ class LocalStore implements ILocalStore {
   }
 
   @override
+  Future updateDetail(bool newUser) {
+    String data = sharedPreferences.getString(token_key);
+    print(data);
+    if (data != null) {
+      Details details = Details.fromMap(jsonDecode(data));
+      Details new_details = Details(
+          newUser: newUser,
+          user_token: details.user_token,
+          user_type: details.user_type);
+      sharedPreferences.setString(token_key, jsonEncode(new_details.toMap()));
+    }
+  }
+
+  @override
   Future save(Details details) {
     sharedPreferences.setString(token_key, jsonEncode(details.toMap()));
   }

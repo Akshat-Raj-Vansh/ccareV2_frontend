@@ -1,6 +1,6 @@
 # CardioCare Frontend
 
-### Bugs
+## Bugs
 
 - [x] Screen BlackOut on empty otp field
 - [x] Doesn't check the new_user field while signup. Multiple profiles are created.
