@@ -1,4 +1,5 @@
 import 'package:ccarev2_frontend/main/domain/question.dart';
+import 'package:ccarev2_frontend/pages/emergency/emergency_screen.dart';
 import 'package:ccarev2_frontend/pages/home/home_page_adapter.dart';
 import 'package:ccarev2_frontend/pages/questionnare/questionnare_screen.dart';
 import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
@@ -60,6 +61,12 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
       } else if (state is EmergencyState) {
         print("Emergency State Called");
         _hideLoader();
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => EmergencyScreen(),
+          ),
+        );
       } else if (state is QuestionnaireState) {
         print("Questionnaire State Called");
         _hideLoader();

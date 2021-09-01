@@ -33,6 +33,7 @@ dependencies:
   firebase_messaging: ^10.0.4
   flutter:
     sdk: flutter
+  google_maps_flutter: ^2.0.6
   location: ^4.3.0
 
 dev_dependencies:
@@ -41,7 +42,6 @@ dev_dependencies:
   cubit: null
   equatable: ^1.2.5
   flutter_cubit: null
-  
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
