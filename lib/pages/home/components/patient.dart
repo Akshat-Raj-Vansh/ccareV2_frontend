@@ -1,4 +1,17 @@
 //@dart=2.9
+import 'package:ccarev2_frontend/main/domain/question.dart';
+import 'package:ccarev2_frontend/pages/emergency/emergency_screen.dart';
+import 'package:ccarev2_frontend/pages/home/home_page_adapter.dart';
+import 'package:ccarev2_frontend/services/Notifications/notificationContoller.dart';
+import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
+import 'package:ccarev2_frontend/state_management/main/main_state.dart';
+import 'package:ccarev2_frontend/state_management/user/user_cubit.dart';
+import 'package:ccarev2_frontend/user/domain/credential.dart';
+import 'package:ccarev2_frontend/pages/questionnare/questionnare_screen.dart';
+import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
+import 'package:ccarev2_frontend/state_management/main/main_state.dart';
+import 'package:ccarev2_frontend/state_management/user/user_cubit.dart';
+import 'package:ccarev2_frontend/utils/size_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:location/location.dart' as lloc;
 import 'package:ccarev2_frontend/user/domain/location.dart' as loc;
@@ -50,6 +63,14 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
     "2 (Morning & Night)",
     "3"
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    NotificationController.configure(
+        widget.mainCubit, UserType.patient, context);
+    NotificationController.fcmHandler();
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -1,8 +1,11 @@
 import 'package:ccarev2_frontend/pages/home/home_page_adapter.dart';
+import 'package:ccarev2_frontend/services/Notifications/notificationContoller.dart';
 import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
 import 'package:ccarev2_frontend/state_management/main/main_state.dart';
 import 'package:ccarev2_frontend/state_management/user/user_cubit.dart';
+import 'package:ccarev2_frontend/user/domain/credential.dart';
 import 'package:flutter/material.dart';
+import 'package:aligned_dialog/aligned_dialog.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -18,35 +21,15 @@ class DoctorHomeUI extends StatefulWidget {
 }
 
 class _DoctorHomeUIState extends State<DoctorHomeUI> {
-  Future<void> setupInteractedMessage() async {
-    // Get any messages which caused the application to open from
-    // a terminated state.
-    RemoteMessage? initialMessage =
-        await FirebaseMessaging.instance.getInitialMessage();
-
-    // If the message also contains a data property with a "type" of "chat",
-    // navigate to a chat screen
-    if (initialMessage != null) {
-      _handleMessage(initialMessage);
-    }
-
-    // Also handle any interaction when the app is in the background via a
-    // Stream listener
-    FirebaseMessaging.onMessageOpenedApp.listen(_handleMessage);
-  }
-
-  void _handleMessage(RemoteMessage message) async {
-    if (message.data['type'] == 'Emergency') {
-      await widget.mainCubit.acceptPatientByDoctor(message.data["_patientID"]);
-    }
-  }
+  
 
   @override
-  void initState() {
+    void initState(){
     super.initState();
-    setupInteractedMessage();
-  }
+  NotificationController.configure(widget.mainCubit, UserType.doctor,context);
 
+     NotificationController.fcmHandler();
+  }
   @override
   Widget build(BuildContext context) {
     return CubitConsumer<MainCubit, MainState>(builder: (_, state) {
@@ -97,7 +80,7 @@ class _DoctorHomeUIState extends State<DoctorHomeUI> {
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                 backgroundColor: Theme.of(context).accentColor,
                 content: Text(
-                  'This button is used for accepting emergency SOS',
+                  'This buttn is used for accepting emergency SOS',
                   style: Theme.of(context)
                       .textTheme
                       .caption!

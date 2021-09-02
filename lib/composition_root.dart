@@ -1,4 +1,5 @@
 //@dart=2.9
+import 'package:ccarev2_frontend/services/Notifications/notificationContoller.dart';
 import 'package:common/infra/MHttpClient.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
@@ -21,7 +22,7 @@ import '../../user/domain/credential.dart';
 import '../cache/ilocal_store.dart';
 import '../cache/local_store.dart';
 import 'pages/auth/auth_page_adapter.dart';
-import '../network_service/secure_client.dart';
+import '../services/secure_client.dart';
 import '../pages/splash/splash_screen.dart';
 import '../user/domain/user_service_contract.dart';
 import '../user/infra/user_api.dart';
@@ -98,6 +99,7 @@ class CompositionRoot {
 
   static Widget createProfileScreen(UserType userType) {
     UserCubit userCubit = UserCubit(localStore, userAPI);
+
     ProfileCubit profileCubit = ProfileCubit(localStore, userAPI);
 
     return MultiCubitProvider(
