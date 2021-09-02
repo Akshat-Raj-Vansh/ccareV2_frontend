@@ -21,6 +21,7 @@ static FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     static UserType userType;
   static configure(MainCubit mainCubit,UserType type,BuildContext context){
     userType=type;
+    print(type);
      switch (userType) {
       case UserType.patient:
         PatientNotificationHandler.configure(mainCubit,context);
@@ -29,7 +30,8 @@ static FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
         DoctorNotificationHandler.configure(mainCubit,context);
         break;
       default:
-        DriverNotificationHandler.configure(mainCubit,context);}
+        DriverNotificationHandler.configure(mainCubit,context);
+        break;}
   }
   static get getFCMToken async => await FirebaseMessaging.instance.getToken();
 
@@ -52,7 +54,8 @@ static FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
         selected = DoctorNotificationHandler.backgroundMessageHandler;
         break;
       default:
-        selected = DriverNotificationHandler.backgroundMessageHandler;}
+        selected = DriverNotificationHandler.backgroundMessageHandler;
+        break;}
       FirebaseMessaging.onBackgroundMessage(selected);
   }
 
@@ -66,7 +69,8 @@ static FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
         selected = DoctorNotificationHandler.foregroundMessageHandler;
         break;
       default:
-        selected = DriverNotificationHandler.foregroundMessageHandler;}
+        selected = DriverNotificationHandler.foregroundMessageHandler;
+        break;}
       FirebaseMessaging.onMessage.listen(selected);
   }
   static onMessageOpenedHandler(){
@@ -79,7 +83,8 @@ static FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
         selected = DoctorNotificationHandler.onMessageOpenedHandler;
         break;
       default:
-        selected = DriverNotificationHandler.onMessageOpenedHandler;}
+        selected = DriverNotificationHandler.onMessageOpenedHandler;
+        break;}
       FirebaseMessaging.onMessageOpenedApp.listen(selected);
   }
 }
