@@ -111,7 +111,7 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
                             //         builder: (context) =>
                             //             ProfileScreen(cubit, state.details)))
                             : widget.pageAdatper
-                                .onAuthSuccess(context, widget.userType);
+                                .onLoginSuccess(context, widget.userType);
                         print(state.details.toString());
                       } else if (state is PhoneVerificationState) {
                         _hideLoader();
@@ -143,7 +143,7 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
                       _showLoader();
                     } else if (state is profileState.AddProfileState) {
                       widget.pageAdatper
-                          .onAuthSuccess(context, widget.userType);
+                          .onLoginSuccess(context, widget.userType);
                     } else {
                       _hideLoader();
                       if (state is profileState.ErrorState) {
@@ -378,7 +378,7 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
                       width: MediaQuery.of(context).size.width * 0.40,
                       backgroundColor: Colors.white,
                       textAlign: TextAlign.center,
-                      initialValue: _otp,
+                      initialValue: "",
                       onChanged: (value) {
                         _otp = value;
                       },
@@ -412,9 +412,17 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
               ),
               SizedBox(height: SizeConfig.screenHeight * 0.02),
               RaisedButton(
-                onPressed: () async {
-                  _verifyOTP(_otp, _verificationCode);
-                },
+                // onPressed: () async {
+                //   if (_otp != null || _otp.length == 6)
+                //     _verifyOTP(_otp, _verificationCode);
+                //   else
+                //     _showMessage("ERROR: INVALID OTP");
+                // },
+                onPressed: _otp != null && _otp != ""
+                    ? () {
+                        _verifyOTP(_otp, _verificationCode);
+                      }
+                    : null,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30)),
                 padding: const EdgeInsets.all(0),
@@ -493,7 +501,7 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
             });
           },
           codeAutoRetrievalTimeout: (String verificationID) {},
-          timeout: const Duration(seconds: 120));
+          timeout: const Duration(seconds: 30));
     } catch (e) {
       _msg = "VERIFICATION FAILED " + e.toString();
       _hideLoader();
