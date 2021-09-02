@@ -11,7 +11,7 @@
 - [ ] Home Frontend
   - [ ] Doctor
     - [ ] Home Display
-  - [ ] Notification Hander
+  - [x] Notification Hander
   - [ ] Driver
     - [ ] Home Display
     - [ ] Notification Hander
