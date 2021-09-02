@@ -18,6 +18,7 @@ class MainCubit extends Cubit<MainState> {
 
     final token = await localStore.fetch();
     final result = await api.getAll(Token(token.value));
+    print("RESULT");
     print(result);
     if (result == null) emit(ErrorState("Server Error"));
     if (result.isError) {

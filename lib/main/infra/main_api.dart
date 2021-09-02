@@ -30,19 +30,22 @@ class MainAPI extends IMainAPI {
     }
     dynamic json = jsonDecode(response.body);
     var result = json["questions"] as List;
-    return Result.value(result
-        .map<QuestionTree>(
-            (element) => QuestionTree.fromJson(jsonEncode(element)))
-        .toList());
+    print(result);
+    return Result.value(result.map<QuestionTree>((element) {
+      print(jsonEncode(element));
+      return QuestionTree.fromJson(jsonEncode(element));
+    }).toList());
   }
 
   transformError(Map map) {
     var contents = map["error"] ?? map['errors'];
-   print(contents);
+    print(contents);
     if (contents is String) return contents;
-    String errStr ="ERRORS";
-      (contents as Map<dynamic,dynamic>).forEach((key, value) {print("${key} : ${value}\n");});
- 
+    String errStr = "ERRORS";
+    (contents as Map<dynamic, dynamic>).forEach((key, value) {
+      print("${key} : ${value}\n");
+    });
+
     return errStr;
   }
 
@@ -77,8 +80,8 @@ class MainAPI extends IMainAPI {
       "Content-Type": "application/json",
       "Authorization": token.value
     };
-    var response = await _client
-        .post(Uri.parse(endpoint), headers: header, body: jsonEncode({"patID":patient.value}));
+    var response = await _client.post(Uri.parse(endpoint),
+        headers: header, body: jsonEncode({"patID": patient.value}));
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
       print(transformError(map));

@@ -509,6 +509,7 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
   }
 
   _verifyOTP(String otp, String vid) async {
+    _showLoader();
     String _msg = "OTP VERIFICATION INCOMPLETE";
     print('INSIDE VERIFY OTP');
     try {
@@ -531,5 +532,6 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
       _hideLoader();
       _showMessage(_msg);
     }
+    _hideLoader();
   }
 }

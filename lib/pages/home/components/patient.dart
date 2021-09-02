@@ -1,14 +1,16 @@
-import 'package:ccarev2_frontend/main/domain/question.dart';
-import 'package:ccarev2_frontend/pages/emergency/emergency_screen.dart';
-import 'package:ccarev2_frontend/pages/home/home_page_adapter.dart';
-import 'package:ccarev2_frontend/pages/questionnare/questionnare_screen.dart';
-import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
-import 'package:ccarev2_frontend/state_management/main/main_state.dart';
-import 'package:ccarev2_frontend/state_management/user/user_cubit.dart';
-import 'package:ccarev2_frontend/utils/size_config.dart';
+//@dart=2.9
 import 'package:flutter/cupertino.dart';
+import 'package:location/location.dart' as lloc;
+import 'package:ccarev2_frontend/user/domain/location.dart' as loc;
 import 'package:flutter/material.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
+import '../../../pages/emergency/emergency_screen.dart';
+import '../../../pages/home/home_page_adapter.dart';
+import '../../../pages/questionnare/questionnare_screen.dart';
+import '../../../state_management/main/main_cubit.dart';
+import '../../../state_management/main/main_state.dart';
+import '../../../state_management/user/user_cubit.dart';
+import '../../../utils/size_config.dart';
 
 class PatientHomeUI extends StatefulWidget {
   final MainCubit mainCubit;
@@ -54,17 +56,23 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
     SizeConfig().init(context);
     return CubitConsumer<MainCubit, MainState>(builder: (_, state) {
       return _buildUI(context);
-    }, listener: (context, state) {
+    }, listener: (context, state) async {
       if (state is LoadingState) {
         print("Loading State Called");
         _showLoader();
       } else if (state is EmergencyState) {
         print("Emergency State Called");
         _hideLoader();
+        lloc.LocationData _location = await lloc.Location().getLocation();
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => EmergencyScreen(),
+            builder: (context) => EmergencyScreen(
+              location: loc.Location(
+                latitude: _location.latitude,
+                longitude: _location.longitude,
+              ),
+            ),
           ),
         );
       } else if (state is QuestionnaireState) {

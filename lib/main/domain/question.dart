@@ -7,8 +7,8 @@ class QuestionTree {
   final String parent;
   final String when;
   final List<String> options;
-  final QuestionType questionType;
-  final NodeType nodeType;
+  final QuestionType question_type;
+  final NodeType node_type;
   bool status = false;
   late List<String> answers;
   QuestionTree({
@@ -16,8 +16,8 @@ class QuestionTree {
     required this.parent,
     required this.when,
     required this.options,
-    required this.questionType,
-    required this.nodeType,
+    required this.question_type,
+    required this.node_type,
   });
 
   QuestionTree copyWith({
@@ -33,8 +33,8 @@ class QuestionTree {
       parent: parent ?? this.parent,
       when: when ?? this.when,
       options: options ?? this.options,
-      questionType: questionType ?? this.questionType,
-      nodeType: nodeType ?? this.nodeType,
+      question_type: questionType ?? this.question_type,
+      node_type: nodeType ?? this.node_type,
     );
   }
 
@@ -44,8 +44,8 @@ class QuestionTree {
       'parent': parent,
       'when': when,
       'options': options,
-      'questionType': questionType.toString(),
-      'nodeType': nodeType.toString(),
+      'questionType': question_type.toString(),
+      'nodeType': node_type.toString(),
     };
   }
 
@@ -56,10 +56,10 @@ class QuestionTree {
       parent: map['parent'],
       when: map['when'],
       options: List<String>.from(map['options']),
-      questionType: QuestionType.values.firstWhere((element) =>
-          element.toString() == "QuestionType." + map["questionType"]),
-      nodeType: NodeType.values.firstWhere(
-          (element) => element.toString() == "NodeType." + map["nodeType"]),
+      question_type: QuestionType.values.firstWhere((element) =>
+          element.toString() == "QuestionType." + map["question_type"]),
+      node_type: NodeType.values.firstWhere(
+          (element) => element.toString() == "NodeType." + map["node_type"]),
     );
   }
 
@@ -70,7 +70,7 @@ class QuestionTree {
 
   @override
   String toString() {
-    return 'QuestionTree(question: $question, parent: $parent, when: $when, options: $options, questionType: $questionType, nodeType: $nodeType)';
+    return 'QuestionTree(question: $question, parent: $parent, when: $when, options: $options, question_type: $question_type, node_type: $node_type)';
   }
 
   @override
@@ -83,8 +83,8 @@ class QuestionTree {
         other.parent == parent &&
         other.when == when &&
         listEquals(other.options, options) &&
-        other.questionType == questionType &&
-        other.nodeType == nodeType;
+        other.question_type == question_type &&
+        other.node_type == node_type;
   }
 
   @override
@@ -93,8 +93,8 @@ class QuestionTree {
         parent.hashCode ^
         when.hashCode ^
         options.hashCode ^
-        questionType.hashCode ^
-        nodeType.hashCode;
+        question_type.hashCode ^
+        node_type.hashCode;
   }
 
   answer(List<String> option) {

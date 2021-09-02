@@ -129,7 +129,7 @@ class _SelfAssessmentState extends State<SelfAssessment> {
                       if (i % 2 == 0) {
                         return GestureDetector(
                           onTap: () {
-                            if (display[index].questionType ==
+                            if (display[index].question_type ==
                                 QuestionType.SELECTION) {
                               setState(() {
                                 if (display[index].options[i ~/ 2] == "next" &&
@@ -187,7 +187,7 @@ class _SelfAssessmentState extends State<SelfAssessment> {
                               margin: EdgeInsets.only(right: 10, top: 10),
                               padding: pad,
                               decoration: decC,
-                              child: display[index].questionType ==
+                              child: display[index].question_type ==
                                       QuestionType.SELECTION
                                   ? Wrap(children: [
                                       Text(display[index].options[(i ~/ 2)],
@@ -219,7 +219,7 @@ class _SelfAssessmentState extends State<SelfAssessment> {
                                   Text(display[index].question, style: styles)),
                           SizedBox(height: 10),
                           Wrap(
-                              direction: display[index].questionType ==
+                              direction: display[index].question_type ==
                                       QuestionType.SELECTION
                                   ? Axis.horizontal
                                   : Axis.vertical,
