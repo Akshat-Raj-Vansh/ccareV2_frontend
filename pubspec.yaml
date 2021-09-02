@@ -35,6 +35,7 @@ dependencies:
   flutter:
     sdk: flutter
   location: ^4.3.0
+  aligned_dialog: ^0.0.6
 
 dev_dependencies:
   common:

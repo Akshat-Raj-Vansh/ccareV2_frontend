@@ -4,6 +4,7 @@
 
 - [x] Screen BlackOut on empty otp field
 - [x] Doesn't check the new_user field while signup. Multiple profiles are created.
+- [ ] Sometimes the phone number is stored in the database with extra digits
 
 ### Todo
 

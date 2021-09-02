@@ -65,7 +65,10 @@ class MainCubit extends Cubit<MainState> {
     final result =
         await api.acceptPatientbyDriver(Token(token.value), Token(patientID));
     print(result);
-    if (result == null) emit(ErrorState("Server Error"));
+    if (result == null){
+       emit(ErrorState("Server Error"));
+       return ;
+    }
     if (result.isError) {
       emit(ErrorState(result.asError.error));
       return;

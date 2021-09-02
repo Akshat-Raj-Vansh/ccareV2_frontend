@@ -1,5 +1,6 @@
 //@dart=2.9
 import 'package:ccarev2_frontend/pages/profile/profile_page_adapter.dart';
+import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
 import 'package:ccarev2_frontend/state_management/profile/profile_cubit.dart';
 import 'package:ccarev2_frontend/state_management/profile/profile_state.dart';
 import 'package:ccarev2_frontend/user/domain/credential.dart';

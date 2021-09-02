@@ -101,6 +101,7 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
                         print("Login Success State Called");
                         _hideLoader();
                         // var cubit = CubitProvider.of<ProfileCubit>(context);
+                        print(widget.userType);
                         state.details.newUser
                             ? widget.pageAdatper
                                 .onAuthSuccess(context, widget.userType)

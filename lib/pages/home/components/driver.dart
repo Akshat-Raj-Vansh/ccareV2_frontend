@@ -1,7 +1,9 @@
 import 'package:ccarev2_frontend/pages/home/home_page_adapter.dart';
+import 'package:ccarev2_frontend/services/Notifications/notificationContoller.dart';
 import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
 import 'package:ccarev2_frontend/state_management/main/main_state.dart';
 import 'package:ccarev2_frontend/state_management/user/user_cubit.dart';
+import 'package:ccarev2_frontend/user/domain/credential.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
 
@@ -16,6 +18,13 @@ class DriverHomeUI extends StatefulWidget {
 }
 
 class _DriverHomeUIState extends State<DriverHomeUI> {
+
+  @override
+    void initState(){
+    super.initState();
+    NotificationController.configure(widget.mainCubit, UserType.driver,context);
+    NotificationController.fcmHandler();
+  }
   @override
   Widget build(BuildContext context) {
     return CubitConsumer<MainCubit, MainState>(builder: (_, state) {

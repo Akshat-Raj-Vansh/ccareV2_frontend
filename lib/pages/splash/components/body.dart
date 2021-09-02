@@ -104,7 +104,7 @@ class _BodyState extends State<Body> {
                         _button(
                           text: "Driver",
                           press: () => widget.pageAdapter
-                              .onSplashScreenComplete(context, UserType.doctor),
+                              .onSplashScreenComplete(context, UserType.driver),
                         ),
                       ],
                     ),
