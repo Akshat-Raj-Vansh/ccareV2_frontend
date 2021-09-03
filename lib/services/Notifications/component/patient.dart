@@ -3,45 +3,47 @@ import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
-class PatientNotificationHandler{
-   static MainCubit mainCubit;
+class PatientNotificationHandler {
+  static MainCubit mainCubit;
   static BuildContext context;
-  static configure(MainCubit cubit,BuildContext c){
+  static configure(MainCubit cubit, BuildContext c) {
     mainCubit = cubit;
-    context =c;
+    context = c;
   }
-  static  Future<void> backgroundMessageHandler(RemoteMessage message)async {
-  print("Handling a background message for patient: ${message.data}");
+
+  static Future<void> backgroundMessageHandler(RemoteMessage message) async {
+    print("Handling a background message for patient: ${message.data}");
   }
- static Future<void> foregroundMessageHandler(RemoteMessage message)async {
-  print("Handling a foreground message for patient: ${message.data}");
-  if (message.data['type'] == 'Emergency') {
-     if(message.data["from"]=="DOCTOR"){
-     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                backgroundColor: Theme.of(context).accentColor,
-                content: Text(
-                  message.notification.body,
-                  style: Theme.of(context)
-                      .textTheme
-                      .caption
-                      .copyWith(color: Colors.white, fontSize: 16),
-                ),
-              ));
-          
-     }
-      if(message.data["from"]=="DRIVER"){
-     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                backgroundColor: Theme.of(context).accentColor,
-                content: Text(
-                  message.notification.body,
-                  style: Theme.of(context)
-                      .textTheme
-                      .caption
-                      .copyWith(color: Colors.white, fontSize: 16),
-                ),
-              ));
-          
-     }
-  } 
-  
-}}
+
+  static Future<void> foregroundMessageHandler(RemoteMessage message) async {
+    print("Handling a foreground message for patient: ${message.data}");
+    if (message.data['type'] == 'Emergency') {
+      if (message.data["from"] == "DOCTOR") {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          backgroundColor: Theme.of(context).accentColor,
+          content: Text(
+            message.notification.body,
+            style: Theme.of(context)
+                .textTheme
+                .caption
+                .copyWith(color: Colors.white, fontSize: 16),
+          ),
+        ));
+        mainCubit.doctorAccepted(message.notification.body);
+      }
+      if (message.data["from"] == "DRIVER") {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          backgroundColor: Theme.of(context).accentColor,
+          content: Text(
+            message.notification.body,
+            style: Theme.of(context)
+                .textTheme
+                .caption
+                .copyWith(color: Colors.white, fontSize: 16),
+          ),
+        ));
+        mainCubit.driverAccepted(message.notification.body);
+      }
+    }
+  }
+}

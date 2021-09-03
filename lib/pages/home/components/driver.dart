@@ -18,13 +18,15 @@ class DriverHomeUI extends StatefulWidget {
 }
 
 class _DriverHomeUIState extends State<DriverHomeUI> {
-
+  static bool _isEmergency = false;
   @override
-    void initState(){
+  void initState() {
     super.initState();
-    NotificationController.configure(widget.mainCubit, UserType.driver,context);
+    NotificationController.configure(
+        widget.mainCubit, UserType.driver, context);
     NotificationController.fcmHandler();
   }
+
   @override
   Widget build(BuildContext context) {
     return CubitConsumer<MainCubit, MainState>(builder: (_, state) {
@@ -34,7 +36,9 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
         print("Loading State Called");
         _showLoader();
       } else if (state is AcceptState) {
+        _isEmergency = true;
         print("Accept State Called");
+        widget.homePageAdapter.loadEmergencyScreen(context, UserType.driver);
         _hideLoader();
       }
     });
@@ -59,12 +63,20 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
 
   _buildUI(BuildContext context, MainCubit mainCubit) => Scaffold(
         appBar: AppBar(
-          title: Text('Driver Home UI'),
-          leading: IconButton(
-            onPressed: () =>
-                widget.homePageAdapter.onLogout(context, widget.userCubit),
-            icon: Icon(Icons.logout),
-          ),
+          title: Text('CardioCare - Driver'),
+          actions: [
+            if (_isEmergency)
+              IconButton(
+                onPressed: () => widget.homePageAdapter
+                    .loadEmergencyScreen(context, UserType.driver),
+                icon: Icon(Icons.map),
+              ),
+            IconButton(
+              onPressed: () =>
+                  widget.homePageAdapter.onLogout(context, widget.userCubit),
+              icon: Icon(Icons.logout),
+            ),
+          ],
         ),
         body: Center(
           child: RaisedButton(

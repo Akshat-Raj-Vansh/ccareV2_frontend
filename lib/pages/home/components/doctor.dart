@@ -21,15 +21,16 @@ class DoctorHomeUI extends StatefulWidget {
 }
 
 class _DoctorHomeUIState extends State<DoctorHomeUI> {
-  
-
+  static bool _isEmergency = false;
   @override
-    void initState(){
+  void initState() {
     super.initState();
-  NotificationController.configure(widget.mainCubit, UserType.doctor,context);
+    NotificationController.configure(
+        widget.mainCubit, UserType.doctor, context);
 
-     NotificationController.fcmHandler();
+    NotificationController.fcmHandler();
   }
+
   @override
   Widget build(BuildContext context) {
     return CubitConsumer<MainCubit, MainState>(builder: (_, state) {
@@ -40,7 +41,9 @@ class _DoctorHomeUIState extends State<DoctorHomeUI> {
         _showLoader();
       } else if (state is AcceptState) {
         print("Accept State Called");
+        _isEmergency = true;
         _hideLoader();
+        widget.homePageAdapter.loadEmergencyScreen(context, UserType.doctor);
       } else if (state is AllPatientsState) {
         print("AllPatientsState State Called");
         _hideLoader();
@@ -67,12 +70,20 @@ class _DoctorHomeUIState extends State<DoctorHomeUI> {
 
   _buildUI(BuildContext buildContext) => Scaffold(
         appBar: AppBar(
-          title: Text('Doctor Home UI'),
-          leading: IconButton(
-            onPressed: () =>
-                widget.homePageAdapter.onLogout(context, widget.userCubit),
-            icon: Icon(Icons.logout),
-          ),
+          title: Text('CardioCare - Doctor'),
+          actions: [
+            if (_isEmergency)
+              IconButton(
+                onPressed: () => widget.homePageAdapter
+                    .loadEmergencyScreen(context, UserType.doctor),
+                icon: Icon(Icons.map),
+              ),
+            IconButton(
+              onPressed: () =>
+                  widget.homePageAdapter.onLogout(context, widget.userCubit),
+              icon: Icon(Icons.logout),
+            ),
+          ],
         ),
         body: Center(
           child: RaisedButton(

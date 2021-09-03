@@ -1,4 +1,5 @@
 //@dart=2.9
+import 'package:ccarev2_frontend/pages/emergency/emergency_screen.dart';
 import 'package:ccarev2_frontend/services/Notifications/notificationContoller.dart';
 import 'package:common/infra/MHttpClient.dart';
 import 'package:flutter/material.dart';
@@ -50,7 +51,7 @@ class CompositionRoot {
     userAPI = UserAPI(client, baseUrl);
     mainAPI = MainAPI(client, baseUrl);
     homePageAdapter = HomePageAdapter(createPatientHomeUI, createDoctorHomeUI,
-        createDriverHomeUI, splashScreen);
+        createDriverHomeUI, createEmergencyUI, splashScreen);
     profilePageAdapter =
         ProfilePageAdapter(homePageAdapter, createProfileScreen);
     authPageAdapter = AuthPageAdapter(profilePageAdapter, createLoginScreen);
@@ -148,5 +149,21 @@ class CompositionRoot {
         create: (context) => mainCubit,
       ),
     ], child: DriverHomeUI(mainCubit, userCubit, homePageAdapter));
+  }
+
+  static Widget createEmergencyUI(UserType userType) {
+    UserCubit userCubit = UserCubit(localStore, userAPI);
+    MainCubit mainCubit = MainCubit(localStore, mainAPI);
+    return MultiCubitProvider(
+      providers: [
+        CubitProvider<UserCubit>(create: (context) => userCubit),
+        CubitProvider<MainCubit>(create: (context) => mainCubit),
+      ],
+      child: EmergencyScreen(
+        userCubit: userCubit,
+        mainCubit: mainCubit,
+        userType: userType,
+      ),
+    );
   }
 }

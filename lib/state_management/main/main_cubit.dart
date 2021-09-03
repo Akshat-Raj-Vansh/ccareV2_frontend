@@ -65,15 +65,39 @@ class MainCubit extends Cubit<MainState> {
     final result =
         await api.acceptPatientbyDriver(Token(token.value), Token(patientID));
     print(result);
-    if (result == null){
-       emit(ErrorState("Server Error"));
-       return ;
+    if (result == null) {
+      emit(ErrorState("Server Error"));
+      return;
     }
     if (result.isError) {
       emit(ErrorState(result.asError.error));
       return;
     }
     emit(AcceptState(result.asValue.value));
+  }
+
+  doctorAccepted(String body) async {
+    print("Inside doctor accepted");
+    _startLoading();
+    final result = body;
+    print(result);
+    if (result == null) {
+      emit(ErrorState("Location Error!"));
+      return;
+    }
+    emit(DoctorAccepted(Location(latitude: 43, longitude: 51)));
+  }
+
+  driverAccepted(String body) async {
+    print("Inside driver accepted");
+    _startLoading();
+    final result = body;
+    print(result);
+    if (result == null) {
+      emit(ErrorState("Location Error!"));
+      return;
+    }
+    emit(DriverAccepted(Location(latitude: 41, longitude: 55)));
   }
 
   getAllPatients() async {
