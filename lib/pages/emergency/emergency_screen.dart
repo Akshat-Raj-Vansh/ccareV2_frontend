@@ -127,6 +127,12 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
           print("Loading State Called");
           _showLoader();
         }
+        if (state is PatientArrived) {
+          _patientLocation =
+              LatLng(state.location.latitude, state.location.longitude);
+          _addPatientMarker();
+          _hideLoader();
+        }
         if (state is DoctorAccepted) {
           _doctorLocation =
               LatLng(state.location.latitude, state.location.longitude);

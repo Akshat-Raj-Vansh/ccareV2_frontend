@@ -1,4 +1,6 @@
 //@dart=2.9
+import 'dart:convert';
+
 import 'package:async/src/result/result.dart';
 import 'package:ccarev2_frontend/cache/ilocal_store.dart';
 import 'package:ccarev2_frontend/main/domain/main_api_contract.dart';
@@ -55,7 +57,12 @@ class MainCubit extends Cubit<MainState> {
       emit(ErrorState(result.asError.error));
       return;
     }
-    emit(AcceptState(result.asValue.value));
+    dynamic data = jsonDecode(result.asValue.value);
+    Location location = Location(
+        latitude: double.parse(data['latitude']),
+        longitude: double.parse(data['longitude']));
+    emit(PatientArrived(location));
+    emit(AcceptState(data['msg']));
   }
 
   acceptPatientByDriver(String patientID) async {
@@ -73,7 +80,12 @@ class MainCubit extends Cubit<MainState> {
       emit(ErrorState(result.asError.error));
       return;
     }
-    emit(AcceptState(result.asValue.value));
+    dynamic data = jsonDecode(result.asValue.value);
+    Location location = Location(
+        latitude: double.parse(data['latitude']),
+        longitude: double.parse(data['longitude']));
+    emit(PatientArrived(location));
+    emit(AcceptState(data['msg']));
   }
 
   doctorAccepted(Location location) async {
@@ -97,18 +109,6 @@ class MainCubit extends Cubit<MainState> {
       return;
     }
     emit(DriverAccepted(location));
-  }
-
-  patientArrived(String body) async {
-    print("Inside patient arrived");
-    _startLoading();
-    final result = body;
-    print(result);
-    if (result == null) {
-      emit(ErrorState("Location Error!"));
-      return;
-    }
-    emit(PatientArrived(Location(latitude: 41, longitude: 55)));
   }
 
   getAllPatients() async {

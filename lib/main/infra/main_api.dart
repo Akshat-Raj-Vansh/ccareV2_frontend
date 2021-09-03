@@ -88,7 +88,7 @@ class MainAPI extends IMainAPI {
       return Result.error(transformError(map));
     }
     dynamic json = jsonDecode(response.body);
-    return Result.value(json["message"]);
+    return Result.value(json);
   }
 
   @override
@@ -99,17 +99,17 @@ class MainAPI extends IMainAPI {
       "Content-Type": "application/json",
       "Authorization": token.value
     };
-    var response = await _client
-        .post(Uri.parse(endpoint), headers: header, body:  jsonEncode({"patID":patient.value}));
-    print("Response: "+response.body);
+    var response = await _client.post(Uri.parse(endpoint),
+        headers: header, body: jsonEncode({"patID": patient.value}));
+    print("Response: " + response.body);
     if (response.statusCode != 200) {
-       print("error");
+      print("error");
       Map map = jsonDecode(response.body);
       print(transformError(map));
       return Result.error(transformError(map));
     }
     dynamic json = jsonDecode(response.body);
-    return Result.value(json["message"]);
+    return Result.value(json);
   }
 
   @override
