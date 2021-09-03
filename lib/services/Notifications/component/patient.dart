@@ -21,7 +21,7 @@ class PatientNotificationHandler {
   static Future<void> foregroundMessageHandler(RemoteMessage message) async {
     print("Handling a foreground message for patient: ${message.data}");
     if (message.data['type'] == 'Emergency') {
-      if (message.data["from"] == "DOCTOR") {
+      if (message.data["user"] == "DOCTOR") {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           backgroundColor: Theme.of(context).accentColor,
           content: Text(
@@ -32,9 +32,11 @@ class PatientNotificationHandler {
                 .copyWith(color: Colors.white, fontSize: 16),
           ),
         ));
+        print("LOCATION DOCTOR");
+        print(message.data["location"]);
         mainCubit.doctorAccepted(Location.fromJson(message.data["location"]));
       }
-      if (message.data["from"] == "DRIVER") {
+      if (message.data["user"] == "DRIVER") {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           backgroundColor: Theme.of(context).accentColor,
           content: Text(
@@ -45,6 +47,8 @@ class PatientNotificationHandler {
                 .copyWith(color: Colors.white, fontSize: 16),
           ),
         ));
+        print("LOCATION DRIVER");
+        print(message.data["location"]);
         mainCubit.driverAccepted(Location.fromJson(message.data["location"]));
       }
     }

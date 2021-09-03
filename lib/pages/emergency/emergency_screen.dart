@@ -124,26 +124,35 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
     return CubitConsumer<MainCubit, MainState>(
       listener: (context, state) {
         if (state is LoadingState) {
-          print("Loading State Called");
+          print("Loading State Called in Emergency State");
           _showLoader();
         }
         if (state is PatientArrived) {
-          _patientLocation =
-              LatLng(state.location.latitude, state.location.longitude);
-          _addPatientMarker();
-          _hideLoader();
+          print("patient arrived state");
+          setState(() {
+            _patientLocation =
+                LatLng(state.location.latitude, state.location.longitude);
+            _addPatientMarker();
+            _hideLoader();
+          });
         }
         if (state is DoctorAccepted) {
-          _doctorLocation =
-              LatLng(state.location.latitude, state.location.longitude);
-          _addDoctorMarker();
-          _hideLoader();
+          print("doctor accepted state");
+          setState(() {
+            _doctorLocation =
+                LatLng(state.location.latitude, state.location.longitude);
+            _addDoctorMarker();
+            _hideLoader();
+          });
         }
         if (state is DriverAccepted) {
-          _driverLocation =
-              LatLng(state.location.latitude, state.location.longitude);
-          _addDriverMarker();
-          _hideLoader();
+          print("driver accepted state");
+          setState(() {
+            _driverLocation =
+                LatLng(state.location.latitude, state.location.longitude);
+            _addDriverMarker();
+            _hideLoader();
+          });
         }
       },
       builder: (context, state) {
