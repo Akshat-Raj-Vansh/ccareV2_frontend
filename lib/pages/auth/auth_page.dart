@@ -100,16 +100,11 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
                       } else if (state is LoginSuccessState) {
                         print("Login Success State Called");
                         _hideLoader();
-                        // var cubit = CubitProvider.of<ProfileCubit>(context);
+
                         print(widget.userType);
                         state.details.newUser
                             ? widget.pageAdatper
                                 .onAuthSuccess(context, widget.userType)
-                            // Navigator.push(
-                            //     context,
-                            //     MaterialPageRoute(
-                            //         builder: (context) =>
-                            //             ProfileScreen(cubit, state.details)))
                             : widget.pageAdatper
                                 .onLoginSuccess(context, widget.userType);
                         print(state.details.toString());
@@ -299,7 +294,9 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
                           },
                           validator: (phone) => phone.isEmpty
                               ? "Please enter a Phone Number"
-                              : null),
+                              : phone.length != 10
+                                  ? "Please enter a valid Phone Number"
+                                  : null),
                     ],
                   ),
                   SizedBox(height: SizeConfig.screenHeight * 0.06),
@@ -382,7 +379,7 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
                       onChanged: (value) {
                         _otp = value;
                       },
-                      validator: (otp) => otp.isEmpty
+                      validator: (otp) => otp.isEmpty || otp == ""
                           ? "Please enter the OTP"
                           : otp.length != 6
                               ? "Please enter a valid OTP"
@@ -412,17 +409,7 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
               ),
               SizedBox(height: SizeConfig.screenHeight * 0.02),
               RaisedButton(
-                // onPressed: () async {
-                //   if (_otp != null || _otp.length == 6)
-                //     _verifyOTP(_otp, _verificationCode);
-                //   else
-                //     _showMessage("ERROR: INVALID OTP");
-                // },
-                onPressed: _otp != null && _otp != ""
-                    ? () {
-                        _verifyOTP(_otp, _verificationCode);
-                      }
-                    : null,
+                onPressed: _verifyOTP(_otp, _verificationCode),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30)),
                 padding: const EdgeInsets.all(0),
