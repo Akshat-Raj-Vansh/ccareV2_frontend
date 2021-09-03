@@ -1,6 +1,4 @@
 //@dart=2.9
-import 'package:ccarev2_frontend/main/domain/question.dart';
-import 'package:ccarev2_frontend/pages/emergency/emergency_screen.dart';
 import 'package:ccarev2_frontend/pages/home/home_page_adapter.dart';
 import 'package:ccarev2_frontend/services/Notifications/notificationContoller.dart';
 import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
@@ -11,13 +9,12 @@ import 'package:ccarev2_frontend/pages/questionnare/questionnare_screen.dart';
 import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
 import 'package:ccarev2_frontend/state_management/main/main_state.dart';
 import 'package:ccarev2_frontend/state_management/user/user_cubit.dart';
-import 'package:ccarev2_frontend/utils/size_config.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:location/location.dart' as lloc;
 import 'package:ccarev2_frontend/user/domain/location.dart' as loc;
+import 'package:ccarev2_frontend/utils/size_config.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
-import '../../../pages/emergency/emergency_screen.dart';
 import '../../../pages/home/home_page_adapter.dart';
 import '../../../pages/questionnare/questionnare_screen.dart';
 import '../../../state_management/main/main_cubit.dart';
@@ -63,13 +60,23 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
     "2 (Morning & Night)",
     "3"
   ];
-  static bool _isEmergency = false;
+  // static bool _isEmergency = false;
   @override
   void initState() {
     super.initState();
     NotificationController.configure(
         widget.mainCubit, UserType.patient, context);
     NotificationController.fcmHandler();
+  }
+
+  Future<loc.Location> _getLocation() async {
+    lloc.LocationData _locationData = await lloc.Location().getLocation();
+    print(_locationData.latitude.toString() +
+        "," +
+        _locationData.longitude.toString());
+    loc.Location _location = loc.Location(
+        latitude: _locationData.latitude, longitude: _locationData.longitude);
+    return _location;
   }
 
   @override
@@ -83,29 +90,10 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
         _showLoader();
       } else if (state is EmergencyState) {
         print("Emergency State Called");
-        _isEmergency = true;
+        loc.Location location = await _getLocation();
         _hideLoader();
-        widget.homePageAdapter.loadEmergencyScreen(context, UserType.patient);
-        // lloc.LocationData _location = await lloc.Location().getLocation();
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(
-        //     builder: (context) => EmergencyScreen(
-        //       patient: loc.Location(
-        //         latitude: _location.latitude,
-        //         longitude: _location.longitude,
-        //       ),
-        //       doctor: loc.Location(
-        //         latitude: 0,
-        //         longitude: 0,
-        //       ),
-        //       driver: loc.Location(
-        //         latitude: 0,
-        //         longitude: 0,
-        //       ),
-        //     ),
-        //   ),
-        // );
+        widget.homePageAdapter
+            .loadEmergencyScreen(context, UserType.patient, location);
       } else if (state is QuestionnaireState) {
         print("Questionnaire State Called");
         _hideLoader();
@@ -140,12 +128,17 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
         appBar: AppBar(
           title: Text('CardioCare - Patient'),
           actions: [
-            if (_isEmergency)
-              IconButton(
-                onPressed: () => widget.homePageAdapter
-                    .loadEmergencyScreen(context, UserType.patient),
-                icon: Icon(Icons.map),
-              ),
+            // if (_isEmergency)
+            IconButton(
+              onPressed: () async {
+                _showLoader();
+                loc.Location location = await _getLocation();
+                _hideLoader();
+                return widget.homePageAdapter
+                    .loadEmergencyScreen(context, UserType.patient, location);
+              },
+              icon: Icon(Icons.map),
+            ),
             IconButton(
               onPressed: () => widget.mainCubit.getQuestions(),
               icon: Icon(Icons.help),

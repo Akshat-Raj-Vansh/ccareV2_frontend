@@ -1,3 +1,4 @@
+//@dart=2.9
 import 'package:ccarev2_frontend/pages/home/home_page_adapter.dart';
 import 'package:ccarev2_frontend/services/Notifications/notificationContoller.dart';
 import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
@@ -6,6 +7,8 @@ import 'package:ccarev2_frontend/state_management/user/user_cubit.dart';
 import 'package:ccarev2_frontend/user/domain/credential.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
+import 'package:location/location.dart' as lloc;
+import 'package:ccarev2_frontend/user/domain/location.dart' as loc;
 
 class DriverHomeUI extends StatefulWidget {
   final MainCubit mainCubit;
@@ -27,18 +30,30 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
     NotificationController.fcmHandler();
   }
 
+  Future<loc.Location> _getLocation() async {
+    lloc.LocationData _locationData = await lloc.Location().getLocation();
+    print(_locationData.latitude.toString() +
+        "," +
+        _locationData.longitude.toString());
+    loc.Location _location = loc.Location(
+        latitude: _locationData.latitude, longitude: _locationData.longitude);
+    return _location;
+  }
+
   @override
   Widget build(BuildContext context) {
     return CubitConsumer<MainCubit, MainState>(builder: (_, state) {
       return _buildUI(context, widget.mainCubit);
-    }, listener: (context, state) {
+    }, listener: (context, state) async {
       if (state is LoadingState) {
         print("Loading State Called");
         _showLoader();
       } else if (state is AcceptState) {
         _isEmergency = true;
         print("Accept State Called");
-        widget.homePageAdapter.loadEmergencyScreen(context, UserType.driver);
+        loc.Location location = await _getLocation();
+        widget.homePageAdapter
+            .loadEmergencyScreen(context, UserType.driver, location);
         _hideLoader();
       }
     });
@@ -67,8 +82,13 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
           actions: [
             if (_isEmergency)
               IconButton(
-                onPressed: () => widget.homePageAdapter
-                    .loadEmergencyScreen(context, UserType.driver),
+                onPressed: () async {
+                  _showLoader();
+                  loc.Location location = await _getLocation();
+                  _hideLoader();
+                  return widget.homePageAdapter
+                      .loadEmergencyScreen(context, UserType.driver, location);
+                },
                 icon: Icon(Icons.map),
               ),
             IconButton(
@@ -87,7 +107,7 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
                   'This button is used for accepting patients',
                   style: Theme.of(context)
                       .textTheme
-                      .caption!
+                      .caption
                       .copyWith(color: Colors.white, fontSize: 16),
                 ),
               ));
