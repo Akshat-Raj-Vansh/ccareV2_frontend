@@ -14,7 +14,9 @@ class EmergencyScreen extends StatefulWidget {
   final UserCubit userCubit;
   final MainCubit mainCubit;
   final UserType userType;
-  EmergencyScreen({this.userCubit, this.mainCubit, this.userType});
+  final loc.Location location;
+  EmergencyScreen(
+      {this.userCubit, this.mainCubit, this.userType, this.location});
 
   @override
   _EmergencyScreenState createState() => _EmergencyScreenState();
@@ -33,25 +35,27 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
 
   @override
   void initState() {
-    _patientLocation = LatLng(100, 100);
+    _patientLocation = LatLng(40, 23);
     _doctorLocation = LatLng(100, 100);
     _driverLocation = LatLng(100, 100);
     _getUserLocation();
     super.initState();
   }
 
-  _getUserLocation() async {
-    lloc.LocationData _location = await lloc.Location().getLocation();
+  _getUserLocation() {
     if (widget.userType == UserType.patient) {
-      _patientLocation = LatLng(_location.latitude, _location.longitude);
+      _patientLocation =
+          LatLng(widget.location.latitude, widget.location.longitude);
       _center = _patientLocation;
       _addPatientMarker();
     } else if (widget.userType == UserType.patient) {
-      _doctorLocation = LatLng(_location.latitude, _location.longitude);
+      _doctorLocation =
+          LatLng(widget.location.latitude, widget.location.longitude);
       _center = _doctorLocation;
       _addDoctorMarker();
     } else {
-      _driverLocation = LatLng(_location.latitude, _location.longitude);
+      _driverLocation =
+          LatLng(widget.location.latitude, widget.location.longitude);
       _center = _driverLocation;
       _addDriverMarker();
     }

@@ -8,14 +8,15 @@ import '../../state_management/main/main_cubit.dart';
 abstract class IHomePageAdapter {
   void loadHomeUI(BuildContext context, UserType userType);
   void onLogout(BuildContext context, UserCubit userCubit);
-  void loadEmergencyScreen(BuildContext context, UserType userType);
+  void loadEmergencyScreen(
+      BuildContext context, UserType userType, Location location);
 }
 
 class HomePageAdapter extends IHomePageAdapter {
   final Widget Function() patientHomeScreen;
   final Widget Function() doctorHomeScreen;
   final Widget Function() driverHomeScreen;
-  final Widget Function(UserType userType) emergencyScreen;
+  final Widget Function(UserType userType, Location location) emergencyScreen;
   final Widget Function() splashScreen;
 
   HomePageAdapter(this.patientHomeScreen, this.doctorHomeScreen,
@@ -41,10 +42,12 @@ class HomePageAdapter extends IHomePageAdapter {
   }
 
   @override
-  void loadEmergencyScreen(BuildContext context, UserType userType) {
+  void loadEmergencyScreen(
+      BuildContext context, UserType userType, Location location) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => emergencyScreen(userType)),
+      MaterialPageRoute(
+          builder: (context) => emergencyScreen(userType, location)),
     );
   }
 

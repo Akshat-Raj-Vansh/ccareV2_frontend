@@ -1,6 +1,7 @@
 //@dart=2.9
 import 'package:ccarev2_frontend/pages/emergency/emergency_screen.dart';
 import 'package:ccarev2_frontend/services/Notifications/notificationContoller.dart';
+import 'package:ccarev2_frontend/user/domain/location.dart';
 import 'package:common/infra/MHttpClient.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
@@ -151,7 +152,7 @@ class CompositionRoot {
     ], child: DriverHomeUI(mainCubit, userCubit, homePageAdapter));
   }
 
-  static Widget createEmergencyUI(UserType userType) {
+  static Widget createEmergencyUI(UserType userType, Location location) {
     UserCubit userCubit = UserCubit(localStore, userAPI);
     MainCubit mainCubit = MainCubit(localStore, mainAPI);
     return MultiCubitProvider(
@@ -163,6 +164,7 @@ class CompositionRoot {
         userCubit: userCubit,
         mainCubit: mainCubit,
         userType: userType,
+        location: location,
       ),
     );
   }
