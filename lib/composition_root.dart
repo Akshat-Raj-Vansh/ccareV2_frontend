@@ -1,6 +1,6 @@
 //@dart=2.9
 import 'package:ccarev2_frontend/pages/emergency/emergency_screen.dart';
-import 'package:ccarev2_frontend/services/Notifications/notificationContoller.dart';
+import 'package:ccarev2_frontend/state_management/emergency/emergency_cubit.dart';
 import 'package:ccarev2_frontend/user/domain/location.dart';
 import 'package:common/infra/MHttpClient.dart';
 import 'package:flutter/material.dart';
@@ -41,6 +41,10 @@ class CompositionRoot {
   static IProfilePageAdapter profilePageAdapter;
   static IHomePageAdapter homePageAdapter;
   static UserService userService;
+  static UserCubit userCubit;
+  static MainCubit mainCubit;
+  static ProfileCubit profileCubit;
+  static EmergencyCubit emergencyCubit;
 
   static configure() async {
     sharedPreferences = await SharedPreferences.getInstance();
@@ -56,6 +60,10 @@ class CompositionRoot {
     profilePageAdapter =
         ProfilePageAdapter(homePageAdapter, createProfileScreen);
     authPageAdapter = AuthPageAdapter(profilePageAdapter, createLoginScreen);
+    userCubit = UserCubit(localStore, userAPI);
+    mainCubit = MainCubit(localStore, mainAPI);
+    profileCubit = ProfileCubit(localStore, userAPI);
+    emergencyCubit = EmergencyCubit(localStore, mainAPI);
   }
 
   static Future<Widget> start() async {
@@ -75,9 +83,6 @@ class CompositionRoot {
   }
 
   static Widget createLoginScreen(UserType userType) {
-    UserCubit userCubit = UserCubit(localStore, userAPI);
-    ProfileCubit profileCubit = ProfileCubit(localStore, userAPI);
-
     return MultiCubitProvider(
       providers: [
         CubitProvider<UserCubit>(create: (context) => userCubit),
@@ -100,10 +105,6 @@ class CompositionRoot {
   }
 
   static Widget createProfileScreen(UserType userType) {
-    UserCubit userCubit = UserCubit(localStore, userAPI);
-
-    ProfileCubit profileCubit = ProfileCubit(localStore, userAPI);
-
     return MultiCubitProvider(
       providers: [
         CubitProvider<UserCubit>(create: (context) => userCubit),
@@ -114,55 +115,61 @@ class CompositionRoot {
   }
 
   static Widget createPatientHomeUI() {
-    MainCubit mainCubit = MainCubit(localStore, mainAPI);
-    UserCubit userCubit = UserCubit(localStore, userAPI);
-    return MultiCubitProvider(providers: [
-      CubitProvider<UserCubit>(
-        create: (context) => userCubit,
-      ),
-      CubitProvider<MainCubit>(
-        create: (context) => mainCubit,
-      ),
-    ], child: PatientHomeUI(mainCubit, userCubit, homePageAdapter));
+    return MultiCubitProvider(
+        providers: [
+          CubitProvider<UserCubit>(
+            create: (context) => userCubit,
+          ),
+          CubitProvider<MainCubit>(
+            create: (context) => mainCubit,
+          ),
+          CubitProvider<EmergencyCubit>(create: (context) => emergencyCubit),
+        ],
+        child: PatientHomeUI(
+            mainCubit, userCubit, emergencyCubit, homePageAdapter));
   }
 
   static Widget createDoctorHomeUI() {
-    MainCubit mainCubit = MainCubit(localStore, mainAPI);
-    UserCubit userCubit = UserCubit(localStore, userAPI);
-    return MultiCubitProvider(providers: [
-      CubitProvider<UserCubit>(
-        create: (context) => userCubit,
-      ),
-      CubitProvider<MainCubit>(
-        create: (context) => mainCubit,
-      ),
-    ], child: DoctorHomeUI(mainCubit, userCubit, homePageAdapter));
+    return MultiCubitProvider(
+        providers: [
+          CubitProvider<UserCubit>(
+            create: (context) => userCubit,
+          ),
+          CubitProvider<MainCubit>(
+            create: (context) => mainCubit,
+          ),
+          CubitProvider<EmergencyCubit>(create: (context) => emergencyCubit),
+        ],
+        child: DoctorHomeUI(
+            mainCubit, userCubit, emergencyCubit, homePageAdapter));
   }
 
   static Widget createDriverHomeUI() {
-    MainCubit mainCubit = MainCubit(localStore, mainAPI);
-    UserCubit userCubit = UserCubit(localStore, userAPI);
-    return MultiCubitProvider(providers: [
-      CubitProvider<UserCubit>(
-        create: (context) => userCubit,
-      ),
-      CubitProvider<MainCubit>(
-        create: (context) => mainCubit,
-      ),
-    ], child: DriverHomeUI(mainCubit, userCubit, homePageAdapter));
+    return MultiCubitProvider(
+        providers: [
+          CubitProvider<UserCubit>(
+            create: (context) => userCubit,
+          ),
+          CubitProvider<MainCubit>(
+            create: (context) => mainCubit,
+          ),
+          CubitProvider<EmergencyCubit>(create: (context) => emergencyCubit),
+        ],
+        child: DriverHomeUI(
+            mainCubit, userCubit, emergencyCubit, homePageAdapter));
   }
 
   static Widget createEmergencyUI(UserType userType, Location location) {
-    UserCubit userCubit = UserCubit(localStore, userAPI);
-    MainCubit mainCubit = MainCubit(localStore, mainAPI);
     return MultiCubitProvider(
       providers: [
         CubitProvider<UserCubit>(create: (context) => userCubit),
         CubitProvider<MainCubit>(create: (context) => mainCubit),
+        CubitProvider<EmergencyCubit>(create: (context) => emergencyCubit),
       ],
       child: EmergencyScreen(
         userCubit: userCubit,
         mainCubit: mainCubit,
+        emergencyCubit: emergencyCubit,
         userType: userType,
         location: location,
       ),

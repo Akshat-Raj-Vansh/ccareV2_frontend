@@ -1,14 +1,12 @@
 //@dart=2.9
 import 'package:ccarev2_frontend/pages/home/home_page_adapter.dart';
 import 'package:ccarev2_frontend/services/Notifications/notificationContoller.dart';
+import 'package:ccarev2_frontend/state_management/emergency/emergency_cubit.dart';
 import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
 import 'package:ccarev2_frontend/state_management/main/main_state.dart';
 import 'package:ccarev2_frontend/state_management/user/user_cubit.dart';
 import 'package:ccarev2_frontend/user/domain/credential.dart';
 import 'package:ccarev2_frontend/pages/questionnare/questionnare_screen.dart';
-import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
-import 'package:ccarev2_frontend/state_management/main/main_state.dart';
-import 'package:ccarev2_frontend/state_management/user/user_cubit.dart';
 import 'package:location/location.dart' as lloc;
 import 'package:ccarev2_frontend/user/domain/location.dart' as loc;
 import 'package:ccarev2_frontend/utils/size_config.dart';
@@ -25,8 +23,10 @@ import '../../../utils/size_config.dart';
 class PatientHomeUI extends StatefulWidget {
   final MainCubit mainCubit;
   final UserCubit userCubit;
+  final EmergencyCubit emergencyCubit;
   final IHomePageAdapter homePageAdapter;
-  const PatientHomeUI(this.mainCubit, this.userCubit, this.homePageAdapter);
+  const PatientHomeUI(this.mainCubit, this.userCubit, this.emergencyCubit,
+      this.homePageAdapter);
 
   @override
   State<PatientHomeUI> createState() => _PatientHomeUIState();
@@ -65,7 +65,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
   void initState() {
     super.initState();
     NotificationController.configure(
-        widget.mainCubit, UserType.patient, context);
+        widget.mainCubit, widget.emergencyCubit, UserType.patient, context);
     NotificationController.fcmHandler();
   }
 
@@ -82,29 +82,32 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    return CubitConsumer<MainCubit, MainState>(builder: (_, state) {
-      return _buildUI(context);
-    }, listener: (context, state) async {
-      if (state is LoadingState) {
-        print("Loading State Called");
-        _showLoader();
-      } else if (state is EmergencyState) {
-        print("Emergency State Called");
-        loc.Location location = await _getLocation();
-        _hideLoader();
-        widget.homePageAdapter
-            .loadEmergencyScreen(context, UserType.patient, location);
-      } else if (state is QuestionnaireState) {
-        print("Questionnaire State Called");
-        _hideLoader();
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => SelfAssessment(state.questions),
-          ),
-        );
-      }
-    });
+    return CubitConsumer<MainCubit, MainState>(
+        cubit: widget.mainCubit,
+        builder: (_, state) {
+          return _buildUI(context);
+        },
+        listener: (context, state) async {
+          if (state is LoadingState) {
+            print("Loading State Called Patient Home Screen");
+            _showLoader();
+          } else if (state is HelpState) {
+            print("Emergency State Called");
+            loc.Location location = await _getLocation();
+            _hideLoader();
+            widget.homePageAdapter
+                .loadEmergencyScreen(context, UserType.patient, location);
+          } else if (state is QuestionnaireState) {
+            print("Questionnaire State Called");
+            _hideLoader();
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => SelfAssessment(state.questions),
+              ),
+            );
+          }
+        });
   }
 
   _showLoader() {

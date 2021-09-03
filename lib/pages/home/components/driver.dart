@@ -1,6 +1,7 @@
 //@dart=2.9
 import 'package:ccarev2_frontend/pages/home/home_page_adapter.dart';
 import 'package:ccarev2_frontend/services/Notifications/notificationContoller.dart';
+import 'package:ccarev2_frontend/state_management/emergency/emergency_cubit.dart';
 import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
 import 'package:ccarev2_frontend/state_management/main/main_state.dart';
 import 'package:ccarev2_frontend/state_management/user/user_cubit.dart';
@@ -13,8 +14,10 @@ import 'package:ccarev2_frontend/user/domain/location.dart' as loc;
 class DriverHomeUI extends StatefulWidget {
   final MainCubit mainCubit;
   final UserCubit userCubit;
+  final EmergencyCubit emergencyCubit;
   final IHomePageAdapter homePageAdapter;
-  const DriverHomeUI(this.mainCubit, this.userCubit, this.homePageAdapter);
+  const DriverHomeUI(this.mainCubit, this.userCubit, this.emergencyCubit,
+      this.homePageAdapter);
 
   @override
   State<DriverHomeUI> createState() => _DriverHomeUIState();
@@ -26,7 +29,7 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
   void initState() {
     super.initState();
     NotificationController.configure(
-        widget.mainCubit, UserType.driver, context);
+        widget.mainCubit, widget.emergencyCubit, UserType.driver, context);
     NotificationController.fcmHandler();
   }
 
@@ -48,13 +51,12 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
       if (state is LoadingState) {
         print("Loading State Called");
         _showLoader();
-      } else if (state is AcceptState) {
-        _isEmergency = true;
-        print("Accept State Called");
+      } else if (state is HelpState) {
+        print("Help State Called");
         loc.Location location = await _getLocation();
-        widget.homePageAdapter
-            .loadEmergencyScreen(context, UserType.driver, location);
         _hideLoader();
+        widget.homePageAdapter
+            .loadEmergencyScreen(context, UserType.doctor, location);
       }
     });
   }

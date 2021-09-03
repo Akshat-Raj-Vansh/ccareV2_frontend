@@ -1,4 +1,3 @@
-import 'package:ccarev2_frontend/user/domain/location.dart';
 import 'package:equatable/equatable.dart';
 import '../../main/domain/question.dart';
 
@@ -6,13 +5,11 @@ abstract class MainState extends Equatable {}
 
 class IntialState extends MainState {
   @override
-  // TODO: implement props
   List<Object> get props => [];
 }
 
 class LoadingState extends MainState {
   @override
-  // TODO: implement props
   List<Object> get props => [];
 }
 
@@ -23,38 +20,37 @@ class AcceptState extends MainState {
   List<Object> get props => [msg];
 }
 
-class PatientArrived extends MainState {
-  final Location location;
-  PatientArrived(this.location);
-  @override
-  List<Object> get props => [location];
-}
+// class PatientArrived extends MainState {
+//   final Location location;
+//   PatientArrived(this.location);
+//   @override
+//   List<Object> get props => [location];
+// }
 
-class DoctorAccepted extends MainState {
-  final Location location;
-  DoctorAccepted(this.location);
-  @override
-  List<Object> get props => [location];
-}
+// class DoctorAccepted extends MainState {
+//   final Location location;
+//   DoctorAccepted(this.location);
+//   @override
+//   List<Object> get props => [location];
+// }
 
-class DriverAccepted extends MainState {
-  final Location location;
-  DriverAccepted(this.location);
-  @override
-  List<Object> get props => [location];
-}
+// class DriverAccepted extends MainState {
+//   final Location location;
+//   DriverAccepted(this.location);
+//   @override
+//   List<Object> get props => [location];
+// }
 
 class QuestionnaireState extends MainState {
   final List<QuestionTree> questions;
   QuestionnaireState(this.questions);
   @override
-  // TODO: implement props
   List<Object> get props => [this.questions];
 }
 
-class EmergencyState extends MainState {
+class HelpState extends MainState {
   final String msg;
-  EmergencyState(this.msg);
+  HelpState(this.msg);
   @override
   List<Object> get props => [msg];
 }
@@ -70,6 +66,5 @@ class ErrorState extends MainState {
   final String error;
   ErrorState(this.error) {}
   @override
-  // TODO: implement props
   List<Object> get props => [this.error];
 }

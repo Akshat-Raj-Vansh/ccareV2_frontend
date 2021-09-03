@@ -1,7 +1,6 @@
 //@dart=2.9
 import 'dart:convert';
 
-import 'package:async/src/result/result.dart';
 import 'package:ccarev2_frontend/cache/ilocal_store.dart';
 import 'package:ccarev2_frontend/main/domain/main_api_contract.dart';
 import 'package:ccarev2_frontend/user/domain/location.dart';
@@ -42,65 +41,13 @@ class MainCubit extends Cubit<MainState> {
       emit(ErrorState(result.asError.error));
       return;
     }
-    emit(EmergencyState(result.asValue.value));
+    emit(HelpState(result.asValue.value));
   }
 
-  acceptPatientByDoctor(String patientID) async {
-    print("Inside Accept patient by doctor");
+  acceptedPatient() async {
+    print("Accepted Patient");
     _startLoading();
-    final token = await localStore.fetch();
-    final result =
-        await api.acceptPatientbyDoctor(Token(token.value), Token(patientID));
-    print(result);
-    if (result == null) emit(ErrorState("Server Error"));
-    if (result.isError) {
-      emit(ErrorState(result.asError.error));
-      return;
-    }
-    emit(PatientArrived(result.asValue.value));
-    emit(AcceptState("Successfully Notified"));
-  }
-
-  acceptPatientByDriver(String patientID) async {
-    print("Inside accept patient by driver");
-    _startLoading();
-    final token = await localStore.fetch();
-    final result =
-        await api.acceptPatientbyDriver(Token(token.value), Token(patientID));
-    print(result);
-    if (result == null) {
-      emit(ErrorState("Server Error"));
-      return;
-    }
-    if (result.isError) {
-      emit(ErrorState(result.asError.error));
-      return;
-    }
-    emit(PatientArrived(result.asValue.value));
-    emit(AcceptState("Successfully Notified"));
-  }
-
-  doctorAccepted(Location location) async {
-    print("Inside doctor accepted");
-    _startLoading();
-
-    print(location);
-    if (location == null) {
-      emit(ErrorState("Location Error!"));
-      return;
-    }
-    emit(DoctorAccepted(location));
-  }
-
-  driverAccepted(Location location) async {
-    print("Inside driver accepted");
-    _startLoading();
-    print(location);
-    if (location == null) {
-      emit(ErrorState("Location Error!"));
-      return;
-    }
-    emit(DriverAccepted(location));
+    emit(HelpState("Patient Accepted"));
   }
 
   getAllPatients() async {

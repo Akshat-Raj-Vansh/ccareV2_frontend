@@ -1,6 +1,7 @@
 //@dart=2.9
 import 'dart:convert';
 
+import 'package:ccarev2_frontend/state_management/emergency/emergency_cubit.dart';
 import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
 import 'package:ccarev2_frontend/user/domain/location.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -8,9 +9,12 @@ import 'package:flutter/material.dart';
 
 class DriverNotificationHandler {
   static MainCubit mainCubit;
+  static EmergencyCubit emergencyCubit;
   static BuildContext context;
-  static configure(MainCubit cubit, BuildContext c) {
-    mainCubit = cubit;
+  static configure(
+      MainCubit mainCubit, EmergencyCubit emergencyCubit, BuildContext c) {
+    mainCubit = mainCubit;
+    emergencyCubit = emergencyCubit;
     context = c;
   }
 
@@ -32,9 +36,8 @@ class DriverNotificationHandler {
                 .copyWith(color: Colors.white, fontSize: 16),
           ),
         ));
-         
-  
-        await mainCubit.acceptPatientByDriver(message.data["_patientID"]);
+        mainCubit.acceptedPatient();
+        await emergencyCubit.acceptPatientByDriver(message.data["_patientID"]);
       }
     }
     if (message.data["user"] == "DOCTOR") {
@@ -48,14 +51,17 @@ class DriverNotificationHandler {
               .copyWith(color: Colors.white, fontSize: 16),
         ),
       ));
-      mainCubit.doctorAccepted(Location.fromJson(message.data["location"]));
+      mainCubit.acceptedPatient();
+      emergencyCubit
+          .doctorAccepted(Location.fromJson(message.data["location"]));
     }
   }
 
   static Future<void> onMessageOpenedHandler(RemoteMessage message) async {
     if (message.data['type'] == 'Emergency') {
       print(message.data);
-      await mainCubit.acceptPatientByDriver(message.data["_patientID"]);
+      mainCubit.acceptedPatient();
+      await emergencyCubit.acceptPatientByDriver(message.data["_patientID"]);
     }
   }
 }

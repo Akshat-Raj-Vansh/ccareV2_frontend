@@ -1,5 +1,7 @@
 //@dart=2.9
 import 'dart:async';
+import 'package:ccarev2_frontend/state_management/emergency/emergency_cubit.dart';
+import 'package:ccarev2_frontend/state_management/emergency/emergency_state.dart';
 import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
 import 'package:ccarev2_frontend/state_management/main/main_state.dart';
 import 'package:ccarev2_frontend/state_management/user/user_cubit.dart';
@@ -7,17 +9,20 @@ import 'package:ccarev2_frontend/user/domain/credential.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
-import 'package:location/location.dart' as lloc;
 import 'package:ccarev2_frontend/user/domain/location.dart' as loc;
-import 'package:ccarev2_frontend/services/Notifications/notificationContoller.dart';
 
 class EmergencyScreen extends StatefulWidget {
   final UserCubit userCubit;
   final MainCubit mainCubit;
+  final EmergencyCubit emergencyCubit;
   final UserType userType;
   final loc.Location location;
   EmergencyScreen(
-      {this.userCubit, this.mainCubit, this.userType, this.location});
+      {this.userCubit,
+      this.mainCubit,
+      this.emergencyCubit,
+      this.userType,
+      this.location});
 
   @override
   _EmergencyScreenState createState() => _EmergencyScreenState();
@@ -36,9 +41,6 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
 
   @override
   void initState() {
-    NotificationController.configure(
-        widget.mainCubit, widget.userType, context);
-    NotificationController.fcmHandler();
     _patientLocation = LatLng(40, 23);
     _doctorLocation = LatLng(100, 100);
     _driverLocation = LatLng(100, 100);
@@ -125,13 +127,14 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return CubitConsumer<MainCubit, MainState>(
+    return CubitConsumer<EmergencyCubit, EmergencyState>(
+      cubit: widget.emergencyCubit,
       listener: (context, state) {
-        if (state is LoadingState) {
+        if (state is LoadingEmergencyState) {
           print("Loading State Called in Emergency State");
           _showLoader();
         }
-        if (state is PatientArrived) {
+        if (state is PatientAccepted) {
           print("patient arrived state");
           setState(() {
             _patientLocation =
