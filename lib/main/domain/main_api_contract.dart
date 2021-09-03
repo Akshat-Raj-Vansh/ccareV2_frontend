@@ -7,6 +7,6 @@ abstract class IMainAPI {
   Future<Result<List<QuestionTree>>> getAll(Token token);
   Future<Result<String>> notify(Token token, Location location);
   Future<Result<String>> getAllPatients(Token token);
-  Future<Result<String>> acceptPatientbyDoctor(Token token, Token patient);
-  Future<Result<String>> acceptPatientbyDriver(Token token, Token patient);
+  Future<Result<Location>> acceptPatientbyDoctor(Token token, Token patient);
+  Future<Result<Location>> acceptPatientbyDriver(Token token, Token patient);
 }

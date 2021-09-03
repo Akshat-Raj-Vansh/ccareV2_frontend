@@ -57,12 +57,8 @@ class MainCubit extends Cubit<MainState> {
       emit(ErrorState(result.asError.error));
       return;
     }
-    dynamic data = jsonDecode(result.asValue.value);
-    Location location = Location(
-        latitude: double.parse(data['latitude']),
-        longitude: double.parse(data['longitude']));
-    emit(PatientArrived(location));
-    emit(AcceptState(data['msg']));
+    emit(PatientArrived(result.asValue.value));
+    emit(AcceptState("Successfully Notified"));
   }
 
   acceptPatientByDriver(String patientID) async {
@@ -80,13 +76,11 @@ class MainCubit extends Cubit<MainState> {
       emit(ErrorState(result.asError.error));
       return;
     }
-    dynamic data = jsonDecode(result.asValue.value);
-    Location location = Location(
-        latitude: double.parse(data['latitude']),
-        longitude: double.parse(data['longitude']));
-    emit(PatientArrived(location));
-    emit(AcceptState(data['msg']));
+     emit(PatientArrived(result.asValue.value));
+    emit(AcceptState("Successfully Notified"));
   }
+
+   
 
   doctorAccepted(Location location) async {
     print("Inside doctor accepted");

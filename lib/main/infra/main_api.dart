@@ -73,7 +73,7 @@ class MainAPI extends IMainAPI {
   }
 
   @override
-  Future<Result<String>> acceptPatientbyDoctor(
+  Future<Result<Location>> acceptPatientbyDoctor(
       Token token, Token patient) async {
     String endpoint = baseUrl + "/emergency/doctor/acceptPatient";
     var header = {
@@ -88,11 +88,11 @@ class MainAPI extends IMainAPI {
       return Result.error(transformError(map));
     }
     dynamic json = jsonDecode(response.body);
-    return Result.value(json);
+    return Result.value(Location(longitude:json['longtitude'],latitude:json["latitude"]));
   }
 
   @override
-  Future<Result<String>> acceptPatientbyDriver(
+  Future<Result<Location>> acceptPatientbyDriver(
       Token token, Token patient) async {
     String endpoint = baseUrl + "/emergency/driver/acceptPatient";
     var header = {
@@ -109,7 +109,7 @@ class MainAPI extends IMainAPI {
       return Result.error(transformError(map));
     }
     dynamic json = jsonDecode(response.body);
-    return Result.value(json);
+    return Result.value(Location(longitude:json['longtitude'],latitude:json["latitude"]));
   }
 
   @override
