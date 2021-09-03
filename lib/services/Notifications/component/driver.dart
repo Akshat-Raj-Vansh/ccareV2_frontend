@@ -1,5 +1,8 @@
 //@dart=2.9
+import 'dart:convert';
+
 import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
+import 'package:ccarev2_frontend/user/domain/location.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
@@ -29,7 +32,8 @@ class DriverNotificationHandler {
                 .copyWith(color: Colors.white, fontSize: 16),
           ),
         ));
-
+         
+  
         await mainCubit.acceptPatientByDriver(message.data["_patientID"]);
       }
     }
@@ -44,7 +48,7 @@ class DriverNotificationHandler {
               .copyWith(color: Colors.white, fontSize: 16),
         ),
       ));
-      mainCubit.doctorAccepted(message.notification.body);
+      mainCubit.doctorAccepted(Location.fromJson(message.data["location"]));
     }
   }
 

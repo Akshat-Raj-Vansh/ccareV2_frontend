@@ -1,6 +1,7 @@
 //@dart=2.9
 import 'package:aligned_dialog/aligned_dialog.dart';
 import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
+import 'package:ccarev2_frontend/user/domain/location.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
@@ -45,7 +46,7 @@ class DoctorNotificationHandler {
                 .copyWith(color: Colors.white, fontSize: 16),
           ),
         ));
-        mainCubit.driverAccepted(message.notification.body);
+        mainCubit.driverAccepted(Location.fromJson(message.data["location"]));
       }
     }
   }

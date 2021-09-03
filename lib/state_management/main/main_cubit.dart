@@ -76,28 +76,27 @@ class MainCubit extends Cubit<MainState> {
     emit(AcceptState(result.asValue.value));
   }
 
-  doctorAccepted(String body) async {
+  doctorAccepted(Location location) async {
     print("Inside doctor accepted");
     _startLoading();
-    final result = body;
-    print(result);
-    if (result == null) {
+
+    print(location);
+    if (location == null) {
       emit(ErrorState("Location Error!"));
       return;
     }
-    emit(DoctorAccepted(Location(latitude: 43, longitude: 51)));
+    emit(DoctorAccepted(location));
   }
 
-  driverAccepted(String body) async {
+  driverAccepted(Location location) async {
     print("Inside driver accepted");
     _startLoading();
-    final result = body;
-    print(result);
-    if (result == null) {
+    print(location);
+    if (location == null) {
       emit(ErrorState("Location Error!"));
       return;
     }
-    emit(DriverAccepted(Location(latitude: 41, longitude: 55)));
+    emit(DriverAccepted(location));
   }
 
   getAllPatients() async {
