@@ -33,9 +33,9 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
 
   @override
   void initState() {
-    _patientLocation = LatLng(0, 0);
-    _doctorLocation = LatLng(0, 0);
-    _driverLocation = LatLng(0, 0);
+    _patientLocation = LatLng(100, 100);
+    _doctorLocation = LatLng(100, 100);
+    _driverLocation = LatLng(100, 100);
     _getUserLocation();
     super.initState();
   }
@@ -161,7 +161,7 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
                 onMapCreated: _onMapCreated,
                 initialCameraPosition: CameraPosition(
                   target: _center,
-                  zoom: 6.0,
+                  zoom: 9.0,
                 ),
                 mapType: _currentMapType,
                 markers: _markers,

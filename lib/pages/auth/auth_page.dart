@@ -409,7 +409,9 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
               ),
               SizedBox(height: SizeConfig.screenHeight * 0.02),
               RaisedButton(
-                onPressed: _verifyOTP(_otp, _verificationCode),
+                onPressed: () {
+                  _verifyOTP(_otp, _verificationCode);
+                },
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30)),
                 padding: const EdgeInsets.all(0),
