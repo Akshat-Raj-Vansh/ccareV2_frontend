@@ -1,3 +1,4 @@
+import 'package:ccarev2_frontend/user/domain/location.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../user/domain/credential.dart';
@@ -7,16 +8,18 @@ import '../../state_management/main/main_cubit.dart';
 abstract class IHomePageAdapter {
   void loadHomeUI(BuildContext context, UserType userType);
   void onLogout(BuildContext context, UserCubit userCubit);
+  void loadEmergencyScreen(BuildContext context, UserType userType);
 }
 
 class HomePageAdapter extends IHomePageAdapter {
   final Widget Function() patientHomeScreen;
   final Widget Function() doctorHomeScreen;
   final Widget Function() driverHomeScreen;
+  final Widget Function(UserType userType) emergencyScreen;
   final Widget Function() splashScreen;
 
   HomePageAdapter(this.patientHomeScreen, this.doctorHomeScreen,
-      this.driverHomeScreen, this.splashScreen);
+      this.driverHomeScreen, this.emergencyScreen, this.splashScreen);
 
   @override
   void loadHomeUI(BuildContext context, UserType userType) {
@@ -35,6 +38,14 @@ class HomePageAdapter extends IHomePageAdapter {
           context,
           MaterialPageRoute(builder: (context) => driverHomeScreen()),
           (Route<dynamic> route) => false);
+  }
+
+  @override
+  void loadEmergencyScreen(BuildContext context, UserType userType) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => emergencyScreen(userType)),
+    );
   }
 
   @override

@@ -63,7 +63,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
     "2 (Morning & Night)",
     "3"
   ];
-
+  static bool _isEmergency = false;
   @override
   void initState() {
     super.initState();
@@ -83,19 +83,29 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
         _showLoader();
       } else if (state is EmergencyState) {
         print("Emergency State Called");
+        _isEmergency = true;
         _hideLoader();
-        lloc.LocationData _location = await lloc.Location().getLocation();
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => EmergencyScreen(
-              location: loc.Location(
-                latitude: _location.latitude,
-                longitude: _location.longitude,
-              ),
-            ),
-          ),
-        );
+        widget.homePageAdapter.loadEmergencyScreen(context, UserType.patient);
+        // lloc.LocationData _location = await lloc.Location().getLocation();
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (context) => EmergencyScreen(
+        //       patient: loc.Location(
+        //         latitude: _location.latitude,
+        //         longitude: _location.longitude,
+        //       ),
+        //       doctor: loc.Location(
+        //         latitude: 0,
+        //         longitude: 0,
+        //       ),
+        //       driver: loc.Location(
+        //         latitude: 0,
+        //         longitude: 0,
+        //       ),
+        //     ),
+        //   ),
+        // );
       } else if (state is QuestionnaireState) {
         print("Questionnaire State Called");
         _hideLoader();
@@ -130,6 +140,12 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
         appBar: AppBar(
           title: Text('CardioCare - Patient'),
           actions: [
+            if (_isEmergency)
+              IconButton(
+                onPressed: () => widget.homePageAdapter
+                    .loadEmergencyScreen(context, UserType.patient),
+                icon: Icon(Icons.map),
+              ),
             IconButton(
               onPressed: () => widget.mainCubit.getQuestions(),
               icon: Icon(Icons.help),

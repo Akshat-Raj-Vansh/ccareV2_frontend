@@ -1,3 +1,4 @@
+import 'package:ccarev2_frontend/user/domain/location.dart';
 import 'package:equatable/equatable.dart';
 import '../../main/domain/question.dart';
 
@@ -20,6 +21,20 @@ class AcceptState extends MainState {
   AcceptState(this.msg);
   @override
   List<Object> get props => [msg];
+}
+
+class DoctorAccepted extends MainState {
+  final Location location;
+  DoctorAccepted(this.location);
+  @override
+  List<Object> get props => [location];
+}
+
+class DriverAccepted extends MainState {
+  final Location location;
+  DriverAccepted(this.location);
+  @override
+  List<Object> get props => [location];
 }
 
 class QuestionnaireState extends MainState {
