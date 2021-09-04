@@ -41,6 +41,9 @@ class CompositionRoot {
   static IProfilePageAdapter profilePageAdapter;
   static IHomePageAdapter homePageAdapter;
   static UserService userService;
+  static UserCubit userCubit;
+  static MainCubit mainCubit;
+  static ProfileCubit profileCubit;
 
   static configure() async {
     sharedPreferences = await SharedPreferences.getInstance();
@@ -51,6 +54,9 @@ class CompositionRoot {
     baseUrl = "https://cardiocarenith.herokuapp.com";
     userAPI = UserAPI(client, baseUrl);
     mainAPI = MainAPI(client, baseUrl);
+    mainCubit = MainCubit(localStore, mainAPI);
+    userCubit = UserCubit(localStore, userAPI);
+    profileCubit = ProfileCubit(localStore, userAPI);
     homePageAdapter = HomePageAdapter(createPatientHomeUI, createDoctorHomeUI,
         createDriverHomeUI, createEmergencyUI, splashScreen);
     profilePageAdapter =
@@ -75,9 +81,6 @@ class CompositionRoot {
   }
 
   static Widget createLoginScreen(UserType userType) {
-    UserCubit userCubit = UserCubit(localStore, userAPI);
-    ProfileCubit profileCubit = ProfileCubit(localStore, userAPI);
-
     return MultiCubitProvider(
       providers: [
         CubitProvider<UserCubit>(create: (context) => userCubit),
@@ -100,10 +103,6 @@ class CompositionRoot {
   }
 
   static Widget createProfileScreen(UserType userType) {
-    UserCubit userCubit = UserCubit(localStore, userAPI);
-
-    ProfileCubit profileCubit = ProfileCubit(localStore, userAPI);
-
     return MultiCubitProvider(
       providers: [
         CubitProvider<UserCubit>(create: (context) => userCubit),
@@ -114,8 +113,6 @@ class CompositionRoot {
   }
 
   static Widget createPatientHomeUI() {
-    MainCubit mainCubit = MainCubit(localStore, mainAPI);
-    UserCubit userCubit = UserCubit(localStore, userAPI);
     return MultiCubitProvider(providers: [
       CubitProvider<UserCubit>(
         create: (context) => userCubit,
@@ -127,8 +124,6 @@ class CompositionRoot {
   }
 
   static Widget createDoctorHomeUI() {
-    MainCubit mainCubit = MainCubit(localStore, mainAPI);
-    UserCubit userCubit = UserCubit(localStore, userAPI);
     return MultiCubitProvider(providers: [
       CubitProvider<UserCubit>(
         create: (context) => userCubit,
@@ -140,8 +135,6 @@ class CompositionRoot {
   }
 
   static Widget createDriverHomeUI() {
-    MainCubit mainCubit = MainCubit(localStore, mainAPI);
-    UserCubit userCubit = UserCubit(localStore, userAPI);
     return MultiCubitProvider(providers: [
       CubitProvider<UserCubit>(
         create: (context) => userCubit,
@@ -153,8 +146,6 @@ class CompositionRoot {
   }
 
   static Widget createEmergencyUI(UserType userType, Location location) {
-    UserCubit userCubit = UserCubit(localStore, userAPI);
-    MainCubit mainCubit = MainCubit(localStore, mainAPI);
     return MultiCubitProvider(
       providers: [
         CubitProvider<UserCubit>(create: (context) => userCubit),

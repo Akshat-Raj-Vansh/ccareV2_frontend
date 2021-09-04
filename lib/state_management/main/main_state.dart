@@ -23,9 +23,9 @@ class AcceptState extends MainState {
   List<Object> get props => [msg];
 }
 
-class PatientArrived extends MainState {
+class PatientAccepted extends MainState {
   final Location location;
-  PatientArrived(this.location);
+  PatientAccepted(this.location);
   @override
   List<Object> get props => [location];
 }

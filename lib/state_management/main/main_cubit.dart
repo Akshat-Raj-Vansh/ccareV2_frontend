@@ -57,7 +57,7 @@ class MainCubit extends Cubit<MainState> {
       emit(ErrorState(result.asError.error));
       return;
     }
-    emit(PatientArrived(result.asValue.value));
+    emit(PatientAccepted(result.asValue.value));
     emit(AcceptState("Successfully Notified"));
   }
 
@@ -76,7 +76,7 @@ class MainCubit extends Cubit<MainState> {
       emit(ErrorState(result.asError.error));
       return;
     }
-    emit(PatientArrived(result.asValue.value));
+    emit(PatientAccepted(result.asValue.value));
     emit(AcceptState("Successfully Notified"));
   }
 

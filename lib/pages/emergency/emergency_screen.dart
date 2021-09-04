@@ -131,7 +131,7 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
           print("Loading State Called in Emergency State");
           _showLoader();
         }
-        if (state is PatientArrived) {
+        if (state is PatientAccepted) {
           print("patient arrived state");
           setState(() {
             _patientLocation =
