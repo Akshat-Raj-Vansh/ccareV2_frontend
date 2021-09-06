@@ -109,7 +109,7 @@ class MainCubit extends Cubit<MainState> {
     print("Inside get all patients");
     _startLoading();
     final token = await localStore.fetch();
-    final result = await api.getAllPatients(Token(token.value));
+    final result = await api.getAllPatients(token);
     print(result);
     if (result == null) emit(ErrorState("Server Error"));
     if (result.isError) {
@@ -119,6 +119,18 @@ class MainCubit extends Cubit<MainState> {
     emit(AllPatientsState(result.asValue.value));
   }
 
+
+  fetchEmergencyLocation() async{
+    _startLoading();
+    final token = await localStore.fetch();
+    final result = await api.fetchEmergencyLocations(token);
+    if (result == null) emit(ErrorState("Server Error"));
+    if (result.isError) {
+      emit(ErrorState(result.asError.error));
+      return;
+    }
+    emit(LocationsLoaded(result.asValue.value));
+  }
   void _startLoading() {
     emit(LoadingState());
   }

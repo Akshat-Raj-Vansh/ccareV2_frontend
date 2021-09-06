@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:ccarev2_frontend/main/domain/ELocations.dart';
 import 'package:ccarev2_frontend/user/domain/location.dart';
 import 'package:http/http.dart' as http;
 import 'package:async/src/result/result.dart';
@@ -128,5 +129,23 @@ class MainAPI extends IMainAPI {
     }
     dynamic json = jsonDecode(response.body);
     return Result.value(json["message"]);
+  }
+
+  @override
+  Future<Result<ELocations>> fetchEmergencyLocations(Token token) async {
+    String endpoint = baseUrl + "/fetchEmergencyLocation";
+    var header = {
+      "Content-Type": "application/json",
+      "Authorization": token.value
+    };
+    var response = await _client
+        .get(Uri.parse(endpoint), headers: header);
+    if (response.statusCode != 200) {
+      Map map = jsonDecode(response.body);
+      print(transformError(map));
+      return Result.error(transformError(map));
+    }
+    dynamic json = jsonDecode(response.body);
+    return Result.value(ELocations.fromJson(json));
   }
 }
