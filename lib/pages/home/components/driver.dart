@@ -48,14 +48,19 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
       if (state is LoadingState) {
         print("Loading State Called");
         _showLoader();
-      } else if (state is AcceptState) {
+      } else {
+         _hideLoader();
+        if  (state is AcceptState) {
         _isEmergency = true;
         print("Accept State Called");
         loc.Location location = await _getLocation();
         widget.homePageAdapter
             .loadEmergencyScreen(context, UserType.driver, location);
-        _hideLoader();
+       
       }
+      
+      }
+       
     });
   }
 

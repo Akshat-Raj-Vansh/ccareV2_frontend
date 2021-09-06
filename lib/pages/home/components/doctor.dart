@@ -45,7 +45,9 @@ class _DoctorHomeUIState extends State<DoctorHomeUI> {
 
   @override
   Widget build(BuildContext context) {
-    return CubitConsumer<MainCubit, MainState>(builder: (_, state) {
+    return CubitConsumer<MainCubit, MainState>(
+      
+      builder: (_, state) {
       return _buildUI(context);
     }, listener: (context, state) async {
       if (state is LoadingState) {

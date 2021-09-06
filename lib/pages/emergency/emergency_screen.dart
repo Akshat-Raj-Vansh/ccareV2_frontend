@@ -122,6 +122,7 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
   @override
   Widget build(BuildContext context) {
     return CubitConsumer<MainCubit, MainState>(
+      cubit:widget.mainCubit,
       listener: (context, state) {
         if (state is LoadingState) {
           print("Loading State Called in Emergency State");
