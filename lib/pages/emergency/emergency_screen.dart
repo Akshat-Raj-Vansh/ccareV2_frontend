@@ -9,6 +9,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
 import 'package:location/location.dart' as lloc;
 import 'package:ccarev2_frontend/user/domain/location.dart' as loc;
+import 'package:ccarev2_frontend/services/Notifications/notificationContoller.dart';
 
 class EmergencyScreen extends StatefulWidget {
   final UserCubit userCubit;
@@ -35,6 +36,9 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
 
   @override
   void initState() {
+    NotificationController.configure(
+        widget.mainCubit, widget.userType, context);
+    NotificationController.fcmHandler();
     _patientLocation = LatLng(40, 23);
     _doctorLocation = LatLng(100, 100);
     _driverLocation = LatLng(100, 100);
@@ -128,7 +132,7 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
           print("Loading State Called in Emergency State");
           _showLoader();
         }
-        if (state is PatientArrived) {
+        if (state is PatientAccepted) {
           print("patient arrived state");
           setState(() {
             _patientLocation =
