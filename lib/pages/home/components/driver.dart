@@ -49,8 +49,9 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
         print("Loading State Called");
         _showLoader();
       } else {
-         _hideLoader();
+        
         if  (state is AcceptState) {
+           _hideLoader();
         _isEmergency = true;
         print("Accept State Called");
         loc.Location location = await _getLocation();

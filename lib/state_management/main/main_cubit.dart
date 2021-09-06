@@ -67,7 +67,7 @@ class MainCubit extends Cubit<MainState> {
     final token = await localStore.fetch();
     final result =
         await api.acceptPatientbyDriver(Token(token.value), Token(patientID));
-    print(result);
+    print("Result ${result.asValue.value}");
     if (result == null) {
       emit(ErrorState("Server Error"));
       return;
@@ -76,8 +76,10 @@ class MainCubit extends Cubit<MainState> {
       emit(ErrorState(result.asError.error));
       return;
     }
-    emit(PatientAccepted(result.asValue.value));
+    
     emit(AcceptState("Successfully Notified"));
+    await Future.delayed(Duration(seconds: 1));
+    emit(PatientAccepted(result.asValue.value));
   }
 
   doctorAccepted(Location location) async {

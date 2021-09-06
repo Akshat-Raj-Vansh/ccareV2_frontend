@@ -50,7 +50,7 @@ class CompositionRoot {
     localStore = LocalStore(sharedPreferences);
     client = Client();
     secureClient = SecureClient(MHttpClient(client), localStore);
-    // baseUrl = "http://192.168.1.151:3000";
+    // baseUrl = "http://192.168.114.151:3000";
     baseUrl = "https://cardiocarenith.herokuapp.com";
     userAPI = UserAPI(client, baseUrl);
     mainAPI = MainAPI(client, baseUrl);
@@ -152,8 +152,6 @@ class CompositionRoot {
         CubitProvider<MainCubit>(create: (context) => mainCubit),
       ],
       child: EmergencyScreen(
-        userCubit: userCubit,
-        mainCubit: mainCubit,
         userType: userType,
         location: location,
       ),

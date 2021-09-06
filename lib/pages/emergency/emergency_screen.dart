@@ -12,12 +12,10 @@ import 'package:ccarev2_frontend/user/domain/location.dart' as loc;
 import 'package:ccarev2_frontend/services/Notifications/notificationContoller.dart';
 
 class EmergencyScreen extends StatefulWidget {
-  final UserCubit userCubit;
-  final MainCubit mainCubit;
   final UserType userType;
   final loc.Location location;
   EmergencyScreen(
-      {this.userCubit, this.mainCubit, this.userType, this.location});
+      {this.userType, this.location});
 
   @override
   _EmergencyScreenState createState() => _EmergencyScreenState();
@@ -36,8 +34,9 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
 
   @override
   void initState() {
+    print("Inside Emergenecy");
     NotificationController.configure(
-        widget.mainCubit, widget.userType, context);
+        CubitProvider.of<MainCubit>(context), widget.userType, context);
     NotificationController.fcmHandler();
     _patientLocation = LatLng(40, 23);
     _doctorLocation = LatLng(100, 100);
@@ -126,38 +125,34 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
   @override
   Widget build(BuildContext context) {
     return CubitConsumer<MainCubit, MainState>(
-      cubit:widget.mainCubit,
       listener: (context, state) {
-        if (state is LoadingState) {
-          print("Loading State Called in Emergency State");
-          _showLoader();
-        }
         if (state is PatientAccepted) {
           print("patient arrived state");
-          setState(() {
+          print(state.location);
+        
             _patientLocation =
                 LatLng(state.location.latitude, state.location.longitude);
             _addPatientMarker();
-            _hideLoader();
-          });
+           
+      
         }
         if (state is DoctorAccepted) {
           print("doctor accepted state");
-          setState(() {
+         
             _doctorLocation =
                 LatLng(state.location.latitude, state.location.longitude);
             _addDoctorMarker();
-            _hideLoader();
-          });
+            // _hideLoader();
+          
         }
         if (state is DriverAccepted) {
           print("driver accepted state");
-          setState(() {
+        
             _driverLocation =
                 LatLng(state.location.latitude, state.location.longitude);
             _addDriverMarker();
-            _hideLoader();
-          });
+            // _hideLoader();
+       
         }
       },
       builder: (context, state) {
