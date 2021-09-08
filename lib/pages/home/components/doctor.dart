@@ -5,6 +5,8 @@ import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
 import 'package:ccarev2_frontend/state_management/main/main_state.dart';
 import 'package:ccarev2_frontend/state_management/user/user_cubit.dart';
 import 'package:ccarev2_frontend/user/domain/credential.dart';
+import 'package:ccarev2_frontend/utils/size_config.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:aligned_dialog/aligned_dialog.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
@@ -23,7 +25,25 @@ class DoctorHomeUI extends StatefulWidget {
 }
 
 class _DoctorHomeUIState extends State<DoctorHomeUI> {
-  // static bool _isEmergency = false;
+  List<String> res = [
+    "Find Test centers",
+    "Find Hospitals",
+    "Find healthcare centres"
+  ];
+  List<String> patients = [
+    "Alpha",
+    "Beta",
+    "Gamma",
+    "Omega",
+    "Theta",
+  ];
+  List<String> time_patients = [
+    "6th Sept,2021",
+    "4th Sept,2021",
+    "3th Sept,2021",
+    "3th Sept,2021",
+    "1th Sept,2021"
+  ];
   @override
   void initState() {
     super.initState();
@@ -45,9 +65,8 @@ class _DoctorHomeUIState extends State<DoctorHomeUI> {
 
   @override
   Widget build(BuildContext context) {
-    return CubitConsumer<MainCubit, MainState>(
-      
-      builder: (_, state) {
+    SizeConfig().init(context);
+    return CubitConsumer<MainCubit, MainState>(builder: (_, state) {
       return _buildUI(context);
     }, listener: (context, state) async {
       if (state is LoadingState) {
@@ -106,22 +125,114 @@ class _DoctorHomeUIState extends State<DoctorHomeUI> {
             ),
           ],
         ),
-        body: Center(
-          child: RaisedButton(
-            onPressed: () async {
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                backgroundColor: Theme.of(context).accentColor,
-                content: Text(
-                  'This buttn is used for accepting emergency SOS',
-                  style: Theme.of(context)
-                      .textTheme
-                      .caption
-                      .copyWith(color: Colors.white, fontSize: 16),
+        body: Stack(children: [
+          SingleChildScrollView(
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              _buildEmergencyButton(),
+              const SizedBox(height: 10),
+              _buildHeader(),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                child: Text(
+                  "Medicines",
+                  style: TextStyle(fontSize: 24),
                 ),
-              ));
-            },
-            child: const Text('Alert Button'),
+              ),
+              _buildMedications(),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                child: Text(
+                  "UserFul Resources",
+                  style: TextStyle(fontSize: 24),
+                ),
+              ),
+              _buildResources(),
+            ]),
           ),
-        ),
+        ]),
       );
+
+  _buildEmergencyButton() => InkWell(
+        onTap: () async {
+          _showLoader();
+          loc.Location location = await _getLocation();
+          _hideLoader();
+          return widget.homePageAdapter
+              .loadEmergencyScreen(context, UserType.patient, location);
+        },
+        child: Container(
+            color: Colors.red[400],
+            padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+            child: ListTile(
+              leading: Icon(CupertinoIcons.exclamationmark_bubble,
+                  color: Colors.white),
+              title: Text(
+                "Press here for Patient's and Driver's Location!",
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+              subtitle: Text(
+                "Emergency Situation ->",
+                style: TextStyle(color: Colors.white, fontSize: 12),
+              ),
+            )),
+      );
+
+  _buildHeader() => Container(
+      color: Colors.green[400],
+      padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+      child: ListTile(
+        leading: Icon(CupertinoIcons.person, color: Colors.white),
+        title: Text(
+          "You are healthy!!",
+          style: TextStyle(color: Colors.white, fontSize: 20),
+        ),
+        subtitle: Text(
+          "Medications and Ongoing treatment ->",
+          style: TextStyle(color: Colors.white, fontSize: 12),
+        ),
+      ));
+
+  _buildResources() => Container(
+      padding: EdgeInsets.symmetric(horizontal: 20),
+      width: SizeConfig.screenWidth,
+      height: 200,
+      child: ListView.separated(
+          physics: NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          itemCount: res.length,
+          separatorBuilder: (context, index) => SizedBox(height: 10),
+          itemBuilder: (context, index) {
+            return Container(
+              decoration: BoxDecoration(
+                  color: Colors.lightBlue[100],
+                  borderRadius: BorderRadius.circular(20)),
+              child: ListTile(
+                  leading: Text(res[index], style: TextStyle(fontSize: 16))),
+            );
+          }));
+
+  _buildMedications() => Container(
+      padding: EdgeInsets.symmetric(horizontal: 20),
+      height: 350,
+      width: SizeConfig.screenWidth,
+      child: ListView.separated(
+          physics: NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          itemCount: patients.length,
+          separatorBuilder: (context, index) => SizedBox(height: 10),
+          itemBuilder: (context, index) {
+            return Container(
+              decoration: BoxDecoration(
+                  color: Colors.lightBlue[100],
+                  borderRadius: BorderRadius.circular(20)),
+              child: ListTile(
+                leading: Text(patients[index], style: TextStyle(fontSize: 16)),
+                trailing:
+                    Text(time_patients[index], style: TextStyle(fontSize: 16)),
+              ),
+            );
+          }));
 }

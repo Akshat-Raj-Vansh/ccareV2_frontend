@@ -1,17 +1,16 @@
 //@dart=2.9
-import 'dart:async';
-
 import 'package:ccarev2_frontend/pages/home/home_page_adapter.dart';
 import 'package:ccarev2_frontend/services/Notifications/notificationContoller.dart';
 import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
 import 'package:ccarev2_frontend/state_management/main/main_state.dart';
 import 'package:ccarev2_frontend/state_management/user/user_cubit.dart';
 import 'package:ccarev2_frontend/user/domain/credential.dart';
+import 'package:ccarev2_frontend/utils/size_config.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
 import 'package:location/location.dart' as lloc;
 import 'package:ccarev2_frontend/user/domain/location.dart' as loc;
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class DriverHomeUI extends StatefulWidget {
   final MainCubit mainCubit;
@@ -25,35 +24,31 @@ class DriverHomeUI extends StatefulWidget {
 
 class _DriverHomeUIState extends State<DriverHomeUI> {
   static bool _isEmergency = false;
-  final Set<Marker> _markers = {};
-  MapType _currentMapType = MapType.normal;
-  Completer<GoogleMapController> _controller = Completer();
-  LatLng _driverLocation = LatLng(50, 50);
+  List<String> res = [
+    "Find Test centers",
+    "Find Hospitals",
+    "Find healthcare centres"
+  ];
+  List<String> patients = [
+    "Alpha",
+    "Beta",
+    "Gamma",
+    "Omega",
+    "Theta",
+  ];
+  List<String> time_patients = [
+    "6th Sept,2021",
+    "4th Sept,2021",
+    "3th Sept,2021",
+    "3th Sept,2021",
+    "1th Sept,2021"
+  ];
   @override
   void initState() {
     super.initState();
-    _setLocation();
     NotificationController.configure(
         widget.mainCubit, UserType.driver, context);
     NotificationController.fcmHandler();
-  }
-
-  _setLocation() async {
-    lloc.LocationData _locationData = await lloc.Location().getLocation();
-    print(_locationData.latitude.toString() +
-        "," +
-        _locationData.longitude.toString());
-    _driverLocation = LatLng(_locationData.latitude, _locationData.longitude);
-    _markers.add(Marker(
-      // This marker id can be anything that uniquely identifies each marker.
-      markerId: MarkerId(_driverLocation.toString()),
-      position: _driverLocation,
-      infoWindow: InfoWindow(
-        title: "Driver's Location",
-        snippet: "Plate Number",
-      ),
-      icon: BitmapDescriptor.defaultMarker,
-    ));
   }
 
   Future<loc.Location> _getLocation() async {
@@ -68,6 +63,7 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return CubitConsumer<MainCubit, MainState>(builder: (_, state) {
       return _buildUI(context, widget.mainCubit);
     }, listener: (context, state) async {
@@ -85,14 +81,6 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
         }
       }
     });
-  }
-
-  void _onCameraMove(CameraPosition position) {
-    _driverLocation = position.target;
-  }
-
-  void _onMapCreated(GoogleMapController controller) {
-    _controller.complete(controller);
   }
 
   _showLoader() {
@@ -134,37 +122,98 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
             ),
           ],
         ),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            GoogleMap(
-              onMapCreated: _onMapCreated,
-              initialCameraPosition: CameraPosition(
-                target: _driverLocation,
-                zoom: 9.0,
+        body: Stack(children: [
+          SingleChildScrollView(
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              _buildEmergencyButton(),
+              const SizedBox(height: 10),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                child: Text(
+                  "Patients",
+                  style: TextStyle(fontSize: 24),
+                ),
               ),
-              mapType: _currentMapType,
-              markers: _markers,
-              onCameraMove: _onCameraMove,
-            ),
-            Center(
-              child: RaisedButton(
-                onPressed: () async {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    backgroundColor: Theme.of(context).accentColor,
-                    content: Text(
-                      'This button is used for accepting patients',
-                      style: Theme.of(context)
-                          .textTheme
-                          .caption
-                          .copyWith(color: Colors.white, fontSize: 16),
-                    ),
-                  ));
-                },
-                child: const Text('Alert Button'),
+              _buildMedications(),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                child: Text(
+                  "UserFul Resources",
+                  style: TextStyle(fontSize: 24),
+                ),
               ),
-            ),
-          ],
-        ),
+              _buildResources(),
+            ]),
+          ),
+        ]),
       );
+
+  _buildEmergencyButton() => InkWell(
+        onTap: () async {
+          _showLoader();
+          loc.Location location = await _getLocation();
+          _hideLoader();
+          return widget.homePageAdapter
+              .loadEmergencyScreen(context, UserType.patient, location);
+        },
+        child: Container(
+            color: Colors.red[400],
+            padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+            child: ListTile(
+              leading: Icon(CupertinoIcons.exclamationmark_bubble,
+                  color: Colors.white),
+              title: Text(
+                "Press here for Emergency Service!",
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+              subtitle: Text(
+                "Emergency Situation ->",
+                style: TextStyle(color: Colors.white, fontSize: 12),
+              ),
+            )),
+      );
+
+  _buildResources() => Container(
+      padding: EdgeInsets.symmetric(horizontal: 20),
+      width: SizeConfig.screenWidth,
+      height: 200,
+      child: ListView.separated(
+          physics: NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          itemCount: res.length,
+          separatorBuilder: (context, index) => SizedBox(height: 10),
+          itemBuilder: (context, index) {
+            return Container(
+              decoration: BoxDecoration(
+                  color: Colors.lightBlue[100],
+                  borderRadius: BorderRadius.circular(20)),
+              child: ListTile(
+                  leading: Text(res[index], style: TextStyle(fontSize: 16))),
+            );
+          }));
+
+  _buildMedications() => Container(
+      padding: EdgeInsets.symmetric(horizontal: 20),
+      height: 350,
+      width: SizeConfig.screenWidth,
+      child: ListView.separated(
+          physics: NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          itemCount: patients.length,
+          separatorBuilder: (context, index) => SizedBox(height: 10),
+          itemBuilder: (context, index) {
+            return Container(
+              decoration: BoxDecoration(
+                  color: Colors.lightBlue[100],
+                  borderRadius: BorderRadius.circular(20)),
+              child: ListTile(
+                leading: Text(patients[index], style: TextStyle(fontSize: 16)),
+                trailing:
+                    Text(time_patients[index], style: TextStyle(fontSize: 16)),
+              ),
+            );
+          }));
 }
