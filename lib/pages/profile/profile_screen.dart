@@ -43,12 +43,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  _buildUI(BuildContext context) =>
-      CubitConsumer<ProfileCubit, ProfileState>(builder: (_, state) {
+  _buildUI(BuildContext context) => CubitConsumer<ProfileCubit, ProfileState>(
+      cubit: widget.cubit,
+      builder: (_, state) {
         return Expanded(
             child: widget.pageAdapter
                 .loadProfiles(context, widget.userType, widget.cubit));
-      }, listener: (context, state) {
+      },
+      listener: (context, state) {
         if (state is LoadingState) {
           print("Loading State Called");
           _showLoader();

@@ -60,7 +60,8 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
     "2 (Morning & Night)",
     "3"
   ];
-  // static bool _isEmergency = false;
+  static bool _emergency =
+      false; // To be either stored in localstore or fetch through api
   @override
   void initState() {
     super.initState();
@@ -192,7 +193,15 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
 
   _buildEmergencyButton() => InkWell(
         onTap: () async {
-          await widget.mainCubit.notify();
+          if (!_emergency)
+            await widget.mainCubit.notify();
+          else {
+            _showLoader();
+            loc.Location location = await _getLocation();
+            _hideLoader();
+            return widget.homePageAdapter
+                .loadEmergencyScreen(context, UserType.patient, location);
+          }
         },
         child: Container(
             color: Colors.red[400],

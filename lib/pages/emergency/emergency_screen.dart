@@ -1,5 +1,6 @@
 //@dart=2.9
 import 'dart:async';
+import 'package:ccarev2_frontend/main/domain/elocation.dart';
 import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
 import 'package:ccarev2_frontend/state_management/main/main_state.dart';
 import 'package:ccarev2_frontend/state_management/user/user_cubit.dart';
@@ -14,8 +15,7 @@ import 'package:ccarev2_frontend/services/Notifications/notificationContoller.da
 class EmergencyScreen extends StatefulWidget {
   final UserType userType;
   final loc.Location location;
-  EmergencyScreen(
-      {this.userType, this.location});
+  EmergencyScreen({this.userType, this.location});
 
   @override
   _EmergencyScreenState createState() => _EmergencyScreenState();
@@ -29,20 +29,40 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
   LatLng _patientLocation;
   LatLng _doctorLocation;
   LatLng _driverLocation;
-
+  ELocations locations;
   MapType _currentMapType = MapType.normal;
 
   @override
   void initState() {
     print("Inside Emergenecy");
-    NotificationController.configure(
-        CubitProvider.of<MainCubit>(context), widget.userType, context);
-    NotificationController.fcmHandler();
+    _getLocations();
     _patientLocation = LatLng(40, 23);
     _doctorLocation = LatLng(100, 100);
     _driverLocation = LatLng(100, 100);
     _getUserLocation();
     super.initState();
+  }
+
+  _showLoader() {
+    var alert = const AlertDialog(
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      content: Center(
+          child: CircularProgressIndicator(
+        backgroundColor: Colors.green,
+      )),
+    );
+
+    showDialog(
+        context: context, barrierDismissible: true, builder: (_) => alert);
+  }
+
+  _hideLoader() {
+    Navigator.of(context, rootNavigator: true).pop();
+  }
+
+  _getLocations() async {
+    await CubitProvider.of<MainCubit>(context).fetchEmergencyLocation();
   }
 
   _getUserLocation() {
@@ -105,54 +125,68 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
     _controller.complete(controller);
   }
 
-  _showLoader() {
-    var alert = const AlertDialog(
-      backgroundColor: Colors.transparent,
-      elevation: 0,
-      content: Center(
-          child: CircularProgressIndicator(
-        backgroundColor: Colors.green,
-      )),
-    );
-    showDialog(
-        context: context, barrierDismissible: true, builder: (_) => alert);
-  }
-
-  _hideLoader() {
-    Navigator.of(context, rootNavigator: true).pop();
+  _showMessage(String msg) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      backgroundColor: Theme.of(context).accentColor,
+      content: Text(
+        msg,
+        style: Theme.of(context)
+            .textTheme
+            .caption
+            .copyWith(color: Colors.white, fontSize: 16),
+      ),
+    ));
   }
 
   @override
   Widget build(BuildContext context) {
     return CubitConsumer<MainCubit, MainState>(
       listener: (context, state) {
+        if (state is LocationsLoaded) {
+          _hideLoader();
+          locations = state.eLocations;
+          if (locations != null) {
+            if (locations.patientLocation != null) {
+              _patientLocation = LatLng(locations.patientLocation.latitude,
+                  locations.patientLocation.longitude);
+              _addPatientMarker();
+            }
+            if (locations.doctorLocation != null) {
+              _patientLocation = LatLng(locations.patientLocation.latitude,
+                  locations.patientLocation.longitude);
+              _addDoctorMarker();
+            }
+            if (locations.driverLocation != null) {
+              _patientLocation = LatLng(locations.patientLocation.latitude,
+                  locations.patientLocation.longitude);
+              _addDriverMarker();
+            }
+          }
+        }
         if (state is PatientAccepted) {
           print("patient arrived state");
           print(state.location);
-        
-            _patientLocation =
-                LatLng(state.location.latitude, state.location.longitude);
-            _addPatientMarker();
-           
-      
+          _patientLocation =
+              LatLng(state.location.latitude, state.location.longitude);
+          _addPatientMarker();
+          _hideLoader();
+          _showMessage("Patient Accepted");
         }
         if (state is DoctorAccepted) {
           print("doctor accepted state");
-         
-            _doctorLocation =
-                LatLng(state.location.latitude, state.location.longitude);
-            _addDoctorMarker();
-            // _hideLoader();
-          
+          _doctorLocation =
+              LatLng(state.location.latitude, state.location.longitude);
+          _addDoctorMarker();
+          _hideLoader();
+          _showMessage("Doctor Accepted");
         }
         if (state is DriverAccepted) {
           print("driver accepted state");
-        
-            _driverLocation =
-                LatLng(state.location.latitude, state.location.longitude);
-            _addDriverMarker();
-            // _hideLoader();
-       
+          _driverLocation =
+              LatLng(state.location.latitude, state.location.longitude);
+          _addDriverMarker();
+          _hideLoader();
+          _showMessage("Driver Accepted");
         }
       },
       builder: (context, state) {

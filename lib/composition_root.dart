@@ -43,7 +43,6 @@ class CompositionRoot {
   static UserService userService;
   static UserCubit userCubit;
   static MainCubit mainCubit;
-  static ProfileCubit profileCubit;
 
   static configure() async {
     sharedPreferences = await SharedPreferences.getInstance();
@@ -56,7 +55,6 @@ class CompositionRoot {
     mainAPI = MainAPI(client, baseUrl);
     mainCubit = MainCubit(localStore, mainAPI);
     userCubit = UserCubit(localStore, userAPI);
-    profileCubit = ProfileCubit(localStore, userAPI);
     homePageAdapter = HomePageAdapter(createPatientHomeUI, createDoctorHomeUI,
         createDriverHomeUI, createEmergencyUI, splashScreen);
     profilePageAdapter =
@@ -81,6 +79,7 @@ class CompositionRoot {
   }
 
   static Widget createLoginScreen(UserType userType) {
+    ProfileCubit profileCubit = ProfileCubit(localStore, userAPI);
     return MultiCubitProvider(
       providers: [
         CubitProvider<UserCubit>(create: (context) => userCubit),
@@ -103,6 +102,7 @@ class CompositionRoot {
   }
 
   static Widget createProfileScreen(UserType userType) {
+    ProfileCubit profileCubit = ProfileCubit(localStore, userAPI);
     return MultiCubitProvider(
       providers: [
         CubitProvider<UserCubit>(create: (context) => userCubit),

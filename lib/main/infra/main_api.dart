@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:ccarev2_frontend/main/domain/ELocations.dart';
+import 'package:ccarev2_frontend/main/domain/elocation.dart';
 import 'package:ccarev2_frontend/user/domain/location.dart';
 import 'package:http/http.dart' as http;
 import 'package:async/src/result/result.dart';
@@ -31,11 +31,11 @@ class MainAPI extends IMainAPI {
     }
     dynamic json = jsonDecode(response.body);
     var result = json["questions"] as List;
-    print(result);
-    return Result.value(result.map<QuestionTree>((element) {
-      print(jsonEncode(element));
-      return QuestionTree.fromJson(jsonEncode(element));
-    }).toList());
+
+    return Result.value(result
+        .map<QuestionTree>(
+            (element) => QuestionTree.fromJson(jsonEncode(element)))
+        .toList());
   }
 
   transformError(Map map) {
@@ -89,7 +89,8 @@ class MainAPI extends IMainAPI {
       return Result.error(transformError(map));
     }
     dynamic json = jsonDecode(response.body);
-    return Result.value(Location(longitude:json['longtitude'],latitude:json["latitude"]));
+    return Result.value(
+        Location(longitude: json['longtitude'], latitude: json["latitude"]));
   }
 
   @override
@@ -110,7 +111,8 @@ class MainAPI extends IMainAPI {
       return Result.error(transformError(map));
     }
     dynamic json = jsonDecode(response.body);
-    return Result.value(Location(longitude:json['longitude'],latitude:json["latitude"]));
+    return Result.value(
+        Location(longitude: json['longitude'], latitude: json["latitude"]));
   }
 
   @override
@@ -133,13 +135,13 @@ class MainAPI extends IMainAPI {
 
   @override
   Future<Result<ELocations>> fetchEmergencyLocations(Token token) async {
-    String endpoint = baseUrl + "/fetchEmergencyLocation";
+    String endpoint = baseUrl + "/emergency/fetchEmergencyLocation";
     var header = {
       "Content-Type": "application/json",
       "Authorization": token.value
     };
-    var response = await _client
-        .get(Uri.parse(endpoint), headers: header);
+    var response = await _client.get(Uri.parse(endpoint), headers: header);
+    print(response.statusCode);
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
       print(transformError(map));
