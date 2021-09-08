@@ -121,17 +121,17 @@ class MainCubit extends Cubit<MainState> {
   }
 
 
-  fetchEmergencyLocation() async{
+  fetchEmergencyDetails() async{
     // _startLoading();
     final token = await localStore.fetch();
-    final result = await api.fetchEmergencyLocations(token);
+    final result = await api.fetchEmergencyDetails(token);
     if (result == null) emit(ErrorState("Server Error"));
     if (result.isError) {
       emit(ErrorState(result.asError.error));
       return;
     }
      await Future.delayed(Duration(seconds: 1));
-    emit(LocationsLoaded(result.asValue.value));
+    emit(DetailsLoaded(result.asValue.value));
   }
 
   void _startLoading() {

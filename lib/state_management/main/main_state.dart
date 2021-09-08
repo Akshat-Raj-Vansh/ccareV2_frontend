@@ -1,4 +1,4 @@
-import 'package:ccarev2_frontend/main/domain/elocation.dart';
+import 'package:ccarev2_frontend/main/domain/eDetails.dart';
 import 'package:ccarev2_frontend/user/domain/location.dart';
 import 'package:equatable/equatable.dart';
 import '../../main/domain/question.dart';
@@ -38,11 +38,12 @@ class DoctorAccepted extends MainState {
   List<Object> get props => [location];
 }
 
-class LocationsLoaded extends MainState {
-  final ELocations eLocations;
-  LocationsLoaded(this.eLocations);
+class DetailsLoaded extends MainState {
+  final EDetails eDetails;
+
+  DetailsLoaded(this.eDetails);
   @override
-  List<Object> get props => [this.eLocations];
+  List<Object> get props => [this.eDetails];
 }
 
 class DriverAccepted extends MainState {
