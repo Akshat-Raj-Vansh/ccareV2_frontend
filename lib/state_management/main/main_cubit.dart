@@ -77,7 +77,7 @@ class MainCubit extends Cubit<MainState> {
       emit(ErrorState(result.asError.error));
       return;
     }
-    
+
     emit(AcceptState("Successfully Notified"));
     await Future.delayed(Duration(seconds: 1));
     emit(PatientAccepted(result.asValue.value));
@@ -133,6 +133,7 @@ class MainCubit extends Cubit<MainState> {
      await Future.delayed(Duration(seconds: 1));
     emit(LocationsLoaded(result.asValue.value));
   }
+
   void _startLoading() {
     emit(LoadingState());
   }
