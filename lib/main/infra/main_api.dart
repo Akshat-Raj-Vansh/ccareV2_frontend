@@ -142,6 +142,7 @@ class MainAPI extends IMainAPI {
     };
     var response = await _client.get(Uri.parse(endpoint), headers: header);
     print(response.statusCode);
+    print(response.body);
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
       print(transformError(map));

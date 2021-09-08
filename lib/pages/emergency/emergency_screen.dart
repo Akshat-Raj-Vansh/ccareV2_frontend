@@ -3,12 +3,10 @@ import 'dart:async';
 import 'package:ccarev2_frontend/main/domain/elocation.dart';
 import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
 import 'package:ccarev2_frontend/state_management/main/main_state.dart';
-import 'package:ccarev2_frontend/state_management/user/user_cubit.dart';
 import 'package:ccarev2_frontend/user/domain/credential.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
-import 'package:location/location.dart' as lloc;
 import 'package:ccarev2_frontend/user/domain/location.dart' as loc;
 import 'package:ccarev2_frontend/services/Notifications/notificationContoller.dart';
 
@@ -40,6 +38,9 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
     _doctorLocation = LatLng(100, 100);
     _driverLocation = LatLng(100, 100);
     _getUserLocation();
+    NotificationController.configure(
+        CubitProvider.of<MainCubit>(context), UserType.patient, context);
+    NotificationController.fcmHandler();
     super.initState();
   }
 

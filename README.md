@@ -6,6 +6,7 @@
 - [x] Doesn't check the new_user field while signup. Multiple profiles are created.
 - [ ] Sometimes the phone number is stored in the database with extra digits
 - [ ] Open emergency screen if patient had already sent SOS message to view map.
+- [ ] Resend OTP timer bug.
 
 ### Todo
 
