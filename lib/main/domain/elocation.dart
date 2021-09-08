@@ -24,6 +24,7 @@ class ELocations {
   }
 
   factory ELocations.fromMap(Map<String, dynamic> map) {
+    
     return ELocations(
       patientLocation: Location.fromMap(map['patientLocation']),
       doctorLocation: Location.fromMap(map['doctorLocation']),

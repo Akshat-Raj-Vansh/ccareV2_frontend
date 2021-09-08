@@ -58,6 +58,7 @@ class MainCubit extends Cubit<MainState> {
       return;
     }
     emit(PatientAccepted(result.asValue.value));
+     await Future.delayed(Duration(seconds: 1));
     emit(AcceptState("Successfully Notified"));
   }
 
@@ -121,7 +122,7 @@ class MainCubit extends Cubit<MainState> {
 
 
   fetchEmergencyLocation() async{
-    _startLoading();
+    // _startLoading();
     final token = await localStore.fetch();
     final result = await api.fetchEmergencyLocations(token);
     if (result == null) emit(ErrorState("Server Error"));
@@ -129,6 +130,7 @@ class MainCubit extends Cubit<MainState> {
       emit(ErrorState(result.asError.error));
       return;
     }
+     await Future.delayed(Duration(seconds: 1));
     emit(LocationsLoaded(result.asValue.value));
   }
   void _startLoading() {

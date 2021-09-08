@@ -34,13 +34,14 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
 
   @override
   void initState() {
+    super.initState();
     print("Inside Emergenecy");
     _getLocations();
     _patientLocation = LatLng(40, 23);
     _doctorLocation = LatLng(100, 100);
     _driverLocation = LatLng(100, 100);
     _getUserLocation();
-    super.initState();
+    
   }
 
   _showLoader() {
@@ -61,8 +62,8 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
     Navigator.of(context, rootNavigator: true).pop();
   }
 
-  _getLocations() async {
-    await CubitProvider.of<MainCubit>(context).fetchEmergencyLocation();
+  _getLocations()  {
+    CubitProvider.of<MainCubit>(context).fetchEmergencyLocation();
   }
 
   _getUserLocation() {
@@ -142,34 +143,14 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
   Widget build(BuildContext context) {
     return CubitConsumer<MainCubit, MainState>(
       listener: (context, state) {
-        if (state is LocationsLoaded) {
-          _hideLoader();
-          locations = state.eLocations;
-          if (locations != null) {
-            if (locations.patientLocation != null) {
-              _patientLocation = LatLng(locations.patientLocation.latitude,
-                  locations.patientLocation.longitude);
-              _addPatientMarker();
-            }
-            if (locations.doctorLocation != null) {
-              _patientLocation = LatLng(locations.patientLocation.latitude,
-                  locations.patientLocation.longitude);
-              _addDoctorMarker();
-            }
-            if (locations.driverLocation != null) {
-              _patientLocation = LatLng(locations.patientLocation.latitude,
-                  locations.patientLocation.longitude);
-              _addDriverMarker();
-            }
-          }
-        }
+        
         if (state is PatientAccepted) {
           print("patient arrived state");
           print(state.location);
           _patientLocation =
               LatLng(state.location.latitude, state.location.longitude);
           _addPatientMarker();
-          _hideLoader();
+          // _hideLoader();
           _showMessage("Patient Accepted");
         }
         if (state is DoctorAccepted) {
@@ -177,7 +158,7 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
           _doctorLocation =
               LatLng(state.location.latitude, state.location.longitude);
           _addDoctorMarker();
-          _hideLoader();
+          // _hideLoader();
           _showMessage("Doctor Accepted");
         }
         if (state is DriverAccepted) {
@@ -185,11 +166,33 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
           _driverLocation =
               LatLng(state.location.latitude, state.location.longitude);
           _addDriverMarker();
-          _hideLoader();
+          // _hideLoader();
           _showMessage("Driver Accepted");
         }
       },
       builder: (context, state) {
+        if (state is LocationsLoaded) {
+         
+          locations = state.eLocations;
+          print("Locations $locations");
+          if (locations != null) {
+            if (locations.patientLocation.latitude != null) {
+              _patientLocation = LatLng(locations.patientLocation.latitude,
+                  locations.patientLocation.longitude);
+              _addPatientMarker();
+            }
+            if (locations.doctorLocation.latitude != null) {
+              _patientLocation = LatLng(locations.patientLocation.latitude,
+                  locations.patientLocation.longitude);
+              _addDoctorMarker();
+            }
+            if (locations.driverLocation.latitude != null) {
+              _patientLocation = LatLng(locations.patientLocation.latitude,
+                  locations.patientLocation.longitude);
+              _addDriverMarker();
+            }
+          }
+        }
         return Scaffold(
           appBar: AppBar(
             backgroundColor: Colors.red,

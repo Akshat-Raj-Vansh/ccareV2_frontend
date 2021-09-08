@@ -142,12 +142,13 @@ class MainAPI extends IMainAPI {
     };
     var response = await _client.get(Uri.parse(endpoint), headers: header);
     print(response.statusCode);
+   
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
       print(transformError(map));
       return Result.error(transformError(map));
     }
     dynamic json = jsonDecode(response.body);
-    return Result.value(ELocations.fromJson(json));
+    return Result.value(ELocations.fromJson(jsonEncode(json)));
   }
 }
