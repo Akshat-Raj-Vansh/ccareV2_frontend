@@ -33,7 +33,7 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
   @override
   void initState() {
     super.initState();
-    print("Inside Emergenecy");
+    print("Inside Emergenecy Screen initState");
     _getLocations();
     _patientLocation = LatLng(40, 23);
     _doctorLocation = LatLng(100, 100);
@@ -155,16 +155,16 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
         }
         if (state is DoctorAccepted) {
           print("doctor accepted state");
-          _doctorLocation = LatLng(state.doctorDetails.location.latitude,
-              state.doctorDetails.location.longitude);
+          _doctorLocation =
+              LatLng(state.location.latitude, state.location.longitude);
           _addDoctorMarker();
           _hideLoader();
           _showMessage("Doctor Accepted");
         }
         if (state is DriverAccepted) {
           print("driver accepted state");
-          _driverLocation = LatLng(state.driverDetails.location.latitude,
-              state.driverDetails.location.longitude);
+          _driverLocation =
+              LatLng(state.location.latitude, state.location.longitude);
           _addDriverMarker();
           _hideLoader();
           _showMessage("Driver Accepted");
@@ -173,7 +173,7 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
       builder: (context, state) {
         if (state is DetailsLoaded) {
           details = state.eDetails;
-          print("Locations $details");
+          print("Details $details");
           if (details != null) {
             if (details.patientDetails != null) {
               _patientLocation = LatLng(

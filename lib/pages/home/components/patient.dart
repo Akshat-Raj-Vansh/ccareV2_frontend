@@ -113,21 +113,13 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
         print("Loading State Called");
         _showLoader();
       } else if (state is EmergencyState) {
+        _hideLoader();
         print("Emergency State Called");
+        _showMessage("Notifications sent to the Doctor and the Ambulance.");
         // loc.Location location = await _getLocation();
         // _hideLoader();
         // widget.homePageAdapter
         //     .loadEmergencyScreen(context, UserType.patient, location);
-      } else if (state is DoctorAccepted) {
-        print("DoctorAccepted State Called");
-        _showMessage("Doctor has accepted your request.");
-        _doctorAccepted = true;
-        eDetails.doctorDetails = state.doctorDetails;
-      } else if (state is DriverAccepted) {
-        print("DriverAccepted State Called");
-        _showMessage("Ambulance is on its way.");
-        _driverAccepted = true;
-        eDetails.driverDetails = state.driverDetails;
       } else if (state is QuestionnaireState) {
         print("Questionnaire State Called");
         _hideLoader();
@@ -227,7 +219,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
 
   _buildDoctorDetails() => Container(
         width: SizeConfig.screenWidth,
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         child: Column(
           children: [
             Row(
@@ -252,7 +244,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
       );
   _buildDriverDetails() => Container(
         width: SizeConfig.screenWidth,
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         child: Column(
           children: [
             Row(

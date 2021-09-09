@@ -7,7 +7,6 @@ abstract class MainState extends Equatable {}
 
 class IntialState extends MainState {
   @override
-  // TODO: implement props
   List<Object> get props => [];
 }
 
@@ -31,17 +30,17 @@ class PatientAccepted extends MainState {
 }
 
 class DoctorAccepted extends MainState {
-  final DoctorDetails doctorDetails;
-  DoctorAccepted(this.doctorDetails);
+  final Location location;
+  DoctorAccepted(this.location);
   @override
-  List<Object> get props => [doctorDetails];
+  List<Object> get props => [location];
 }
 
 class DriverAccepted extends MainState {
-  final DriverDetails driverDetails;
-  DriverAccepted(this.driverDetails);
+  final Location location;
+  DriverAccepted(this.location);
   @override
-  List<Object> get props => [driverDetails];
+  List<Object> get props => [location];
 }
 
 class DetailsLoaded extends MainState {
