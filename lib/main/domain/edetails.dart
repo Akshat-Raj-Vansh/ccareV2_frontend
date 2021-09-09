@@ -70,12 +70,14 @@ class PatientDetails {
     final int age;
     final String gender;
     final String contactNumber;    
+    final String address;
   PatientDetails({
     required this.name,
     required this.location,
     required this.age,
     required this.gender,
     required this.contactNumber,
+    required this.address,
   });
 
   PatientDetails copyWith({
@@ -84,6 +86,7 @@ class PatientDetails {
     int? age,
     String? gender,
     String? contactNumber,
+    String? address,
   }) {
     return PatientDetails(
       name: name ?? this.name,
@@ -91,6 +94,7 @@ class PatientDetails {
       age: age ?? this.age,
       gender: gender ?? this.gender,
       contactNumber: contactNumber ?? this.contactNumber,
+      address: address ?? this.address,
     );
   }
 
@@ -101,6 +105,7 @@ class PatientDetails {
       'age': age,
       'gender': gender,
       'contactNumber': contactNumber,
+      'address': address,
     };
   }
 
@@ -111,6 +116,7 @@ class PatientDetails {
       age: map['age'],
       gender: map['gender'],
       contactNumber: map['contactNumber'],
+      address: map['address'],
     );
   }
 
@@ -120,7 +126,7 @@ class PatientDetails {
 
   @override
   String toString() {
-    return 'PatientDetails(name: $name, location: $location, age: $age, gender: $gender, contactNumber: $contactNumber)';
+    return 'PatientDetails(name: $name, location: $location, age: $age, gender: $gender, contactNumber: $contactNumber, address: $address)';
   }
 
   @override
@@ -132,7 +138,8 @@ class PatientDetails {
       other.location == location &&
       other.age == age &&
       other.gender == gender &&
-      other.contactNumber == contactNumber;
+      other.contactNumber == contactNumber &&
+      other.address == address;
   }
 
   @override
@@ -141,7 +148,8 @@ class PatientDetails {
       location.hashCode ^
       age.hashCode ^
       gender.hashCode ^
-      contactNumber.hashCode;
+      contactNumber.hashCode ^
+      address.hashCode;
   }
 }
 
@@ -150,11 +158,13 @@ class DoctorDetails {
    final Location location;
     final String hospital;
     final String contactNumber;  
+    final String address;
   DoctorDetails({
     required this.name,
     required this.location,
     required this.hospital,
     required this.contactNumber,
+    required this.address,
   });
 
   DoctorDetails copyWith({
@@ -162,12 +172,14 @@ class DoctorDetails {
     Location? location,
     String? hospital,
     String? contactNumber,
+    String? address,
   }) {
     return DoctorDetails(
       name: name ?? this.name,
       location: location ?? this.location,
       hospital: hospital ?? this.hospital,
       contactNumber: contactNumber ?? this.contactNumber,
+      address: address ?? this.address,
     );
   }
 
@@ -177,6 +189,7 @@ class DoctorDetails {
       'location': location.toMap(),
       'hospital': hospital,
       'contactNumber': contactNumber,
+      'address': address,
     };
   }
 
@@ -186,6 +199,7 @@ class DoctorDetails {
       location: Location.fromMap(map['location']),
       hospital: map['hospital'],
       contactNumber: map['contactNumber'],
+      address: map['address'],
     );
   }
 
@@ -195,7 +209,7 @@ class DoctorDetails {
 
   @override
   String toString() {
-    return 'DoctorDetails(name: $name, location: $location, hospital: $hospital, contactNumber: $contactNumber)';
+    return 'DoctorDetails(name: $name, location: $location, hospital: $hospital, contactNumber: $contactNumber, address: $address)';
   }
 
   @override
@@ -206,7 +220,8 @@ class DoctorDetails {
       other.name == name &&
       other.location == location &&
       other.hospital == hospital &&
-      other.contactNumber == contactNumber;
+      other.contactNumber == contactNumber &&
+      other.address == address;
   }
 
   @override
@@ -214,7 +229,8 @@ class DoctorDetails {
     return name.hashCode ^
       location.hashCode ^
       hospital.hashCode ^
-      contactNumber.hashCode;
+      contactNumber.hashCode ^
+      address.hashCode;
   }
 }
 
@@ -224,11 +240,13 @@ class DriverDetails {
    final Location location;
     final String plateNumber;
     final String contactNumber;  
+    final String address;
   DriverDetails({
     required this.name,
     required this.location,
     required this.plateNumber,
     required this.contactNumber,
+    required this.address,
   });
 
   DriverDetails copyWith({
@@ -236,12 +254,14 @@ class DriverDetails {
     Location? location,
     String? plateNumber,
     String? contactNumber,
+    String? address,
   }) {
     return DriverDetails(
       name: name ?? this.name,
       location: location ?? this.location,
       plateNumber: plateNumber ?? this.plateNumber,
       contactNumber: contactNumber ?? this.contactNumber,
+      address: address ?? this.address,
     );
   }
 
@@ -251,6 +271,7 @@ class DriverDetails {
       'location': location.toMap(),
       'plateNumber': plateNumber,
       'contactNumber': contactNumber,
+      'address': address,
     };
   }
 
@@ -260,6 +281,7 @@ class DriverDetails {
       location: Location.fromMap(map['location']),
       plateNumber: map['plateNumber'],
       contactNumber: map['contactNumber'],
+      address: map['address'],
     );
   }
 
@@ -269,7 +291,7 @@ class DriverDetails {
 
   @override
   String toString() {
-    return 'DriverDetails(name: $name, location: $location, plateNumber: $plateNumber, contactNumber: $contactNumber)';
+    return 'DriverDetails(name: $name, location: $location, plateNumber: $plateNumber, contactNumber: $contactNumber, address: $address)';
   }
 
   @override
@@ -280,7 +302,8 @@ class DriverDetails {
       other.name == name &&
       other.location == location &&
       other.plateNumber == plateNumber &&
-      other.contactNumber == contactNumber;
+      other.contactNumber == contactNumber &&
+      other.address == address;
   }
 
   @override
@@ -288,6 +311,7 @@ class DriverDetails {
     return name.hashCode ^
       location.hashCode ^
       plateNumber.hashCode ^
-      contactNumber.hashCode;
+      contactNumber.hashCode ^
+      address.hashCode;
   }
 }

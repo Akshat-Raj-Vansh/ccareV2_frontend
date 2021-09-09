@@ -102,7 +102,7 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
                   var profile = DoctorProfile(
                       name: name,
                       specialization: specialization,
-                      hospital: hospital,
+                      hospitalName :hospital,
                       uniqueCode: uniqueCode,
                       email: email,
                       location: loc.Location(
