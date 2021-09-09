@@ -48,7 +48,7 @@ class CompositionRoot {
     sharedPreferences = await SharedPreferences.getInstance();
     localStore = LocalStore(sharedPreferences);
     client = Client();
-    secureClient = SecureClient(MHttpClient(client), localStore);
+    // secureClient = SecureClient(MHttpClient(client), localStore);
     // baseUrl = "http://192.168.114.151:3000";
     baseUrl = "https://cardiocarenith.herokuapp.com";
     userAPI = UserAPI(client, baseUrl);

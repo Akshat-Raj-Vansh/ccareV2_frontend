@@ -1,6 +1,6 @@
 //@dart=2.9
 import 'dart:async';
-import 'package:ccarev2_frontend/main/domain/elocation.dart';
+import 'package:ccarev2_frontend/main/domain/eDetails.dart';
 import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
 import 'package:ccarev2_frontend/state_management/main/main_state.dart';
 import 'package:ccarev2_frontend/user/domain/credential.dart';
@@ -27,7 +27,7 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
   LatLng _patientLocation;
   LatLng _doctorLocation;
   LatLng _driverLocation;
-  ELocations locations;
+  EDetails details;
   MapType _currentMapType = MapType.normal;
 
   @override
@@ -64,7 +64,7 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
   }
 
   _getLocations() {
-    CubitProvider.of<MainCubit>(context).fetchEmergencyLocation();
+    CubitProvider.of<MainCubit>(context).fetchEmergencyDetails()();
   }
 
   _getUserLocation() {
@@ -171,23 +171,24 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
         }
       },
       builder: (context, state) {
-        if (state is LocationsLoaded) {
-          locations = state.eLocations;
-          print("Locations $locations");
-          if (locations != null) {
-            if (locations.patientLocation.latitude != null) {
-              _patientLocation = LatLng(locations.patientLocation.latitude,
-                  locations.patientLocation.longitude);
+        if (state is DetailsLoaded) {
+          details = state.eDetails;
+          print("Locations $details");
+          if (details != null) {
+            if (details.patientDetails != null) {
+              _patientLocation = LatLng(
+                  details.patientDetails.location.latitude,
+                  details.patientDetails.location.longitude);
               _addPatientMarker();
             }
-            if (locations.doctorLocation.latitude != null) {
-              _patientLocation = LatLng(locations.patientLocation.latitude,
-                  locations.patientLocation.longitude);
+            if (details.doctorDetails != null) {
+              _doctorLocation = LatLng(details.doctorDetails.location.latitude,
+                  details.doctorDetails.location.longitude);
               _addDoctorMarker();
             }
-            if (locations.driverLocation.latitude != null) {
-              _patientLocation = LatLng(locations.patientLocation.latitude,
-                  locations.patientLocation.longitude);
+            if (details.driverDetails != null) {
+              _driverLocation = LatLng(details.driverDetails.location.latitude,
+                  details.driverDetails.location.longitude);
               _addDriverMarker();
             }
           }

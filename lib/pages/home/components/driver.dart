@@ -126,7 +126,7 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
           SingleChildScrollView(
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              _buildEmergencyButton(),
+              _buildEmergencyButton(context),
               const SizedBox(height: 10),
               Padding(
                 padding:
@@ -151,7 +151,7 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
         ]),
       );
 
-  _buildEmergencyButton() => InkWell(
+  _buildEmergencyButton(BuildContext context) => InkWell(
         onTap: () async {
           _showLoader();
           loc.Location location = await _getLocation();

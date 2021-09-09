@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:ccarev2_frontend/main/domain/elocation.dart';
+import 'package:ccarev2_frontend/main/domain/eDetails.dart';
 import 'package:ccarev2_frontend/user/domain/location.dart';
 import 'package:http/http.dart' as http;
 import 'package:async/src/result/result.dart';
@@ -134,8 +134,8 @@ class MainAPI extends IMainAPI {
   }
 
   @override
-  Future<Result<ELocations>> fetchEmergencyLocations(Token token) async {
-    String endpoint = baseUrl + "/emergency/fetchEmergencyLocation";
+  Future<Result<EDetails>> fetchEmergencyDetails(Token token) async {
+    String endpoint = baseUrl + "/emergency/fetchEmergencyDetails";
     var header = {
       "Content-Type": "application/json",
       "Authorization": token.value
@@ -149,6 +149,6 @@ class MainAPI extends IMainAPI {
       return Result.error(transformError(map));
     }
     dynamic json = jsonDecode(response.body);
-    return Result.value(ELocations.fromJson(jsonEncode(json)));
+    return Result.value(EDetails.fromJson(jsonEncode(json)));
   }
 }
