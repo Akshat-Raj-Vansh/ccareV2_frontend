@@ -34,7 +34,7 @@ class DoctorNotificationHandler {
           ),
         ));
 
-        await mainCubit.acceptPatientByDoctor(message.data["_patientID"]);
+        await mainCubit.acceptRequest(message.data["_patientID"]);
       }
       if (message.data["user"] == "DRIVER") {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -55,7 +55,7 @@ class DoctorNotificationHandler {
 
   static Future<void> onMessageOpenedHandler(RemoteMessage message) async {
     if (message.data['type'] == 'Emergency') {
-      await mainCubit.acceptPatientByDoctor(message.data["_patientID"]);
+      await mainCubit.acceptRequest(message.data["_patientID"]);
     }
   }
 }

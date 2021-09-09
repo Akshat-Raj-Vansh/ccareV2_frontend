@@ -17,10 +17,10 @@ class LoadingState extends MainState {
 }
 
 class AcceptState extends MainState {
-  final String msg;
-  AcceptState(this.msg);
+  final String patientID;
+  AcceptState(this.patientID);
   @override
-  List<Object> get props => [msg];
+  List<Object> get props => [patientID];
 }
 
 class PatientAccepted extends MainState {

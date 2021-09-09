@@ -34,7 +34,7 @@ class DriverNotificationHandler {
           ),
         ));
 
-        await mainCubit.acceptPatientByDriver(message.data["_patientID"]);
+        await mainCubit.acceptRequest(message.data["_patientID"]);
       }
     }
     if (message.data["user"] == "DOCTOR") {
@@ -56,7 +56,7 @@ class DriverNotificationHandler {
   static Future<void> onMessageOpenedHandler(RemoteMessage message) async {
     if (message.data['type'] == 'Emergency') {
       print(message.data);
-      await mainCubit.acceptPatientByDriver(message.data["_patientID"]);
+      await mainCubit.acceptRequest(message.data["_patientID"]);
     }
   }
 }

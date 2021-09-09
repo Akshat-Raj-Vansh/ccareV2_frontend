@@ -46,6 +46,17 @@ class MainCubit extends Cubit<MainState> {
     emit(EmergencyState(result.asValue.value));
   }
 
+  acceptRequest(String patientID) async {
+    print("Inside Accept Patient Request");
+    _startLoading();
+    print(patientID);
+    if (patientID == null) {
+      emit(ErrorState("Invalid ID of patient!"));
+      return;
+    }
+    emit(AcceptState(patientID));
+  }
+
   acceptPatientByDoctor(String patientID) async {
     print("Inside Accept patient by doctor");
     _startLoading();
@@ -58,8 +69,6 @@ class MainCubit extends Cubit<MainState> {
       emit(ErrorState(result.asError.error));
       return;
     }
-    emit(AcceptState("Successfully Notified"));
-    await Future.delayed(Duration(seconds: 1));
     emit(PatientAccepted(result.asValue.value));
   }
 
@@ -78,9 +87,6 @@ class MainCubit extends Cubit<MainState> {
       emit(ErrorState(result.asError.error));
       return;
     }
-
-    emit(AcceptState("Successfully Notified"));
-    await Future.delayed(Duration(seconds: 1));
     emit(PatientAccepted(result.asValue.value));
   }
 

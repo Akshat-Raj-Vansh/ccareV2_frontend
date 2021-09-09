@@ -1,7 +1,8 @@
 import 'dart:convert';
 
-import 'package:ccarev2_frontend/user/domain/location.dart';
 import 'package:flutter/foundation.dart';
+
+import 'package:ccarev2_frontend/user/domain/location.dart';
 
 class DoctorProfile {
   final String name;
@@ -9,12 +10,14 @@ class DoctorProfile {
   final String uniqueCode;
   final String email;
   final Location location;
+  final String hospital;
   DoctorProfile({
     required this.name,
     required this.specialization,
     required this.uniqueCode,
     required this.email,
     required this.location,
+    required this.hospital,
   });
 
   DoctorProfile copyWith({
@@ -23,6 +26,7 @@ class DoctorProfile {
     String? uniqueCode,
     String? email,
     Location? location,
+    String? hospital,
   }) {
     return DoctorProfile(
       name: name ?? this.name,
@@ -30,6 +34,7 @@ class DoctorProfile {
       uniqueCode: uniqueCode ?? this.uniqueCode,
       email: email ?? this.email,
       location: location ?? this.location,
+      hospital: hospital ?? this.hospital,
     );
   }
 
@@ -40,6 +45,7 @@ class DoctorProfile {
       'uniqueCode': uniqueCode,
       'email': email,
       'location': location.toMap(),
+      'hospital': hospital,
     };
   }
 
@@ -50,6 +56,7 @@ class DoctorProfile {
       uniqueCode: map['uniqueCode'],
       email: map['email'],
       location: Location.fromMap(map['location']),
+      hospital: map['hospital'],
     );
   }
 
@@ -60,7 +67,7 @@ class DoctorProfile {
 
   @override
   String toString() {
-    return 'DoctorProfile(name: $name, specialization: $specialization, uniqueCode: $uniqueCode, email: $email, location: $location)';
+    return 'DoctorProfile(name: $name, specialization: $specialization, uniqueCode: $uniqueCode, email: $email, location: $location, hospital: $hospital)';
   }
 
   @override
@@ -72,7 +79,8 @@ class DoctorProfile {
         other.specialization == specialization &&
         other.uniqueCode == uniqueCode &&
         other.email == email &&
-        other.location == location;
+        other.location == location &&
+        other.hospital == hospital;
   }
 
   @override
@@ -81,7 +89,8 @@ class DoctorProfile {
         specialization.hashCode ^
         uniqueCode.hashCode ^
         email.hashCode ^
-        location.hashCode;
+        location.hashCode ^
+        hospital.hashCode;
   }
 }
 
