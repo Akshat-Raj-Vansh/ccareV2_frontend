@@ -1,6 +1,6 @@
 //@dart=2.9
 import 'dart:async';
-import 'package:ccarev2_frontend/main/domain/eDetails.dart';
+import 'package:ccarev2_frontend/main/domain/edetails.dart';
 import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
 import 'package:ccarev2_frontend/state_management/main/main_state.dart';
 import 'package:ccarev2_frontend/user/domain/credential.dart';
@@ -33,13 +33,13 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
   @override
   void initState() {
     super.initState();
-    print("Inside Emergenecy");
+    print("Inside Emergenecy Screen initState");
     _getLocations();
     _patientLocation = LatLng(40, 23);
     _doctorLocation = LatLng(100, 100);
     _driverLocation = LatLng(100, 100);
     _getUserLocation();
-    
+
     NotificationController.configure(
         CubitProvider.of<MainCubit>(context), UserType.patient, context);
     NotificationController.fcmHandler();
@@ -63,8 +63,8 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
     Navigator.of(context, rootNavigator: true).pop();
   }
 
-  _getLocations()  {
-    CubitProvider.of<MainCubit>(context).fetchEmergencyDetails()();
+  _getLocations() {
+    CubitProvider.of<MainCubit>(context).fetchEmergencyDetails();
   }
 
   _getUserLocation() {
@@ -144,14 +144,13 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
   Widget build(BuildContext context) {
     return CubitConsumer<MainCubit, MainState>(
       listener: (context, state) {
-        
         if (state is PatientAccepted) {
           print("patient arrived state");
           print(state.location);
           _patientLocation =
               LatLng(state.location.latitude, state.location.longitude);
           _addPatientMarker();
-          // _hideLoader();
+          _hideLoader();
           _showMessage("Patient Accepted");
         }
         if (state is DoctorAccepted) {
@@ -159,7 +158,7 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
           _doctorLocation =
               LatLng(state.location.latitude, state.location.longitude);
           _addDoctorMarker();
-          // _hideLoader();
+          _hideLoader();
           _showMessage("Doctor Accepted");
         }
         if (state is DriverAccepted) {
@@ -167,18 +166,18 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
           _driverLocation =
               LatLng(state.location.latitude, state.location.longitude);
           _addDriverMarker();
-          // _hideLoader();
+          _hideLoader();
           _showMessage("Driver Accepted");
         }
       },
       builder: (context, state) {
         if (state is DetailsLoaded) {
-         
           details = state.eDetails;
-          print("Locations $details");
+          print("Details $details");
           if (details != null) {
-            if (details.patientDetails!= null) {
-              _patientLocation = LatLng(details.patientDetails.location.latitude,
+            if (details.patientDetails != null) {
+              _patientLocation = LatLng(
+                  details.patientDetails.location.latitude,
                   details.patientDetails.location.longitude);
               _addPatientMarker();
             }

@@ -1,4 +1,5 @@
 //@dart=2.9
+import 'package:ccarev2_frontend/main/domain/edetails.dart';
 import 'package:ccarev2_frontend/pages/home/home_page_adapter.dart';
 import 'package:ccarev2_frontend/services/Notifications/notificationContoller.dart';
 import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
@@ -9,6 +10,7 @@ import 'package:ccarev2_frontend/pages/questionnare/questionnare_screen.dart';
 import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
 import 'package:ccarev2_frontend/state_management/main/main_state.dart';
 import 'package:ccarev2_frontend/state_management/user/user_cubit.dart';
+import 'package:ccarev2_frontend/user/domain/temp.dart';
 import 'package:location/location.dart' as lloc;
 import 'package:ccarev2_frontend/user/domain/location.dart' as loc;
 import 'package:ccarev2_frontend/utils/size_config.dart';
@@ -60,11 +62,17 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
     "2 (Morning & Night)",
     "3"
   ];
-  static bool _emergency =
-      false; // To be either stored in localstore or fetch through api
+  EDetails eDetails;
+  static bool _emergency = false;
+  static bool _doctorAccepted = false;
+  static bool _driverAccepted = false;
+  static bool _notificationSent = false;
   @override
   void initState() {
     super.initState();
+    widget.mainCubit.getTempVars();
+    widget.mainCubit.fetchEmergencyDetails();
+
     NotificationController.configure(
         widget.mainCubit, UserType.patient, context);
     NotificationController.fcmHandler();
@@ -80,21 +88,56 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
     return _location;
   }
 
+  _showMessage(String msg) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      backgroundColor: Theme.of(context).accentColor,
+      content: Text(
+        msg,
+        style: Theme.of(context)
+            .textTheme
+            .caption
+            .copyWith(color: Colors.white, fontSize: 16),
+      ),
+    ));
+  }
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return CubitConsumer<MainCubit, MainState>(builder: (_, state) {
+      if (state is DetailsLoaded) {
+        eDetails = state.eDetails;
+        if (eDetails.doctorDetails != null) {
+          _doctorAccepted = true;
+        }
+        if (eDetails.driverDetails != null) {
+          _driverAccepted = true;
+        }
+        widget.mainCubit.saveTempVars(Temp(
+            notificationSent: true,
+            doctorAccepted: _doctorAccepted,
+            driverAccepted: _driverAccepted));
+      }
+      if (state is ValuesLoadedState) {
+        _hideLoader();
+        _doctorAccepted = state.temp.doctorAccepted;
+        _driverAccepted = state.temp.driverAccepted;
+        _notificationSent = state.temp.notificationSent;
+      }
       return _buildUI(context);
     }, listener: (context, state) async {
       if (state is LoadingState) {
         print("Loading State Called");
         _showLoader();
       } else if (state is EmergencyState) {
-        print("Emergency State Called");
-        loc.Location location = await _getLocation();
         _hideLoader();
-        widget.homePageAdapter
-            .loadEmergencyScreen(context, UserType.patient, location);
+        _notificationSent = true;
+        widget.mainCubit.saveTempVars(Temp(
+            notificationSent: true,
+            doctorAccepted: _doctorAccepted,
+            driverAccepted: _driverAccepted));
+        print("Emergency State Called");
+        _showMessage("Notifications sent to the Doctor and the Ambulance.");
       } else if (state is QuestionnaireState) {
         print("Questionnaire State Called");
         _hideLoader();
@@ -129,7 +172,6 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
         appBar: AppBar(
           title: Text('CardioCare - Patient'),
           actions: [
-            // if (_isEmergency)
             IconButton(
               onPressed: () async {
                 _showLoader();
@@ -155,9 +197,22 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
           SingleChildScrollView(
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              _buildEmergencyButton(),
+              if (!_notificationSent) _buildEmergencyButton(),
+              if (_notificationSent && (!_doctorAccepted || !_driverAccepted))
+                _buildNotificationSend(),
+              if (_doctorAccepted || _driverAccepted)
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  child: Text(
+                    "Emergency Information",
+                    style: TextStyle(fontSize: 24),
+                  ),
+                ),
+              if (_doctorAccepted) _buildDoctorDetails(),
+              if (_driverAccepted) _buildDriverDetails(),
               const SizedBox(height: 10),
-              _buildHeader(),
+              if (!_notificationSent) _buildHeader(),
               Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -190,6 +245,117 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
           ),
         ]),
       );
+
+  _buildNotificationSend() => Container(
+      color: Colors.green[400],
+      padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+      child: ListTile(
+        leading: Icon(CupertinoIcons.news, color: Colors.white),
+        title: Text(
+          "Emergency Notification Sent!!",
+          style: TextStyle(color: Colors.white, fontSize: 20),
+        ),
+        subtitle: Text(
+          "Waiting for the confimation from Doctor's and Ambulance's side ->",
+          style: TextStyle(color: Colors.white, fontSize: 12),
+        ),
+      ));
+
+  _buildDoctorDetails() => Column(children: [
+        Container(
+          width: SizeConfig.screenWidth,
+          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+          child: Text(
+            "Doctor's Information",
+            textAlign: TextAlign.left,
+            style: TextStyle(fontSize: 18),
+          ),
+        ),
+        Container(
+          decoration: BoxDecoration(
+              color: Colors.red[100], borderRadius: BorderRadius.circular(20)),
+          width: SizeConfig.screenWidth,
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("Name: "),
+                  // Text("Akshat Raj Vansh"),
+                  Text(eDetails.doctorDetails.name),
+                ],
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("Hospital: "),
+                  // Text("Apollo Medical Hospital"),
+                  Text(eDetails.doctorDetails.hospital),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ]);
+  _buildDriverDetails() => Column(children: [
+        Container(
+          width: SizeConfig.screenWidth,
+          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+          child: Text(
+            "Ambulance's Information",
+            textAlign: TextAlign.left,
+            style: TextStyle(fontSize: 18),
+          ),
+        ),
+        Container(
+          decoration: BoxDecoration(
+              color: Colors.red[100], borderRadius: BorderRadius.circular(20)),
+          width: SizeConfig.screenWidth,
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("Name: "),
+                  // Text("Akshat Raj Vansh"),
+                  Text(eDetails.driverDetails.name),
+                ],
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("Plate Number: "),
+                  // Text("MH-177035"),
+                  Text(eDetails.driverDetails.plateNumber),
+                ],
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("Contact Number: "),
+                  // Text("+91 7355026029"),
+                  Text(eDetails.driverDetails.contactNumber),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ]);
 
   _buildEmergencyButton() => InkWell(
         onTap: () async {

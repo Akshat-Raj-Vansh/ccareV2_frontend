@@ -9,6 +9,7 @@ import 'package:ccarev2_frontend/utils/size_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:aligned_dialog/aligned_dialog.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:location/location.dart' as lloc;
@@ -49,7 +50,6 @@ class _DoctorHomeUIState extends State<DoctorHomeUI> {
     super.initState();
     NotificationController.configure(
         widget.mainCubit, UserType.doctor, context);
-
     NotificationController.fcmHandler();
   }
 
@@ -74,8 +74,43 @@ class _DoctorHomeUIState extends State<DoctorHomeUI> {
         _showLoader();
       } else if (state is AcceptState) {
         print("Accept State Called");
-        // _isEmergency = true;
-        print("Accept State Called");
+        await showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: const Text(
+                  'Are you sure?',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 20,
+                  ),
+                ),
+                content: const Text(
+                  'Do you want to accept the patient?',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w300,
+                    fontSize: 15,
+                  ),
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(false),
+                    child: const Text(
+                      'Cancel',
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () =>
+                        widget.mainCubit.acceptPatientByDoctor(state.patientID),
+                    child: const Text(
+                      'Yes',
+                    ),
+                  ),
+                ],
+              ),
+            ) ??
+            false;
+      } else if (state is PatientAccepted) {
+        print("Inside patient accepted by Doctor state");
         loc.Location location = await _getLocation();
         widget.homePageAdapter
             .loadEmergencyScreen(context, UserType.doctor, location);
@@ -136,7 +171,7 @@ class _DoctorHomeUIState extends State<DoctorHomeUI> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 child: Text(
-                  "Medicines",
+                  "Patients",
                   style: TextStyle(fontSize: 24),
                 ),
               ),
@@ -145,7 +180,7 @@ class _DoctorHomeUIState extends State<DoctorHomeUI> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 child: Text(
-                  "UserFul Resources",
+                  "Usefull Resources",
                   style: TextStyle(fontSize: 24),
                 ),
               ),
@@ -186,7 +221,7 @@ class _DoctorHomeUIState extends State<DoctorHomeUI> {
       child: ListTile(
         leading: Icon(CupertinoIcons.person, color: Colors.white),
         title: Text(
-          "You are healthy!!",
+          "All Current Patients are recovering!!",
           style: TextStyle(color: Colors.white, fontSize: 20),
         ),
         subtitle: Text(

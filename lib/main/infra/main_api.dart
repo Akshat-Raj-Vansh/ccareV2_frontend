@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:ccarev2_frontend/main/domain/eDetails.dart';
+import 'package:ccarev2_frontend/main/domain/edetails.dart';
 import 'package:ccarev2_frontend/user/domain/location.dart';
 import 'package:http/http.dart' as http;
 import 'package:async/src/result/result.dart';
@@ -142,7 +142,7 @@ class MainAPI extends IMainAPI {
     };
     var response = await _client.get(Uri.parse(endpoint), headers: header);
     print(response.statusCode);
-   
+    print(response.body);
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
       print(transformError(map));

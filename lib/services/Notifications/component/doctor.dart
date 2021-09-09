@@ -1,5 +1,6 @@
 //@dart=2.9
 import 'package:aligned_dialog/aligned_dialog.dart';
+import 'package:ccarev2_frontend/main/domain/edetails.dart';
 import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
 import 'package:ccarev2_frontend/user/domain/location.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -33,7 +34,7 @@ class DoctorNotificationHandler {
           ),
         ));
 
-        await mainCubit.acceptPatientByDoctor(message.data["_patientID"]);
+        await mainCubit.acceptRequest(message.data["_patientID"]);
       }
       if (message.data["user"] == "DRIVER") {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -47,13 +48,14 @@ class DoctorNotificationHandler {
           ),
         ));
         mainCubit.driverAccepted(Location.fromJson(message.data["location"]));
+        await mainCubit.fetchEmergencyDetails();
       }
     }
   }
 
   static Future<void> onMessageOpenedHandler(RemoteMessage message) async {
     if (message.data['type'] == 'Emergency') {
-      await mainCubit.acceptPatientByDoctor(message.data["_patientID"]);
+      await mainCubit.acceptRequest(message.data["_patientID"]);
     }
   }
 }

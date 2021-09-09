@@ -1,5 +1,7 @@
-import 'package:ccarev2_frontend/main/domain/eDetails.dart';
+import 'package:ccarev2_frontend/cache/local_store.dart';
+import 'package:ccarev2_frontend/main/domain/edetails.dart';
 import 'package:ccarev2_frontend/user/domain/location.dart';
+import 'package:ccarev2_frontend/user/domain/temp.dart';
 import 'package:equatable/equatable.dart';
 import '../../main/domain/question.dart';
 
@@ -7,21 +9,26 @@ abstract class MainState extends Equatable {}
 
 class IntialState extends MainState {
   @override
-  // TODO: implement props
   List<Object> get props => [];
 }
 
 class LoadingState extends MainState {
   @override
-  // TODO: implement props
   List<Object> get props => [];
 }
 
-class AcceptState extends MainState {
-  final String msg;
-  AcceptState(this.msg);
+class ValuesLoadedState extends MainState {
+  final Temp temp;
+  ValuesLoadedState(this.temp);
   @override
-  List<Object> get props => [msg];
+  List<Object> get props => [temp];
+}
+
+class AcceptState extends MainState {
+  final String patientID;
+  AcceptState(this.patientID);
+  @override
+  List<Object> get props => [patientID];
 }
 
 class PatientAccepted extends MainState {
@@ -38,14 +45,6 @@ class DoctorAccepted extends MainState {
   List<Object> get props => [location];
 }
 
-class DetailsLoaded extends MainState {
-  final EDetails eDetails;
-
-  DetailsLoaded(this.eDetails);
-  @override
-  List<Object> get props => [this.eDetails];
-}
-
 class DriverAccepted extends MainState {
   final Location location;
   DriverAccepted(this.location);
@@ -53,11 +52,17 @@ class DriverAccepted extends MainState {
   List<Object> get props => [location];
 }
 
+class DetailsLoaded extends MainState {
+  final EDetails eDetails;
+  DetailsLoaded(this.eDetails);
+  @override
+  List<Object> get props => [this.eDetails];
+}
+
 class QuestionnaireState extends MainState {
   final List<QuestionTree> questions;
   QuestionnaireState(this.questions);
   @override
-  // TODO: implement props
   List<Object> get props => [this.questions];
 }
 

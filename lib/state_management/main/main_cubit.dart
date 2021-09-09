@@ -3,8 +3,10 @@ import 'dart:convert';
 
 import 'package:async/src/result/result.dart';
 import 'package:ccarev2_frontend/cache/ilocal_store.dart';
+import 'package:ccarev2_frontend/main/domain/edetails.dart';
 import 'package:ccarev2_frontend/main/domain/main_api_contract.dart';
 import 'package:ccarev2_frontend/user/domain/location.dart';
+import 'package:ccarev2_frontend/user/domain/temp.dart';
 import 'package:ccarev2_frontend/user/domain/token.dart';
 import 'package:cubit/cubit.dart';
 import 'main_state.dart';
@@ -30,6 +32,24 @@ class MainCubit extends Cubit<MainState> {
     emit(QuestionnaireState(result.asValue.value));
   }
 
+  saveTempVars(Temp temp) async {
+    print("Inside saveTempVars");
+    print(temp.notificationSent);
+    await localStore.saveTemp(temp);
+  }
+
+  getTempVars() async {
+    print("Inside getTempVars");
+    _startLoading();
+    final temp = await localStore.fetchTemp();
+    print(temp.notificationSent);
+    if (temp == null) {
+      emit(ErrorState("Cache Error"));
+      return;
+    }
+    emit(ValuesLoadedState(temp));
+  }
+
   notify() async {
     print("Inside Notify");
     _startLoading();
@@ -45,6 +65,17 @@ class MainCubit extends Cubit<MainState> {
     emit(EmergencyState(result.asValue.value));
   }
 
+  acceptRequest(String patientID) async {
+    print("Inside Accept Patient Request");
+    _startLoading();
+    print(patientID);
+    if (patientID == null) {
+      emit(ErrorState("Invalid ID of patient!"));
+      return;
+    }
+    emit(AcceptState(patientID));
+  }
+
   acceptPatientByDoctor(String patientID) async {
     print("Inside Accept patient by doctor");
     _startLoading();
@@ -58,8 +89,6 @@ class MainCubit extends Cubit<MainState> {
       return;
     }
     emit(PatientAccepted(result.asValue.value));
-     await Future.delayed(Duration(seconds: 1));
-    emit(AcceptState("Successfully Notified"));
   }
 
   acceptPatientByDriver(String patientID) async {
@@ -77,9 +106,6 @@ class MainCubit extends Cubit<MainState> {
       emit(ErrorState(result.asError.error));
       return;
     }
-
-    emit(AcceptState("Successfully Notified"));
-    await Future.delayed(Duration(seconds: 1));
     emit(PatientAccepted(result.asValue.value));
   }
 
@@ -89,7 +115,7 @@ class MainCubit extends Cubit<MainState> {
 
     print(location);
     if (location == null) {
-      emit(ErrorState("Location Error!"));
+      emit(ErrorState("Details not fetched!"));
       return;
     }
     emit(DoctorAccepted(location));
@@ -120,8 +146,7 @@ class MainCubit extends Cubit<MainState> {
     emit(AllPatientsState(result.asValue.value));
   }
 
-
-  fetchEmergencyDetails() async{
+  fetchEmergencyDetails() async {
     // _startLoading();
     final token = await localStore.fetch();
     final result = await api.fetchEmergencyDetails(token);
@@ -130,7 +155,7 @@ class MainCubit extends Cubit<MainState> {
       emit(ErrorState(result.asError.error));
       return;
     }
-     await Future.delayed(Duration(seconds: 1));
+    await Future.delayed(Duration(seconds: 1));
     emit(DetailsLoaded(result.asValue.value));
   }
 

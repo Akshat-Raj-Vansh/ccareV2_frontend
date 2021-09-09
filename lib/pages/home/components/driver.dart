@@ -68,15 +68,48 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
       if (state is LoadingState) {
         print("Loading State Called");
         _showLoader();
-      } else {
-        if (state is AcceptState) {
-          _hideLoader();
-          _isEmergency = true;
-          print("Accept State Called");
-          loc.Location location = await _getLocation();
-          widget.homePageAdapter
-              .loadEmergencyScreen(context, UserType.driver, location);
-        }
+      } else if (state is AcceptState) {
+        print("Accept State Called");
+        await showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: const Text(
+                  'Are you sure?',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 20,
+                  ),
+                ),
+                content: const Text(
+                  'Do you want to accept the patient?',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w300,
+                    fontSize: 15,
+                  ),
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(false),
+                    child: const Text(
+                      'Cancel',
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () =>
+                        widget.mainCubit.acceptPatientByDriver(state.patientID),
+                    child: const Text(
+                      'Yes',
+                    ),
+                  ),
+                ],
+              ),
+            ) ??
+            false;
+      } else if (state is PatientAccepted) {
+        print("Inside patient accepted by Driver state");
+        loc.Location location = await _getLocation();
+        widget.homePageAdapter
+            .loadEmergencyScreen(context, UserType.driver, location);
       }
     });
   }
@@ -139,7 +172,7 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 child: Text(
-                  "UseFul Resources",
+                  "Usefull Resources",
                   style: TextStyle(fontSize: 24),
                 ),
               ),

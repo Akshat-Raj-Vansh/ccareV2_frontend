@@ -1,5 +1,4 @@
 //@dart=2.9
-import 'dart:convert';
 
 import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
 import 'package:ccarev2_frontend/user/domain/location.dart';
@@ -32,9 +31,8 @@ class DriverNotificationHandler {
                 .copyWith(color: Colors.white, fontSize: 16),
           ),
         ));
-         
-  
-        await mainCubit.acceptPatientByDriver(message.data["_patientID"]);
+
+        await mainCubit.acceptRequest(message.data["_patientID"]);
       }
     }
     if (message.data["user"] == "DOCTOR") {
@@ -49,13 +47,14 @@ class DriverNotificationHandler {
         ),
       ));
       mainCubit.doctorAccepted(Location.fromJson(message.data["location"]));
+      await mainCubit.fetchEmergencyDetails();
     }
   }
 
   static Future<void> onMessageOpenedHandler(RemoteMessage message) async {
     if (message.data['type'] == 'Emergency') {
       print(message.data);
-      await mainCubit.acceptPatientByDriver(message.data["_patientID"]);
+      await mainCubit.acceptRequest(message.data["_patientID"]);
     }
   }
 }

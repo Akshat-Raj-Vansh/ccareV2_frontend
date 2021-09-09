@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:ccarev2_frontend/user/domain/credential.dart';
 import 'package:ccarev2_frontend/user/domain/details.dart';
+import 'package:ccarev2_frontend/user/domain/temp.dart';
 import 'package:ccarev2_frontend/user/domain/token.dart';
 
 import 'ilocal_store.dart';
@@ -12,6 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 const String token_key = "CACHED__TOKEN_AND_DATA";
 const String temp_token_key = "CACHED_TEMP_TOKEN";
 const String auth_key = "CACHED__TYPE";
+const String temp_data_key = "CACHED__DATA";
 
 class LocalStore implements ILocalStore {
   final SharedPreferences sharedPreferences;
@@ -51,6 +53,22 @@ class LocalStore implements ILocalStore {
   @override
   Future save(Details details) {
     sharedPreferences.setString(token_key, jsonEncode(details.toMap()));
+  }
+
+  @override
+  saveTemp(Temp temp) {
+    return sharedPreferences.setString(temp_data_key, temp.toString());
+  }
+
+  @override
+  Future<Temp> fetchTemp() {
+    String data = sharedPreferences.getString(token_key);
+    print(data);
+    if (data != null) {
+      Temp temp = Temp.fromMap(jsonDecode(data));
+      return Future.value(temp);
+    }
+    return null;
   }
 
   @override
