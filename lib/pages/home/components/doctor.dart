@@ -49,7 +49,6 @@ class _DoctorHomeUIState extends State<DoctorHomeUI> {
     super.initState();
     NotificationController.configure(
         widget.mainCubit, UserType.doctor, context);
-
     NotificationController.fcmHandler();
   }
 
@@ -136,7 +135,7 @@ class _DoctorHomeUIState extends State<DoctorHomeUI> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 child: Text(
-                  "Medicines",
+                  "Patients",
                   style: TextStyle(fontSize: 24),
                 ),
               ),
@@ -145,7 +144,7 @@ class _DoctorHomeUIState extends State<DoctorHomeUI> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 child: Text(
-                  "UserFul Resources",
+                  "Usefull Resources",
                   style: TextStyle(fontSize: 24),
                 ),
               ),
@@ -186,7 +185,7 @@ class _DoctorHomeUIState extends State<DoctorHomeUI> {
       child: ListTile(
         leading: Icon(CupertinoIcons.person, color: Colors.white),
         title: Text(
-          "You are healthy!!",
+          "All Current Patients are recovering!!",
           style: TextStyle(color: Colors.white, fontSize: 20),
         ),
         subtitle: Text(
