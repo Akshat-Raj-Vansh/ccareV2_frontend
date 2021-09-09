@@ -96,7 +96,7 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
                   ),
                   TextButton(
                     onPressed: () =>
-                        widget.mainCubit.acceptPatientByDriver(state.patientID),
+                        CubitProvider.of<MainCubit>(context).acceptPatientByDriver(state.patientID),
                     child: const Text(
                       'Yes',
                     ),
