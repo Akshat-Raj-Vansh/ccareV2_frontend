@@ -26,6 +26,7 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
     String uniqueCode;
     String specialization;
     String email;
+    String hospital;
     return Form(
       key: _formKeyDoctor,
       child: Column(
@@ -39,6 +40,17 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
             decoration: const InputDecoration(
               labelText: "Full Name",
               hintText: "Enter your Full Name",
+              floatingLabelBehavior: FloatingLabelBehavior.always,
+            ),
+          ),
+          SizedBox(height: getProportionateScreenHeight(10)),
+          TextFormField(
+            keyboardType: TextInputType.text,
+            onSaved: (newValue) => hospital = newValue.toUpperCase(),
+            validator: (value) => value.isEmpty ? "Hospital is required" : null,
+            decoration: const InputDecoration(
+              labelText: "Hospital Name",
+              hintText: "Enter your Hospital Name",
               floatingLabelBehavior: FloatingLabelBehavior.always,
             ),
           ),
@@ -90,6 +102,7 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
                   var profile = DoctorProfile(
                       name: name,
                       specialization: specialization,
+                      hospital: hospital,
                       uniqueCode: uniqueCode,
                       email: email,
                       location: loc.Location(

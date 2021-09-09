@@ -226,7 +226,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 child: Text(
-                  "UserFul Resources",
+                  "Useful Resources",
                   style: TextStyle(fontSize: 24),
                 ),
               ),
