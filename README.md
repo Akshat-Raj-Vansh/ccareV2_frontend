@@ -16,11 +16,12 @@
   - [x] Notification Handler
   - [ ] Driver
     - [ ] Home Display
-    - [ ] Notification Handler
+    - [x] Notification Handler
   - [ ] Patient
     - [ ] Questionnaire
     - [ ] Home Display
-    - [ ] Notification Hander
+    - [ ] TimeLine
+    - [x] Notification Hander
   - [x] Home Adapter
 
 ### In Progress
@@ -28,6 +29,7 @@
 - [ ] Main API
 
   - [ ] Emergency API
+    - [ ] Timeline 
   - [x] Questionnaire API
 
 - [ ] Profile Frontend
@@ -41,3 +43,8 @@
 - [x] Auth API
 - [x] Auth Frontend
 - [x] Profile API
+
+
+## Problems
+- Driver is always active
+    - A button has to be added to to edit online and offline status.Geo query will be improved
