@@ -1,6 +1,7 @@
 //@dart=2.9
 import 'dart:convert';
 
+import 'package:ccarev2_frontend/main/domain/edetails.dart';
 import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
 import 'package:ccarev2_frontend/user/domain/location.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -34,7 +35,8 @@ class PatientNotificationHandler {
         ));
         print("LOCATION DOCTOR");
         print(message.data["location"]);
-        mainCubit.doctorAccepted(Location.fromJson(message.data["location"]));
+        mainCubit
+            .doctorAccepted(DoctorDetails.fromJson(message.data["location"]));
       }
       if (message.data["user"] == "DRIVER") {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -49,7 +51,8 @@ class PatientNotificationHandler {
         ));
         print("LOCATION DRIVER");
         print(message.data["location"]);
-        mainCubit.driverAccepted(Location.fromJson(message.data["location"]));
+        mainCubit
+            .driverAccepted(DriverDetails.fromJson(message.data["location"]));
       }
     }
   }

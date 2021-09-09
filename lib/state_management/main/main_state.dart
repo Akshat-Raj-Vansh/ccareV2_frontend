@@ -1,4 +1,4 @@
-import 'package:ccarev2_frontend/main/domain/eDetails.dart';
+import 'package:ccarev2_frontend/main/domain/edetails.dart';
 import 'package:ccarev2_frontend/user/domain/location.dart';
 import 'package:equatable/equatable.dart';
 import '../../main/domain/question.dart';
@@ -13,7 +13,6 @@ class IntialState extends MainState {
 
 class LoadingState extends MainState {
   @override
-  // TODO: implement props
   List<Object> get props => [];
 }
 
@@ -32,32 +31,30 @@ class PatientAccepted extends MainState {
 }
 
 class DoctorAccepted extends MainState {
-  final Location location;
-  DoctorAccepted(this.location);
+  final DoctorDetails doctorDetails;
+  DoctorAccepted(this.doctorDetails);
   @override
-  List<Object> get props => [location];
+  List<Object> get props => [doctorDetails];
+}
+
+class DriverAccepted extends MainState {
+  final DriverDetails driverDetails;
+  DriverAccepted(this.driverDetails);
+  @override
+  List<Object> get props => [driverDetails];
 }
 
 class DetailsLoaded extends MainState {
   final EDetails eDetails;
-
   DetailsLoaded(this.eDetails);
   @override
   List<Object> get props => [this.eDetails];
-}
-
-class DriverAccepted extends MainState {
-  final Location location;
-  DriverAccepted(this.location);
-  @override
-  List<Object> get props => [location];
 }
 
 class QuestionnaireState extends MainState {
   final List<QuestionTree> questions;
   QuestionnaireState(this.questions);
   @override
-  // TODO: implement props
   List<Object> get props => [this.questions];
 }
 

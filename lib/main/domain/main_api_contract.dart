@@ -1,5 +1,5 @@
 import 'package:async/async.dart';
-import 'package:ccarev2_frontend/main/domain/eDetails.dart';
+import 'package:ccarev2_frontend/main/domain/edetails.dart';
 import 'package:ccarev2_frontend/user/domain/location.dart';
 import '../../user/domain/token.dart';
 import 'question.dart';

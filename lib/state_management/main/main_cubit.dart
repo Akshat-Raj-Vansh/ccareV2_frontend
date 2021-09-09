@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:async/src/result/result.dart';
 import 'package:ccarev2_frontend/cache/ilocal_store.dart';
+import 'package:ccarev2_frontend/main/domain/edetails.dart';
 import 'package:ccarev2_frontend/main/domain/main_api_contract.dart';
 import 'package:ccarev2_frontend/user/domain/location.dart';
 import 'package:ccarev2_frontend/user/domain/token.dart';
@@ -57,9 +58,9 @@ class MainCubit extends Cubit<MainState> {
       emit(ErrorState(result.asError.error));
       return;
     }
-    emit(PatientAccepted(result.asValue.value));
-     await Future.delayed(Duration(seconds: 1));
     emit(AcceptState("Successfully Notified"));
+    await Future.delayed(Duration(seconds: 1));
+    emit(PatientAccepted(result.asValue.value));
   }
 
   acceptPatientByDriver(String patientID) async {
@@ -83,27 +84,27 @@ class MainCubit extends Cubit<MainState> {
     emit(PatientAccepted(result.asValue.value));
   }
 
-  doctorAccepted(Location location) async {
+  doctorAccepted(DoctorDetails doctorDetails) async {
     print("Inside doctor accepted");
     _startLoading();
 
-    print(location);
-    if (location == null) {
-      emit(ErrorState("Location Error!"));
+    print(doctorDetails);
+    if (doctorDetails == null) {
+      emit(ErrorState("Details not fetched!"));
       return;
     }
-    emit(DoctorAccepted(location));
+    emit(DoctorAccepted(doctorDetails));
   }
 
-  driverAccepted(Location location) async {
+  driverAccepted(DriverDetails driverDetails) async {
     print("Inside driver accepted");
     _startLoading();
-    print(location);
-    if (location == null) {
+    print(driverDetails);
+    if (driverDetails == null) {
       emit(ErrorState("Location Error!"));
       return;
     }
-    emit(DriverAccepted(location));
+    emit(DriverAccepted(driverDetails));
   }
 
   getAllPatients() async {
@@ -120,8 +121,7 @@ class MainCubit extends Cubit<MainState> {
     emit(AllPatientsState(result.asValue.value));
   }
 
-
-  fetchEmergencyDetails() async{
+  fetchEmergencyDetails() async {
     // _startLoading();
     final token = await localStore.fetch();
     final result = await api.fetchEmergencyDetails(token);
@@ -130,7 +130,7 @@ class MainCubit extends Cubit<MainState> {
       emit(ErrorState(result.asError.error));
       return;
     }
-     await Future.delayed(Duration(seconds: 1));
+    await Future.delayed(Duration(seconds: 1));
     emit(DetailsLoaded(result.asValue.value));
   }
 

@@ -1,4 +1,5 @@
 //@dart=2.9
+import 'package:ccarev2_frontend/main/domain/edetails.dart';
 import 'package:ccarev2_frontend/pages/home/home_page_adapter.dart';
 import 'package:ccarev2_frontend/services/Notifications/notificationContoller.dart';
 import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
@@ -60,11 +61,15 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
     "2 (Morning & Night)",
     "3"
   ];
-  static bool _emergency =
+  EDetails eDetails;
+  static bool _emergency = false;
+  static bool _doctorAccepted = false;
+  static bool _driverAccepted =
       false; // To be either stored in localstore or fetch through api
   @override
   void initState() {
     super.initState();
+    widget.mainCubit.fetchEmergencyDetails();
     NotificationController.configure(
         widget.mainCubit, UserType.patient, context);
     NotificationController.fcmHandler();
@@ -80,10 +85,28 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
     return _location;
   }
 
+  _showMessage(String msg) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      backgroundColor: Theme.of(context).accentColor,
+      content: Text(
+        msg,
+        style: Theme.of(context)
+            .textTheme
+            .caption
+            .copyWith(color: Colors.white, fontSize: 16),
+      ),
+    ));
+  }
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return CubitConsumer<MainCubit, MainState>(builder: (_, state) {
+      if (state is DetailsLoaded) {
+        _doctorAccepted = true;
+        _driverAccepted = true;
+        eDetails = state.eDetails;
+      }
       return _buildUI(context);
     }, listener: (context, state) async {
       if (state is LoadingState) {
@@ -91,10 +114,20 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
         _showLoader();
       } else if (state is EmergencyState) {
         print("Emergency State Called");
-        loc.Location location = await _getLocation();
-        _hideLoader();
-        widget.homePageAdapter
-            .loadEmergencyScreen(context, UserType.patient, location);
+        // loc.Location location = await _getLocation();
+        // _hideLoader();
+        // widget.homePageAdapter
+        //     .loadEmergencyScreen(context, UserType.patient, location);
+      } else if (state is DoctorAccepted) {
+        print("DoctorAccepted State Called");
+        _showMessage("Doctor has accepted your request.");
+        _doctorAccepted = true;
+        eDetails.doctorDetails = state.doctorDetails;
+      } else if (state is DriverAccepted) {
+        print("DriverAccepted State Called");
+        _showMessage("Ambulance is on its way.");
+        _driverAccepted = true;
+        eDetails.driverDetails = state.driverDetails;
       } else if (state is QuestionnaireState) {
         print("Questionnaire State Called");
         _hideLoader();
@@ -129,7 +162,6 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
         appBar: AppBar(
           title: Text('CardioCare - Patient'),
           actions: [
-            // if (_isEmergency)
             IconButton(
               onPressed: () async {
                 _showLoader();
@@ -155,7 +187,9 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
           SingleChildScrollView(
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              _buildEmergencyButton(),
+              if (!_doctorAccepted || !_driverAccepted) _buildEmergencyButton(),
+              if (_doctorAccepted) _buildDoctorDetails(),
+              if (_driverAccepted) _buildDriverDetails(),
               const SizedBox(height: 10),
               _buildHeader(),
               Padding(
@@ -189,6 +223,57 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
             ]),
           ),
         ]),
+      );
+
+  _buildDoctorDetails() => Container(
+        width: SizeConfig.screenWidth,
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("Name: "),
+                Text(eDetails.doctorDetails.name),
+              ],
+            ),
+            const SizedBox(
+              height: 5,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("Hospital: "),
+                Text(eDetails.doctorDetails.hospital),
+              ],
+            ),
+          ],
+        ),
+      );
+  _buildDriverDetails() => Container(
+        width: SizeConfig.screenWidth,
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("Name: "),
+                Text(eDetails.driverDetails.name),
+              ],
+            ),
+            const SizedBox(
+              height: 5,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("Plate Number: "),
+                Text(eDetails.driverDetails.plateNumber),
+              ],
+            ),
+          ],
+        ),
       );
 
   _buildEmergencyButton() => InkWell(

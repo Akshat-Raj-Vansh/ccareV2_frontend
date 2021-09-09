@@ -1,6 +1,6 @@
 //@dart=2.9
 import 'dart:async';
-import 'package:ccarev2_frontend/main/domain/eDetails.dart';
+import 'package:ccarev2_frontend/main/domain/edetails.dart';
 import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
 import 'package:ccarev2_frontend/state_management/main/main_state.dart';
 import 'package:ccarev2_frontend/user/domain/credential.dart';
@@ -155,16 +155,16 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
         }
         if (state is DoctorAccepted) {
           print("doctor accepted state");
-          _doctorLocation =
-              LatLng(state.location.latitude, state.location.longitude);
+          _doctorLocation = LatLng(state.doctorDetails.location.latitude,
+              state.doctorDetails.location.longitude);
           _addDoctorMarker();
           _hideLoader();
           _showMessage("Doctor Accepted");
         }
         if (state is DriverAccepted) {
           print("driver accepted state");
-          _driverLocation =
-              LatLng(state.location.latitude, state.location.longitude);
+          _driverLocation = LatLng(state.driverDetails.location.latitude,
+              state.driverDetails.location.longitude);
           _addDriverMarker();
           _hideLoader();
           _showMessage("Driver Accepted");
