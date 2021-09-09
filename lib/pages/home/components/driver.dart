@@ -174,7 +174,7 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 child: Text(
-                  "Usefull Resources",
+                  "Useful Resources",
                   style: TextStyle(fontSize: 24),
                 ),
               ),
