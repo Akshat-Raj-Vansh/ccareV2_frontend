@@ -6,6 +6,7 @@ import 'package:ccarev2_frontend/cache/ilocal_store.dart';
 import 'package:ccarev2_frontend/main/domain/edetails.dart';
 import 'package:ccarev2_frontend/main/domain/main_api_contract.dart';
 import 'package:ccarev2_frontend/user/domain/location.dart';
+import 'package:ccarev2_frontend/user/domain/temp.dart';
 import 'package:ccarev2_frontend/user/domain/token.dart';
 import 'package:cubit/cubit.dart';
 import 'main_state.dart';
@@ -29,6 +30,24 @@ class MainCubit extends Cubit<MainState> {
       return;
     }
     emit(QuestionnaireState(result.asValue.value));
+  }
+
+  saveTempVars(Temp temp) async {
+    print("Inside saveTempVars");
+    print(temp.notificationSent);
+    await localStore.saveTemp(temp);
+  }
+
+  getTempVars() async {
+    print("Inside getTempVars");
+    _startLoading();
+    final temp = await localStore.fetchTemp();
+    print(temp.notificationSent);
+    if (temp == null) {
+      emit(ErrorState("Cache Error"));
+      return;
+    }
+    emit(ValuesLoadedState(temp));
   }
 
   notify() async {

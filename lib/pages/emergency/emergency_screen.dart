@@ -64,7 +64,7 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
   }
 
   _getLocations() {
-    CubitProvider.of<MainCubit>(context).fetchEmergencyDetails()();
+    CubitProvider.of<MainCubit>(context).fetchEmergencyDetails();
   }
 
   _getUserLocation() {
