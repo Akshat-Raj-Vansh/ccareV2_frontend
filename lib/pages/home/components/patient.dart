@@ -8,6 +8,9 @@ import 'package:ccarev2_frontend/state_management/user/user_cubit.dart';
 import 'package:ccarev2_frontend/user/domain/credential.dart';
 import 'package:ccarev2_frontend/pages/questionnare/questionnare_screen.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+import 'package:google_fonts/google_fonts.dart';
+
 import 'package:ccarev2_frontend/user/domain/temp.dart';
 import 'package:location/location.dart' as lloc;
 import 'package:ccarev2_frontend/user/domain/location.dart' as loc;
@@ -326,6 +329,11 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                   Text(eDetails.doctorDetails.hospital),
                 ],
               ),
+              RichText(text: TextSpan(text:"Location : ",style:GoogleFonts.montserrat(color: Colors.black)
+              ,children: [TextSpan(text:eDetails.doctorDetails.address,style:TextStyle(color:Colors.black))
+            ],
+          ),
+        ),
             ],
           ),
         ),
@@ -425,11 +433,12 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                   // Text("+91 7355026029"),
                   Text(eDetails.driverDetails.contactNumber),
                 ],
-              ),
+              ), 
+              RichText(text: TextSpan(text:"Location : ",style:GoogleFonts.montserrat(color: Colors.black),children: [TextSpan(text:eDetails.driverDetails.address,style:TextStyle(color:Colors.black))
             ],
           ),
         ),
-      ]);
+      ])),]);
 
   _buildEmergencyButton() => InkWell(
         onTap: () async {
