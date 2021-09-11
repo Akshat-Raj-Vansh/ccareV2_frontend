@@ -22,6 +22,8 @@ class DriverHomeUI extends StatefulWidget {
 
 class _DriverHomeUIState extends State<DriverHomeUI> {
   static bool _isEmergency = false;
+
+var scaffoldKey = GlobalKey<ScaffoldState>();
   List<String> res = [
     "Find Test centers",
     "Find Hospitals",
@@ -95,8 +97,9 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
                     ),
                   ),
                   TextButton(
-                    onPressed: () =>
-                        CubitProvider.of<MainCubit>(context).acceptPatientByDriver(state.patientID),
+                    onPressed: (){
+                     _hideLoader();
+                        CubitProvider.of<MainCubit>(context).acceptPatientByDriver(state.patientID);},
                     child: const Text(
                       'Yes',
                     ),
@@ -132,6 +135,8 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
   }
 
   _buildUI(BuildContext context, MainCubit mainCubit) => Scaffold(
+
+      key: scaffoldKey,
         appBar: AppBar(
           title: Text('CardioCare - Driver'),
           actions: [

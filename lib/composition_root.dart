@@ -143,7 +143,7 @@ class CompositionRoot {
       CubitProvider<MainCubit>(
         create: (context) => mainCubit,
       ),
-    ], child: DriverHomeUI( homePageAdapter));
+    ], child: dummy.DriverHomeUI( homePageAdapter));
   }
 
   static Widget createEmergencyUI(UserType userType, Location location) {

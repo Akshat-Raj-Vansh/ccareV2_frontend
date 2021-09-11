@@ -36,6 +36,7 @@ class PatientHomeUI extends StatefulWidget {
 }
 
 class _PatientHomeUIState extends State<PatientHomeUI> {
+  bool loader = false;
   List<IconData> icons = [
     Icons.medication,
     Icons.food_bank,
@@ -190,14 +191,20 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
 
         print("Emergency State Called");
         _showMessage("Notifications sent to the Doctor and the Ambulance.");
-      } else if (state is QuestionnaireState) {
+      } 
+      
+      else  if (state is DetailsLoaded) {
+        _hideLoader();
+      }
+      else if (state is QuestionnaireState) {
         
         print("Questionnaire State Called");
         _hideLoader();
+        var cubit =CubitProvider.of<MainCubit>(context);
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => SelfAssessment(state.questions),
+            builder: (context) => SelfAssessment(state.questions,cubit),
           ),
         );
       }
@@ -205,6 +212,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
   }
 
   _showLoader() {
+    loader=true;
     var alert = const AlertDialog(
       backgroundColor: Colors.transparent,
       elevation: 0,
@@ -218,7 +226,9 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
   }
 
   _hideLoader() {
-    Navigator.of(context, rootNavigator: true).pop();
+    if(loader){
+      loader=false;
+    Navigator.of(context, rootNavigator: true).pop();}
   }
 
   _buildUI(BuildContext context) =>  Stack(children: [

@@ -1,12 +1,13 @@
 //@dart=2.9
 import 'package:ccarev2_frontend/main/domain/question.dart';
+import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
 
 class SelfAssessment extends StatefulWidget {
   final List<QuestionTree> questions;
-
-  const SelfAssessment(this.questions);
+final MainCubit cubit;
+  const SelfAssessment(this.questions,this.cubit);
 
   @override
   _SelfAssessmentState createState() => _SelfAssessmentState();
@@ -150,6 +151,9 @@ class _SelfAssessmentState extends State<SelfAssessment> {
                                             element.parent ==
                                                 display[index].question &&
                                             element.when == answers.join(',')));
+                                        
+                                          
+
                                   } catch (e) {
                                     print(e);
                                   } //think about the when logic incase
@@ -164,6 +168,24 @@ class _SelfAssessmentState extends State<SelfAssessment> {
                                         display[index].options[i ~/ 2]);
                                   }
                                 }
+
+                            if(display.last.node_type=="RESULT"){
+                                            if(display.last.options[0]=="EMERGENCY"){
+                                              widget.cubit.notify();
+                                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      backgroundColor: Theme.of(context).accentColor,
+      content: Text(
+        "Emergency Notifications Sent",
+        style: Theme.of(context)
+            .textTheme
+            .caption
+            .copyWith(color: Colors.white, fontSize: 16),
+      ),
+    ));
+                                            }
+                                                      
+                                                      
+                                          }
                               });
                             } else {
                               setState(() {
@@ -176,6 +198,18 @@ class _SelfAssessmentState extends State<SelfAssessment> {
                                               display[index].question &&
                                           element.when ==
                                               display[index].options[i ~/ 2]));
+                                    print(display.last.question);
+
+                                    if(display.last.node_type==NodeType.RESULT){
+                                      print("INSIDE");
+                                            if(display.last.options[0]=="EMERGENCY"){
+                                                print("Inside");
+                                              widget.cubit.notify();
+                                            
+                                            }
+                                                      
+                                                      
+                                    }
                                 } catch (e) {
                                   print(e);
                                 }
