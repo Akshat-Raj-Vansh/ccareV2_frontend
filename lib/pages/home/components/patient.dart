@@ -11,7 +11,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 
-import 'package:ccarev2_frontend/user/domain/temp.dart';
 import 'package:location/location.dart' as lloc;
 import 'package:ccarev2_frontend/user/domain/location.dart' as loc;
 import 'package:ccarev2_frontend/utils/size_config.dart';
@@ -437,6 +436,9 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                   // Text("+91 7355026029"),
                   Text(eDetails.driverDetails.contactNumber),
                 ],
+              ),
+              const SizedBox(
+                height: 5,
               ),
               RichText(
                 text: TextSpan(
