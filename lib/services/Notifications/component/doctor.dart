@@ -33,7 +33,6 @@ class DoctorNotificationHandler {
         //         .copyWith(color: Colors.white, fontSize: 16),
         //   ),
         // ));
-
         await mainCubit.acceptRequest(message.data["_patientID"]);
       }
       if (message.data["user"] == "DRIVER") {

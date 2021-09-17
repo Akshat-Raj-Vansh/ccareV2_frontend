@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:ccarev2_frontend/main/domain/edetails.dart';
 import 'package:ccarev2_frontend/user/domain/location.dart';
+import 'package:ccarev2_frontend/utils/constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:async/src/result/result.dart';
 

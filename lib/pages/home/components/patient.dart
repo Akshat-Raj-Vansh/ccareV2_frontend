@@ -11,7 +11,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 
-import 'package:ccarev2_frontend/user/domain/temp.dart';
 import 'package:location/location.dart' as lloc;
 import 'package:ccarev2_frontend/user/domain/location.dart' as loc;
 import 'package:ccarev2_frontend/utils/size_config.dart';
@@ -69,7 +68,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
   static bool _doctorAccepted = false;
   static bool _driverAccepted = false;
   static bool _notificationSent = false;
-  dynamic currentState=null;
+  dynamic currentState = null;
   @override
   void initState() {
     super.initState();
@@ -106,8 +105,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    return 
-    Scaffold(
+    return Scaffold(
         appBar: AppBar(
           title: Text('CardioCare - Patient'),
           actions: [
@@ -128,91 +126,83 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
             ),
           ],
         ),
-    body:CubitConsumer<MainCubit, MainState>(builder: (_, state) {
-    
-      if (state is DetailsLoaded) {
-        currentState= DetailsLoaded;
-        // _hideLoader();
-        _notificationSent=true;
-        eDetails = state.eDetails;
-        if (eDetails.doctorDetails != null) {
-          _doctorAccepted = true;
-        }
-        if (eDetails.driverDetails != null) {
-          _driverAccepted = true;
-        }}
-
-        //TODO: #1 create a new state if no emerency requests have been made
-        if(state is NormalState){
-         //currentState = NOEMERGENCYSTATE
-          currentState = NormalState;
-          if(state.msg=="NOT ASSIGNED")
-            _notificationSent=true;
-           //No Need to return
-          
+        body: CubitConsumer<MainCubit, MainState>(builder: (_, state) {
+          if (state is DetailsLoaded) {
+            currentState = DetailsLoaded;
+            // _hideLoader();
+            _notificationSent = true;
+            eDetails = state.eDetails;
+            if (eDetails.doctorDetails != null) {
+              _doctorAccepted = true;
+            }
+            if (eDetails.driverDetails != null) {
+              _driverAccepted = true;
+            }
           }
-        if(currentState==null)
-          return Center(child: CircularProgressIndicator());
-            
-      //   CubitProvider.of<MainCubit>(context).saveTempVars(Temp(
-      //       notificationSent: true,
-      //       doctorAccepted: _doctorAccepted,
-      //       driverAccepted: _driverAccepted));
-        
-      // CubitProvider.of<MainCubit>(context).getTempVars();
-      
 
+          //TODO: #1 create a new state if no emerency requests have been made
+          if (state is NormalState) {
+            //currentState = NOEMERGENCYSTATE
+            currentState = NormalState;
+            if (state.msg == "NOT ASSIGNED") _notificationSent = true;
+            //No Need to return
 
-      
-      return _buildUI(context);
-    }, listener: (context, state) async {
-      if (state is LoadingState) {
-        print("Loading State Called");
-        _showLoader();
-      }
-  //     else if(state is ValuesLoadedState){
-  //       print("Inside Values LoadedState");
-  //       _hideLoader();
-  //         setState((){
-  // _notificationSent =state.temp.notificationSent;
-  //       _driverAccepted= state.temp.driverAccepted;
-        // _doctorAccepted =state.temp.doctorAccepted;
-   
-        //   });
-        //  }
-       else if (state is EmergencyState) {
-        _hideLoader();
-        _notificationSent = true;
-      //   CubitProvider.of<MainCubit>(context).saveTempVars(Temp(
-      //       notificationSent: true,
-      //       doctorAccepted: _doctorAccepted,
-      //       driverAccepted: _driverAccepted));
-      // CubitProvider.of<MainCubit>(context).getTempVars();
+          }
+          if (currentState == null)
+            return Center(child: CircularProgressIndicator());
 
-        print("Emergency State Called");
-        _showMessage("Notifications sent to the Doctor and the Ambulance.");
-      } 
-      
-      else  if (state is DetailsLoaded) {
-        _hideLoader();
-      }
-      else if (state is QuestionnaireState) {
-        
-        print("Questionnaire State Called");
-        _hideLoader();
-        var cubit =CubitProvider.of<MainCubit>(context);
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => SelfAssessment(state.questions,cubit),
-          ),
-        );
-      }
-    }));
+          //   CubitProvider.of<MainCubit>(context).saveTempVars(Temp(
+          //       notificationSent: true,
+          //       doctorAccepted: _doctorAccepted,
+          //       driverAccepted: _driverAccepted));
+
+          // CubitProvider.of<MainCubit>(context).getTempVars();
+
+          return _buildUI(context);
+        }, listener: (context, state) async {
+          if (state is LoadingState) {
+            print("Loading State Called");
+            _showLoader();
+          }
+          //     else if(state is ValuesLoadedState){
+          //       print("Inside Values LoadedState");
+          //       _hideLoader();
+          //         setState((){
+          // _notificationSent =state.temp.notificationSent;
+          //       _driverAccepted= state.temp.driverAccepted;
+          // _doctorAccepted =state.temp.doctorAccepted;
+
+          //   });
+          //  }
+          else if (state is EmergencyState) {
+            _hideLoader();
+            _notificationSent = true;
+            //   CubitProvider.of<MainCubit>(context).saveTempVars(Temp(
+            //       notificationSent: true,
+            //       doctorAccepted: _doctorAccepted,
+            //       driverAccepted: _driverAccepted));
+            // CubitProvider.of<MainCubit>(context).getTempVars();
+
+            print("Emergency State Called");
+            _showMessage("Notifications sent to the Doctor and the Ambulance.");
+          } else if (state is DetailsLoaded) {
+            _hideLoader();
+          } else if (state is QuestionnaireState) {
+            print("Questionnaire State Called");
+            _hideLoader();
+            var cubit = CubitProvider.of<MainCubit>(context);
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => SelfAssessment(state.questions, cubit),
+              ),
+            );
+          }
+        }));
   }
 
   _showLoader() {
-    loader=true;
+    loader = true;
     var alert = const AlertDialog(
       backgroundColor: Colors.transparent,
       elevation: 0,
@@ -226,65 +216,62 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
   }
 
   _hideLoader() {
-    if(loader){
-      loader=false;
-    Navigator.of(context, rootNavigator: true).pop();}
+    if (loader) {
+      loader = false;
+      Navigator.of(context, rootNavigator: true).pop();
+    }
   }
 
-  _buildUI(BuildContext context) =>  Stack(children: [
-          SingleChildScrollView(
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  
-              // if (!_notificationSent) _buildEmergencyButton(),
-              if (_notificationSent && (!_doctorAccepted || !_driverAccepted))
-                _buildNotificationSend(),
-              if (_doctorAccepted || _driverAccepted)
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  child: Text(
-                    "Emergency Information",
-                    style: TextStyle(fontSize: 24),
-                  ),
+  _buildUI(BuildContext context) => Stack(children: [
+        SingleChildScrollView(
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            // if (!_notificationSent) _buildEmergencyButton(),
+            if (_notificationSent && (!_doctorAccepted || !_driverAccepted))
+              _buildNotificationSend(),
+            if (_doctorAccepted || _driverAccepted)
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                child: Text(
+                  "Emergency Information",
+                  style: TextStyle(fontSize: 24),
                 ),
-              if (_doctorAccepted) _buildDoctorDetails(),
-              if (_driverAccepted) _buildDriverDetails(),
-              // const SizedBox(height: 10),
-              if (!_notificationSent) _buildHeader(),
+              ),
+            if (_doctorAccepted) _buildDoctorDetails(),
+            if (_driverAccepted) _buildDriverDetails(),
+            // const SizedBox(height: 10),
+            if (!_notificationSent) _buildHeader(),
 
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                child: Text(
-                  "Medicines",
-                  style: TextStyle(fontSize: 24),
-                ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              child: Text(
+                "Medicines",
+                style: TextStyle(fontSize: 24),
               ),
-              _buildMedications(),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                child: Text(
-                  "Useful Resources",
-                  style: TextStyle(fontSize: 24),
-                ),
+            ),
+            _buildMedications(),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              child: Text(
+                "Useful Resources",
+                style: TextStyle(fontSize: 24),
               ),
-              _buildResources(),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                child: Text(
-                  "Suggestions",
-                  style: TextStyle(fontSize: 24),
-                ),
+            ),
+            _buildResources(),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              child: Text(
+                "Suggestions",
+                style: TextStyle(fontSize: 24),
               ),
-              _buildSuggestions(context),
-              //
-            ]),
-          ),
-          _buildBottomUI(context)
-        ]);
+            ),
+            _buildSuggestions(context),
+            //
+          ]),
+        ),
+        _buildBottomUI(context)
+      ]);
 
   _buildNotificationSend() => Container(
       color: Colors.green[400],
@@ -339,11 +326,17 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                   Text(eDetails.doctorDetails.hospital),
                 ],
               ),
-              RichText(text: TextSpan(text:"Location : ",style:GoogleFonts.montserrat(color: Colors.black)
-              ,children: [TextSpan(text:eDetails.doctorDetails.address,style:TextStyle(color:Colors.black))
-            ],
-          ),
-        ),
+              RichText(
+                text: TextSpan(
+                  text: "Location : ",
+                  style: GoogleFonts.montserrat(color: Colors.black),
+                  children: [
+                    TextSpan(
+                        text: eDetails.doctorDetails.address,
+                        style: TextStyle(color: Colors.black))
+                  ],
+                ),
+              ),
             ],
           ),
         ),
@@ -407,13 +400,13 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
           ),
         ),
         Container(
-          decoration: BoxDecoration(
-              color: Colors.red[100], borderRadius: BorderRadius.circular(20)),
-          width: SizeConfig.screenWidth,
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          child: Column(
-            children: [
+            decoration: BoxDecoration(
+                color: Colors.red[100],
+                borderRadius: BorderRadius.circular(20)),
+            width: SizeConfig.screenWidth,
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            child: Column(children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -443,12 +436,23 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                   // Text("+91 7355026029"),
                   Text(eDetails.driverDetails.contactNumber),
                 ],
-              ), 
-              RichText(text: TextSpan(text:"Location : ",style:GoogleFonts.montserrat(color: Colors.black),children: [TextSpan(text:eDetails.driverDetails.address,style:TextStyle(color:Colors.black))
-            ],
-          ),
-        ),
-      ])),]);
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              RichText(
+                text: TextSpan(
+                  text: "Location : ",
+                  style: GoogleFonts.montserrat(color: Colors.black),
+                  children: [
+                    TextSpan(
+                        text: eDetails.driverDetails.address,
+                        style: TextStyle(color: Colors.black))
+                  ],
+                ),
+              ),
+            ])),
+      ]);
 
   _buildEmergencyButton() => InkWell(
         onTap: () async {

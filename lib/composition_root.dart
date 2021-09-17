@@ -44,7 +44,7 @@ class CompositionRoot {
   static UserService userService;
   static UserCubit userCubit;
   static MainCubit mainCubit;
-
+//90d9f67022627247658ea748f4695546
   static configure() async {
     sharedPreferences = await SharedPreferences.getInstance();
     localStore = LocalStore(sharedPreferences);
