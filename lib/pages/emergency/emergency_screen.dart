@@ -158,16 +158,16 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
           _doctorLocation =
               LatLng(state.location.latitude, state.location.longitude);
           _addDoctorMarker();
-          _hideLoader();
-          _showMessage("Doctor Accepted");
+          // _hideLoader();
+          // _showMessage("Doctor Accepted");
         }
         if (state is DriverAccepted) {
           print("driver accepted state");
           _driverLocation =
               LatLng(state.location.latitude, state.location.longitude);
           _addDriverMarker();
-          _hideLoader();
-          _showMessage("Driver Accepted");
+          // _hideLoader();
+          // _showMessage("Driver Accepted");
         }
       },
       builder: (context, state) {

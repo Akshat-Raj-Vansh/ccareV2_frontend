@@ -1,8 +1,7 @@
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
-
 import 'package:ccarev2_frontend/user/domain/location.dart';
+import 'package:flutter/foundation.dart';
 
 class DoctorProfile {
   final String name;
@@ -10,14 +9,14 @@ class DoctorProfile {
   final String uniqueCode;
   final String email;
   final Location location;
-  final String hospital;
+  final String hospitalName;
   DoctorProfile({
     required this.name,
     required this.specialization,
     required this.uniqueCode,
     required this.email,
     required this.location,
-    required this.hospital,
+    required this.hospitalName,
   });
 
   DoctorProfile copyWith({
@@ -26,7 +25,7 @@ class DoctorProfile {
     String? uniqueCode,
     String? email,
     Location? location,
-    String? hospital,
+    String? hospitalName,
   }) {
     return DoctorProfile(
       name: name ?? this.name,
@@ -34,7 +33,7 @@ class DoctorProfile {
       uniqueCode: uniqueCode ?? this.uniqueCode,
       email: email ?? this.email,
       location: location ?? this.location,
-      hospital: hospital ?? this.hospital,
+      hospitalName: hospitalName ?? this.hospitalName,
     );
   }
 
@@ -45,7 +44,7 @@ class DoctorProfile {
       'uniqueCode': uniqueCode,
       'email': email,
       'location': location.toMap(),
-      'hospital': hospital,
+      'hospitalName': hospitalName,
     };
   }
 
@@ -56,7 +55,7 @@ class DoctorProfile {
       uniqueCode: map['uniqueCode'],
       email: map['email'],
       location: Location.fromMap(map['location']),
-      hospital: map['hospital'],
+      hospitalName: map['hospitalName'],
     );
   }
 
@@ -67,30 +66,30 @@ class DoctorProfile {
 
   @override
   String toString() {
-    return 'DoctorProfile(name: $name, specialization: $specialization, uniqueCode: $uniqueCode, email: $email, location: $location, hospital: $hospital)';
+    return 'DoctorProfile(name: $name, specialization: $specialization, uniqueCode: $uniqueCode, email: $email, location: $location, hospitalName: $hospitalName)';
   }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-
+  
     return other is DoctorProfile &&
-        other.name == name &&
-        other.specialization == specialization &&
-        other.uniqueCode == uniqueCode &&
-        other.email == email &&
-        other.location == location &&
-        other.hospital == hospital;
+      other.name == name &&
+      other.specialization == specialization &&
+      other.uniqueCode == uniqueCode &&
+      other.email == email &&
+      other.location == location &&
+      other.hospitalName == hospitalName;
   }
 
   @override
   int get hashCode {
     return name.hashCode ^
-        specialization.hashCode ^
-        uniqueCode.hashCode ^
-        email.hashCode ^
-        location.hashCode ^
-        hospital.hashCode;
+      specialization.hashCode ^
+      uniqueCode.hashCode ^
+      email.hashCode ^
+      location.hashCode ^
+      hospitalName.hashCode;
   }
 }
 

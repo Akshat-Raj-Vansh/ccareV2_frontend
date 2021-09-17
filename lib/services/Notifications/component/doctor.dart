@@ -22,17 +22,17 @@ class DoctorNotificationHandler {
     print("Handling a foreground message for doctor: ${message.data}");
     if (message.data['type'] == 'Emergency') {
       if (message.data["user"] == "PATIENT") {
-        print("inside");
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          backgroundColor: Theme.of(context).accentColor,
-          content: Text(
-            'Patient in emergency!! Accepting the emergency',
-            style: Theme.of(context)
-                .textTheme
-                .caption
-                .copyWith(color: Colors.white, fontSize: 16),
-          ),
-        ));
+        // print("inside");
+        // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        //   backgroundColor: Theme.of(context).accentColor,
+        //   content: Text(
+        //     'Patient in emergency!! Accepting the emergency',
+        //     style: Theme.of(context)
+        //         .textTheme
+        //         .caption
+        //         .copyWith(color: Colors.white, fontSize: 16),
+        //   ),
+        // ));
 
         await mainCubit.acceptRequest(message.data["_patientID"]);
       }

@@ -99,8 +99,10 @@ class _DoctorHomeUIState extends State<DoctorHomeUI> {
                     ),
                   ),
                   TextButton(
-                    onPressed: () =>
-                        widget.mainCubit.acceptPatientByDoctor(state.patientID),
+                    onPressed: (){
+                      _hideLoader();
+                        widget.mainCubit.acceptPatientByDoctor(state.patientID);},
+                      
                     child: const Text(
                       'Yes',
                     ),
@@ -110,6 +112,8 @@ class _DoctorHomeUIState extends State<DoctorHomeUI> {
             ) ??
             false;
       } else if (state is PatientAccepted) {
+        _hideLoader();
+        
         print("Inside patient accepted by Doctor state");
         loc.Location location = await _getLocation();
         widget.homePageAdapter

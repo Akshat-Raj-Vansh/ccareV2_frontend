@@ -103,5 +103,5 @@ class QuestionTree {
   }
 }
 
-enum QuestionType { BOOLEAN, MCQ, SELECTION }
+enum QuestionType { BOOLEAN, MCQ, SELECTION ,_}
 enum NodeType { QUESTION, RESULT }

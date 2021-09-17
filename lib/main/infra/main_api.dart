@@ -31,6 +31,7 @@ class MainAPI extends IMainAPI {
       return Result.error(transformError(map));
     }
     dynamic json = jsonDecode(response.body);
+  print(json);
     var result = json["questions"] as List;
 
     return Result.value(result

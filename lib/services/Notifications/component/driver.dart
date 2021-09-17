@@ -21,31 +21,31 @@ class DriverNotificationHandler {
     print("Handling a foreground message for driver: ${message.data}");
     if (message.data['type'] == 'Emergency') {
       if (message.data['user'] == "PATIENT") {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          backgroundColor: Theme.of(context).accentColor,
-          content: Text(
-            'Patient in emergency!! Accepting the emergency',
-            style: Theme.of(context)
-                .textTheme
-                .caption
-                .copyWith(color: Colors.white, fontSize: 16),
-          ),
-        ));
+        // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        //   backgroundColor: Theme.of(context).accentColor,
+        //   content: Text(
+        //     'Patient in emergency!! Accepting the emergency',
+        //     style: Theme.of(context)
+        //         .textTheme
+        //         .caption
+        //         .copyWith(color: Colors.white, fontSize: 16),
+        //   ),
+        // ));
 
         await mainCubit.acceptRequest(message.data["_patientID"]);
       }
     }
     if (message.data["user"] == "DOCTOR") {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        backgroundColor: Theme.of(context).accentColor,
-        content: Text(
-          message.notification.body,
-          style: Theme.of(context)
-              .textTheme
-              .caption
-              .copyWith(color: Colors.white, fontSize: 16),
-        ),
-      ));
+      // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      //   backgroundColor: Theme.of(context).accentColor,
+      //   content: Text(
+      //     message.notification.body,
+      //     style: Theme.of(context)
+      //         .textTheme
+      //         .caption
+      //         .copyWith(color: Colors.white, fontSize: 16),
+      //   ),
+      // ));
       mainCubit.doctorAccepted(Location.fromJson(message.data["location"]));
       await mainCubit.fetchEmergencyDetails();
     }

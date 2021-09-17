@@ -73,6 +73,13 @@ class EmergencyState extends MainState {
   List<Object> get props => [msg];
 }
 
+class NormalState extends MainState {
+  final String msg;
+  NormalState(this.msg);
+  @override
+  List<Object> get props => [msg];
+}
+
 class AllPatientsState extends MainState {
   final String msg;
   AllPatientsState(this.msg);

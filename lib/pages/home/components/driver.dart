@@ -13,10 +13,8 @@ import 'package:location/location.dart' as lloc;
 import 'package:ccarev2_frontend/user/domain/location.dart' as loc;
 
 class DriverHomeUI extends StatefulWidget {
-  final MainCubit mainCubit;
-  final UserCubit userCubit;
   final IHomePageAdapter homePageAdapter;
-  const DriverHomeUI(this.mainCubit, this.userCubit, this.homePageAdapter);
+  const DriverHomeUI(this.homePageAdapter);
 
   @override
   State<DriverHomeUI> createState() => _DriverHomeUIState();
@@ -24,6 +22,8 @@ class DriverHomeUI extends StatefulWidget {
 
 class _DriverHomeUIState extends State<DriverHomeUI> {
   static bool _isEmergency = false;
+
+var scaffoldKey = GlobalKey<ScaffoldState>();
   List<String> res = [
     "Find Test centers",
     "Find Hospitals",
@@ -47,7 +47,7 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
   void initState() {
     super.initState();
     NotificationController.configure(
-        widget.mainCubit, UserType.driver, context);
+        CubitProvider.of<MainCubit>(context), UserType.driver, context);
     NotificationController.fcmHandler();
   }
 
@@ -65,7 +65,7 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return CubitConsumer<MainCubit, MainState>(builder: (_, state) {
-      return _buildUI(context, widget.mainCubit);
+      return _buildUI(context, CubitProvider.of<MainCubit>(context));
     }, listener: (context, state) async {
       if (state is LoadingState) {
         print("Loading State Called");
@@ -97,8 +97,9 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
                     ),
                   ),
                   TextButton(
-                    onPressed: () =>
-                        widget.mainCubit.acceptPatientByDriver(state.patientID),
+                    onPressed: (){
+                     _hideLoader();
+                        CubitProvider.of<MainCubit>(context).acceptPatientByDriver(state.patientID);},
                     child: const Text(
                       'Yes',
                     ),
@@ -134,6 +135,8 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
   }
 
   _buildUI(BuildContext context, MainCubit mainCubit) => Scaffold(
+
+      key: scaffoldKey,
         appBar: AppBar(
           title: Text('CardioCare - Driver'),
           actions: [
@@ -150,7 +153,7 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
               ),
             IconButton(
               onPressed: () =>
-                  widget.homePageAdapter.onLogout(context, widget.userCubit),
+                  widget.homePageAdapter.onLogout(context, CubitProvider.of<UserCubit>(context)),
               icon: Icon(Icons.logout),
             ),
           ],
