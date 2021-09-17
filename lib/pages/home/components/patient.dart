@@ -106,6 +106,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
     SizeConfig().init(context);
     return CubitConsumer<MainCubit, MainState>(builder: (_, state) {
       if (state is DetailsLoaded) {
+        _hideLoader();
         eDetails = state.eDetails;
         if (eDetails.doctorDetails != null) {
           _doctorAccepted = true;
