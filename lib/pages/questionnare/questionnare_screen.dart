@@ -2,7 +2,6 @@
 import 'package:ccarev2_frontend/main/domain/question.dart';
 import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_cubit/flutter_cubit.dart';
 
 class SelfAssessment extends StatefulWidget {
   final List<QuestionTree> questions;
@@ -16,6 +15,7 @@ class SelfAssessment extends StatefulWidget {
 class _SelfAssessmentState extends State<SelfAssessment> {
   List<QuestionTree> display = [];
   List<String> answers = [];
+  Map<String, String> submittedAnswers = {};
   int length = 1;
   TextStyle styles = const TextStyle(color: Colors.white, fontSize: 18);
   EdgeInsets pad = const EdgeInsets.symmetric(vertical: 5, horizontal: 15);
@@ -25,7 +25,6 @@ class _SelfAssessmentState extends State<SelfAssessment> {
           topLeft: Radius.circular(30),
           topRight: Radius.circular(30),
           bottomRight: Radius.circular(30)));
-
   BoxDecoration decC = const BoxDecoration(
       color: Colors.green,
       borderRadius: BorderRadius.only(
@@ -50,20 +49,29 @@ class _SelfAssessmentState extends State<SelfAssessment> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            backgroundColor: Colors.white,
-            shadowColor: Colors.white,
-            title: const Text(
-              "CardioCare",
-              style: TextStyle(
-                  color: Colors.blue,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold),
+          backgroundColor: Colors.white,
+          shadowColor: Colors.white,
+          title: const Text(
+            "CardioCare",
+            style: TextStyle(
+                color: Colors.blue, fontSize: 24, fontWeight: FontWeight.bold),
+          ),
+          leading: IconButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            icon: Icon(Icons.arrow_back, color: Colors.blue),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {},
+              child: Text(
+                'Skip',
+                style: TextStyle(color: Colors.blue),
+              ),
             ),
-            leading: IconButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                icon: Icon(Icons.arrow_back, color: Colors.blue))),
+          ],
+        ),
         body: buildbody(context));
   }
 

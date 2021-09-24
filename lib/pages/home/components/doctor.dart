@@ -1,6 +1,7 @@
 //@dart=2.9
 import 'package:ccarev2_frontend/main/domain/edetails.dart';
 import 'package:ccarev2_frontend/pages/home/home_page_adapter.dart';
+import 'package:ccarev2_frontend/pages/spoke_form/patient_report_screen.dart';
 import 'package:ccarev2_frontend/services/Notifications/notificationContoller.dart';
 import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
 import 'package:ccarev2_frontend/state_management/main/main_state.dart';
@@ -56,10 +57,10 @@ class _DoctorHomeUIState extends State<DoctorHomeUI> {
   @override
   void initState() {
     super.initState();
+    CubitProvider.of<MainCubit>(context).fetchEmergencyDetails();
     NotificationController.configure(
         widget.mainCubit, UserType.doctor, context);
     NotificationController.fcmHandler();
-    CubitProvider.of<MainCubit>(context).fetchEmergencyDetails();
   }
 
   Future<loc.Location> _getLocation() async {
@@ -128,9 +129,10 @@ class _DoctorHomeUIState extends State<DoctorHomeUI> {
                     ),
                   ),
                   TextButton(
-                    onPressed: () {
+                    onPressed: () async {
                       _hideLoader();
                       widget.mainCubit.acceptPatientByDoctor(state.patientID);
+                      // await widget.mainCubit.fetchEmergencyDetails();
                     },
                     child: const Text(
                       'Yes',
@@ -180,6 +182,21 @@ class _DoctorHomeUIState extends State<DoctorHomeUI> {
           title: Text('CardioCare - Doctor'),
           actions: [
             // if (_isEmergency)
+            IconButton(
+              onPressed: () async {
+                _showLoader();
+                loc.Location location = await _getLocation();
+                _hideLoader();
+                var cubit = CubitProvider.of<MainCubit>(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => PatientReportScreen(mainCubit: cubit),
+                  ),
+                );
+              },
+              icon: Icon(Icons.map),
+            ),
             IconButton(
               onPressed: () async {
                 _showLoader();
@@ -342,30 +359,30 @@ class _DoctorHomeUIState extends State<DoctorHomeUI> {
           ),
         ),
       ]);
-  _buildEmergencyButton() => InkWell(
-        onTap: () async {
-          _showLoader();
-          loc.Location location = await _getLocation();
-          _hideLoader();
-          return widget.homePageAdapter
-              .loadEmergencyScreen(context, UserType.patient, location);
-        },
-        child: Container(
-            color: Colors.red[400],
-            padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-            child: ListTile(
-              leading: Icon(CupertinoIcons.exclamationmark_bubble,
-                  color: Colors.white),
-              title: Text(
-                "Press here for Patient's and Driver's Location!",
-                style: TextStyle(color: Colors.white, fontSize: 20),
-              ),
-              subtitle: Text(
-                "Emergency Situation ->",
-                style: TextStyle(color: Colors.white, fontSize: 12),
-              ),
-            )),
-      );
+  // _buildEmergencyButton() => InkWell(
+  //       onTap: () async {
+  //         _showLoader();
+  //         loc.Location location = await _getLocation();
+  //         _hideLoader();
+  //         return widget.homePageAdapter
+  //             .loadEmergencyScreen(context, UserType.patient, location);
+  //       },
+  //       child: Container(
+  //           color: Colors.red[400],
+  //           padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+  //           child: ListTile(
+  //             leading: Icon(CupertinoIcons.exclamationmark_bubble,
+  //                 color: Colors.white),
+  //             title: Text(
+  //               "Press here for Patient's and Driver's Location!",
+  //               style: TextStyle(color: Colors.white, fontSize: 20),
+  //             ),
+  //             subtitle: Text(
+  //               "Emergency Situation ->",
+  //               style: TextStyle(color: Colors.white, fontSize: 12),
+  //             ),
+  //           )),
+  //     );
 
   _buildHeader() => Container(
       color: Colors.green[400],
