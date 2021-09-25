@@ -195,7 +195,7 @@ if (state is LoadingState) {
                       // _hideLoader();
                       // print("inside");
                        CubitProvider.of<MainCubit>(scaffoldKey.currentContext).acceptPatientByDriver(state.patientID);
-                    Navigator.of(scaffoldKey.currentContext).pop(false);
+                    Navigator.of(context).pop(false);
                     },
                        child: const Text(
                       'Yes',
@@ -311,7 +311,7 @@ if (state is LoadingState) {
           )
           ),
         width: double.infinity,
-        height:_doctorAccepted?300:150,
+        height:_doctorAccepted?350:200,
         child: Column(
           children:[
             _buildPatientDetails(),

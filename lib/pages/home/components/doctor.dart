@@ -75,7 +75,30 @@ class _DoctorHomeUIState extends State<DoctorHomeUI> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    return CubitConsumer<MainCubit, MainState>(builder: (_, state) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar:AppBar(
+          title: Text('CardioCare - Doctor'),
+          actions: [
+            // if (_isEmergency)
+            IconButton(
+              onPressed: () async {
+                _showLoader();
+                loc.Location location = await _getLocation();
+                _hideLoader();
+                return widget.homePageAdapter
+                    .loadEmergencyScreen(context, UserType.doctor, location);
+              },
+              icon: Icon(Icons.map),
+            ),
+            IconButton(
+              onPressed: () =>
+                  widget.homePageAdapter.onLogout(context, widget.userCubit),
+              icon: Icon(Icons.logout),
+            ),
+          ],
+        ),
+      body:CubitConsumer<MainCubit, MainState>(builder: (_, state) {
       if (state is DetailsLoaded) {
         currentState = DetailsLoaded;
         eDetails = state.eDetails;
@@ -98,7 +121,11 @@ class _DoctorHomeUIState extends State<DoctorHomeUI> {
       if (state is LoadingState) {
         print("Loading State Called");
         _showLoader();
-      } else if (state is DetailsLoaded) {
+      } 
+      else if(state is ErrorState){
+        _hideLoader();
+      }
+      else if (state is DetailsLoaded) {
         _hideLoader();
       } else if (state is AcceptState) {
         _hideLoader();
@@ -129,7 +156,7 @@ class _DoctorHomeUIState extends State<DoctorHomeUI> {
                   ),
                   TextButton(
                     onPressed: () {
-                      _hideLoader();
+                      Navigator.of(context).pop();
                       widget.mainCubit.acceptPatientByDoctor(state.patientID);
                     },
                     child: const Text(
@@ -144,14 +171,17 @@ class _DoctorHomeUIState extends State<DoctorHomeUI> {
         _hideLoader();
         _emergency = true;
         print("Inside patient accepted by Doctor state");
+         CubitProvider.of<MainCubit>(context).fetchEmergencyDetails();
         // loc.Location location = await _getLocation();
         // widget.homePageAdapter
         //     .loadEmergencyScreen(context, UserType.doctor, location);
       } else if (state is AllPatientsState) {
         print("AllPatientsState State Called");
         _hideLoader();
+
       }
-    });
+    })
+    );
   }
 
   _showLoader() {
@@ -175,29 +205,7 @@ class _DoctorHomeUIState extends State<DoctorHomeUI> {
     }
   }
 
-  _buildUI(BuildContext buildContext) => Scaffold(
-        appBar: AppBar(
-          title: Text('CardioCare - Doctor'),
-          actions: [
-            // if (_isEmergency)
-            IconButton(
-              onPressed: () async {
-                _showLoader();
-                loc.Location location = await _getLocation();
-                _hideLoader();
-                return widget.homePageAdapter
-                    .loadEmergencyScreen(context, UserType.doctor, location);
-              },
-              icon: Icon(Icons.map),
-            ),
-            IconButton(
-              onPressed: () =>
-                  widget.homePageAdapter.onLogout(context, widget.userCubit),
-              icon: Icon(Icons.logout),
-            ),
-          ],
-        ),
-        body: Stack(children: [
+  _buildUI(BuildContext buildContext) => Stack(children: [
           SingleChildScrollView(
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -233,8 +241,7 @@ class _DoctorHomeUIState extends State<DoctorHomeUI> {
               _buildResources(),
             ]),
           ),
-        ]),
-      );
+        ]);
   _buildDriverDetails() => Column(children: [
         Container(
           width: SizeConfig.screenWidth,
