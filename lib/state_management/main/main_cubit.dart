@@ -5,6 +5,7 @@ import 'package:async/src/result/result.dart';
 import 'package:ccarev2_frontend/cache/ilocal_store.dart';
 import 'package:ccarev2_frontend/main/domain/edetails.dart';
 import 'package:ccarev2_frontend/main/domain/main_api_contract.dart';
+import 'package:ccarev2_frontend/main/domain/report.dart';
 import 'package:ccarev2_frontend/user/domain/location.dart';
 import 'package:ccarev2_frontend/user/domain/temp.dart';
 import 'package:ccarev2_frontend/user/domain/token.dart';
@@ -21,7 +22,7 @@ class MainCubit extends Cubit<MainState> {
 
     final token = await localStore.fetch();
     final result = await api.getAll(Token(token.value));
- 
+
     if (result == null) emit(ErrorState("Server Error"));
     if (result.isError) {
       emit(ErrorState(result.asError.error));
@@ -82,6 +83,11 @@ class MainCubit extends Cubit<MainState> {
       return;
     }
     emit(PatientAccepted(result.asValue.value));
+  }
+
+  savePatientReport(Report report) async {
+    _startLoading("PatientReportSaved");
+    emit(PatientReportSaved("Saved"));
   }
 
   acceptPatientByDriver(String patientID) async {

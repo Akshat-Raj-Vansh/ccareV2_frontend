@@ -7,6 +7,8 @@
 - [ ] Sometimes the phone number is stored in the database with extra digits
 - [ ] Open emergency screen if patient had already sent SOS message to view map.
 - [ ] Resend OTP timer bug.
+- [ ] Do not send SOS in questionaire once in emergency state.
+
 
 ### Todo
 
