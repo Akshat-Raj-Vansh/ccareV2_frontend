@@ -120,7 +120,7 @@ class MainAPI extends IMainAPI {
 
   @override
   Future<Result<String>> savePatientReport(Token token, Report report) async {
-    String endpoint = baseUrl + "/emergency/doctor/getAllPatients";
+    String endpoint = baseUrl + "/treatment/doctor/updateReport";
     var header = {
       "Content-Type": "application/json",
       "Authorization": token.value

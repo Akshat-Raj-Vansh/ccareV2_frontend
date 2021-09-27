@@ -40,8 +40,8 @@ class _SelfAssessmentState extends State<SelfAssessment> {
 
   @override
   void initState() {
-    display.add(
-        widget.questions.firstWhere((element) => element.parent == "root"));
+
+    display.add(widget.questions.firstWhere((element) => element.parent=="root"));
     super.initState();
   }
 

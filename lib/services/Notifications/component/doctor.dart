@@ -36,16 +36,16 @@ class DoctorNotificationHandler {
         await mainCubit.acceptRequest(message.data["_patientID"]);
       }
       if (message.data["user"] == "DRIVER") {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          backgroundColor: Theme.of(context).accentColor,
-          content: Text(
-            message.notification.body,
-            style: Theme.of(context)
-                .textTheme
-                .caption
-                .copyWith(color: Colors.white, fontSize: 16),
-          ),
-        ));
+        // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        //   backgroundColor: Theme.of(context).accentColor,
+        //   content: Text(
+        //     message.notification.body,
+        //     style: Theme.of(context)
+        //         .textTheme
+        //         .caption
+        //         .copyWith(color: Colors.white, fontSize: 16),
+        //   ),
+        // ));
         mainCubit.driverAccepted(Location.fromJson(message.data["location"]));
         await mainCubit.fetchEmergencyDetails();
       }
@@ -54,6 +54,7 @@ class DoctorNotificationHandler {
 
   static Future<void> onMessageOpenedHandler(RemoteMessage message) async {
     if (message.data['type'] == 'Emergency') {
+      print("Not supposed to be here");
       await mainCubit.acceptRequest(message.data["_patientID"]);
     }
   }
