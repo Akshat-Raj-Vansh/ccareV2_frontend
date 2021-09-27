@@ -146,9 +146,6 @@ class _DoctorHomeUIState extends State<DoctorHomeUI> {
         _hideLoader();
         _emergency = true;
         print("Inside patient accepted by Doctor state");
-        // loc.Location location = await _getLocation();
-        // widget.homePageAdapter
-        //     .loadEmergencyScreen(context, UserType.doctor, location);
       } else if (state is AllPatientsState) {
         print("AllPatientsState State Called");
         _hideLoader();
@@ -182,21 +179,7 @@ class _DoctorHomeUIState extends State<DoctorHomeUI> {
           title: Text('CardioCare - Doctor'),
           actions: [
             // if (_isEmergency)
-            IconButton(
-              onPressed: () async {
-                _showLoader();
-                loc.Location location = await _getLocation();
-                _hideLoader();
-                var cubit = CubitProvider.of<MainCubit>(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => PatientReportScreen(mainCubit: cubit),
-                  ),
-                );
-              },
-              icon: Icon(Icons.map),
-            ),
+
             IconButton(
               onPressed: () async {
                 _showLoader();
@@ -317,48 +300,59 @@ class _DoctorHomeUIState extends State<DoctorHomeUI> {
               ),
             ])),
       ]);
-  _buildPatientDetails() => Column(children: [
-        Container(
-          width: SizeConfig.screenWidth,
-          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-          child: Text(
-            "Patient's Information",
-            textAlign: TextAlign.left,
-            style: TextStyle(fontSize: 18),
+  _buildPatientDetails() => InkWell(
+        child: Column(children: [
+          Container(
+            width: SizeConfig.screenWidth,
+            margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+            child: Text(
+              "Patient's Information",
+              textAlign: TextAlign.left,
+              style: TextStyle(fontSize: 18),
+            ),
           ),
-        ),
-        Container(
-          decoration: BoxDecoration(
-              color: Colors.red[100], borderRadius: BorderRadius.circular(20)),
-          width: SizeConfig.screenWidth,
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("Name: "),
-                  // Text("Akshat Raj Vansh"),
-                  Text(eDetails.patientDetails.name),
-                ],
-              ),
-              const SizedBox(
-                height: 5,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("Contact Number: "),
-                  // Text("Apollo Medical Hospital"),
-                  Text(eDetails.patientDetails.contactNumber),
-                ],
-              ),
-            ],
+          Container(
+            decoration: BoxDecoration(
+                color: Colors.red[100],
+                borderRadius: BorderRadius.circular(20)),
+            width: SizeConfig.screenWidth,
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("Name: "),
+                    // Text("Akshat Raj Vansh"),
+                    Text(eDetails.patientDetails.name),
+                  ],
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("Contact Number: "),
+                    // Text("Apollo Medical Hospital"),
+                    Text(eDetails.patientDetails.contactNumber),
+                  ],
+                ),
+              ],
+            ),
           ),
-        ),
-      ]);
+        ]),
+        onLongPress: () {
+          var cubit = CubitProvider.of<MainCubit>(context);
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => PatientReportScreen(mainCubit: cubit),
+              ));
+        },
+      );
   // _buildEmergencyButton() => InkWell(
   //       onTap: () async {
   //         _showLoader();

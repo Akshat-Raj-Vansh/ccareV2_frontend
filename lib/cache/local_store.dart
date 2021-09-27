@@ -56,22 +56,6 @@ class LocalStore implements ILocalStore {
   }
 
   @override
-  saveTemp(Temp temp) {
-    return sharedPreferences.setString(temp_data_key, temp.toString());
-  }
-
-  @override
-  Future<Temp> fetchTemp() {
-    String data = sharedPreferences.getString(token_key);
-    print(data);
-    if (data != null) {
-      Temp temp = Temp.fromMap(jsonDecode(data));
-      return Future.value(temp);
-    }
-    return null;
-  }
-
-  @override
   saveUserType(UserType type) {
     return sharedPreferences.setString(auth_key, type.toString());
   }

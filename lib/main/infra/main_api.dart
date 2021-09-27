@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:ccarev2_frontend/main/domain/edetails.dart';
+import 'package:ccarev2_frontend/main/domain/report.dart';
 import 'package:ccarev2_frontend/user/domain/location.dart';
 import 'package:ccarev2_frontend/utils/constants.dart';
 import 'package:http/http.dart' as http;
@@ -31,7 +32,7 @@ class MainAPI extends IMainAPI {
       return Result.error(transformError(map));
     }
     dynamic json = jsonDecode(response.body);
-  print(json);
+    print(json);
     var result = json["questions"] as List;
 
     return Result.value(result
@@ -115,6 +116,24 @@ class MainAPI extends IMainAPI {
     dynamic json = jsonDecode(response.body);
     return Result.value(
         Location(longitude: json['longitude'], latitude: json["latitude"]));
+  }
+
+  @override
+  Future<Result<String>> savePatientReport(Token token, Report report) async {
+    String endpoint = baseUrl + "/emergency/doctor/getAllPatients";
+    var header = {
+      "Content-Type": "application/json",
+      "Authorization": token.value
+    };
+    var response = await _client.post(Uri.parse(endpoint),
+        headers: header, body: report.toJson());
+    if (response.statusCode != 200) {
+      Map map = jsonDecode(response.body);
+      print(transformError(map));
+      return Result.error(transformError(map));
+    }
+    dynamic json = jsonDecode(response.body);
+    return Result.value(json["message"]);
   }
 
   @override

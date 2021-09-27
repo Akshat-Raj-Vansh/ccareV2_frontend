@@ -1,6 +1,5 @@
 import 'package:ccarev2_frontend/user/domain/credential.dart';
 import 'package:ccarev2_frontend/user/domain/details.dart';
-import 'package:ccarev2_frontend/user/domain/temp.dart';
 import 'package:ccarev2_frontend/user/domain/token.dart';
 
 abstract class ILocalStore {
@@ -12,7 +11,5 @@ abstract class ILocalStore {
   saveTempToken(String token);
   Future<Token> fetchTempToken();
   saveUserType(UserType type);
-  saveTemp(Temp temp);
-  Future<Temp> fetchTemp();
   Future<UserType> fetchUserType();
 }

@@ -16,15 +16,15 @@ class PatientReport extends StatefulWidget {
 class _PatientReportState extends State<PatientReport> {
   final _formKey = GlobalKey<FormState>();
   String ecgTime;
-  String ecg_stemi;
+  ECGType ecg_type = ECGType.nill;
   String trop_i;
   String bp;
-  String cvs_mr;
-  String onset;
+  CVS cvs = CVS.nill;
+  Onset onset = Onset.nill;
   Severity severity = Severity.nill;
   PainLocation pain_location = PainLocation.nill;
   String duration;
-  String radiation;
+  Radiation radiation = Radiation.nill;
   YN smoker = YN.nill;
   YN diabetic = YN.nill;
   YN hypertensive = YN.nill;
@@ -59,15 +59,20 @@ class _PatientReportState extends State<PatientReport> {
             ),
           ),
           SizedBox(height: getProportionateScreenHeight(10)),
-          TextFormField(
-            keyboardType: TextInputType.text,
-            onSaved: (newValue) => ecg_stemi = newValue.toUpperCase(),
-            validator: (value) => value.isEmpty ? "nill" : null,
-            decoration: const InputDecoration(
-              labelText: "ECG Semi",
-              hintText: "Enter ECG Semi",
-              floatingLabelBehavior: FloatingLabelBehavior.always,
-            ),
+          DropdownButton<ECGType>(
+            value: ecg_type,
+            isDense: true,
+            onChanged: (ECGType newValue) {
+              setState(() {
+                ecg_type = newValue;
+              });
+            },
+            items: ECGType.values.map((ECGType value) {
+              return DropdownMenuItem<ECGType>(
+                value: value,
+                child: Text(value.toString()),
+              );
+            }).toList(),
           ),
           SizedBox(height: getProportionateScreenHeight(10)),
           TextFormField(
@@ -92,26 +97,36 @@ class _PatientReportState extends State<PatientReport> {
             ),
           ),
           SizedBox(height: getProportionateScreenHeight(10)),
-          TextFormField(
-            keyboardType: TextInputType.text,
-            onSaved: (newValue) => cvs_mr = newValue.toUpperCase(),
-            validator: (value) => value.isEmpty ? "nill" : null,
-            decoration: const InputDecoration(
-              labelText: "CVS MR",
-              hintText: "Enter CVS MR",
-              floatingLabelBehavior: FloatingLabelBehavior.always,
-            ),
+          DropdownButton<CVS>(
+            value: cvs,
+            isDense: true,
+            onChanged: (CVS newValue) {
+              setState(() {
+                cvs = newValue;
+              });
+            },
+            items: CVS.values.map((CVS value) {
+              return DropdownMenuItem<CVS>(
+                value: value,
+                child: Text(value.toString()),
+              );
+            }).toList(),
           ),
           SizedBox(height: getProportionateScreenHeight(10)),
-          TextFormField(
-            keyboardType: TextInputType.text,
-            onSaved: (newValue) => onset = newValue.toUpperCase(),
-            validator: (value) => value.isEmpty ? "nill" : null,
-            decoration: const InputDecoration(
-              labelText: "Onset",
-              hintText: "Enter Onset",
-              floatingLabelBehavior: FloatingLabelBehavior.always,
-            ),
+          DropdownButton<Onset>(
+            value: onset,
+            isDense: true,
+            onChanged: (Onset newValue) {
+              setState(() {
+                onset = newValue;
+              });
+            },
+            items: Onset.values.map((Onset value) {
+              return DropdownMenuItem<Onset>(
+                value: value,
+                child: Text(value.toString()),
+              );
+            }).toList(),
           ),
           SizedBox(height: getProportionateScreenHeight(10)),
           DropdownButton<Severity>(
@@ -157,15 +172,20 @@ class _PatientReportState extends State<PatientReport> {
             ),
           ),
           SizedBox(height: getProportionateScreenHeight(10)),
-          TextFormField(
-            keyboardType: TextInputType.text,
-            onSaved: (newValue) => radiation = newValue.toUpperCase(),
-            validator: (value) => value.isEmpty ? "nill" : null,
-            decoration: const InputDecoration(
-              labelText: "Radiation",
-              hintText: "Enter radiation",
-              floatingLabelBehavior: FloatingLabelBehavior.always,
-            ),
+          DropdownButton<Radiation>(
+            value: radiation,
+            isDense: true,
+            onChanged: (Radiation newValue) {
+              setState(() {
+                radiation = newValue;
+              });
+            },
+            items: Radiation.values.map((Radiation value) {
+              return DropdownMenuItem<Radiation>(
+                value: value,
+                child: Text(value.toString()),
+              );
+            }).toList(),
           ),
           SizedBox(height: getProportionateScreenHeight(10)),
           DropdownButton<YN>(
@@ -400,10 +420,10 @@ class _PatientReportState extends State<PatientReport> {
                   _formKey.currentState.save();
                   Report report = Report(
                       ecgTime: ecgTime,
-                      ecg_stemi: ecg_stemi,
+                      ecg_type: ecg_type,
                       trop_i: trop_i,
                       bp: bp,
-                      cvs_mr: cvs_mr,
+                      cvs: cvs,
                       onset: onset,
                       severity: severity,
                       pain_location: pain_location,

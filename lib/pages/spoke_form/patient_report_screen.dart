@@ -1,9 +1,7 @@
 //@dart=2.9
-import 'package:ccarev2_frontend/pages/profile/profile_page_adapter.dart';
 import 'package:ccarev2_frontend/pages/spoke_form/components/patient_report.dart';
 import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
 import 'package:ccarev2_frontend/state_management/main/main_state.dart';
-import 'package:ccarev2_frontend/user/domain/credential.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
 import '../../utils/size_config.dart';
@@ -44,14 +42,16 @@ class _PatientReportScreenState extends State<PatientReportScreen> {
   _buildUI(BuildContext context) => CubitConsumer<MainCubit, MainState>(
       cubit: CubitProvider.of<MainCubit>(context),
       builder: (_, state) {
-        return PatientReport(widget.mainCubit);
+        return SingleChildScrollView(
+          child: PatientReport(widget.mainCubit),
+        );
       },
       listener: (context, state) {
         if (state is LoadingState) {
           print("Loading State Called");
           _showLoader();
         } else if (state is PatientReportSaved) {
-          print("Add Profile State Called");
+          print("Patient Report Saved state Called");
           _hideLoader();
           _showMessage(state.msg);
         } else if (state is ErrorState) {
