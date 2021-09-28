@@ -46,12 +46,39 @@ class _PatientReportScreenState extends State<PatientReportScreen> {
   @override
   void initState() {
     super.initState();
-    _fetchReport();
+    // _fetchReport();
   }
 
   _fetchReport() async {
     print("Fetching patient report");
     await widget.mainCubit.fetchPatientReport();
+  }
+
+  _updateForm(Report report) {
+    ecgTime = report.ecgTime;
+    ecg_type = report.ecg_type;
+    trop_i = report.trop_i;
+    bp = report.bp;
+    cvs = report.cvs;
+    onset = report.onset;
+    severity = report.severity;
+    pain_location = report.pain_location;
+    duration = report.duration;
+    radiation = report.radiation;
+    smoker = report.smoker;
+    diabetic = report.diabetic;
+    hypertensive = report.hypertensive;
+    dyslipidaemia = report.dyslipidaemia;
+    old_mi = report.old_mi;
+    chest_pain = report.chest_pain;
+    sweating = report.sweating;
+    nausea = report.nausea;
+    shortness_of_breath = report.shortness_of_breath;
+    loss_of_conciousness = report.loss_of_conciousness;
+    palpitations = report.palpitations;
+    concious = report.concious;
+    chest_crepts = report.chest_crepts;
+    pulse_rate;
   }
 
   @override
@@ -81,7 +108,16 @@ class _PatientReportScreenState extends State<PatientReportScreen> {
 
   _buildUI(BuildContext context) => CubitConsumer<MainCubit, MainState>(
       cubit: widget.mainCubit,
-      builder: (_, state) => _buildForm(),
+      builder: (_, state) {
+        if (state is PatientReportFetched) {
+          print("Patient Report Fetched state Called");
+          report = state.report;
+          _updateForm(report);
+          _hideLoader();
+          _showMessage("Patient report fetched");
+        }
+        return _buildForm();
+      },
       listener: (context, state) {
         if (state is LoadingState) {
           print("Loading State Called");
@@ -90,13 +126,8 @@ class _PatientReportScreenState extends State<PatientReportScreen> {
           print("Patient Report Saved state Called");
           _hideLoader();
           _showMessage(state.msg);
-        } else if (state is PatientReportFetched) {
-          print("Patient Report Fetched state Called");
-          report = state.report;
-          _hideLoader();
-          _showMessage("Patient report fetched");
         } else if (state is ErrorState) {
-          print('Error State Called');
+          print('Error State Called 2');
           _hideLoader();
           _showMessage(state.error);
         }
