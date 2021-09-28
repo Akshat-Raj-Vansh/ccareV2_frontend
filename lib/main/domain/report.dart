@@ -1,82 +1,83 @@
+//@dart=2.9
 import 'dart:convert';
 
 class Report {
-  final String ecgTime;
-  final ECGType ecg_type;
-  final String trop_i;
-  final String bp;
-  final CVS cvs;
-  final Onset onset;
-  final Severity severity;
-  final PainLocation pain_location;
-  final String duration;
-  final Radiation radiation;
-  final YN smoker;
-  final YN diabetic;
-  final YN hypertensive;
-  final YN dyslipidaemia;
-  final YN old_mi;
-  final YN chest_pain;
-  final YN sweating;
-  final YN nausea;
-  final YN shortness_of_breath;
-  final YN loss_of_conciousness;
-  final YN palpitations;
-  final YN concious;
-  final YN chest_crepts;
-  final int pulse_rate;
+  String ecgTime;
+  ECGType ecg_type;
+  String trop_i;
+  String bp;
+  CVS cvs;
+  Onset onset;
+  Severity severity;
+  PainLocation pain_location;
+  String duration;
+  Radiation radiation;
+  YN smoker;
+  YN diabetic;
+  YN hypertensive;
+  YN dyslipidaemia;
+  YN old_mi;
+  YN chest_pain;
+  YN sweating;
+  YN nausea;
+  YN shortness_of_breath;
+  YN loss_of_conciousness;
+  YN palpitations;
+  YN concious;
+  YN chest_crepts;
+  int pulse_rate;
   Report({
-    required this.ecgTime,
-    required this.ecg_type,
-    required this.trop_i,
-    required this.bp,
-    required this.cvs,
-    required this.onset,
-    required this.severity,
-    required this.pain_location,
-    required this.duration,
-    required this.radiation,
-    required this.smoker,
-    required this.diabetic,
-    required this.hypertensive,
-    required this.dyslipidaemia,
-    required this.old_mi,
-    required this.chest_pain,
-    required this.sweating,
-    required this.nausea,
-    required this.shortness_of_breath,
-    required this.loss_of_conciousness,
-    required this.palpitations,
-    required this.concious,
-    required this.chest_crepts,
-    required this.pulse_rate,
+    this.ecgTime,
+    this.ecg_type,
+    this.trop_i,
+    this.bp,
+    this.cvs,
+    this.onset,
+    this.severity,
+    this.pain_location,
+    this.duration,
+    this.radiation,
+    this.smoker,
+    this.diabetic,
+    this.hypertensive,
+    this.dyslipidaemia,
+    this.old_mi,
+    this.chest_pain,
+    this.sweating,
+    this.nausea,
+    this.shortness_of_breath,
+    this.loss_of_conciousness,
+    this.palpitations,
+    this.concious,
+    this.chest_crepts,
+    this.pulse_rate,
   });
 
   Report copyWith({
-    String? ecgTime,
-    ECGType? ecg_type,
-    String? trop_i,
-    String? bp,
-    CVS? cvs,
-    Onset? onset,
-    Severity? severity,
-    PainLocation? pain_location,
-    String? duration,
-    Radiation? radiation,
-    YN? smoker,
-    YN? diabetic,
-    YN? hypertensive,
-    YN? dyslipidaemia,
-    YN? old_mi,
-    YN? chest_pain,
-    YN? sweating,
-    YN? nausea,
-    YN? shortness_of_breath,
-    YN? loss_of_conciousness,
-    YN? palpitations,
-    YN? concious,
-    YN? chest_crepts,
-    int? pulse_rate,
+    String ecgTime,
+    ECGType ecg_type,
+    String trop_i,
+    String bp,
+    CVS cvs,
+    Onset onset,
+    Severity severity,
+    PainLocation pain_location,
+    String duration,
+    Radiation radiation,
+    YN smoker,
+    YN diabetic,
+    YN hypertensive,
+    YN dyslipidaemia,
+    YN old_mi,
+    YN chest_pain,
+    YN sweating,
+    YN nausea,
+    YN shortness_of_breath,
+    YN loss_of_conciousness,
+    YN palpitations,
+    YN concious,
+    YN chest_crepts,
+    int pulse_rate,
   }) {
     return Report(
       ecgTime: ecgTime ?? this.ecgTime,

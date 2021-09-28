@@ -173,9 +173,6 @@ class _DoctorHomeUIState extends State<DoctorHomeUI> {
             _emergency = true;
             print("Inside patient accepted by Doctor state");
             CubitProvider.of<MainCubit>(context).fetchEmergencyDetails();
-            // loc.Location location = await _getLocation();
-            // widget.homePageAdapter
-            //     .loadEmergencyScreen(context, UserType.doctor, location);
           } else if (state is AllPatientsState) {
             print("AllPatientsState State Called");
             _hideLoader();
@@ -204,30 +201,7 @@ class _DoctorHomeUIState extends State<DoctorHomeUI> {
     }
   }
 
-  _buildUI(BuildContext buildContext) => Scaffold(
-      appBar: AppBar(
-        title: Text('CardioCare - Doctor'),
-        actions: [
-          // if (_isEmergency)
-
-          IconButton(
-            onPressed: () async {
-              _showLoader();
-              loc.Location location = await _getLocation();
-              _hideLoader();
-              return widget.homePageAdapter
-                  .loadEmergencyScreen(context, UserType.doctor, location);
-            },
-            icon: Icon(Icons.map),
-          ),
-          IconButton(
-            onPressed: () =>
-                widget.homePageAdapter.onLogout(context, widget.userCubit),
-            icon: Icon(Icons.logout),
-          ),
-        ],
-      ),
-      body: Stack(children: [
+  _buildUI(BuildContext buildContext) => Stack(children: [
         SingleChildScrollView(
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -241,6 +215,7 @@ class _DoctorHomeUIState extends State<DoctorHomeUI> {
                 ),
               ),
             if (_patientAccepted) _buildPatientDetails(),
+            if (_patientAccepted) _buildPatientReportButton(),
             if (_driverAccepted) _buildDriverDetails(),
             if (!_emergency) _buildHeader(),
             Padding(
@@ -261,7 +236,7 @@ class _DoctorHomeUIState extends State<DoctorHomeUI> {
             _buildResources(),
           ]),
         ),
-      ]));
+      ]);
   _buildDriverDetails() => Column(children: [
         Container(
           width: SizeConfig.screenWidth,
@@ -285,7 +260,6 @@ class _DoctorHomeUIState extends State<DoctorHomeUI> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text("Name: "),
-                  // Text("Akshat Raj Vansh"),
                   Text(eDetails.driverDetails.name),
                 ],
               ),
@@ -296,7 +270,6 @@ class _DoctorHomeUIState extends State<DoctorHomeUI> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text("Plate Number: "),
-                  // Text("MH-177035"),
                   Text(eDetails.driverDetails.plateNumber),
                 ],
               ),
@@ -307,7 +280,6 @@ class _DoctorHomeUIState extends State<DoctorHomeUI> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text("Contact Number: "),
-                  // Text("+91 7355026029"),
                   Text(eDetails.driverDetails.contactNumber),
                 ],
               ),
@@ -327,83 +299,80 @@ class _DoctorHomeUIState extends State<DoctorHomeUI> {
               ),
             ])),
       ]);
-  _buildPatientDetails() => InkWell(
-        child: Column(children: [
-          Container(
-            width: SizeConfig.screenWidth,
-            margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-            child: Text(
-              "Patient's Information",
-              textAlign: TextAlign.left,
-              style: TextStyle(fontSize: 18),
-            ),
+
+  _buildPatientDetails() => Column(children: [
+        Container(
+          width: SizeConfig.screenWidth,
+          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+          child: Text(
+            "Patient's Information",
+            textAlign: TextAlign.left,
+            style: TextStyle(fontSize: 18),
           ),
-          Container(
-            decoration: BoxDecoration(
-                color: Colors.red[100],
-                borderRadius: BorderRadius.circular(20)),
-            width: SizeConfig.screenWidth,
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text("Name: "),
-                    // Text("Akshat Raj Vansh"),
-                    Text(eDetails.patientDetails.name),
-                  ],
-                ),
-                const SizedBox(
-                  height: 5,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text("Contact Number: "),
-                    // Text("Apollo Medical Hospital"),
-                    Text(eDetails.patientDetails.contactNumber),
-                  ],
-                ),
-              ],
-            ),
+        ),
+        Container(
+          decoration: BoxDecoration(
+              color: Colors.red[100], borderRadius: BorderRadius.circular(20)),
+          width: SizeConfig.screenWidth,
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("Name: "),
+                  // Text("Akshat Raj Vansh"),
+                  Text(eDetails.patientDetails.name),
+                ],
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("Contact Number: "),
+                  // Text("Apollo Medical Hospital"),
+                  Text(eDetails.patientDetails.contactNumber),
+                ],
+              ),
+            ],
           ),
-        ]),
-        onLongPress: () {
-          var cubit = CubitProvider.of<MainCubit>(context);
+        ),
+      ]);
+
+  _buildPatientReportButton() => InkWell(
+        onTap: () async {
+          _showLoader();
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => PatientReportScreen(mainCubit: cubit),
+                builder: (context) =>
+                    PatientReportScreen(mainCubit: widget.mainCubit),
               ));
         },
+        child: Container(
+            width: SizeConfig.screenWidth,
+            margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+            padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+            decoration: BoxDecoration(
+                color: Colors.blue[200],
+                borderRadius: BorderRadius.circular(20)),
+            child: ListTile(
+              leading: Icon(CupertinoIcons.exclamationmark_bubble,
+                  color: Colors.white),
+              title: Text(
+                "Press here for view/update Patient's Medical Report",
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+              subtitle: Text(
+                "Medical Report ->",
+                style: TextStyle(color: Colors.white, fontSize: 12),
+              ),
+            )),
       );
-  // _buildEmergencyButton() => InkWell(
-  //       onTap: () async {
-  //         _showLoader();
-  //         loc.Location location = await _getLocation();
-  //         _hideLoader();
-  //         return widget.homePageAdapter
-  //             .loadEmergencyScreen(context, UserType.patient, location);
-  //       },
-  //       child: Container(
-  //           color: Colors.red[400],
-  //           padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-  //           child: ListTile(
-  //             leading: Icon(CupertinoIcons.exclamationmark_bubble,
-  //                 color: Colors.white),
-  //             title: Text(
-  //               "Press here for Patient's and Driver's Location!",
-  //               style: TextStyle(color: Colors.white, fontSize: 20),
-  //             ),
-  //             subtitle: Text(
-  //               "Emergency Situation ->",
-  //               style: TextStyle(color: Colors.white, fontSize: 12),
-  //             ),
-  //           )),
-  //     );
 
   _buildHeader() => Container(
       color: Colors.green[400],

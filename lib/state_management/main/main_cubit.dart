@@ -69,6 +69,21 @@ class MainCubit extends Cubit<MainState> {
     emit(PatientAccepted(result.asValue.value));
   }
 
+  fetchPatientReport() async {
+    _startLoading("PatientReportFetch");
+    final token = await localStore.fetch();
+    final result = await api.fetchPatientReport(Token(token.value));
+    if (result == null) {
+      emit(ErrorState("Server Error"));
+      return;
+    }
+    if (result.isError) {
+      emit(ErrorState(result.asError.error));
+      return;
+    }
+    emit(PatientReportFetched(result.asValue.value));
+  }
+
   savePatientReport(Report report) async {
     _startLoading("PatientReportSaved");
     //api calls

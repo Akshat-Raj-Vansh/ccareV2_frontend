@@ -1,5 +1,6 @@
 import 'package:ccarev2_frontend/cache/local_store.dart';
 import 'package:ccarev2_frontend/main/domain/edetails.dart';
+import 'package:ccarev2_frontend/main/domain/report.dart';
 import 'package:ccarev2_frontend/services/Notifications/component/patient.dart';
 import 'package:ccarev2_frontend/user/domain/location.dart';
 import 'package:equatable/equatable.dart';
@@ -57,6 +58,13 @@ class QuestionnaireState extends MainState {
   QuestionnaireState(this.questions);
   @override
   List<Object> get props => [this.questions];
+}
+
+class PatientReportFetched extends MainState {
+  final Report report;
+  PatientReportFetched(this.report);
+  @override
+  List<Object> get props => [this.report];
 }
 
 class PatientReportSaved extends MainState {

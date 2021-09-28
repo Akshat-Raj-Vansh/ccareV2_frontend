@@ -10,6 +10,7 @@ abstract class IMainAPI {
   Future<Result<String>> notify(Token token, Location location);
   Future<Result<String>> getAllPatients(Token token);
   Future<Result<String>> savePatientReport(Token token, Report report);
+  Future<Result<Report>> fetchPatientReport(Token token);
   Future<Result<Location>> acceptPatientbyDoctor(Token token, Token patient);
   Future<Result<Location>> acceptPatientbyDriver(Token token, Token patient);
   Future<Result<EDetails>> fetchEmergencyDetails(Token token);

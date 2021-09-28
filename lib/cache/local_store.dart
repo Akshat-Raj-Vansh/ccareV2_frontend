@@ -3,7 +3,6 @@ import 'dart:convert';
 
 import 'package:ccarev2_frontend/user/domain/credential.dart';
 import 'package:ccarev2_frontend/user/domain/details.dart';
-import 'package:ccarev2_frontend/user/domain/temp.dart';
 import 'package:ccarev2_frontend/user/domain/token.dart';
 
 import 'ilocal_store.dart';

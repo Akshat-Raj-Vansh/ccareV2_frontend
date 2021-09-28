@@ -119,6 +119,27 @@ class MainAPI extends IMainAPI {
   }
 
   @override
+  Future<Result<Report>> fetchPatientReport(Token token) async {
+    String endpoint = baseUrl + "/treatment/getReport";
+    var header = {
+      "Content-Type": "application/json",
+      "Authorization": token.value
+    };
+    var response = await _client.get(Uri.parse(endpoint), headers: header);
+    print(response.statusCode);
+    print(response.body);
+    if (response.statusCode != 200) {
+      Map map = jsonDecode(response.body);
+      print(transformError(map));
+      return Result.error(transformError(map));
+    }
+    dynamic json = jsonDecode(response.body);
+    print(json);
+
+    return Result.value(Report.fromJson(jsonEncode(json)));
+  }
+
+  @override
   Future<Result<String>> savePatientReport(Token token, Report report) async {
     String endpoint = baseUrl + "/treatment/doctor/updateReport";
     var header = {
