@@ -21,7 +21,6 @@ import '../../state_management/profile/profile_cubit.dart';
 import '../../state_management/user/user_cubit.dart';
 import '../../user/domain/credential.dart';
 
-import '../../pages/home/components/dummy.dart' as dummy;
 import '../cache/ilocal_store.dart';
 import '../cache/local_store.dart';
 import 'pages/auth/auth_page_adapter.dart';
@@ -143,7 +142,7 @@ class CompositionRoot {
       CubitProvider<MainCubit>(
         create: (context) => mainCubit,
       ),
-    ], child: dummy.DriverHomeUI( homePageAdapter));
+    ], child: DriverHomeUI( homePageAdapter));
   }
 
   static Widget createEmergencyUI(UserType userType, Location location) {
