@@ -1,89 +1,90 @@
+//@dart=2.9
 import 'dart:convert';
 
 class Report {
-  final String ecgTime;
-  final String ecg_stemi;
-  final String trop_i;
-  final String bp;
-  final String cvs_mr;
-  final String onset;
-  final Severity severity;
-  final PainLocation pain_location;
-  final String duration;
-  final String radiation;
-  final YN smoker;
-  final YN diabetic;
-  final YN hypertensive;
-  final YN dyslipidaemia;
-  final YN old_mi;
-  final YN chest_pain;
-  final YN sweating;
-  final YN nausea;
-  final YN shortness_of_breath;
-  final YN loss_of_conciousness;
-  final YN palpitations;
-  final YN concious;
-  final YN chest_crepts;
-  final int pulse_rate;
+  String ecgTime;
+  ECGType ecg_type;
+  String trop_i;
+  String bp;
+  CVS cvs;
+  Onset onset;
+  Severity severity;
+  PainLocation pain_location;
+  String duration;
+  Radiation radiation;
+  YN smoker;
+  YN diabetic;
+  YN hypertensive;
+  YN dyslipidaemia;
+  YN old_mi;
+  YN chest_pain;
+  YN sweating;
+  YN nausea;
+  YN shortness_of_breath;
+  YN loss_of_conciousness;
+  YN palpitations;
+  YN concious;
+  YN chest_crepts;
+  int pulse_rate;
   Report({
-    required this.ecgTime,
-    required this.ecg_stemi,
-    required this.trop_i,
-    required this.bp,
-    required this.cvs_mr,
-    required this.onset,
-    required this.severity,
-    required this.pain_location,
-    required this.duration,
-    required this.radiation,
-    required this.smoker,
-    required this.diabetic,
-    required this.hypertensive,
-    required this.dyslipidaemia,
-    required this.old_mi,
-    required this.chest_pain,
-    required this.sweating,
-    required this.nausea,
-    required this.shortness_of_breath,
-    required this.loss_of_conciousness,
-    required this.palpitations,
-    required this.concious,
-    required this.chest_crepts,
-    required this.pulse_rate,
+    this.ecgTime,
+    this.ecg_type,
+    this.trop_i,
+    this.bp,
+    this.cvs,
+    this.onset,
+    this.severity,
+    this.pain_location,
+    this.duration,
+    this.radiation,
+    this.smoker,
+    this.diabetic,
+    this.hypertensive,
+    this.dyslipidaemia,
+    this.old_mi,
+    this.chest_pain,
+    this.sweating,
+    this.nausea,
+    this.shortness_of_breath,
+    this.loss_of_conciousness,
+    this.palpitations,
+    this.concious,
+    this.chest_crepts,
+    this.pulse_rate,
   });
 
   Report copyWith({
-    String? ecgTime,
-    String? ecg_stemi,
-    String? trop_i,
-    String? bp,
-    String? cvs_mr,
-    String? onset,
-    Severity? severity,
-    PainLocation? pain_location,
-    String? duration,
-    String? radiation,
-    YN? smoker,
-    YN? diabetic,
-    YN? hypertensive,
-    YN? dyslipidaemia,
-    YN? old_mi,
-    YN? chest_pain,
-    YN? sweating,
-    YN? nausea,
-    YN? shortness_of_breath,
-    YN? loss_of_conciousness,
-    YN? palpitations,
-    YN? concious,
-    YN? chest_crepts,
-    int? pulse_rate,
+    String ecgTime,
+    ECGType ecg_type,
+    String trop_i,
+    String bp,
+    CVS cvs,
+    Onset onset,
+    Severity severity,
+    PainLocation pain_location,
+    String duration,
+    Radiation radiation,
+    YN smoker,
+    YN diabetic,
+    YN hypertensive,
+    YN dyslipidaemia,
+    YN old_mi,
+    YN chest_pain,
+    YN sweating,
+    YN nausea,
+    YN shortness_of_breath,
+    YN loss_of_conciousness,
+    YN palpitations,
+    YN concious,
+    YN chest_crepts,
+    int pulse_rate,
   }) {
     return Report(
       ecgTime: ecgTime ?? this.ecgTime,
-      ecg_stemi: ecg_stemi ?? this.ecg_stemi,
+      ecg_type: ecg_type ?? this.ecg_type,
       trop_i: trop_i ?? this.trop_i,
       bp: bp ?? this.bp,
-      cvs_mr: cvs_mr ?? this.cvs_mr,
+      cvs: cvs ?? this.cvs,
       onset: onset ?? this.onset,
       severity: severity ?? this.severity,
       pain_location: pain_location ?? this.pain_location,
@@ -109,15 +110,15 @@ class Report {
   Map<String, dynamic> toMap() {
     return {
       'ecgTime': ecgTime,
-      'ecg_stemi': ecg_stemi,
+      'ecg_type': ecg_type.toString(),
       'trop_i': trop_i,
       'bp': bp,
-      'cvs_mr': cvs_mr,
-      'onset': onset,
+      'cvs': cvs.toString(),
+      'onset': onset.toString(),
       'severity': severity.toString(),
       'pain_location': pain_location.toString(),
       'duration': duration,
-      'radiation': radiation,
+      'radiation': radiation.toString(),
       'smoker': smoker.toString(),
       'diabetic': diabetic.toString(),
       'hypertensive': hypertensive.toString(),
@@ -138,17 +139,21 @@ class Report {
   factory Report.fromMap(Map<String, dynamic> map) {
     return Report(
       ecgTime: map['ecgTime'],
-      ecg_stemi: map['ecg_stemi'],
+      ecg_type: ECGType.values.firstWhere(
+          (element) => element.toString() == "ECGType." + map['ecg_type']),
       trop_i: map['trop_i'],
       bp: map['bp'],
-      cvs_mr: map['cvs_mr'],
-      onset: map['onset'],
+      cvs: CVS.values
+          .firstWhere((element) => element.toString() == "CVS." + map['cvs']),
+      onset: Onset.values.firstWhere(
+          (element) => element.toString() == "Onset." + map['onset']),
       severity: Severity.values.firstWhere(
           (element) => element.toString() == "Severity." + map["severity"]),
       pain_location: PainLocation.values.firstWhere((element) =>
           element.toString() == "PainLocation." + map["pain_location"]),
       duration: map['duration'],
-      radiation: map['radiation'],
+      radiation: Radiation.values.firstWhere(
+          (element) => element.toString() == "Radiation." + map['radiation']),
       smoker: YN.values
           .firstWhere((element) => element.toString() == "YN." + map['smoker']),
       diabetic: YN.values.firstWhere(
@@ -185,7 +190,7 @@ class Report {
 
   @override
   String toString() {
-    return 'Report(ecgTime: $ecgTime, ecg_stemi: $ecg_stemi, trop_i: $trop_i, bp: $bp, cvs_mr: $cvs_mr, onset: $onset, severity: $severity, pain_location: $pain_location, duration: $duration, radiation: $radiation, smoker: $smoker, diabetic:$diabetic, hypertensive: $hypertensive, dyslipidaemia: $dyslipidaemia, old_mi: $old_mi, chest_pain: $chest_pain, sweating: $sweating, nausea: $nausea, shortness_of_breath: $shortness_of_breath, loss_of_conciousness: $loss_of_conciousness, palpitations: $palpitations, concious: $concious, chest_crepts: $chest_crepts, pulse_rate: $pulse_rate)';
+    return 'Report(ecgTime: $ecgTime, ecg_type: $ecg_type, trop_i: $trop_i, bp: $bp, cvs: $cvs, onset: $onset, severity: $severity, pain_location: $pain_location, duration: $duration, radiation: $radiation, smoker: $smoker, diabetic:$diabetic, hypertensive: $hypertensive, dyslipidaemia: $dyslipidaemia, old_mi: $old_mi, chest_pain: $chest_pain, sweating: $sweating, nausea: $nausea, shortness_of_breath: $shortness_of_breath, loss_of_conciousness: $loss_of_conciousness, palpitations: $palpitations, concious: $concious, chest_crepts: $chest_crepts, pulse_rate: $pulse_rate)';
   }
 
   @override
@@ -194,10 +199,10 @@ class Report {
 
     return other is Report &&
         other.ecgTime == ecgTime &&
-        other.ecg_stemi == ecg_stemi &&
+        other.ecg_type == ecg_type &&
         other.trop_i == trop_i &&
         other.bp == bp &&
-        other.cvs_mr == cvs_mr &&
+        other.cvs == cvs &&
         other.onset == onset &&
         other.severity == severity &&
         other.pain_location == pain_location &&
@@ -222,10 +227,10 @@ class Report {
   @override
   int get hashCode {
     return ecgTime.hashCode ^
-        ecg_stemi.hashCode ^
+        ecg_type.hashCode ^
         trop_i.hashCode ^
         bp.hashCode ^
-        cvs_mr.hashCode ^
+        cvs.hashCode ^
         onset.hashCode ^
         severity.hashCode ^
         pain_location.hashCode ^
@@ -248,6 +253,10 @@ class Report {
   }
 }
 
-enum Severity { nill, normal, medium, severe }
-enum PainLocation { nill, chest, shoulders, right_arm, left_arm }
+enum Onset { nill, Sudden, Gradual }
+enum Radiation { nill, Neck, Shoulder, Arm }
+enum Severity { nill, Mild, Moderate, Severe }
+enum ECGType { nill, STEMI, NSTEMI }
+enum CVS { nill, MR, VSR, S }
+enum PainLocation { nill, Substernal, Epigastric, Arm, Jaw, Neck, Shoulder }
 enum YN { nill, yes, no }

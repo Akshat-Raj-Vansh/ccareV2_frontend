@@ -20,7 +20,6 @@ import '../../state_management/main/main_cubit.dart';
 import '../../state_management/profile/profile_cubit.dart';
 import '../../state_management/user/user_cubit.dart';
 import '../../user/domain/credential.dart';
-
 import '../cache/ilocal_store.dart';
 import '../cache/local_store.dart';
 import 'pages/auth/auth_page_adapter.dart';
@@ -49,8 +48,8 @@ class CompositionRoot {
     localStore = LocalStore(sharedPreferences);
     client = Client();
     // secureClient = SecureClient(MHttpClient(client), localStore);
-    // baseUrl = "http://192.168.0.151:3000";
-    baseUrl = "https://cardiocarenith.herokuapp.com";
+    baseUrl = "http://192.168.0.139:3000";
+    // baseUrl = "https://cardiocarenith.herokuapp.com";
     userAPI = UserAPI(client, baseUrl);
     mainAPI = MainAPI(client, baseUrl);
     mainCubit = MainCubit(localStore, mainAPI);
@@ -142,7 +141,7 @@ class CompositionRoot {
       CubitProvider<MainCubit>(
         create: (context) => mainCubit,
       ),
-    ], child: DriverHomeUI( homePageAdapter));
+    ], child: DriverHomeUI(homePageAdapter));
   }
 
   static Widget createEmergencyUI(UserType userType, Location location) {

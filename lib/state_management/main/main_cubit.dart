@@ -1,13 +1,9 @@
 //@dart=2.9
-import 'dart:convert';
 
-import 'package:async/src/result/result.dart';
 import 'package:ccarev2_frontend/cache/ilocal_store.dart';
-import 'package:ccarev2_frontend/main/domain/edetails.dart';
 import 'package:ccarev2_frontend/main/domain/main_api_contract.dart';
 import 'package:ccarev2_frontend/main/domain/report.dart';
 import 'package:ccarev2_frontend/user/domain/location.dart';
-import 'package:ccarev2_frontend/user/domain/temp.dart';
 import 'package:ccarev2_frontend/user/domain/token.dart';
 import 'package:cubit/cubit.dart';
 import 'main_state.dart';
@@ -29,21 +25,6 @@ class MainCubit extends Cubit<MainState> {
       return;
     }
     emit(QuestionnaireState(result.asValue.value));
-  }
-
-  saveTempVars(Temp temp) async {
-    await localStore.saveTemp(temp);
-  }
-
-  getTempVars() async {
-    _startLoading("getTempVars");
-    final temp = await localStore.fetchTemp();
-    print(temp.notificationSent);
-    if (temp == null) {
-      emit(ErrorState("Cache Error"));
-      return;
-    }
-    emit(ValuesLoadedState(temp));
   }
 
   notify() async {
@@ -85,8 +66,35 @@ class MainCubit extends Cubit<MainState> {
     emit(PatientAccepted(result.asValue.value));
   }
 
+  fetchPatientReport() async {
+    _startLoading("PatientReportFetch");
+    final token = await localStore.fetch();
+    final result = await api.fetchPatientReport(Token(token.value));
+    if (result == null) {
+      emit(ErrorState("Server Error"));
+      return;
+    }
+    if (result.isError) {
+      emit(ErrorState(result.asError.error));
+      return;
+    }
+    emit(PatientReportFetched(result.asValue.value));
+  }
+
   savePatientReport(Report report) async {
     _startLoading("PatientReportSaved");
+    //api calls
+    final token = await localStore.fetch();
+    final result = await api.savePatientReport(Token(token.value), report);
+    print("Result ${result.asValue.value}");
+    if (result == null) {
+      emit(ErrorState("Server Error"));
+      return;
+    }
+    if (result.isError) {
+      emit(ErrorState(result.asError.error));
+      return;
+    }
     emit(PatientReportSaved("Saved"));
   }
 

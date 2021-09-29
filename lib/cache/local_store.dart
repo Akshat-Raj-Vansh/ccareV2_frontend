@@ -3,7 +3,6 @@ import 'dart:convert';
 
 import 'package:ccarev2_frontend/user/domain/credential.dart';
 import 'package:ccarev2_frontend/user/domain/details.dart';
-import 'package:ccarev2_frontend/user/domain/temp.dart';
 import 'package:ccarev2_frontend/user/domain/token.dart';
 
 import 'ilocal_store.dart';
@@ -53,22 +52,6 @@ class LocalStore implements ILocalStore {
   @override
   Future save(Details details) {
     sharedPreferences.setString(token_key, jsonEncode(details.toMap()));
-  }
-
-  @override
-  saveTemp(Temp temp) {
-    return sharedPreferences.setString(temp_data_key, temp.toString());
-  }
-
-  @override
-  Future<Temp> fetchTemp() {
-    String data = sharedPreferences.getString(token_key);
-    print(data);
-    if (data != null) {
-      Temp temp = Temp.fromMap(jsonDecode(data));
-      return Future.value(temp);
-    }
-    return null;
   }
 
   @override

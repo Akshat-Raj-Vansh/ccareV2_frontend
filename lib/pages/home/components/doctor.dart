@@ -77,8 +77,8 @@ class _DoctorHomeUIState extends State<DoctorHomeUI> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar:AppBar(
+        backgroundColor: Colors.white,
+        appBar: AppBar(
           title: Text('CardioCare - Doctor'),
           actions: [
             // if (_isEmergency)
@@ -99,91 +99,85 @@ class _DoctorHomeUIState extends State<DoctorHomeUI> {
             ),
           ],
         ),
-      body:CubitConsumer<MainCubit, MainState>(builder: (_, state) {
-      if (state is DetailsLoaded) {
-        currentState = DetailsLoaded;
-        eDetails = state.eDetails;
-        if (eDetails.patientDetails != null) {
-          _patientAccepted = true;
-          _emergency = true;
-        }
-        if (eDetails.driverDetails != null) {
-          _driverAccepted = true;
-          _emergency = true;
-        }
-      }
-      if (state is NormalState) {
-        currentState = NormalState;
-      }
-      if (currentState == null)
-        return Center(child: CircularProgressIndicator());
-      return _buildUI(context);
-    }, listener: (context, state) async {
-      if (state is LoadingState) {
-        print("Loading State Called");
-        _showLoader();
-      } 
-      else if(state is ErrorState){
-        _hideLoader();
-      }
-      else if (state is DetailsLoaded) {
-        _hideLoader();
-      } else if (state is AcceptState) {
-        _hideLoader();
-        print("Accept State Called");
-        await showDialog(
-              context: context,
-              builder: (context) => AlertDialog(
-                title: const Text(
-                  'Are you sure?',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 20,
-                  ),
-                ),
-                content: const Text(
-                  'Do you want to accept the patient?',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w300,
-                    fontSize: 15,
-                  ),
-                ),
-                actions: [
-                  TextButton(
-                    onPressed: () => Navigator.of(context).pop(false),
-                    child: const Text(
-                      'Cancel',
+        body: CubitConsumer<MainCubit, MainState>(builder: (_, state) {
+          if (state is DetailsLoaded) {
+            currentState = DetailsLoaded;
+            eDetails = state.eDetails;
+            if (eDetails.patientDetails != null) {
+              _patientAccepted = true;
+              _emergency = true;
+            }
+            if (eDetails.driverDetails != null) {
+              _driverAccepted = true;
+              _emergency = true;
+            }
+          }
+          if (state is NormalState) {
+            currentState = NormalState;
+          }
+          if (currentState == null)
+            return Center(child: CircularProgressIndicator());
+          return _buildUI(context);
+        }, listener: (context, state) async {
+          if (state is LoadingState) {
+            print("Loading State Called");
+            _showLoader();
+          } else if (state is ErrorState) {
+            _hideLoader();
+          } else if (state is DetailsLoaded) {
+            _hideLoader();
+          } else if (state is AcceptState) {
+            _hideLoader();
+            print("Accept State Called");
+            await showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: const Text(
+                      'Are you sure?',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 20,
+                      ),
                     ),
-                  ),
-                  TextButton(
-                    onPressed: () async {
-                      _hideLoader();
-                      widget.mainCubit.acceptPatientByDoctor(state.patientID);
-                      // await widget.mainCubit.fetchEmergencyDetails();
-                    },
-                    child: const Text(
-                      'Yes',
+                    content: const Text(
+                      'Do you want to accept the patient?',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w300,
+                        fontSize: 15,
+                      ),
                     ),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(false),
+                        child: const Text(
+                          'Cancel',
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () async {
+                          _hideLoader();
+                          widget.mainCubit
+                              .acceptPatientByDoctor(state.patientID);
+                          // await widget.mainCubit.fetchEmergencyDetails();
+                        },
+                        child: const Text(
+                          'Yes',
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            ) ??
-            false;
-      } else if (state is PatientAccepted) {
-        _hideLoader();
-        _emergency = true;
-        print("Inside patient accepted by Doctor state");
-         CubitProvider.of<MainCubit>(context).fetchEmergencyDetails();
-        // loc.Location location = await _getLocation();
-        // widget.homePageAdapter
-        //     .loadEmergencyScreen(context, UserType.doctor, location);
-      } else if (state is AllPatientsState) {
-        print("AllPatientsState State Called");
-        _hideLoader();
-
-      }
-    })
-    );
+                ) ??
+                false;
+          } else if (state is PatientAccepted) {
+            _hideLoader();
+            _emergency = true;
+            print("Inside patient accepted by Doctor state");
+            CubitProvider.of<MainCubit>(context).fetchEmergencyDetails();
+          } else if (state is AllPatientsState) {
+            print("AllPatientsState State Called");
+            _hideLoader();
+          }
+        }));
   }
 
   _showLoader() {
@@ -207,80 +201,42 @@ class _DoctorHomeUIState extends State<DoctorHomeUI> {
     }
   }
 
-  _buildUI(BuildContext buildContext) => Scaffold(
-        appBar: AppBar(
-          title: Text('CardioCare - Doctor'),
-          actions: [
-            // if (_isEmergency)
-            IconButton(
-              onPressed: () async {
-                _showLoader();
-                loc.Location location = await _getLocation();
-                _hideLoader();
-                var cubit = CubitProvider.of<MainCubit>(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => PatientReportScreen(mainCubit: cubit),
-                  ),
-                );
-              },
-              icon: Icon(Icons.map),
+  _buildUI(BuildContext buildContext) => Stack(children: [
+        SingleChildScrollView(
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            if (_patientAccepted || _driverAccepted)
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                child: Text(
+                  "Emergency Information",
+                  style: TextStyle(fontSize: 24),
+                ),
+              ),
+            if (_patientAccepted) _buildPatientDetails(),
+            if (_patientAccepted) _buildPatientReportButton(),
+            if (_driverAccepted) _buildDriverDetails(),
+            if (!_emergency) _buildHeader(),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              child: Text(
+                "Patients",
+                style: TextStyle(fontSize: 24),
+              ),
             ),
-            IconButton(
-              onPressed: () async {
-                _showLoader();
-                loc.Location location = await _getLocation();
-                _hideLoader();
-                return widget.homePageAdapter
-                    .loadEmergencyScreen(context, UserType.doctor, location);
-              },
-              icon: Icon(Icons.map),
+            _buildMedications(),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              child: Text(
+                "Useful Resources",
+                style: TextStyle(fontSize: 24),
+              ),
             ),
-            IconButton(
-              onPressed: () =>
-                  widget.homePageAdapter.onLogout(context, widget.userCubit),
-              icon: Icon(Icons.logout),
-            ),
-          ],
+            _buildResources(),
+          ]),
         ),
-        body: Stack(children: [
-          SingleChildScrollView(
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              if (_patientAccepted || _driverAccepted)
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  child: Text(
-                    "Emergency Information",
-                    style: TextStyle(fontSize: 24),
-                  ),
-                ),
-              if (_patientAccepted) _buildPatientDetails(),
-              if (_driverAccepted) _buildDriverDetails(),
-              if (!_emergency) _buildHeader(),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                child: Text(
-                  "Patients",
-                  style: TextStyle(fontSize: 24),
-                ),
-              ),
-              _buildMedications(),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                child: Text(
-                  "Useful Resources",
-                  style: TextStyle(fontSize: 24),
-                ),
-              ),
-              _buildResources(),
-            ]),
-          ),
-        ]));
+      ]);
   _buildDriverDetails() => Column(children: [
         Container(
           width: SizeConfig.screenWidth,
@@ -304,7 +260,6 @@ class _DoctorHomeUIState extends State<DoctorHomeUI> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text("Name: "),
-                  // Text("Akshat Raj Vansh"),
                   Text(eDetails.driverDetails.name),
                 ],
               ),
@@ -315,7 +270,6 @@ class _DoctorHomeUIState extends State<DoctorHomeUI> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text("Plate Number: "),
-                  // Text("MH-177035"),
                   Text(eDetails.driverDetails.plateNumber),
                 ],
               ),
@@ -326,7 +280,6 @@ class _DoctorHomeUIState extends State<DoctorHomeUI> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text("Contact Number: "),
-                  // Text("+91 7355026029"),
                   Text(eDetails.driverDetails.contactNumber),
                 ],
               ),
@@ -346,6 +299,7 @@ class _DoctorHomeUIState extends State<DoctorHomeUI> {
               ),
             ])),
       ]);
+
   _buildPatientDetails() => Column(children: [
         Container(
           width: SizeConfig.screenWidth,
@@ -388,30 +342,37 @@ class _DoctorHomeUIState extends State<DoctorHomeUI> {
           ),
         ),
       ]);
-  // _buildEmergencyButton() => InkWell(
-  //       onTap: () async {
-  //         _showLoader();
-  //         loc.Location location = await _getLocation();
-  //         _hideLoader();
-  //         return widget.homePageAdapter
-  //             .loadEmergencyScreen(context, UserType.patient, location);
-  //       },
-  //       child: Container(
-  //           color: Colors.red[400],
-  //           padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-  //           child: ListTile(
-  //             leading: Icon(CupertinoIcons.exclamationmark_bubble,
-  //                 color: Colors.white),
-  //             title: Text(
-  //               "Press here for Patient's and Driver's Location!",
-  //               style: TextStyle(color: Colors.white, fontSize: 20),
-  //             ),
-  //             subtitle: Text(
-  //               "Emergency Situation ->",
-  //               style: TextStyle(color: Colors.white, fontSize: 12),
-  //             ),
-  //           )),
-  //     );
+
+  _buildPatientReportButton() => InkWell(
+        onTap: () async {
+          _showLoader();
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                    PatientReportScreen(mainCubit: widget.mainCubit),
+              ));
+        },
+        child: Container(
+            width: SizeConfig.screenWidth,
+            margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+            padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+            decoration: BoxDecoration(
+                color: Colors.blue[200],
+                borderRadius: BorderRadius.circular(20)),
+            child: ListTile(
+              leading: Icon(CupertinoIcons.exclamationmark_bubble,
+                  color: Colors.white),
+              title: Text(
+                "Press here for view/update Patient's Medical Report",
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+              subtitle: Text(
+                "Medical Report ->",
+                style: TextStyle(color: Colors.white, fontSize: 12),
+              ),
+            )),
+      );
 
   _buildHeader() => Container(
       color: Colors.green[400],
