@@ -7,6 +7,7 @@ import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
 import 'package:ccarev2_frontend/state_management/main/main_state.dart';
 import 'package:ccarev2_frontend/state_management/user/user_cubit.dart';
 import 'package:ccarev2_frontend/user/domain/credential.dart';
+import 'package:ccarev2_frontend/utils/constants.dart';
 import 'package:ccarev2_frontend/utils/size_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -35,25 +36,7 @@ class _DoctorHomeUIState extends State<DoctorHomeUI> {
   static bool _driverAccepted = false;
   dynamic currentState = null;
   bool loader = false;
-  List<String> res = [
-    "Find Test centers",
-    "Find Hospitals",
-    "Find healthcare centres"
-  ];
-  List<String> patients = [
-    "Alpha",
-    "Beta",
-    "Gamma",
-    "Omega",
-    "Theta",
-  ];
-  List<String> time_patients = [
-    "6th Sept,2021",
-    "4th Sept,2021",
-    "3th Sept,2021",
-    "3th Sept,2021",
-    "1th Sept,2021"
-  ];
+
   @override
   void initState() {
     super.initState();
@@ -84,17 +67,55 @@ class _DoctorHomeUIState extends State<DoctorHomeUI> {
             // if (_isEmergency)
             IconButton(
               onPressed: () async {
-                _showLoader();
-                loc.Location location = await _getLocation();
-                _hideLoader();
-                return widget.homePageAdapter
-                    .loadEmergencyScreen(context, UserType.doctor, location);
+                // _showLoader();
+                // loc.Location location = await _getLocation();
+                // _hideLoader();
+                // return widget.homePageAdapter
+                //     .loadEmergencyScreen(context, UserType.doctor, location);
+                _showMessage("View location of Patient and Ambulance?");
               },
               icon: Icon(Icons.map),
             ),
             IconButton(
-              onPressed: () =>
-                  widget.homePageAdapter.onLogout(context, widget.userCubit),
+              onPressed: () async {
+                await showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: const Text(
+                          'Are you sure?',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 20,
+                          ),
+                        ),
+                        content: const Text(
+                          'Do you want to logout?',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w300,
+                            fontSize: 15,
+                          ),
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.of(context).pop(false),
+                            child: const Text(
+                              'Cancel',
+                            ),
+                          ),
+                          TextButton(
+                            onPressed: () async {
+                              widget.homePageAdapter
+                                  .onLogout(context, widget.userCubit);
+                            },
+                            child: const Text(
+                              'Yes',
+                            ),
+                          ),
+                        ],
+                      ),
+                    ) ??
+                    false;
+              },
               icon: Icon(Icons.logout),
             ),
           ],
@@ -123,8 +144,6 @@ class _DoctorHomeUIState extends State<DoctorHomeUI> {
             print("Loading State Called");
             _showLoader();
           } else if (state is ErrorState) {
-            _hideLoader();
-          } else if (state is DetailsLoaded) {
             _hideLoader();
           } else if (state is AcceptState) {
             _hideLoader();
@@ -155,10 +174,8 @@ class _DoctorHomeUIState extends State<DoctorHomeUI> {
                       ),
                       TextButton(
                         onPressed: () async {
-                          _hideLoader();
                           widget.mainCubit
                               .acceptPatientByDoctor(state.patientID);
-                          // await widget.mainCubit.fetchEmergencyDetails();
                         },
                         child: const Text(
                           'Yes',
@@ -195,10 +212,20 @@ class _DoctorHomeUIState extends State<DoctorHomeUI> {
   }
 
   _hideLoader() {
-    if (loader) {
-      loader = false;
-      Navigator.of(context, rootNavigator: true).pop();
-    }
+    Navigator.of(context, rootNavigator: true).pop();
+  }
+
+  _showMessage(String msg) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      backgroundColor: Theme.of(context).accentColor,
+      content: Text(
+        msg,
+        style: Theme.of(context)
+            .textTheme
+            .caption
+            .copyWith(color: Colors.white, fontSize: 16),
+      ),
+    ));
   }
 
   _buildUI(BuildContext buildContext) => Stack(children: [
@@ -218,25 +245,26 @@ class _DoctorHomeUIState extends State<DoctorHomeUI> {
             if (_patientAccepted) _buildPatientReportButton(),
             if (_driverAccepted) _buildDriverDetails(),
             if (!_emergency) _buildHeader(),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              child: Text(
-                "Patients",
-                style: TextStyle(fontSize: 24),
-              ),
-            ),
-            _buildMedications(),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              child: Text(
-                "Useful Resources",
-                style: TextStyle(fontSize: 24),
-              ),
-            ),
-            _buildResources(),
+            // Padding(
+            //   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            //   child: Text(
+            //     "Patients",
+            //     style: TextStyle(fontSize: 24),
+            //   ),
+            // ),
+            // _buildMedications(),
+            // Padding(
+            //   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            //   child: Text(
+            //     "Useful Resources",
+            //     style: TextStyle(fontSize: 24),
+            //   ),
+            // ),
+            // _buildResources(),
           ]),
         ),
       ]);
+
   _buildDriverDetails() => Column(children: [
         Container(
           width: SizeConfig.screenWidth,
@@ -323,7 +351,6 @@ class _DoctorHomeUIState extends State<DoctorHomeUI> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text("Name: "),
-                  // Text("Akshat Raj Vansh"),
                   Text(eDetails.patientDetails.name),
                 ],
               ),
@@ -334,7 +361,6 @@ class _DoctorHomeUIState extends State<DoctorHomeUI> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text("Contact Number: "),
-                  // Text("Apollo Medical Hospital"),
                   Text(eDetails.patientDetails.contactNumber),
                 ],
               ),
@@ -345,7 +371,6 @@ class _DoctorHomeUIState extends State<DoctorHomeUI> {
 
   _buildPatientReportButton() => InkWell(
         onTap: () async {
-          _showLoader();
           Navigator.push(
               context,
               MaterialPageRoute(
@@ -354,24 +379,18 @@ class _DoctorHomeUIState extends State<DoctorHomeUI> {
               ));
         },
         child: Container(
-            width: SizeConfig.screenWidth,
-            margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-            padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-            decoration: BoxDecoration(
-                color: Colors.blue[200],
-                borderRadius: BorderRadius.circular(20)),
-            child: ListTile(
-              leading: Icon(CupertinoIcons.exclamationmark_bubble,
-                  color: Colors.white),
-              title: Text(
-                "Press here for view/update Patient's Medical Report",
-                style: TextStyle(color: Colors.white, fontSize: 20),
-              ),
-              subtitle: Text(
-                "Medical Report ->",
-                style: TextStyle(color: Colors.white, fontSize: 12),
-              ),
-            )),
+          width: SizeConfig.screenWidth,
+          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          decoration: BoxDecoration(
+              color: kPrimaryLightColor,
+              borderRadius: BorderRadius.circular(20)),
+          child: Text(
+            "View/Update Patient's Medical Report",
+            style: TextStyle(color: Colors.white, fontSize: 14),
+            textAlign: TextAlign.center,
+          ),
+        ),
       );
 
   _buildHeader() => Container(
@@ -389,44 +408,44 @@ class _DoctorHomeUIState extends State<DoctorHomeUI> {
         ),
       ));
 
-  _buildResources() => Container(
-      padding: EdgeInsets.symmetric(horizontal: 20),
-      width: SizeConfig.screenWidth,
-      height: 200,
-      child: ListView.separated(
-          physics: NeverScrollableScrollPhysics(),
-          shrinkWrap: true,
-          itemCount: res.length,
-          separatorBuilder: (context, index) => SizedBox(height: 10),
-          itemBuilder: (context, index) {
-            return Container(
-              decoration: BoxDecoration(
-                  color: Colors.lightBlue[100],
-                  borderRadius: BorderRadius.circular(20)),
-              child: ListTile(
-                  leading: Text(res[index], style: TextStyle(fontSize: 16))),
-            );
-          }));
+  // _buildResources() => Container(
+  //     padding: EdgeInsets.symmetric(horizontal: 20),
+  //     width: SizeConfig.screenWidth,
+  //     height: 200,
+  //     child: ListView.separated(
+  //         physics: NeverScrollableScrollPhysics(),
+  //         shrinkWrap: true,
+  //         itemCount: res.length,
+  //         separatorBuilder: (context, index) => SizedBox(height: 10),
+  //         itemBuilder: (context, index) {
+  //           return Container(
+  //             decoration: BoxDecoration(
+  //                 color: Colors.lightBlue[100],
+  //                 borderRadius: BorderRadius.circular(20)),
+  //             child: ListTile(
+  //                 leading: Text(res[index], style: TextStyle(fontSize: 16))),
+  //           );
+  //         }));
 
-  _buildMedications() => Container(
-      padding: EdgeInsets.symmetric(horizontal: 20),
-      height: 350,
-      width: SizeConfig.screenWidth,
-      child: ListView.separated(
-          physics: NeverScrollableScrollPhysics(),
-          shrinkWrap: true,
-          itemCount: patients.length,
-          separatorBuilder: (context, index) => SizedBox(height: 10),
-          itemBuilder: (context, index) {
-            return Container(
-              decoration: BoxDecoration(
-                  color: Colors.lightBlue[100],
-                  borderRadius: BorderRadius.circular(20)),
-              child: ListTile(
-                leading: Text(patients[index], style: TextStyle(fontSize: 16)),
-                trailing:
-                    Text(time_patients[index], style: TextStyle(fontSize: 16)),
-              ),
-            );
-          }));
+  // _buildMedications() => Container(
+  //     padding: EdgeInsets.symmetric(horizontal: 20),
+  //     height: 350,
+  //     width: SizeConfig.screenWidth,
+  //     child: ListView.separated(
+  //         physics: NeverScrollableScrollPhysics(),
+  //         shrinkWrap: true,
+  //         itemCount: patients.length,
+  //         separatorBuilder: (context, index) => SizedBox(height: 10),
+  //         itemBuilder: (context, index) {
+  //           return Container(
+  //             decoration: BoxDecoration(
+  //                 color: Colors.lightBlue[100],
+  //                 borderRadius: BorderRadius.circular(20)),
+  //             child: ListTile(
+  //               leading: Text(patients[index], style: TextStyle(fontSize: 16)),
+  //               trailing:
+  //                   Text(time_patients[index], style: TextStyle(fontSize: 16)),
+  //             ),
+  //           );
+  //         }));
 }

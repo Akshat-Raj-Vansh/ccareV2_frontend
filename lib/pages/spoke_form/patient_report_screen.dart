@@ -84,7 +84,62 @@ class _PatientReportScreenState extends State<PatientReportScreen> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    return Scaffold(resizeToAvoidBottomInset: false, body: buildbody());
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: Text('Medical Form'),
+        actions: [
+          IconButton(
+            onPressed: () async {
+              _showMessage("Refresh Button Pressed");
+              //to call fetch report here
+              _fetchReport();
+            },
+            icon: Icon(Icons.refresh),
+          ),
+          TextButton(
+            onPressed: () async {
+              if (_formKey.currentState.validate()) {
+                _formKey.currentState.save();
+                Report report = Report(
+                    ecgTime: ecgTime,
+                    ecg_type: ecg_type,
+                    trop_i: trop_i,
+                    bp: bp,
+                    cvs: cvs,
+                    onset: onset,
+                    severity: severity,
+                    pain_location: pain_location,
+                    duration: duration,
+                    radiation: radiation,
+                    smoker: smoker,
+                    diabetic: diabetic,
+                    hypertensive: hypertensive,
+                    dyslipidaemia: dyslipidaemia,
+                    old_mi: old_mi,
+                    chest_pain: chest_pain,
+                    sweating: sweating,
+                    nausea: nausea,
+                    shortness_of_breath: shortness_of_breath,
+                    loss_of_conciousness: loss_of_conciousness,
+                    palpitations: palpitations,
+                    concious: concious,
+                    chest_crepts: chest_crepts,
+                    pulse_rate: pulse_rate);
+                print(report.toJson());
+                widget.mainCubit.savePatientReport(report);
+              }
+            },
+            child: Text(
+              "Save",
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        ],
+      ),
+      resizeToAvoidBottomInset: false,
+      body: buildbody(),
+    );
   }
 
   buildbody() {
@@ -92,13 +147,12 @@ class _PatientReportScreenState extends State<PatientReportScreen> {
       height: SizeConfig.screenHeight,
       child: Padding(
         padding:
-            EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
+            EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
         child: Column(
           children: [
-            SizedBox(height: SizeConfig.screenHeight * 0.04),
-            _showLogo(context),
+            SizedBox(height: SizeConfig.screenHeight * 0.02),
+            _buildReportDetails(),
             _buildUI(context),
-            _buildSaveButton(context),
             SizedBox(height: SizeConfig.screenHeight * 0.02),
           ],
         ),
@@ -119,10 +173,7 @@ class _PatientReportScreenState extends State<PatientReportScreen> {
         return _buildForm();
       },
       listener: (context, state) {
-        if (state is LoadingState) {
-          print("Loading State Called");
-          _showLoader();
-        } else if (state is PatientReportSaved) {
+        if (state is PatientReportSaved) {
           print("Patient Report Saved state Called");
           _hideLoader();
           _showMessage(state.msg);
@@ -134,7 +185,8 @@ class _PatientReportScreenState extends State<PatientReportScreen> {
       });
 
   _buildForm() => SizedBox(
-        height: SizeConfig.screenHeight * 0.55,
+        height: SizeConfig.screenHeight * 0.70,
+        width: SizeConfig.screenWidth * 0.85,
         child: SingleChildScrollView(
           child: Form(
             key: _formKey,
@@ -143,16 +195,18 @@ class _PatientReportScreenState extends State<PatientReportScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(height: getProportionateScreenHeight(20)),
+                // ECG Time
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text('ECG Time: '),
                     Container(
-                      width: SizeConfig.screenWidth * 0.5,
+                      width: SizeConfig.screenWidth * 0.4,
                       child: TextFormField(
                         keyboardType: TextInputType.text,
-                        onSaved: (newValue) => report.ecgTime = newValue,
-                        validator: (value) => value.isEmpty ? "nill" : null,
+                        focusNode: null,
+                        onSaved: (newValue) => ecgTime = newValue,
+                        // validator: (value) => value.isEmpty ? "nill" : null,
                         decoration: const InputDecoration(
                           hintText: "Enter ECG Time",
                           floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -162,15 +216,16 @@ class _PatientReportScreenState extends State<PatientReportScreen> {
                   ],
                 ),
                 SizedBox(height: getProportionateScreenHeight(20)),
+                // ECG Type
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text('ECG Type: '),
                     Container(
-                      width: SizeConfig.screenWidth * 0.5,
+                      width: SizeConfig.screenWidth * 0.4,
                       child: DropdownButton<ECGType>(
                         value: ecg_type == null ? ECGType.nill : ecg_type,
-                        isDense: true,
+                        isDense: false,
                         onChanged: (ECGType newValue) {
                           setState(() {
                             ecg_type = newValue;
@@ -186,391 +241,567 @@ class _PatientReportScreenState extends State<PatientReportScreen> {
                     ),
                   ],
                 ),
-                // SizedBox(height: getProportionateScreenHeight(10)),
-                // TextFormField(
-                //   keyboardType: TextInputType.text,
-                //   onSaved: (newValue) => trop_i = newValue.toUpperCase(),
-                //   validator: (value) => value.isEmpty ? "nill" : null,
-                //   decoration: const InputDecoration(
-                //     labelText: "Trop I",
-                //     hintText: "Enter Trop I",
-                //     floatingLabelBehavior: FloatingLabelBehavior.always,
-                //   ),
-                // ),
-                // SizedBox(height: getProportionateScreenHeight(10)),
-                // TextFormField(
-                //   keyboardType: TextInputType.text,
-                //   onSaved: (newValue) => bp = newValue.toUpperCase(),
-                //   validator: (value) => value.isEmpty ? "nill" : null,
-                //   decoration: const InputDecoration(
-                //     labelText: "BP",
-                //     hintText: "Enter BP",
-                //     floatingLabelBehavior: FloatingLabelBehavior.always,
-                //   ),
-                // ),
-                // SizedBox(height: getProportionateScreenHeight(10)),
-                // DropdownButton<CVS>(
-                //   value: cvs,
-                //   isDense: true,
-                //   onChanged: (CVS newValue) {
-                //     setState(() {
-                //       cvs = newValue;
-                //     });
-                //   },
-                //   items: CVS.values.map((CVS value) {
-                //     return DropdownMenuItem<CVS>(
-                //       value: value,
-                //       child: Text(value.toString().split('.')[1]),
-                //     );
-                //   }).toList(),
-                // ),
-                // SizedBox(height: getProportionateScreenHeight(10)),
-                // DropdownButton<Onset>(
-                //   value: onset,
-                //   isDense: true,
-                //   onChanged: (Onset newValue) {
-                //     setState(() {
-                //       onset = newValue;
-                //     });
-                //   },
-                //   items: Onset.values.map((Onset value) {
-                //     return DropdownMenuItem<Onset>(
-                //       value: value,
-                //       child: Text(value.toString().split('.')[1]),
-                //     );
-                //   }).toList(),
-                // ),
-                // SizedBox(height: getProportionateScreenHeight(10)),
-                // DropdownButton<Severity>(
-                //   value: severity,
-                //   isDense: true,
-                //   onChanged: (Severity newValue) {
-                //     setState(() {
-                //       severity = newValue;
-                //     });
-                //   },
-                //   items: Severity.values.map((Severity value) {
-                //     return DropdownMenuItem<Severity>(
-                //       value: value,
-                //       child: Text(value.toString().split('.')[1]),
-                //     );
-                //   }).toList(),
-                // ),
-                // SizedBox(height: getProportionateScreenHeight(10)),
-                // DropdownButton<PainLocation>(
-                //   value: pain_location,
-                //   isDense: true,
-                //   onChanged: (PainLocation newValue) {
-                //     setState(() {
-                //       pain_location = newValue;
-                //     });
-                //   },
-                //   items: PainLocation.values.map((PainLocation value) {
-                //     return DropdownMenuItem<PainLocation>(
-                //       value: value,
-                //       child: Text(value.toString().split('.')[1]),
-                //     );
-                //   }).toList(),
-                // ),
-                // SizedBox(height: getProportionateScreenHeight(10)),
-                // TextFormField(
-                //   keyboardType: TextInputType.text,
-                //   onSaved: (newValue) => duration = newValue.toUpperCase(),
-                //   validator: (value) => value.isEmpty ? "nill" : null,
-                //   decoration: const InputDecoration(
-                //     labelText: "Duration",
-                //     hintText: "Enter duration",
-                //     floatingLabelBehavior: FloatingLabelBehavior.always,
-                //   ),
-                // ),
-                // SizedBox(height: getProportionateScreenHeight(10)),
-                // DropdownButton<Radiation>(
-                //   value: radiation,
-                //   isDense: true,
-                //   onChanged: (Radiation newValue) {
-                //     setState(() {
-                //       radiation = newValue;
-                //     });
-                //   },
-                //   items: Radiation.values.map((Radiation value) {
-                //     return DropdownMenuItem<Radiation>(
-                //       value: value,
-                //       child: Text(value.toString().split('.')[1]),
-                //     );
-                //   }).toList(),
-                // ),
-                // SizedBox(height: getProportionateScreenHeight(10)),
-                // DropdownButton<YN>(
-                //   value: smoker,
-                //   isDense: true,
-                //   onChanged: (YN newValue) {
-                //     setState(() {
-                //       smoker = newValue;
-                //     });
-                //   },
-                //   items: YN.values.map((YN value) {
-                //     return DropdownMenuItem<YN>(
-                //       value: value,
-                //       child: Text(value.toString().split('.')[1]),
-                //     );
-                //   }).toList(),
-                // ),
-                // SizedBox(height: getProportionateScreenHeight(10)),
-                // DropdownButton<YN>(
-                //   value: diabetic,
-                //   isDense: true,
-                //   onChanged: (YN newValue) {
-                //     setState(() {
-                //       diabetic = newValue;
-                //     });
-                //   },
-                //   items: YN.values.map((YN value) {
-                //     return DropdownMenuItem<YN>(
-                //       value: value,
-                //       child: Text(value.toString().split('.')[1]),
-                //     );
-                //   }).toList(),
-                // ),
-                // SizedBox(height: getProportionateScreenHeight(10)),
-                // DropdownButton<YN>(
-                //   value: hypertensive,
-                //   isDense: true,
-                //   onChanged: (YN newValue) {
-                //     setState(() {
-                //       hypertensive = newValue;
-                //     });
-                //   },
-                //   items: YN.values.map((YN value) {
-                //     return DropdownMenuItem<YN>(
-                //       value: value,
-                //       child: Text(value.toString().split('.')[1]),
-                //     );
-                //   }).toList(),
-                // ),
-                // SizedBox(height: getProportionateScreenHeight(10)),
-                // DropdownButton<YN>(
-                //   value: dyslipidaemia,
-                //   isDense: true,
-                //   onChanged: (YN newValue) {
-                //     setState(() {
-                //       dyslipidaemia = newValue;
-                //     });
-                //   },
-                //   items: YN.values.map((YN value) {
-                //     return DropdownMenuItem<YN>(
-                //       value: value,
-                //       child: Text(value.toString().split('.')[1]),
-                //     );
-                //   }).toList(),
-                // ),
-                // SizedBox(height: getProportionateScreenHeight(10)),
-                // DropdownButton<YN>(
-                //   value: old_mi,
-                //   isDense: true,
-                //   onChanged: (YN newValue) {
-                //     setState(() {
-                //       old_mi = newValue;
-                //     });
-                //   },
-                //   items: YN.values.map((YN value) {
-                //     return DropdownMenuItem<YN>(
-                //       value: value,
-                //       child: Text(value.toString().split('.')[1]),
-                //     );
-                //   }).toList(),
-                // ),
-                // SizedBox(height: getProportionateScreenHeight(10)),
-                // DropdownButton<YN>(
-                //   value: chest_pain,
-                //   isDense: true,
-                //   onChanged: (YN newValue) {
-                //     setState(() {
-                //       chest_pain = newValue;
-                //     });
-                //   },
-                //   items: YN.values.map((YN value) {
-                //     return DropdownMenuItem<YN>(
-                //       value: value,
-                //       child: Text(value.toString().split('.')[1]),
-                //     );
-                //   }).toList(),
-                // ),
-                // SizedBox(height: getProportionateScreenHeight(10)),
-                // DropdownButton<YN>(
-                //   value: sweating,
-                //   isDense: true,
-                //   onChanged: (YN newValue) {
-                //     setState(() {
-                //       sweating = newValue;
-                //     });
-                //   },
-                //   items: YN.values.map((YN value) {
-                //     return DropdownMenuItem<YN>(
-                //       value: value,
-                //       child: Text(value.toString().split('.')[1]),
-                //     );
-                //   }).toList(),
-                // ),
-                // SizedBox(height: getProportionateScreenHeight(10)),
-                // DropdownButton<YN>(
-                //   value: nausea,
-                //   isDense: true,
-                //   onChanged: (YN newValue) {
-                //     setState(() {
-                //       nausea = newValue;
-                //     });
-                //   },
-                //   items: YN.values.map((YN value) {
-                //     return DropdownMenuItem<YN>(
-                //       value: value,
-                //       child: Text(value.toString().split('.')[1]),
-                //     );
-                //   }).toList(),
-                // ),
-                // SizedBox(height: getProportionateScreenHeight(10)),
-                // DropdownButton<YN>(
-                //   value: shortness_of_breath,
-                //   isDense: true,
-                //   onChanged: (YN newValue) {
-                //     setState(() {
-                //       shortness_of_breath = newValue;
-                //     });
-                //   },
-                //   items: YN.values.map((YN value) {
-                //     return DropdownMenuItem<YN>(
-                //       value: value,
-                //       child: Text(value.toString().split('.')[1]),
-                //     );
-                //   }).toList(),
-                // ),
-                // SizedBox(height: getProportionateScreenHeight(10)),
-                // DropdownButton<YN>(
-                //   value: loss_of_conciousness,
-                //   isDense: true,
-                //   onChanged: (YN newValue) {
-                //     setState(() {
-                //       loss_of_conciousness = newValue;
-                //     });
-                //   },
-                //   items: YN.values.map((YN value) {
-                //     return DropdownMenuItem<YN>(
-                //       value: value,
-                //       child: Text(value.toString().split('.')[1]),
-                //     );
-                //   }).toList(),
-                // ),
-                // SizedBox(height: getProportionateScreenHeight(10)),
-                // DropdownButton<YN>(
-                //   value: palpitations,
-                //   isDense: true,
-                //   onChanged: (YN newValue) {
-                //     setState(() {
-                //       palpitations = newValue;
-                //     });
-                //   },
-                //   items: YN.values.map((YN value) {
-                //     return DropdownMenuItem<YN>(
-                //       value: value,
-                //       child: Text(value.toString().split('.')[1]),
-                //     );
-                //   }).toList(),
-                // ),
-                // SizedBox(height: getProportionateScreenHeight(10)),
-                // DropdownButton<YN>(
-                //   value: concious,
-                //   isDense: true,
-                //   onChanged: (YN newValue) {
-                //     setState(() {
-                //       concious = newValue;
-                //     });
-                //   },
-                //   items: YN.values.map((YN value) {
-                //     return DropdownMenuItem<YN>(
-                //       value: value,
-                //       child: Text(value.toString().split('.')[1]),
-                //     );
-                //   }).toList(),
-                // ),
-                // SizedBox(height: getProportionateScreenHeight(10)),
-                // DropdownButton<YN>(
-                //   value: smoker,
-                //   isDense: true,
-                //   onChanged: (YN newValue) {
-                //     setState(() {
-                //       smoker = newValue;
-                //     });
-                //   },
-                //   items: YN.values.map((YN value) {
-                //     return DropdownMenuItem<YN>(
-                //       value: value,
-                //       child: Text(value.toString().split('.')[1]),
-                //     );
-                //   }).toList(),
-                // ),
-                // SizedBox(height: getProportionateScreenHeight(10)),
-                // DropdownButton<YN>(
-                //   value: chest_crepts,
-                //   isDense: true,
-                //   onChanged: (YN newValue) {
-                //     setState(() {
-                //       chest_crepts = newValue;
-                //     });
-                //   },
-                //   items: YN.values.map((YN value) {
-                //     return DropdownMenuItem<YN>(
-                //       value: value,
-                //       child: Text(value.toString().split('.')[1]),
-                //     );
-                //   }).toList(),
-                // ),
-                // const Spacer(flex: 1),
-                //  const SizedBox(height: 30),
+                SizedBox(height: getProportionateScreenHeight(20)),
+                // Trop I
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Trop I: '),
+                    Container(
+                      width: SizeConfig.screenWidth * 0.4,
+                      child: TextFormField(
+                        keyboardType: TextInputType.number,
+                        focusNode: null,
+                        onSaved: (newValue) => trop_i = newValue,
+                        // validator: (value) => value.isEmpty ? "nill" : null,
+                        decoration: const InputDecoration(
+                          hintText: "Enter Trop I",
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: getProportionateScreenHeight(20)),
+                // BP
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('BP: '),
+                    Container(
+                      width: SizeConfig.screenWidth * 0.4,
+                      child: TextFormField(
+                        keyboardType: TextInputType.number,
+                        focusNode: null,
+                        onSaved: (newValue) => bp = newValue,
+                        // validator: (value) => value.isEmpty ? "nill" : null,
+                        decoration: const InputDecoration(
+                          hintText: "Enter BP",
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: getProportionateScreenHeight(20)),
+                // CVS
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('CVS: '),
+                    Container(
+                      width: SizeConfig.screenWidth * 0.4,
+                      child: DropdownButton<CVS>(
+                        value: cvs,
+                        isDense: false,
+                        onChanged: (CVS newValue) {
+                          setState(() {
+                            cvs = newValue;
+                          });
+                        },
+                        items: CVS.values.map((CVS value) {
+                          return DropdownMenuItem<CVS>(
+                            value: value,
+                            child: Text(value.toString().split('.')[1]),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: getProportionateScreenHeight(20)),
+                // Onset
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Onset: '),
+                    Container(
+                      width: SizeConfig.screenWidth * 0.4,
+                      child: DropdownButton<Onset>(
+                        value: onset,
+                        isDense: false,
+                        onChanged: (Onset newValue) {
+                          setState(() {
+                            onset = newValue;
+                          });
+                        },
+                        items: Onset.values.map((Onset value) {
+                          return DropdownMenuItem<Onset>(
+                            value: value,
+                            child: Text(value.toString().split('.')[1]),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: getProportionateScreenHeight(20)),
+                // Severity
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Severity: '),
+                      Container(
+                        width: SizeConfig.screenWidth * 0.4,
+                        child: DropdownButton<Severity>(
+                          value: severity,
+                          isDense: false,
+                          onChanged: (Severity newValue) {
+                            setState(() {
+                              severity = newValue;
+                            });
+                          },
+                          items: Severity.values.map((Severity value) {
+                            return DropdownMenuItem<Severity>(
+                              value: value,
+                              child: Text(value.toString().split('.')[1]),
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                    ]),
+                SizedBox(height: getProportionateScreenHeight(20)),
+                // Pain Location
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Pain Location: '),
+                    Container(
+                      width: SizeConfig.screenWidth * 0.4,
+                      child: DropdownButton<PainLocation>(
+                        value: pain_location,
+                        isDense: false,
+                        onChanged: (PainLocation newValue) {
+                          setState(() {
+                            pain_location = newValue;
+                          });
+                        },
+                        items: PainLocation.values.map((PainLocation value) {
+                          return DropdownMenuItem<PainLocation>(
+                            value: value,
+                            child: Text(value.toString().split('.')[1]),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: getProportionateScreenHeight(20)),
+                // Duration
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Duration: '),
+                    Container(
+                      width: SizeConfig.screenWidth * 0.4,
+                      child: TextFormField(
+                        keyboardType: TextInputType.text,
+                        focusNode: null,
+                        onSaved: (newValue) => duration = newValue,
+                        // validator: (value) => value.isEmpty ? "nill" : null,
+                        decoration: const InputDecoration(
+                          hintText: "Enter duration",
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: getProportionateScreenHeight(20)),
+                // Radiation
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Radiation: '),
+                    Container(
+                      width: SizeConfig.screenWidth * 0.4,
+                      child: DropdownButton<Radiation>(
+                        value: radiation,
+                        isDense: false,
+                        onChanged: (Radiation newValue) {
+                          setState(() {
+                            radiation = newValue;
+                          });
+                        },
+                        items: Radiation.values.map((Radiation value) {
+                          return DropdownMenuItem<Radiation>(
+                            value: value,
+                            child: Text(value.toString().split('.')[1]),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: getProportionateScreenHeight(20)),
+                // Smoker
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Smoker: '),
+                    Container(
+                      width: SizeConfig.screenWidth * 0.4,
+                      child: DropdownButton<YN>(
+                        value: smoker,
+                        isDense: false,
+                        onChanged: (YN newValue) {
+                          setState(() {
+                            smoker = newValue;
+                          });
+                        },
+                        items: YN.values.map((YN value) {
+                          return DropdownMenuItem<YN>(
+                            value: value,
+                            child: Text(value.toString().split('.')[1]),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: getProportionateScreenHeight(20)),
+                // Diabetic
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Diabetic: '),
+                    Container(
+                      width: SizeConfig.screenWidth * 0.4,
+                      child: DropdownButton<YN>(
+                        value: diabetic,
+                        isDense: false,
+                        onChanged: (YN newValue) {
+                          setState(() {
+                            diabetic = newValue;
+                          });
+                        },
+                        items: YN.values.map((YN value) {
+                          return DropdownMenuItem<YN>(
+                            value: value,
+                            child: Text(value.toString().split('.')[1]),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: getProportionateScreenHeight(20)),
+                // Hypertensive
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Hypertensive: '),
+                    Container(
+                      width: SizeConfig.screenWidth * 0.4,
+                      child: DropdownButton<YN>(
+                        value: hypertensive,
+                        isDense: false,
+                        onChanged: (YN newValue) {
+                          setState(() {
+                            hypertensive = newValue;
+                          });
+                        },
+                        items: YN.values.map((YN value) {
+                          return DropdownMenuItem<YN>(
+                            value: value,
+                            child: Text(value.toString().split('.')[1]),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: getProportionateScreenHeight(20)),
+                // Dyslipidaemia
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Dyslipidaemia: '),
+                    Container(
+                      width: SizeConfig.screenWidth * 0.4,
+                      child: DropdownButton<YN>(
+                        value: dyslipidaemia,
+                        isDense: false,
+                        onChanged: (YN newValue) {
+                          setState(() {
+                            dyslipidaemia = newValue;
+                          });
+                        },
+                        items: YN.values.map((YN value) {
+                          return DropdownMenuItem<YN>(
+                            value: value,
+                            child: Text(value.toString().split('.')[1]),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: getProportionateScreenHeight(20)),
+                // Old MI
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Old MI: '),
+                    Container(
+                      width: SizeConfig.screenWidth * 0.4,
+                      child: DropdownButton<YN>(
+                        value: old_mi,
+                        isDense: true,
+                        onChanged: (YN newValue) {
+                          setState(() {
+                            old_mi = newValue;
+                          });
+                        },
+                        items: YN.values.map((YN value) {
+                          return DropdownMenuItem<YN>(
+                            value: value,
+                            child: Text(value.toString().split('.')[1]),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: getProportionateScreenHeight(20)),
+                // Chest Pain
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Chest Pain: '),
+                    Container(
+                      width: SizeConfig.screenWidth * 0.4,
+                      child: DropdownButton<YN>(
+                        value: chest_pain,
+                        isDense: false,
+                        onChanged: (YN newValue) {
+                          setState(() {
+                            chest_pain = newValue;
+                          });
+                        },
+                        items: YN.values.map((YN value) {
+                          return DropdownMenuItem<YN>(
+                            value: value,
+                            child: Text(value.toString().split('.')[1]),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: getProportionateScreenHeight(20)),
+                // Sweating
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Sweating: '),
+                    Container(
+                      width: SizeConfig.screenWidth * 0.4,
+                      child: DropdownButton<YN>(
+                        value: sweating,
+                        isDense: false,
+                        onChanged: (YN newValue) {
+                          setState(() {
+                            sweating = newValue;
+                          });
+                        },
+                        items: YN.values.map((YN value) {
+                          return DropdownMenuItem<YN>(
+                            value: value,
+                            child: Text(value.toString().split('.')[1]),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: getProportionateScreenHeight(20)),
+                // Nausea
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Nausea: '),
+                    Container(
+                      width: SizeConfig.screenWidth * 0.4,
+                      child: DropdownButton<YN>(
+                        value: nausea,
+                        isDense: false,
+                        onChanged: (YN newValue) {
+                          setState(() {
+                            nausea = newValue;
+                          });
+                        },
+                        items: YN.values.map((YN value) {
+                          return DropdownMenuItem<YN>(
+                            value: value,
+                            child: Text(value.toString().split('.')[1]),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: getProportionateScreenHeight(20)),
+                // Shortness of breath
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Shortness of breath: '),
+                    Container(
+                      width: SizeConfig.screenWidth * 0.4,
+                      child: DropdownButton<YN>(
+                        value: shortness_of_breath,
+                        isDense: false,
+                        onChanged: (YN newValue) {
+                          setState(() {
+                            shortness_of_breath = newValue;
+                          });
+                        },
+                        items: YN.values.map((YN value) {
+                          return DropdownMenuItem<YN>(
+                            value: value,
+                            child: Text(value.toString().split('.')[1]),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: getProportionateScreenHeight(20)),
+                // Loss of conciousness
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Loss of Conciousness: '),
+                    Container(
+                      width: SizeConfig.screenWidth * 0.4,
+                      child: DropdownButton<YN>(
+                        value: loss_of_conciousness,
+                        isDense: false,
+                        onChanged: (YN newValue) {
+                          setState(() {
+                            loss_of_conciousness = newValue;
+                          });
+                        },
+                        items: YN.values.map((YN value) {
+                          return DropdownMenuItem<YN>(
+                            value: value,
+                            child: Text(value.toString().split('.')[1]),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: getProportionateScreenHeight(20)),
+                // Palpitations
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Palpitations: '),
+                    Container(
+                      width: SizeConfig.screenWidth * 0.4,
+                      child: DropdownButton<YN>(
+                        value: palpitations,
+                        isDense: false,
+                        onChanged: (YN newValue) {
+                          setState(() {
+                            palpitations = newValue;
+                          });
+                        },
+                        items: YN.values.map((YN value) {
+                          return DropdownMenuItem<YN>(
+                            value: value,
+                            child: Text(value.toString().split('.')[1]),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: getProportionateScreenHeight(20)),
+                // Concious
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Concious: '),
+                    Container(
+                      width: SizeConfig.screenWidth * 0.4,
+                      child: DropdownButton<YN>(
+                        value: concious,
+                        isDense: false,
+                        onChanged: (YN newValue) {
+                          setState(() {
+                            concious = newValue;
+                          });
+                        },
+                        items: YN.values.map((YN value) {
+                          return DropdownMenuItem<YN>(
+                            value: value,
+                            child: Text(value.toString().split('.')[1]),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: getProportionateScreenHeight(20)),
+                // Chest crepts
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Chest Crepts: '),
+                    Container(
+                      width: SizeConfig.screenWidth * 0.4,
+                      child: DropdownButton<YN>(
+                        value: chest_crepts,
+                        isDense: false,
+                        onChanged: (YN newValue) {
+                          setState(() {
+                            chest_crepts = newValue;
+                          });
+                        },
+                        items: YN.values.map((YN value) {
+                          return DropdownMenuItem<YN>(
+                            value: value,
+                            child: Text(value.toString().split('.')[1]),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: getProportionateScreenHeight(20)),
+                // Pulse Rate
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Pulse Rate: '),
+                    Container(
+                      width: SizeConfig.screenWidth * 0.4,
+                      child: TextFormField(
+                        keyboardType: TextInputType.number,
+                        focusNode: null,
+                        onSaved: (newValue) => newValue.isEmpty
+                            ? pulse_rate = 0
+                            : 100, //unable to parse due to some reason
+                        // validator: (value) => value.isEmpty ? "nill" : null,
+                        decoration: const InputDecoration(
+                          hintText: "Enter Pulse Rate",
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 30),
+                SizedBox(height: SizeConfig.bottomInsets),
               ],
             ),
           ),
         ),
       );
 
-  _buildSaveButton(BuildContext context) => Center(
-        child: DefaultButton(
-          text: "Save",
-          press: () async {
-            if (_formKey.currentState.validate()) {
-              _formKey.currentState.save();
-              // Report report = Report(
-              //     ecgTime: ecgTime,
-              //     ecg_type: ecg_type,
-              //     trop_i: trop_i,
-              //     bp: bp,
-              //     cvs: cvs,
-              //     onset: onset,
-              //     severity: severity,
-              //     pain_location: pain_location,
-              //     duration: duration,
-              //     radiation: radiation,
-              //     smoker: smoker,
-              //     diabetic: diabetic,
-              //     hypertensive: hypertensive,
-              //     dyslipidaemia: dyslipidaemia,
-              //     old_mi: old_mi,
-              //     chest_pain: chest_pain,
-              //     sweating: sweating,
-              //     nausea: nausea,
-              //     shortness_of_breath: shortness_of_breath,
-              //     loss_of_conciousness: loss_of_conciousness,
-              //     palpitations: palpitations,
-              //     concious: concious,
-              //     chest_crepts: chest_crepts,
-              //     pulse_rate: pulse_rate);
-              widget.mainCubit.savePatientReport(report);
-            } else {
-              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                content: Text("All Fields are required"),
-              ));
-            }
-          },
-        ),
-      );
   _showLoader() {
     var alert = const AlertDialog(
       backgroundColor: Colors.transparent,
@@ -602,32 +833,47 @@ class _PatientReportScreenState extends State<PatientReportScreen> {
     ));
   }
 
-  _showLogo(BuildContext context) => Container(
-        alignment: Alignment.center,
-        child: Column(
-          children: [
-            const Image(
-                image: AssetImage("assets/logo.png"),
-                width: 192,
-                height: 180,
-                fit: BoxFit.fill),
-            const SizedBox(height: 10),
-            RichText(
-              text: TextSpan(
-                  text: "Patient",
-                  style: Theme.of(context).textTheme.caption.copyWith(
-                      color: Colors.lightGreen[500],
-                      fontSize: 32.0,
-                      fontWeight: FontWeight.bold),
-                  children: [
-                    TextSpan(
-                      text: " Report",
-                      style: TextStyle(color: Theme.of(context).accentColor),
-                    )
-                  ]),
-            ),
-            SizedBox(height: 30)
-          ],
+  _buildReportDetails() => Column(children: [
+        Container(
+          width: SizeConfig.screenWidth,
+          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+          child: Text(
+            "Report's Details",
+            textAlign: TextAlign.left,
+            style: TextStyle(fontSize: 18),
+          ),
         ),
-      );
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.red[100],
+            borderRadius: BorderRadius.circular(20),
+          ),
+          width: SizeConfig.screenWidth,
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("Last Edited: "),
+                  Text("10th Sept, 2021"),
+                ],
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("Edited By: "),
+                  Text("Dr. Doom\nApollo Medical Hospital",
+                      textAlign: TextAlign.right),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ]);
 }
