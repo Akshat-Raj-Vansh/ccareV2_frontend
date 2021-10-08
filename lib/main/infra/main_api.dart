@@ -173,7 +173,7 @@ class MainAPI extends IMainAPI {
       print(transformError(map));
       return Result.error(transformError(map));
     }
-    dynamic report = jsonDecode(response.body)['report'];
+    dynamic report = jsonDecode(response.body)['treatment'];
     print(report);
 
     return Result.value(Examination.fromJson(jsonEncode(report)));

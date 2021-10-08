@@ -1,3 +1,4 @@
+//@dart=2.9
 import 'dart:convert';
 
 import 'package:ccarev2_frontend/main/domain/report.dart';
@@ -16,33 +17,33 @@ class Examination {
   YN referral;
   String reason_for_referral;
   Examination({
-    required this.aspirin_loading,
-    required this.c_p_t_loading,
-    required this.lmwh,
-    required this.statins,
-    required this.beta_blockers,
-    required this.nitrates,
-    required this.diuretics,
-    required this.acei_arb,
-    required this.tnk_alu_stk_successfull,
-    required this.death,
-    required this.referral,
-    required this.reason_for_referral,
+    this.aspirin_loading,
+    this.c_p_t_loading,
+    this.lmwh,
+    this.statins,
+    this.beta_blockers,
+    this.nitrates,
+    this.diuretics,
+    this.acei_arb,
+    this.tnk_alu_stk_successfull,
+    this.death,
+    this.referral,
+    this.reason_for_referral,
   });
 
   Examination copyWith({
-    YN? aspirin_loading,
-    YN? c_p_t_loading,
-    String? lmwh,
-    String? statins,
-    String? beta_blockers,
-    String? nitrates,
-    String? diuretics,
-    String? acei_arb,
-    YN? tnk_alu_stk_successfull,
-    YN? death,
-    YN? referral,
-    String? reason_for_referral,
+    YN aspirin_loading,
+    YN c_p_t_loading,
+    String lmwh,
+    String statins,
+    String beta_blockers,
+    String nitrates,
+    String diuretics,
+    String acei_arb,
+    YN tnk_alu_stk_successfull,
+    YN death,
+    YN referral,
+    String reason_for_referral,
   }) {
     return Examination(
       aspirin_loading: aspirin_loading ?? this.aspirin_loading,
@@ -63,12 +64,14 @@ class Examination {
 
   Map<String, dynamic> toMap() {
     return {
-      'aspirin_loading': aspirin_loading.toString() == "YN.nill"
+      'aspirin_loading': aspirin_loading.toString() == "YN.nill" ||
+              aspirin_loading.toString() == null
           ? null
           : aspirin_loading.toString().split('.')[1] == "yes"
               ? true
               : false,
-      'c_p_t_loading': c_p_t_loading.toString() == "YN.nill"
+      'c_p_t_loading': c_p_t_loading.toString() == "YN.nill" ||
+              c_p_t_loading.toString() == null
           ? null
           : c_p_t_loading.toString().split('.')[1] == "yes"
               ? true
@@ -79,21 +82,24 @@ class Examination {
       'nitrates': nitrates,
       'diuretics': diuretics,
       'acei_arb': acei_arb,
-      'tnk_alu_stk_successfull': tnk_alu_stk_successfull.toString() == "YN.nill"
-          ? null
-          : tnk_alu_stk_successfull.toString().split('.')[1] == "yes"
-              ? true
-              : false,
-      'death': death.toString() == "YN.nill"
+      'tnk_alu_stk_successfull':
+          tnk_alu_stk_successfull.toString() == "YN.nill" ||
+                  tnk_alu_stk_successfull.toString() == null
+              ? null
+              : tnk_alu_stk_successfull.toString().split('.')[1] == "yes"
+                  ? true
+                  : false,
+      'death': death.toString() == "YN.nill" || death.toString() == null
           ? null
           : death.toString().split('.')[1] == "yes"
               ? true
               : false,
-      'referral': referral.toString() == "YN.nill"
-          ? null
-          : referral.toString().split('.')[1] == "yes"
-              ? true
-              : false,
+      'referral':
+          referral.toString() == "YN.nill" || referral.toString() == null
+              ? null
+              : referral.toString().split('.')[1] == "yes"
+                  ? true
+                  : false,
       'reason_for_referral': reason_for_referral,
     };
   }

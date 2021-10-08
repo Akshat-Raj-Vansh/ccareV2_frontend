@@ -117,6 +117,13 @@ class EditPatientExamReport extends MainState {
   List<Object> get props => [this.msg];
 }
 
+class NoReportState extends MainState {
+  final String msg;
+  NoReportState(this.msg);
+  @override
+  List<Object> get props => [this.msg];
+}
+
 class EmergencyState extends MainState {
   final String msg;
   EmergencyState(this.msg);

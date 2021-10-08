@@ -72,11 +72,11 @@ class MainCubit extends Cubit<MainState> {
     final token = await localStore.fetch();
     final result = await api.fetchPatientReport(Token(token.value));
     if (result == null) {
-      emit(ErrorState("Server Error"));
+      emit(NoReportState("Server Error"));
       return;
     }
     if (result.isError) {
-      emit(ErrorState(result.asError.error));
+      emit(NoReportState(result.asError.error));
       return;
     }
     emit(PatientReportFetched(result.asValue.value));
@@ -114,11 +114,11 @@ class MainCubit extends Cubit<MainState> {
     final token = await localStore.fetch();
     final result = await api.fetchPatientExamReport(Token(token.value));
     if (result == null) {
-      emit(ErrorState("Server Error"));
+      emit(NoReportState("Server Error"));
       return;
     }
     if (result.isError) {
-      emit(ErrorState(result.asError.error));
+      emit(NoReportState(result.asError.error));
       return;
     }
     emit(PatientExamReportFetched(result.asValue.value));

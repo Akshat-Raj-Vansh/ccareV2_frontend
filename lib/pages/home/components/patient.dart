@@ -1,6 +1,7 @@
 //@dart=2.9
 import 'package:ccarev2_frontend/main/domain/edetails.dart';
 import 'package:ccarev2_frontend/pages/home/home_page_adapter.dart';
+import 'package:ccarev2_frontend/pages/spoke_form/patient_report_screen.dart';
 import 'package:ccarev2_frontend/services/Notifications/notificationContoller.dart';
 import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
 import 'package:ccarev2_frontend/state_management/main/main_state.dart';
@@ -180,6 +181,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
             children: [
               if (_notificationSent && (!_doctorAccepted || !_driverAccepted))
                 _buildNotificationSend(),
+              _buildPatientReportButton(),
               if (_doctorAccepted || _driverAccepted)
                 Padding(
                   padding:
@@ -213,6 +215,30 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
           style: TextStyle(color: Colors.white, fontSize: 12),
         ),
       ));
+
+  _buildPatientReportButton() => InkWell(
+        onTap: () async {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                    PatientReportScreen(mainCubit: widget.mainCubit),
+              ));
+        },
+        child: Container(
+          width: SizeConfig.screenWidth,
+          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          decoration: BoxDecoration(
+              color: kPrimaryLightColor,
+              borderRadius: BorderRadius.circular(20)),
+          child: Text(
+            "View Patient's Medical Report",
+            style: TextStyle(color: Colors.white, fontSize: 14),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      );
 
   _buildDoctorDetails() => Column(children: [
         Container(
