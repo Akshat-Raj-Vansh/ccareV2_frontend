@@ -1,12 +1,14 @@
 //@dart=2.9
 import 'package:ccarev2_frontend/main/domain/question.dart';
 import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
+import 'package:ccarev2_frontend/utils/constants.dart';
 import 'package:flutter/material.dart';
 
 class SelfAssessment extends StatefulWidget {
   final List<QuestionTree> questions;
   final MainCubit cubit;
-  const SelfAssessment(this.questions, this.cubit);
+  final from;
+  const SelfAssessment(this.questions, this.cubit, this.from);
 
   @override
   _SelfAssessmentState createState() => _SelfAssessmentState();
@@ -15,24 +17,23 @@ class SelfAssessment extends StatefulWidget {
 class _SelfAssessmentState extends State<SelfAssessment> {
   List<QuestionTree> display = [];
   List<String> answers = [];
-  Map<String, String> submittedAnswers = {};
   int length = 1;
   TextStyle styles = const TextStyle(color: Colors.white, fontSize: 18);
   EdgeInsets pad = const EdgeInsets.symmetric(vertical: 5, horizontal: 15);
   BoxDecoration decA = const BoxDecoration(
-      color: Colors.green,
+      color: kPrimaryColor,
       borderRadius: BorderRadius.only(
           topLeft: Radius.circular(30),
           topRight: Radius.circular(30),
           bottomRight: Radius.circular(30)));
   BoxDecoration decC = const BoxDecoration(
-      color: Colors.green,
+      color: kPrimaryColor,
       borderRadius: BorderRadius.only(
           topLeft: Radius.circular(30),
           topRight: Radius.circular(30),
           bottomRight: Radius.circular(30)));
   BoxDecoration decB = const BoxDecoration(
-      color: Colors.lightBlue,
+      color: kPrimaryColor,
       borderRadius: BorderRadius.only(
           topLeft: Radius.circular(30),
           topRight: Radius.circular(30),
@@ -40,8 +41,8 @@ class _SelfAssessmentState extends State<SelfAssessment> {
 
   @override
   void initState() {
-
-    display.add(widget.questions.firstWhere((element) => element.parent=="root"));
+    display.add(
+        widget.questions.firstWhere((element) => element.parent == "root"));
     super.initState();
   }
 
@@ -52,24 +53,33 @@ class _SelfAssessmentState extends State<SelfAssessment> {
           backgroundColor: Colors.white,
           shadowColor: Colors.white,
           title: const Text(
-            "CardioCare",
+            "CardioCare - Self Analysis",
+            textAlign: TextAlign.left,
             style: TextStyle(
-                color: Colors.blue, fontSize: 24, fontWeight: FontWeight.bold),
-          ),
-          leading: IconButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            icon: Icon(Icons.arrow_back, color: Colors.blue),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {},
-              child: Text(
-                'Skip',
-                style: TextStyle(color: Colors.blue),
-              ),
+              color: kPrimaryColor,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
             ),
+          ),
+          leading: widget.from == "homescreen"
+              ? IconButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  icon: Icon(Icons.arrow_back, color: kPrimaryColor),
+                )
+              : null,
+          actions: [
+            if (widget.from != "homescreen")
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context, rootNavigator: true).pop();
+                },
+                child: Text(
+                  'Skip',
+                  style: TextStyle(color: kPrimaryColor),
+                ),
+              ),
           ],
         ),
         body: buildbody(context));

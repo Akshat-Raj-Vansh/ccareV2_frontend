@@ -76,7 +76,6 @@ getQuestions() async {
 
   savePatientReport(Report report) async {
     _startLoading("PatientReportSaved");
-    //api calls
     final token = await localStore.fetch();
     final result = await api.savePatientReport(Token(token.value), report);
     print("Result ${result.asValue!.value}");
@@ -104,9 +103,6 @@ getQuestions() async {
 
   doctorAccepted(Location location) async {
     print("Inside doctor accepted");
-    // _startLoading();
-
-    // print(location);
     if (location == null) {
       emit(ErrorState("Details not fetched!"));
       return;
@@ -116,8 +112,6 @@ getQuestions() async {
 
   driverAccepted(Location location) async {
     print("Inside driver accepted");
-    // _startLoading();
-    // print(location);
     if (location == null) {
       emit(ErrorState("Location Error!"));
       return;

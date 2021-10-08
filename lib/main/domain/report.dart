@@ -119,20 +119,72 @@ class Report {
       'pain_location': pain_location.toString(),
       'duration': duration,
       'radiation': radiation.toString(),
-      'smoker': smoker.toString(),
-      'diabetic': diabetic.toString(),
-      'hypertensive': hypertensive.toString(),
-      'dyslipidaemia': dyslipidaemia.toString(),
-      'old_mi': old_mi.toString(),
-      'chest_pain': chest_pain.toString(),
-      'sweating': sweating.toString(),
-      'nausea': nausea.toString(),
-      'shortness_of_breath': shortness_of_breath.toString(),
-      'loss_of_conciousness': loss_of_conciousness.toString(),
-      'palpitations': palpitations.toString(),
-      'concious': concious.toString(),
-      'chest_crepts': chest_crepts.toString(),
-      'pulse_rate': pulse_rate,
+      'smoker': smoker.toString() == "YN.nill"
+          ? null
+          : smoker.toString().split('.')[1] == "yes"
+              ? true
+              : false,
+      'diabetic': diabetic.toString() == "YN.nill"
+          ? null
+          : diabetic.toString().split('.')[1] == "yes"
+              ? true
+              : false,
+      'hypertensive': hypertensive.toString() == "YN.nill"
+          ? null
+          : hypertensive.toString().split('.')[1] == "yes"
+              ? true
+              : false,
+      'dyslipidaemia': dyslipidaemia.toString() == "YN.nill"
+          ? null
+          : dyslipidaemia.toString().split('.')[1] == "yes"
+              ? true
+              : false,
+      'old_mi': old_mi.toString() == "YN.nill"
+          ? null
+          : old_mi.toString().split('.')[1] == "yes"
+              ? true
+              : false,
+      'chest_pain': chest_pain.toString() == "YN.nill"
+          ? null
+          : chest_pain.toString().split('.')[1] == "yes"
+              ? true
+              : false,
+      'sweating': sweating.toString() == "YN.nill"
+          ? null
+          : sweating.toString().split('.')[1] == "yes"
+              ? true
+              : false,
+      'nausea': nausea.toString() == "YN.nill"
+          ? null
+          : nausea.toString().split('.')[1] == "yes"
+              ? true
+              : false,
+      'shortness_of_breath': shortness_of_breath.toString() == "YN.nill"
+          ? null
+          : shortness_of_breath.toString().split('.')[1] == "yes"
+              ? true
+              : false,
+      'loss_of_conciousness': loss_of_conciousness.toString() == "YN.nill"
+          ? null
+          : loss_of_conciousness.toString().split('.')[1] == "yes"
+              ? true
+              : false,
+      'palpitations': palpitations.toString() == "YN.nill"
+          ? null
+          : palpitations.toString().split('.')[1] == "yes"
+              ? true
+              : false,
+      'concious': concious.toString() == "YN.nill"
+          ? null
+          : concious.toString().split('.')[1] == "yes"
+              ? true
+              : false,
+      'chest_crepts': chest_crepts.toString() == "YN.nill"
+          ? null
+          : chest_crepts.toString().split('.')[1] == "yes"
+              ? true
+              : false,
+      'pulse_rate': pulse_rate.toString(),
     };
   }
 
@@ -154,33 +206,59 @@ class Report {
       duration: map['duration'],
       radiation: Radiation.values.firstWhere(
           (element) => element.toString() == "Radiation." + map['radiation']),
-      smoker: YN.values
-          .firstWhere((element) => element.toString() == "YN." + map['smoker']),
-      diabetic: YN.values.firstWhere(
-          (element) => element.toString() == "YN." + map['diabetic']),
-      hypertensive: YN.values.firstWhere(
-          (element) => element.toString() == "YN." + map['hypertensive']),
-      dyslipidaemia: YN.values.firstWhere(
-          (element) => element.toString() == "YN." + map['dyslipidaemia']),
-      old_mi: YN.values
-          .firstWhere((element) => element.toString() == "YN." + map['old_mi']),
-      chest_pain: YN.values.firstWhere(
-          (element) => element.toString() == "YN." + map['chest_pain']),
-      sweating: YN.values.firstWhere(
-          (element) => element.toString() == "YN." + map['sweating']),
-      nausea: YN.values
-          .firstWhere((element) => element.toString() == "YN." + map['nausea']),
-      shortness_of_breath: YN.values.firstWhere((element) =>
-          element.toString() == "YN." + map['shortness_of_breath']),
-      loss_of_conciousness: YN.values.firstWhere((element) =>
-          element.toString() == "YN." + map['loss_of_conciousness']),
-      palpitations: YN.values.firstWhere(
-          (element) => element.toString() == "YN." + map['palpitations']),
-      concious: YN.values.firstWhere(
-          (element) => element.toString() == "YN." + map['concious']),
-      chest_crepts: YN.values.firstWhere(
-          (element) => element.toString() == "YN." + map['chest_crepts']),
-      pulse_rate: map['pulse_rate'],
+      smoker: map["smoker"] != null
+          ? YN.values.firstWhere(
+              (element) => element.toString() == "YN." + map['smoker'])
+          : YN.nill,
+      diabetic: map["smoker"] != null
+          ? YN.values.firstWhere(
+              (element) => element.toString() == "YN." + map['diabetic'])
+          : YN.nill,
+      hypertensive: map["hypertensive"] != null
+          ? YN.values.firstWhere(
+              (element) => element.toString() == "YN." + map['hypertensive'])
+          : YN.nill,
+      dyslipidaemia: map["dyslipidaemia"] != null
+          ? YN.values.firstWhere(
+              (element) => element.toString() == "YN." + map['dyslipidaemia'])
+          : YN.nill,
+      old_mi: map["old_mi"] != null
+          ? YN.values.firstWhere(
+              (element) => element.toString() == "YN." + map['old_mi'])
+          : YN.nill,
+      chest_pain: map["chest_pain"] != null
+          ? YN.values.firstWhere(
+              (element) => element.toString() == "YN." + map['chest_pain'])
+          : YN.nill,
+      sweating: map["sweating"] != null
+          ? YN.values.firstWhere(
+              (element) => element.toString() == "YN." + map['sweating'])
+          : YN.nill,
+      nausea: map["nausea"] != null
+          ? YN.values.firstWhere(
+              (element) => element.toString() == "YN." + map['nausea'])
+          : YN.nill,
+      shortness_of_breath: map["shortness_of_breath"] != null
+          ? YN.values.firstWhere((element) =>
+              element.toString() == "YN." + map['shortness_of_breath'])
+          : YN.nill,
+      loss_of_conciousness: map["loss_of_conciousness"] != null
+          ? YN.values.firstWhere((element) =>
+              element.toString() == "YN." + map['loss_of_conciousness'])
+          : YN.nill,
+      palpitations: map["palpitations"] != null
+          ? YN.values.firstWhere(
+              (element) => element.toString() == "YN." + map['palpitations'])
+          : YN.nill,
+      concious: map["concious"] != null
+          ? YN.values.firstWhere(
+              (element) => element.toString() == "YN." + map['concious'])
+          : YN.nill,
+      chest_crepts: map["chest_crepts"] != null
+          ? YN.values.firstWhere(
+              (element) => element.toString() == "YN." + map['chest_crepts'])
+          : YN.nill,
+      pulse_rate: int.parse(map['pulse_rate']),
     );
   }
 
