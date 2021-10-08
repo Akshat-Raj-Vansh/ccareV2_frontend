@@ -1,6 +1,7 @@
 //@dart=2.9
 import 'package:ccarev2_frontend/main/domain/edetails.dart';
 import 'package:ccarev2_frontend/pages/home/home_page_adapter.dart';
+import 'package:ccarev2_frontend/pages/spoke_form/patient_exam_screen.dart';
 import 'package:ccarev2_frontend/pages/spoke_form/patient_report_screen.dart';
 import 'package:ccarev2_frontend/services/Notifications/notificationContoller.dart';
 import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
@@ -56,6 +57,37 @@ class _DoctorHomeUIState extends State<DoctorHomeUI> {
     return _location;
   }
 
+  _showLoader() {
+    loader = true;
+    var alert = const AlertDialog(
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      content: Center(
+          child: CircularProgressIndicator(
+        backgroundColor: Colors.green,
+      )),
+    );
+    showDialog(
+        context: context, barrierDismissible: true, builder: (_) => alert);
+  }
+
+  _hideLoader() {
+    Navigator.of(context, rootNavigator: true).pop();
+  }
+
+  _showMessage(String msg) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      backgroundColor: Theme.of(context).accentColor,
+      content: Text(
+        msg,
+        style: Theme.of(context)
+            .textTheme
+            .caption
+            .copyWith(color: Colors.white, fontSize: 16),
+      ),
+    ));
+  }
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -64,7 +96,6 @@ class _DoctorHomeUIState extends State<DoctorHomeUI> {
         appBar: AppBar(
           title: Text('CardioCare - Doctor'),
           actions: [
-            // if (_isEmergency)
             IconButton(
               onPressed: () async {
                 // _showLoader();
@@ -197,37 +228,6 @@ class _DoctorHomeUIState extends State<DoctorHomeUI> {
         }));
   }
 
-  _showLoader() {
-    loader = true;
-    var alert = const AlertDialog(
-      backgroundColor: Colors.transparent,
-      elevation: 0,
-      content: Center(
-          child: CircularProgressIndicator(
-        backgroundColor: Colors.green,
-      )),
-    );
-    showDialog(
-        context: context, barrierDismissible: true, builder: (_) => alert);
-  }
-
-  _hideLoader() {
-    Navigator.of(context, rootNavigator: true).pop();
-  }
-
-  _showMessage(String msg) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      backgroundColor: Theme.of(context).accentColor,
-      content: Text(
-        msg,
-        style: Theme.of(context)
-            .textTheme
-            .caption
-            .copyWith(color: Colors.white, fontSize: 16),
-      ),
-    ));
-  }
-
   _buildUI(BuildContext buildContext) => Stack(children: [
         SingleChildScrollView(
           child:
@@ -243,6 +243,7 @@ class _DoctorHomeUIState extends State<DoctorHomeUI> {
               ),
             if (_patientAccepted) _buildPatientDetails(),
             if (_patientAccepted) _buildPatientReportButton(),
+            if (_patientAccepted) _buildPatientExamButton(),
             if (_driverAccepted) _buildDriverDetails(),
             if (!_emergency) _buildHeader(),
             // Padding(
@@ -265,68 +266,20 @@ class _DoctorHomeUIState extends State<DoctorHomeUI> {
         ),
       ]);
 
-  _buildDriverDetails() => Column(children: [
-        Container(
-          width: SizeConfig.screenWidth,
-          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-          child: Text(
-            "Ambulance's Information",
-            textAlign: TextAlign.left,
-            style: TextStyle(fontSize: 18),
-          ),
+  _buildHeader() => Container(
+      color: Colors.green[400],
+      padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+      child: ListTile(
+        leading: Icon(CupertinoIcons.person, color: Colors.white),
+        title: Text(
+          "All Current Patients are recovering!!",
+          style: TextStyle(color: Colors.white, fontSize: 20),
         ),
-        Container(
-            decoration: BoxDecoration(
-                color: Colors.red[100],
-                borderRadius: BorderRadius.circular(20)),
-            width: SizeConfig.screenWidth,
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            child: Column(children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("Name: "),
-                  Text(eDetails.driverDetails.name),
-                ],
-              ),
-              const SizedBox(
-                height: 5,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("Plate Number: "),
-                  Text(eDetails.driverDetails.plateNumber),
-                ],
-              ),
-              const SizedBox(
-                height: 5,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("Contact Number: "),
-                  Text(eDetails.driverDetails.contactNumber),
-                ],
-              ),
-              const SizedBox(
-                height: 5,
-              ),
-              RichText(
-                text: TextSpan(
-                  text: "Location : ",
-                  style: GoogleFonts.montserrat(color: Colors.black),
-                  children: [
-                    TextSpan(
-                        text: eDetails.driverDetails.address,
-                        style: TextStyle(color: Colors.black))
-                  ],
-                ),
-              ),
-            ])),
-      ]);
+        subtitle: Text(
+          "Medications and Ongoing treatment ->",
+          style: TextStyle(color: Colors.white, fontSize: 12),
+        ),
+      ));
 
   _buildPatientDetails() => Column(children: [
         Container(
@@ -393,20 +346,91 @@ class _DoctorHomeUIState extends State<DoctorHomeUI> {
         ),
       );
 
-  _buildHeader() => Container(
-      color: Colors.green[400],
-      padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-      child: ListTile(
-        leading: Icon(CupertinoIcons.person, color: Colors.white),
-        title: Text(
-          "All Current Patients are recovering!!",
-          style: TextStyle(color: Colors.white, fontSize: 20),
+  _buildPatientExamButton() => InkWell(
+        onTap: () async {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                    PatientExamScreen(mainCubit: widget.mainCubit),
+              ));
+        },
+        child: Container(
+          width: SizeConfig.screenWidth,
+          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          decoration: BoxDecoration(
+              color: kPrimaryLightColor,
+              borderRadius: BorderRadius.circular(20)),
+          child: Text(
+            "View/Update Patient's Exam Report",
+            style: TextStyle(color: Colors.white, fontSize: 14),
+            textAlign: TextAlign.center,
+          ),
         ),
-        subtitle: Text(
-          "Medications and Ongoing treatment ->",
-          style: TextStyle(color: Colors.white, fontSize: 12),
+      );
+  _buildDriverDetails() => Column(children: [
+        Container(
+          width: SizeConfig.screenWidth,
+          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+          child: Text(
+            "Ambulance's Information",
+            textAlign: TextAlign.left,
+            style: TextStyle(fontSize: 18),
+          ),
         ),
-      ));
+        Container(
+            decoration: BoxDecoration(
+                color: Colors.red[100],
+                borderRadius: BorderRadius.circular(20)),
+            width: SizeConfig.screenWidth,
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            child: Column(children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("Name: "),
+                  Text(eDetails.driverDetails.name),
+                ],
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("Plate Number: "),
+                  Text(eDetails.driverDetails.plateNumber),
+                ],
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("Contact Number: "),
+                  Text(eDetails.driverDetails.contactNumber),
+                ],
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              RichText(
+                text: TextSpan(
+                  text: "Location : ",
+                  style: GoogleFonts.montserrat(color: Colors.black),
+                  children: [
+                    TextSpan(
+                        text: eDetails.driverDetails.address,
+                        style: TextStyle(color: Colors.black))
+                  ],
+                ),
+              ),
+            ])),
+      ]);
 
   // _buildResources() => Container(
   //     padding: EdgeInsets.symmetric(horizontal: 20),

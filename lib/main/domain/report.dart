@@ -21,9 +21,9 @@ class Report {
   YN sweating;
   YN nausea;
   YN shortness_of_breath;
-  YN loss_of_conciousness;
+  YN loss_of_consciousness;
   YN palpitations;
-  YN concious;
+  YN conscious;
   YN chest_crepts;
   int pulse_rate;
   Report({
@@ -46,9 +46,9 @@ class Report {
     this.sweating,
     this.nausea,
     this.shortness_of_breath,
-    this.loss_of_conciousness,
+    this.loss_of_consciousness,
     this.palpitations,
-    this.concious,
+    this.conscious,
     this.chest_crepts,
     this.pulse_rate,
   });
@@ -73,9 +73,9 @@ class Report {
     YN sweating,
     YN nausea,
     YN shortness_of_breath,
-    YN loss_of_conciousness,
+    YN loss_of_consciousness,
     YN palpitations,
-    YN concious,
+    YN conscious,
     YN chest_crepts,
     int pulse_rate,
   }) {
@@ -99,9 +99,10 @@ class Report {
       sweating: sweating ?? this.sweating,
       nausea: nausea ?? this.nausea,
       shortness_of_breath: shortness_of_breath ?? this.shortness_of_breath,
-      loss_of_conciousness: loss_of_conciousness ?? this.loss_of_conciousness,
+      loss_of_consciousness:
+          loss_of_consciousness ?? this.loss_of_consciousness,
       palpitations: palpitations ?? this.palpitations,
-      concious: concious ?? this.concious,
+      conscious: conscious ?? this.conscious,
       chest_crepts: chest_crepts ?? this.chest_crepts,
       pulse_rate: pulse_rate ?? this.pulse_rate,
     );
@@ -110,15 +111,15 @@ class Report {
   Map<String, dynamic> toMap() {
     return {
       'ecgTime': ecgTime,
-      'ecg_type': ecg_type.toString(),
+      'ecg_type': ecg_type.toString().split('.')[1],
       'trop_i': trop_i,
       'bp': bp,
-      'cvs': cvs.toString(),
-      'onset': onset.toString(),
-      'severity': severity.toString(),
-      'pain_location': pain_location.toString(),
+      'cvs': cvs.toString().split('.')[1],
+      'onset': onset.toString().split('.')[1],
+      'severity': severity.toString().split('.')[1],
+      'pain_location': pain_location.toString().split('.')[1],
       'duration': duration,
-      'radiation': radiation.toString(),
+      'radiation': radiation.toString().split('.')[1],
       'smoker': smoker.toString() == "YN.nill"
           ? null
           : smoker.toString().split('.')[1] == "yes"
@@ -164,9 +165,9 @@ class Report {
           : shortness_of_breath.toString().split('.')[1] == "yes"
               ? true
               : false,
-      'loss_of_conciousness': loss_of_conciousness.toString() == "YN.nill"
+      'loss_of_consciousness': loss_of_consciousness.toString() == "YN.nill"
           ? null
-          : loss_of_conciousness.toString().split('.')[1] == "yes"
+          : loss_of_consciousness.toString().split('.')[1] == "yes"
               ? true
               : false,
       'palpitations': palpitations.toString() == "YN.nill"
@@ -174,9 +175,9 @@ class Report {
           : palpitations.toString().split('.')[1] == "yes"
               ? true
               : false,
-      'concious': concious.toString() == "YN.nill"
+      'conscious': conscious.toString() == "YN.nill"
           ? null
-          : concious.toString().split('.')[1] == "yes"
+          : conscious.toString().split('.')[1] == "yes"
               ? true
               : false,
       'chest_crepts': chest_crepts.toString() == "YN.nill"
@@ -184,17 +185,17 @@ class Report {
           : chest_crepts.toString().split('.')[1] == "yes"
               ? true
               : false,
-      'pulse_rate': pulse_rate.toString(),
+      'pulse_rate': pulse_rate,
     };
   }
 
   factory Report.fromMap(Map<String, dynamic> map) {
     return Report(
-      ecgTime: map['ecgTime'],
+      ecgTime: map['ecgTime'] == "" ? "nill" : map['ecgTime'],
       ecg_type: ECGType.values.firstWhere(
           (element) => element.toString() == "ECGType." + map['ecg_type']),
-      trop_i: map['trop_i'],
-      bp: map['bp'],
+      trop_i: map['trop_i'] == "" ? "nill" : map['trop_i'],
+      bp: map['bp'] == "" ? "nill" : map['bp'],
       cvs: CVS.values
           .firstWhere((element) => element.toString() == "CVS." + map['cvs']),
       onset: Onset.values.firstWhere(
@@ -203,62 +204,75 @@ class Report {
           (element) => element.toString() == "Severity." + map["severity"]),
       pain_location: PainLocation.values.firstWhere((element) =>
           element.toString() == "PainLocation." + map["pain_location"]),
-      duration: map['duration'],
+      duration: map['duration'] == "" ? "nill" : map['duration'],
       radiation: Radiation.values.firstWhere(
           (element) => element.toString() == "Radiation." + map['radiation']),
       smoker: map["smoker"] != null
-          ? YN.values.firstWhere(
-              (element) => element.toString() == "YN." + map['smoker'])
+          ? YN.values.firstWhere((element) =>
+              element.toString() ==
+              "YN." + (map['smoker'] == true ? "yes" : "no"))
           : YN.nill,
       diabetic: map["smoker"] != null
-          ? YN.values.firstWhere(
-              (element) => element.toString() == "YN." + map['diabetic'])
+          ? YN.values.firstWhere((element) =>
+              element.toString() ==
+              "YN." + (map['smoker'] == true ? "yes" : "no"))
           : YN.nill,
       hypertensive: map["hypertensive"] != null
-          ? YN.values.firstWhere(
-              (element) => element.toString() == "YN." + map['hypertensive'])
+          ? YN.values.firstWhere((element) =>
+              element.toString() ==
+              "YN." + (map['hypertensive'] == true ? "yes" : "no"))
           : YN.nill,
       dyslipidaemia: map["dyslipidaemia"] != null
-          ? YN.values.firstWhere(
-              (element) => element.toString() == "YN." + map['dyslipidaemia'])
+          ? YN.values.firstWhere((element) =>
+              element.toString() ==
+              "YN." + (map['dyslipidaemia'] == true ? "yes" : "no"))
           : YN.nill,
       old_mi: map["old_mi"] != null
-          ? YN.values.firstWhere(
-              (element) => element.toString() == "YN." + map['old_mi'])
+          ? YN.values.firstWhere((element) =>
+              element.toString() ==
+              "YN." + (map['old_mi'] == true ? "yes" : "no"))
           : YN.nill,
       chest_pain: map["chest_pain"] != null
-          ? YN.values.firstWhere(
-              (element) => element.toString() == "YN." + map['chest_pain'])
+          ? YN.values.firstWhere((element) =>
+              element.toString() ==
+              "YN." + (map['chest_pain'] == true ? "yes" : "no"))
           : YN.nill,
       sweating: map["sweating"] != null
-          ? YN.values.firstWhere(
-              (element) => element.toString() == "YN." + map['sweating'])
+          ? YN.values.firstWhere((element) =>
+              element.toString() ==
+              "YN." + (map['sweating'] == true ? "yes" : "no"))
           : YN.nill,
       nausea: map["nausea"] != null
-          ? YN.values.firstWhere(
-              (element) => element.toString() == "YN." + map['nausea'])
+          ? YN.values.firstWhere((element) =>
+              element.toString() ==
+              "YN." + (map['nausea'] == true ? "yes" : "no"))
           : YN.nill,
       shortness_of_breath: map["shortness_of_breath"] != null
           ? YN.values.firstWhere((element) =>
-              element.toString() == "YN." + map['shortness_of_breath'])
+              element.toString() ==
+              "YN." + (map['shortness_of_breath'] == true ? "yes" : "no"))
           : YN.nill,
-      loss_of_conciousness: map["loss_of_conciousness"] != null
+      loss_of_consciousness: map["loss_of_consciousness"] != null
           ? YN.values.firstWhere((element) =>
-              element.toString() == "YN." + map['loss_of_conciousness'])
+              element.toString() ==
+              "YN." + (map['loss_of_consciousness'] == true ? "yes" : "no"))
           : YN.nill,
       palpitations: map["palpitations"] != null
-          ? YN.values.firstWhere(
-              (element) => element.toString() == "YN." + map['palpitations'])
+          ? YN.values.firstWhere((element) =>
+              element.toString() ==
+              "YN." + (map['palpitations'] == true ? "yes" : "no"))
           : YN.nill,
-      concious: map["concious"] != null
-          ? YN.values.firstWhere(
-              (element) => element.toString() == "YN." + map['concious'])
+      conscious: map["conscious"] != null
+          ? YN.values.firstWhere((element) =>
+              element.toString() ==
+              "YN." + (map['conscious'] == true ? "yes" : "no"))
           : YN.nill,
       chest_crepts: map["chest_crepts"] != null
-          ? YN.values.firstWhere(
-              (element) => element.toString() == "YN." + map['chest_crepts'])
+          ? YN.values.firstWhere((element) =>
+              element.toString() ==
+              "YN." + (map['chest_crepts'] == true ? "yes" : "no"))
           : YN.nill,
-      pulse_rate: int.parse(map['pulse_rate']),
+      pulse_rate: map['pulse_rate'],
     );
   }
 
@@ -268,7 +282,7 @@ class Report {
 
   @override
   String toString() {
-    return 'Report(ecgTime: $ecgTime, ecg_type: $ecg_type, trop_i: $trop_i, bp: $bp, cvs: $cvs, onset: $onset, severity: $severity, pain_location: $pain_location, duration: $duration, radiation: $radiation, smoker: $smoker, diabetic:$diabetic, hypertensive: $hypertensive, dyslipidaemia: $dyslipidaemia, old_mi: $old_mi, chest_pain: $chest_pain, sweating: $sweating, nausea: $nausea, shortness_of_breath: $shortness_of_breath, loss_of_conciousness: $loss_of_conciousness, palpitations: $palpitations, concious: $concious, chest_crepts: $chest_crepts, pulse_rate: $pulse_rate)';
+    return 'Report(ecgTime: $ecgTime, ecg_type: $ecg_type, trop_i: $trop_i, bp: $bp, cvs: $cvs, onset: $onset, severity: $severity, pain_location: $pain_location, duration: $duration, radiation: $radiation, smoker: $smoker, diabetic:$diabetic, hypertensive: $hypertensive, dyslipidaemia: $dyslipidaemia, old_mi: $old_mi, chest_pain: $chest_pain, sweating: $sweating, nausea: $nausea, shortness_of_breath: $shortness_of_breath, loss_of_consciousness: $loss_of_consciousness, palpitations: $palpitations, conscious: $conscious, chest_crepts: $chest_crepts, pulse_rate: $pulse_rate)';
   }
 
   @override
@@ -295,9 +309,9 @@ class Report {
         other.sweating == sweating &&
         other.nausea == nausea &&
         other.shortness_of_breath == shortness_of_breath &&
-        other.loss_of_conciousness == loss_of_conciousness &&
+        other.loss_of_consciousness == loss_of_consciousness &&
         other.palpitations == palpitations &&
-        other.concious == concious &&
+        other.conscious == conscious &&
         other.chest_crepts == chest_crepts &&
         other.pulse_rate == pulse_rate;
   }
@@ -323,9 +337,9 @@ class Report {
         sweating.hashCode ^
         nausea.hashCode ^
         shortness_of_breath.hashCode ^
-        loss_of_conciousness.hashCode ^
+        loss_of_consciousness.hashCode ^
         palpitations.hashCode ^
-        concious.hashCode ^
+        conscious.hashCode ^
         chest_crepts.hashCode ^
         pulse_rate.hashCode;
   }

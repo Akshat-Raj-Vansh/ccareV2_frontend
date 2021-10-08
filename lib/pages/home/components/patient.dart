@@ -75,31 +75,53 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
     ));
   }
 
+  _showLoader() {
+    loader = true;
+    var alert = const AlertDialog(
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      content: Center(
+          child: CircularProgressIndicator(
+        backgroundColor: Colors.green,
+      )),
+    );
+    showDialog(
+        context: context, barrierDismissible: true, builder: (_) => alert);
+  }
+
+  _hideLoader() {
+    if (loader) {
+      loader = false;
+      Navigator.of(context, rootNavigator: true).pop();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return Scaffold(
-        appBar: AppBar(
-          title: Text('CardioCare - Patient'),
-          actions: [
-            IconButton(
-              onPressed: () async {
-                _showLoader();
-                loc.Location location = await _getLocation();
-                _hideLoader();
-                return widget.homePageAdapter
-                    .loadEmergencyScreen(context, UserType.patient, location);
-              },
-              icon: Icon(FontAwesomeIcons.mapMarkedAlt),
-            ),
-            IconButton(
-              onPressed: () =>
-                  widget.homePageAdapter.onLogout(context, widget.userCubit),
-              icon: Icon(Icons.logout),
-            ),
-          ],
-        ),
-        body: CubitConsumer<MainCubit, MainState>(builder: (_, state) {
+      appBar: AppBar(
+        title: Text('CardioCare - Patient'),
+        actions: [
+          IconButton(
+            onPressed: () async {
+              _showLoader();
+              loc.Location location = await _getLocation();
+              _hideLoader();
+              return widget.homePageAdapter
+                  .loadEmergencyScreen(context, UserType.patient, location);
+            },
+            icon: Icon(FontAwesomeIcons.mapMarkedAlt),
+          ),
+          IconButton(
+            onPressed: () =>
+                widget.homePageAdapter.onLogout(context, widget.userCubit),
+            icon: Icon(Icons.logout),
+          ),
+        ],
+      ),
+      body: CubitConsumer<MainCubit, MainState>(
+        builder: (_, state) {
           if (state is DetailsLoaded) {
             currentState = DetailsLoaded;
             // _hideLoader();
@@ -122,7 +144,8 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
             return Center(child: CircularProgressIndicator());
 
           return _buildUI(context);
-        }, listener: (context, state) async {
+        },
+        listener: (context, state) async {
           if (state is LoadingState) {
             print("Loading State Called");
             _showLoader();
@@ -145,28 +168,9 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
               ),
             );
           }
-        }));
-  }
-
-  _showLoader() {
-    loader = true;
-    var alert = const AlertDialog(
-      backgroundColor: Colors.transparent,
-      elevation: 0,
-      content: Center(
-          child: CircularProgressIndicator(
-        backgroundColor: Colors.green,
-      )),
+        },
+      ),
     );
-    showDialog(
-        context: context, barrierDismissible: true, builder: (_) => alert);
-  }
-
-  _hideLoader() {
-    if (loader) {
-      loader = false;
-      Navigator.of(context, rootNavigator: true).pop();
-    }
   }
 
   _buildUI(BuildContext context) => Stack(children: [

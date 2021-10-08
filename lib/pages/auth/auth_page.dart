@@ -1,7 +1,6 @@
 //@dart=2.9
-import 'package:ccarev2_frontend/pages/profile/profile_page_adapter.dart';
-import 'package:ccarev2_frontend/pages/profile/profile_screen.dart';
 import 'package:ccarev2_frontend/pages/splash/splash_screen.dart';
+import 'package:ccarev2_frontend/utils/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import '../../customBuilds/customtextformfield.dart';
@@ -10,7 +9,6 @@ import '../../state_management/profile/profile_state.dart' as profileState;
 import '../../state_management/user/user_state.dart';
 import '../../user/domain/credential.dart';
 import '../../user/domain/token.dart';
-import '../../user/infra/user_api.dart';
 import '../../state_management/user/user_cubit.dart';
 import 'auth_page_adapter.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
@@ -208,7 +206,7 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
               "CardioCare",
               style: TextStyle(
                 fontSize: getProportionateScreenWidth(36),
-                color: Colors.blue,
+                color: kPrimaryColor,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -219,7 +217,7 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
             ),
             const SizedBox(height: 38),
             Image.asset(
-              "assets/images/sp1.png",
+              "assets/images/sp1e.png",
               height: getProportionateScreenHeight(400),
               width: getProportionateScreenWidth(285),
             ),
@@ -228,7 +226,7 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
       );
 
   _buildUI(BuildContext context, UserCubit cubit) => Container(
-        height: 300,
+        height: 300 + SizeConfig.bottomInsets,
         margin:
             EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
         width: MediaQuery.of(context).size.width,
@@ -277,7 +275,7 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
                       const Text(
                         '+91',
                         style: TextStyle(
-                          color: Colors.blue,
+                          color: kPrimaryColor,
                           fontSize: 18,
                         ),
                       ),
@@ -285,7 +283,7 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
                           hint: "Mobile Number",
                           obscureText: false,
                           keyboardType: TextInputType.number,
-                          color: Colors.blue,
+                          color: kPrimaryColor,
                           width: MediaQuery.of(context).size.width * 0.70,
                           backgroundColor: Colors.white,
                           textAlign: TextAlign.center,
@@ -314,7 +312,7 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
                       alignment: Alignment.center,
                       padding: const EdgeInsets.only(top: 8, bottom: 8),
                       decoration: ShapeDecoration(
-                        color: Colors.blue,
+                        color: kPrimaryColor,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30)),
                       ),
@@ -371,7 +369,7 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
                       hint: "OTP",
                       obscureText: false,
                       keyboardType: TextInputType.number,
-                      color: Colors.blue,
+                      color: kPrimaryColor,
                       width: MediaQuery.of(context).size.width * 0.40,
                       backgroundColor: Colors.white,
                       textAlign: TextAlign.center,
@@ -420,7 +418,7 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
                   alignment: Alignment.center,
                   padding: const EdgeInsets.only(top: 8, bottom: 8),
                   decoration: ShapeDecoration(
-                    color: Colors.blue,
+                    color: kPrimaryColor,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30)),
                   ),
@@ -442,14 +440,14 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         const Text("Resend OTP in ",
-            style: TextStyle(fontSize: 16, color: Colors.blue)),
+            style: TextStyle(fontSize: 16, color: kPrimaryColor)),
         AnimatedBuilder(
           animation: animationController,
           builder: (_, child) {
             return Text(timeString,
                 style: const TextStyle(
                     fontSize: 16,
-                    color: Colors.blue,
+                    color: kPrimaryColor,
                     fontWeight: FontWeight.bold));
           },
         )
