@@ -160,7 +160,7 @@ class MainAPI extends IMainAPI {
 
   @override
   Future<Result<Examination>> fetchPatientExamReport(Token token) async {
-    String endpoint = baseUrl + "/treatment/getReport";
+    String endpoint = baseUrl + "/treatment/getTreatment";
     var header = {
       "Content-Type": "application/json",
       "Authorization": token.value
@@ -182,7 +182,7 @@ class MainAPI extends IMainAPI {
   @override
   Future<Result<String>> savePatientExamReport(
       Token token, Examination examination) async {
-    String endpoint = baseUrl + "/treatment/doctor/updateEReport";
+    String endpoint = baseUrl + "/treatment/doctor/updateTreatment";
     var header = {
       "Content-Type": "application/json",
       "Authorization": token.value
