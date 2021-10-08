@@ -16,7 +16,11 @@ import 'package:flutter_cubit/flutter_cubit.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart' as lloc;
 import 'package:ccarev2_frontend/user/domain/location.dart' as loc;
+import 'package:url_launcher/url_launcher.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 class DriverHomeUI extends StatefulWidget {
   final IHomePageAdapter homePageAdapter;
   const DriverHomeUI(this.homePageAdapter);
@@ -30,10 +34,10 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
   LatLng _patientLocation;
   LatLng _doctorLocation;
   EDetails eDetails;
+  EStatus patientStatus=EStatus.EMERGENCY;
   dynamic currentState=null;
   LatLng _userLocation=LatLng(40, 23);
   bool loader=false;
-  static bool _doctorAccepted = false;
   static bool _patientAccepted = false;
   final Set<Marker> _markers = {};
   MapType _currentMapType = MapType.normal;
@@ -48,7 +52,16 @@ var scaffoldKey = GlobalKey<ScaffoldState>();
     _getLocation();
     
   }
+_makingPhoneCall() async {
+  // String url = eDetails.patientDetails.contactNumber;
+  String url = eDetails.patientDetails.contactNumber;
 
+  // if (await canLaunch("tel://$url")) {
+    await launch("tel:$url");
+  // } else {
+  //   throw 'Could not launch $url';
+  // }
+}
 _addPatientMarker() => _markers.add(Marker(
         // This marker id can be anything that uniquely identifies each marker.
         markerId: MarkerId(_patientLocation.toString()),
@@ -134,13 +147,13 @@ _addPatientMarker() => _markers.add(Marker(
           print("Locations $eDetails");
           if (eDetails != null) {
             if (eDetails.patientDetails!= null) {
+                patientStatus=eDetails.patientDetails.status;
               _patientAccepted=true;
               _patientLocation = LatLng(eDetails.patientDetails.location.latitude,
                   eDetails.patientDetails.location.longitude);
               _addPatientMarker();
             }
             if (eDetails.doctorDetails != null) {
-      _doctorAccepted=true;
               _doctorLocation = LatLng(eDetails.doctorDetails.location.latitude,
                   eDetails.doctorDetails.location.longitude);
               _addDoctorMarker();
@@ -311,105 +324,102 @@ if (state is LoadingState) {
           )
           ),
         width: double.infinity,
-        height:_doctorAccepted?350:200,
-        child: Column(
-          children:[
-            _buildPatientDetails(),
-            if(_doctorAccepted) _buildDoctorDetails(),
-          ]
-        ),
+        height:patientStatus==EStatus.EMERGENCY ? 250:200,
+        child: patientStatus==EStatus.EMERGENCY ? _buildEmergencyDetails():_buildOTWDetails()
     );
 
-    _buildPatientDetails() => Column(children: [
+    _buildEmergencyDetails() => Column(children: [
         Container(
-          
-          width: SizeConfig.screenWidth,
-          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-          child: Text(
-            "Patients Information",
-            textAlign: TextAlign.left,
-            style: TextStyle(fontSize: 18),
-          ),
-        ),
-        Container(
-          decoration: BoxDecoration(
-              color: Colors.blue[200], borderRadius: BorderRadius.circular(20)),
-          width: SizeConfig.screenWidth,
+           width: SizeConfig.screenWidth,
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("Name: "),
-                  // Text("Akshat Raj Vansh"),
-                  Text(eDetails.patientDetails.name),
+                  CircleAvatar(
+                    radius: 25,
+                    backgroundImage: AssetImage("/assets/images/dummy.jpeg"),
+                    
+                  ),
+                  SizedBox(width:10),
+                   Text(eDetails.patientDetails.name,style: TextStyle(
+                fontSize: 18,
+                color:Colors.blue,fontWeight: FontWeight.bold),),
                 ],
-              ),
-              const SizedBox(
-                height: 5,
               ),
              
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Text("Contact Number: "),
-                  // Text("+91 7355026029"),
-                  Text(eDetails.patientDetails.contactNumber),
-                ],
-              ), 
-              RichText(text: TextSpan(text:"Location : ",style:GoogleFonts.montserrat(color: Colors.black),children: [TextSpan(text:eDetails.patientDetails.address,style:TextStyle(color:Colors.black))
+                TextButton.icon(onPressed: _makingPhoneCall, icon: Icon(Icons.phone), label: Text("CALL")),
+                TextButton.icon(onPressed: ()=>print("CANCEL"), icon: Icon(Icons.cancel), label: Text("CANCEL"))
+              ],),
+               RichText(text: TextSpan(style:GoogleFonts.montserrat(color: Colors.blue)
+              ,children: [
+                WidgetSpan(child: Icon(FontAwesomeIcons.mapMarker,color:Colors.blue,size:15)),
+                TextSpan(text:" Destination :"),
+                TextSpan(text:eDetails.patientDetails.address,style:TextStyle(color:Colors.blue))
             ],
           ),
         ),
-      ])),]);
-_buildDoctorDetails() => Column(children: [
+        SizedBox(height:10),
+              Container(
+                width:double.infinity,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(shape:RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))),
+                  onPressed: () async {
+                    CubitProvider.of<MainCubit>(context).statusUpdate("OTW");
+
+                    setState((){
+                      patientStatus = EStatus.OTW;
+                    });
+                }, child: Text("PICK")),
+              )])),]);
+_buildOTWDetails() => Column(children: [
         Container(
-          width: SizeConfig.screenWidth,
-          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-          child: Text(
-            "Doctor's Information",
-            textAlign: TextAlign.left,
-            style: TextStyle(fontSize: 18),
-          ),
-        ),
-        Container(
-          decoration: BoxDecoration(
-              color: Colors.blue[200], borderRadius: BorderRadius.circular(20)),
-          width: SizeConfig.screenWidth,
+           width: SizeConfig.screenWidth,
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("Name: "),
-                  // Text("Akshat Raj Vansh"),
-                  Text(eDetails.doctorDetails.name),
+                  CircleAvatar(
+                    radius: 25,
+                    backgroundImage: AssetImage("/assets/images/dummy.jpeg"),
+                    
+                  ),
+                  SizedBox(width:10),
+                   Text(eDetails.patientDetails.name,style: TextStyle(
+                fontSize: 18,
+                color:Colors.blue,fontWeight: FontWeight.bold),),
                 ],
               ),
-              const SizedBox(
-                height: 5,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("Hospital: "),
-                  // Text("Apollo Medical Hospital"),
-                  Text(eDetails.doctorDetails.hospital),
-                ],
-              ),
-              RichText(text: TextSpan(text:"Location : ",style:GoogleFonts.montserrat(color: Colors.black)
-              ,children: [TextSpan(text:eDetails.doctorDetails.address,style:TextStyle(color:Colors.black))
+              SizedBox(height:10),
+               RichText(text: TextSpan(style:GoogleFonts.montserrat(color: Colors.blue)
+              ,children: [
+                WidgetSpan(child: Icon(FontAwesomeIcons.mapMarker,color:Colors.blue,size:15)),
+                TextSpan(text:" Destination :"),
+                TextSpan(text:eDetails.doctorDetails?.address,style:TextStyle(color:Colors.blue))
             ],
           ),
         ),
-            ],
-          ),
-        ),
-      ]);
+        SizedBox(height:10),
+              Container(
+                width:double.infinity,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(shape:RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))),
+                  onPressed: () async{
+                    CubitProvider.of<MainCubit>(context).statusUpdate("ATH");
+                    setState((){
+                      _patientAccepted=false;
+                    });
+                  //TODO:Backend #2 should make this ambulance availabe now
+                }, child: Text("DROP")),
+              )
+
+      ])),]);
 }

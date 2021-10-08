@@ -180,7 +180,7 @@ class _DoctorHomeUIState extends State<DoctorHomeUI> {
         }));
   }
 
-  _showLoader() {
+_showLoader(){
     loader = true;
     var alert = const AlertDialog(
       backgroundColor: Colors.transparent,

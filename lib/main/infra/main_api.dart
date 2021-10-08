@@ -54,9 +54,22 @@ class MainAPI extends IMainAPI {
   }
 
   @override
-  Future<Result<String>> notify(Token token, Location location) async {
+  Future<Result<String>> notify(
+      Token token, Location location, String action, bool ambRequired,
+      {List<QuestionTree>? assessment}) async {
     String endpoint = baseUrl + "/emergency/patient/notify";
-    print(endpoint);
+    assessment?.removeLast();
+    var ans = assessment
+        ?.map((e) => {"question": e.question, "answer": e.answers})
+        .toList();
+    print(ans);
+    var body = {
+      "latitude": location.latitude,
+      'longitude': location.longitude,
+      "action": action,
+      "ambulanceRequired": ambRequired,
+      "assessment":ans
+    };
     var header = {
       "Content-Type": "application/json",
       "Authorization": token.value
@@ -64,7 +77,7 @@ class MainAPI extends IMainAPI {
     var response = await _client.post(
       Uri.parse(endpoint),
       headers: header,
-      body: location.toJson(),
+      body: jsonEncode(body),
     );
     if (response.statusCode != 200) {
       print("error");
@@ -192,5 +205,25 @@ class MainAPI extends IMainAPI {
     }
     dynamic json = jsonDecode(response.body);
     return Result.value(EDetails.fromJson(jsonEncode(json)));
+  }
+
+  @override
+  Future<Result<String>> updateStatus(Token token, String status) async {
+    String endpoint = baseUrl + "/emergency/updateStatus";
+    var header = {
+      "Content-Type": "application/json",
+      "Authorization": token.value
+    };
+    var response = await _client
+        .post(Uri.parse(endpoint), headers: header, body: jsonEncode({'status': status}));
+    print(response.statusCode);
+    print(response.body);
+    if (response.statusCode != 200) {
+      Map map = jsonDecode(response.body);
+      print(transformError(map));
+      return Result.error(transformError(map));
+    }
+    dynamic json = jsonDecode(response.body);
+    return Result.value(json["message"]);
   }
 }
