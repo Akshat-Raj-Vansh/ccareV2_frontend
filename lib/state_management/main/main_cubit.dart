@@ -108,10 +108,10 @@ getQuestions() async {
       return;
     }
     if (result.isError) {
-      emit(ErrorState(result.asError.error));
+      emit(ErrorState(result.asError!.error as String));
       return;
     }
-    emit(PatientExamReportFetched(result.asValue.value));
+    emit(PatientExamReportFetched(result.asValue!.value));
   }
 
   editPatientExamReport() async {
@@ -129,13 +129,13 @@ getQuestions() async {
     _startLoading("PatientReportSaved");
     final token = await localStore.fetch();
     final result = await api.savePatientExamReport(Token(token.value), ereport);
-    print("Result ${result.asValue.value}");
+    print("Result ${result.asValue!.value}");
     if (result == null) {
       emit(ErrorState("Server Error"));
       return;
     }
     if (result.isError) {
-      emit(ErrorState(result.asError.error));
+      emit(ErrorState(result.asError!.error as String));
       return;
     }
     emit(PatientExamReportSaved("Saved"));
