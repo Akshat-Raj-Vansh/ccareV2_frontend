@@ -18,11 +18,8 @@ import 'package:ccarev2_frontend/user/domain/location.dart' as loc;
 import 'package:url_launcher/url_launcher.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-<<<<<<< HEAD
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-=======
->>>>>>> a9e63ac8786a345f4c4dc56a69a00c467f5d74c3
 class DriverHomeUI extends StatefulWidget {
   final IHomePageAdapter homePageAdapter;
   const DriverHomeUI(this.homePageAdapter);
