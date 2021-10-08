@@ -1,6 +1,7 @@
 //@dart=2.9
 import 'package:ccarev2_frontend/components/rounded_image_btn.dart';
 import 'package:ccarev2_frontend/user/domain/credential.dart';
+import 'package:ccarev2_frontend/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:location/location.dart';
@@ -29,7 +30,7 @@ class _BodyState extends State<Body> {
   List<Map<String, String>> splashData = [
     {
       "text": "Welcome to CardioCare,\n Let’s take care of your heart!",
-      "image": "assets/images/sp1.png"
+      "image": "assets/images/sp1e.png"
     },
   ];
 
@@ -81,10 +82,9 @@ class _BodyState extends State<Body> {
                     const Text(
                       "I'm a",
                       style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.blue,
-                      ),
+                          fontSize: 24,
+                          fontWeight: FontWeight.w700,
+                          color: kPrimaryColor),
                     ),
                     const SizedBox(height: 20),
                     Row(
@@ -125,7 +125,7 @@ class _BodyState extends State<Body> {
         child: FlatButton(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          color: Colors.blue,
+          color: kPrimaryColor,
           onPressed: press,
           child: Text(
             text,

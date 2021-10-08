@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:ccarev2_frontend/main/domain/edetails.dart';
+import 'package:ccarev2_frontend/main/domain/examination.dart';
 import 'package:ccarev2_frontend/main/domain/report.dart';
 import 'package:ccarev2_frontend/user/domain/location.dart';
 import 'package:ccarev2_frontend/utils/constants.dart';
@@ -161,6 +162,46 @@ class MainAPI extends IMainAPI {
     };
     var response = await _client.post(Uri.parse(endpoint),
         headers: header, body: report.toJson());
+    if (response.statusCode != 200) {
+      Map map = jsonDecode(response.body);
+      print(transformError(map));
+      return Result.error(transformError(map));
+    }
+    dynamic json = jsonDecode(response.body);
+    return Result.value(json["message"]);
+  }
+
+  @override
+  Future<Result<Examination>> fetchPatientExamReport(Token token) async {
+    String endpoint = baseUrl + "/treatment/getReport";
+    var header = {
+      "Content-Type": "application/json",
+      "Authorization": token.value
+    };
+    var response = await _client.get(Uri.parse(endpoint), headers: header);
+    print(response.statusCode);
+    print(response.body);
+    if (response.statusCode != 200) {
+      Map map = jsonDecode(response.body);
+      print(transformError(map));
+      return Result.error(transformError(map));
+    }
+    dynamic report = jsonDecode(response.body)['report'];
+    print(report);
+
+    return Result.value(Examination.fromJson(jsonEncode(report)));
+  }
+
+  @override
+  Future<Result<String>> savePatientExamReport(
+      Token token, Examination examination) async {
+    String endpoint = baseUrl + "/treatment/doctor/updateEReport";
+    var header = {
+      "Content-Type": "application/json",
+      "Authorization": token.value
+    };
+    var response = await _client.post(Uri.parse(endpoint),
+        headers: header, body: examination.toJson());
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
       print(transformError(map));

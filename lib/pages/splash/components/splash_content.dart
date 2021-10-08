@@ -1,6 +1,7 @@
 //@dart=2.9
 import 'package:flutter/material.dart';
 import '../../../utils/size_config.dart';
+import '../../../utils/constants.dart';
 
 class SplashContent extends StatelessWidget {
   const SplashContent({
@@ -19,7 +20,7 @@ class SplashContent extends StatelessWidget {
           "CardioCare",
           style: TextStyle(
             fontSize: getProportionateScreenWidth(36),
-            color: Colors.blue,
+            color: kPrimaryColor,
             fontWeight: FontWeight.bold,
           ),
         ),

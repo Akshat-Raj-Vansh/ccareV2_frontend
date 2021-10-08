@@ -1,4 +1,5 @@
 import 'package:ccarev2_frontend/cache/ilocal_store.dart';
+import 'package:ccarev2_frontend/main/domain/examination.dart';
 import 'package:ccarev2_frontend/main/domain/main_api_contract.dart';
 import 'package:ccarev2_frontend/main/domain/question.dart';
 import 'package:ccarev2_frontend/main/domain/report.dart';
@@ -74,6 +75,17 @@ getQuestions() async {
     emit(PatientReportFetched(result.asValue!.value));
   }
 
+  editPatientReport() async {
+    // print(report.toJson());
+    _startLoading("PatientReportEdited");
+    emit(EditPatientReport("editing patient report"));
+  }
+
+  viewPatientReport() async {
+    _startLoading("PatientReportViewed");
+    emit(ViewPatientReport("viewing patient report"));
+  }
+
   savePatientReport(Report report) async {
     _startLoading("PatientReportSaved");
     final token = await localStore.fetch();
@@ -85,6 +97,48 @@ getQuestions() async {
       return;
     }
     emit(PatientReportSaved("Saved"));
+  }
+
+  fetchPatientExamReport() async {
+    _startLoading("PatientReportFetch");
+    final token = await localStore.fetch();
+    final result = await api.fetchPatientExamReport(Token(token.value));
+    if (result == null) {
+      emit(ErrorState("Server Error"));
+      return;
+    }
+    if (result.isError) {
+      emit(ErrorState(result.asError.error));
+      return;
+    }
+    emit(PatientExamReportFetched(result.asValue.value));
+  }
+
+  editPatientExamReport() async {
+    // print(report.toJson());
+    _startLoading("PatientReportEdited");
+    emit(EditPatientExamReport("editing patient report"));
+  }
+
+  viewPatientExamReport() async {
+    _startLoading("PatientReportViewed");
+    emit(ViewPatientExamReport("viewing patient report"));
+  }
+
+  savePatientExamReport(Examination ereport) async {
+    _startLoading("PatientReportSaved");
+    final token = await localStore.fetch();
+    final result = await api.savePatientExamReport(Token(token.value), ereport);
+    print("Result ${result.asValue.value}");
+    if (result == null) {
+      emit(ErrorState("Server Error"));
+      return;
+    }
+    if (result.isError) {
+      emit(ErrorState(result.asError.error));
+      return;
+    }
+    emit(PatientExamReportSaved("Saved"));
   }
 
   acceptPatientByDriver(String patientID) async {
