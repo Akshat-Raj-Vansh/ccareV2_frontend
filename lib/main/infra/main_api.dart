@@ -1,7 +1,8 @@
 import 'dart:convert';
 import 'package:ccarev2_frontend/main/domain/edetails.dart';
 import 'package:ccarev2_frontend/main/domain/examination.dart';
-import 'package:ccarev2_frontend/main/domain/report.dart';
+import 'package:ccarev2_frontend/main/domain/treatment.dart' as treat;
+import 'package:ccarev2_frontend/user/domain/emergency.dart';
 import 'package:ccarev2_frontend/user/domain/location.dart';
 import 'package:ccarev2_frontend/utils/constants.dart';
 import 'package:http/http.dart' as http;
@@ -78,6 +79,30 @@ class MainAPI extends IMainAPI {
   }
 
   @override
+  Future<Result<String>> emergencyRequest(
+      Token token, Emergency emergency) async {
+    String endpoint = baseUrl + "/emergency/patient/notify";
+    print(endpoint);
+    var header = {
+      "Content-Type": "application/json",
+      "Authorization": token.value
+    };
+    var response = await _client.post(
+      Uri.parse(endpoint),
+      headers: header,
+      body: emergency.toJson(),
+    );
+    if (response.statusCode != 200) {
+      print("error");
+      Map map = jsonDecode(response.body);
+      print(transformError(map));
+      return Result.error(transformError(map));
+    }
+    dynamic json = jsonDecode(response.body);
+    return Result.value(json['message']);
+  }
+
+  @override
   Future<Result<Location>> acceptPatientbyDoctor(
       Token token, Token patient) async {
     String endpoint = baseUrl + "/emergency/doctor/acceptPatient";
@@ -120,7 +145,30 @@ class MainAPI extends IMainAPI {
   }
 
   @override
-  Future<Result<Report>> fetchPatientReport(Token token) async {
+  Future<Result<List<treat.TreatmentReport>>> fetchPatientReportHistory(
+      Token token) async {
+    String endpoint = baseUrl + "/treatment/getHistory";
+    var header = {
+      "Content-Type": "application/json",
+      "Authorization": token.value
+    };
+    var response = await _client.get(Uri.parse(endpoint), headers: header);
+    print(response.statusCode);
+    print(response.body);
+    if (response.statusCode != 200) {
+      Map map = jsonDecode(response.body);
+      print(transformError(map));
+      return Result.error(transformError(map));
+    }
+    List<treat.TreatmentReport> report =
+        (jsonDecode(response.body)['history'] as List)
+            .map((data) => treat.TreatmentReport.fromJson(jsonEncode(data)))
+            .toList();
+    return Result.value(report);
+  }
+
+  @override
+  Future<Result<treat.TreatmentReport>> fetchPatientReport(Token token) async {
     String endpoint = baseUrl + "/treatment/getReport";
     var header = {
       "Content-Type": "application/json",
@@ -135,13 +183,19 @@ class MainAPI extends IMainAPI {
       return Result.error(transformError(map));
     }
     dynamic report = jsonDecode(response.body)['report'];
+    try {
+      treat.TreatmentReport.fromJson(jsonEncode(report));
+    } catch (e) {
+      return Result.error("No medical records present");
+    }
     print(report);
 
-    return Result.value(Report.fromJson(jsonEncode(report)));
+    return Result.value(treat.TreatmentReport.fromJson(jsonEncode(report)));
   }
 
   @override
-  Future<Result<String>> savePatientReport(Token token, Report report) async {
+  Future<Result<String>> savePatientReport(
+      Token token, treat.TreatmentReport report) async {
     String endpoint = baseUrl + "/treatment/doctor/updateReport";
     var header = {
       "Content-Type": "application/json",
@@ -175,6 +229,11 @@ class MainAPI extends IMainAPI {
     }
     dynamic report = jsonDecode(response.body)['treatment'];
     print(report);
+    try {
+      Examination.fromJson(jsonEncode(report));
+    } catch (e) {
+      return Result.error("No medical records present");
+    }
 
     return Result.value(Examination.fromJson(jsonEncode(report)));
   }

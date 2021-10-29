@@ -27,16 +27,21 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  aligned_dialog: ^0.0.6
   cupertino_icons: ^1.0.2
   firebase_auth: ^3.0.2
   firebase_core: ^1.5.0
   firebase_messaging: ^10.0.4
-  flutter_local_notifications: ^8.1.1+1
+  image_picker: ^0.8.4+3
   flutter:
     sdk: flutter
-  google_maps_flutter: ^2.0.6
+  flutter_local_notifications: ^8.1.1+1
+  flutter_speed_dial: ^4.5.0
+  google_maps_flutter: ^2.0.11
   location: ^4.3.0
-  aligned_dialog: ^0.0.6
+  camera:
+  path_provider:
+  path:
 
 dev_dependencies:
   common:

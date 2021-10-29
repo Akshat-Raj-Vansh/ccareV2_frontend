@@ -1,8 +1,10 @@
 //@dart=2.9
+import 'package:camera/camera.dart';
 import 'package:ccarev2_frontend/main/domain/edetails.dart';
 import 'package:ccarev2_frontend/pages/home/home_page_adapter.dart';
-import 'package:ccarev2_frontend/pages/spoke_form/patient_exam_screen.dart';
 import 'package:ccarev2_frontend/pages/spoke_form/patient_report_screen.dart';
+import 'package:ccarev2_frontend/pages/spoke_form/patient_exam_screen.dart';
+import 'package:ccarev2_frontend/pages/spoke_form/patient_history_screen.dart';
 import 'package:ccarev2_frontend/services/Notifications/notificationContoller.dart';
 import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
 import 'package:ccarev2_frontend/state_management/main/main_state.dart';
@@ -13,12 +15,7 @@ import 'package:ccarev2_frontend/utils/size_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:aligned_dialog/aligned_dialog.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:location/location.dart' as lloc;
-import 'package:ccarev2_frontend/user/domain/location.dart' as loc;
 
 class DoctorHomeUI extends StatefulWidget {
   final MainCubit mainCubit;
@@ -47,15 +44,15 @@ class _DoctorHomeUIState extends State<DoctorHomeUI> {
     NotificationController.fcmHandler();
   }
 
-  Future<loc.Location> _getLocation() async {
-    lloc.LocationData _locationData = await lloc.Location().getLocation();
-    print(_locationData.latitude.toString() +
-        "," +
-        _locationData.longitude.toString());
-    loc.Location _location = loc.Location(
-        latitude: _locationData.latitude, longitude: _locationData.longitude);
-    return _location;
-  }
+  // Future<loc.Location> _getLocation() async {
+  //   lloc.LocationData _locationData = await lloc.Location().getLocation();
+  //   print(_locationData.latitude.toString() +
+  //       "," +
+  //       _locationData.longitude.toString());
+  //   loc.Location _location = loc.Location(
+  //       latitude: _locationData.latitude, longitude: _locationData.longitude);
+  //   return _location;
+  // }
 
   _showLoader() {
     loader = true;
@@ -244,6 +241,7 @@ class _DoctorHomeUIState extends State<DoctorHomeUI> {
             if (_patientAccepted) _buildPatientDetails(),
             if (_patientAccepted) _buildPatientReportButton(),
             if (_patientAccepted) _buildPatientExamButton(),
+            if (_patientAccepted) _buildPatientReportHistoryButton(),
             if (_driverAccepted) _buildDriverDetails(),
             if (!_emergency) _buildHeader(),
             // Padding(
@@ -327,8 +325,11 @@ class _DoctorHomeUIState extends State<DoctorHomeUI> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) =>
-                    PatientReportScreen(mainCubit: widget.mainCubit),
+                builder: (context) => PatientReportScreen(
+                  mainCubit: widget.mainCubit,
+                  user: UserType.doctor,
+                  patientDetails: eDetails.patientDetails,
+                ),
               ));
         },
         child: Container(
@@ -351,8 +352,10 @@ class _DoctorHomeUIState extends State<DoctorHomeUI> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) =>
-                    PatientExamScreen(mainCubit: widget.mainCubit),
+                builder: (context) => PatientExamScreen(
+                  mainCubit: widget.mainCubit,
+                  patientDetails: eDetails.patientDetails,
+                ),
               ));
         },
         child: Container(
@@ -369,6 +372,28 @@ class _DoctorHomeUIState extends State<DoctorHomeUI> {
           ),
         ),
       );
+
+  _buildPatientReportHistoryButton() => InkWell(
+        onTap: () async {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                    PatientReportHistoryScreen(mainCubit: widget.mainCubit),
+              ));
+        },
+        child: Container(
+          width: SizeConfig.screenWidth,
+          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          child: Text(
+            "View Patient's Medical Report History",
+            style: TextStyle(color: kPrimaryColor, fontSize: 14),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      );
+
   _buildDriverDetails() => Column(children: [
         Container(
           width: SizeConfig.screenWidth,

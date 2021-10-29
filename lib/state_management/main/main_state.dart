@@ -1,7 +1,7 @@
 import 'package:ccarev2_frontend/cache/local_store.dart';
 import 'package:ccarev2_frontend/main/domain/edetails.dart';
 import 'package:ccarev2_frontend/main/domain/examination.dart';
-import 'package:ccarev2_frontend/main/domain/report.dart';
+import 'package:ccarev2_frontend/main/domain/treatment.dart' as treat;
 import 'package:ccarev2_frontend/services/Notifications/component/patient.dart';
 import 'package:ccarev2_frontend/user/domain/location.dart';
 import 'package:equatable/equatable.dart';
@@ -61,11 +61,26 @@ class QuestionnaireState extends MainState {
   List<Object> get props => [this.questions];
 }
 
+class PatientReportHistoryFetched extends MainState {
+  final treat.TreatmentReport report1;
+  final treat.TreatmentReport report2;
+  PatientReportHistoryFetched(this.report1, this.report2);
+  @override
+  List<Object> get props => [this.report1, this.report2];
+}
+
 class PatientReportFetched extends MainState {
-  final Report report;
+  final treat.TreatmentReport report;
   PatientReportFetched(this.report);
   @override
   List<Object> get props => [this.report];
+}
+
+class EditExaminationReport extends MainState {
+  final bool value;
+  EditExaminationReport(this.value);
+  @override
+  List<Object> get props => [this.value];
 }
 
 class PatientReportSaved extends MainState {
@@ -85,6 +100,13 @@ class ViewPatientReport extends MainState {
 class EditPatientReport extends MainState {
   final String msg;
   EditPatientReport(this.msg);
+  @override
+  List<Object> get props => [this.msg];
+}
+
+class ImageCaptured extends MainState {
+  final String msg;
+  ImageCaptured(this.msg);
   @override
   List<Object> get props => [this.msg];
 }

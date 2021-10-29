@@ -1,6 +1,7 @@
 //@dart=2.9
 import 'package:ccarev2_frontend/main/domain/edetails.dart';
 import 'package:ccarev2_frontend/pages/home/home_page_adapter.dart';
+import 'package:ccarev2_frontend/pages/spoke_form/patient_history_screen.dart';
 import 'package:ccarev2_frontend/pages/spoke_form/patient_report_screen.dart';
 import 'package:ccarev2_frontend/services/Notifications/notificationContoller.dart';
 import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
@@ -182,6 +183,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
               if (_notificationSent && (!_doctorAccepted || !_driverAccepted))
                 _buildNotificationSend(),
               _buildPatientReportButton(),
+              _buildPatientReportHistoryButton(),
               if (_doctorAccepted || _driverAccepted)
                 Padding(
                   padding:
@@ -221,8 +223,8 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) =>
-                    PatientReportScreen(mainCubit: widget.mainCubit),
+                builder: (context) => PatientReportScreen(
+                    mainCubit: widget.mainCubit, user: UserType.patient),
               ));
         },
         child: Container(
@@ -235,6 +237,27 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
           child: Text(
             "View Patient's Medical Report",
             style: TextStyle(color: Colors.white, fontSize: 14),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      );
+
+  _buildPatientReportHistoryButton() => InkWell(
+        onTap: () async {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                    PatientReportHistoryScreen(mainCubit: widget.mainCubit),
+              ));
+        },
+        child: Container(
+          width: SizeConfig.screenWidth,
+          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          child: Text(
+            "View your Medical Report History",
+            style: TextStyle(color: kPrimaryColor, fontSize: 14),
             textAlign: TextAlign.center,
           ),
         ),
@@ -307,6 +330,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                   borderRadius: BorderRadius.circular(20)),
               onPressed: () async {
                 if (!_emergency)
+                  //Ask for ambulance
                   await widget.mainCubit.notify();
                 else {
                   _showLoader();
