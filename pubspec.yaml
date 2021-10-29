@@ -39,14 +39,11 @@ dependencies:
   flutter_speed_dial: ^4.5.0
   google_maps_flutter: ^2.0.11
   location: ^4.3.0
-<<<<<<< HEAD
   camera:
   path_provider:
   path:
-=======
   aligned_dialog: ^0.0.6
   url_launcher:
->>>>>>> 9afb11580cd4da65af6d55614beb10ff85bccc38
 
 dev_dependencies:
   common:

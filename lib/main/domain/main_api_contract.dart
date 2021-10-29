@@ -12,7 +12,7 @@ abstract class IMainAPI {
   //Future<Result<String>> notify(Token token, loc.Location location);
   Future<Result<String>> emergencyRequest(Token token, Emergency emergency);
   Future<Result<String>> notify(
-      Token token, Location location, String action, bool ambRequired,
+      Token token, loc.Location location, String action, bool ambRequired,
       {List<QuestionTree>? assessment});
   Future<Result<String>> getAllPatients(Token token);
   Future<Result<dynamic>> fetchPatientReportHistory(Token token);
