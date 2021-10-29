@@ -393,11 +393,7 @@ packages:
       name: meta
       url: "https://pub.dartlang.org"
     source: hosted
-<<<<<<< HEAD
     version: "1.7.0"
-=======
-    version: "1.3.0"
->>>>>>> 9afb11580cd4da65af6d55614beb10ff85bccc38
   nested:
     dependency: transitive
     description:
@@ -605,11 +601,7 @@ packages:
       name: test_api
       url: "https://pub.dartlang.org"
     source: hosted
-<<<<<<< HEAD
     version: "0.4.3"
-=======
-    version: "0.3.0"
->>>>>>> 9afb11580cd4da65af6d55614beb10ff85bccc38
   timezone:
     dependency: transitive
     description:
