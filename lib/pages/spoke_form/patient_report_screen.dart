@@ -162,7 +162,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
 
   _fetchReport() async {
     print("Fetching patient report");
-    await widget.mainCubit.fetchPatientReport();
+    widget.mainCubit.fetchPatientReport();
   }
 
   @override

@@ -9,8 +9,11 @@ import 'question.dart';
 
 abstract class IMainAPI {
   Future<Result<List<QuestionTree>>> getAll(Token token);
-  Future<Result<String>> notify(Token token, loc.Location location);
+  //Future<Result<String>> notify(Token token, loc.Location location);
   Future<Result<String>> emergencyRequest(Token token, Emergency emergency);
+  Future<Result<String>> notify(
+      Token token, Location location, String action, bool ambRequired,
+      {List<QuestionTree>? assessment});
   Future<Result<String>> getAllPatients(Token token);
   Future<Result<dynamic>> fetchPatientReportHistory(Token token);
   Future<Result<String>> savePatientReport(Token token, TreatmentReport report);
@@ -23,4 +26,5 @@ abstract class IMainAPI {
   Future<Result<loc.Location>> acceptPatientbyDriver(
       Token token, Token patient);
   Future<Result<EDetails>> fetchEmergencyDetails(Token token);
+  Future<Result<String>> updateStatus(Token token, String status);
 }

@@ -158,6 +158,8 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
             _showMessage("Notifications sent to the Doctor and the Ambulance.");
           } else if (state is DetailsLoaded) {
             _hideLoader();
+          } else if (state is ErrorState) {
+            _hideLoader();
           } else if (state is QuestionnaireState) {
             print("Questionnaire State Called");
             _hideLoader();
@@ -329,10 +331,9 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20)),
               onPressed: () async {
-                if (!_emergency)
-                  //Ask for ambulance
-                  await widget.mainCubit.notify();
-                else {
+                if (!_emergency) {
+                  _showAmbRequired();
+                } else {
                   _showLoader();
                   loc.Location location = await _getLocation();
                   _hideLoader();
@@ -363,6 +364,56 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                   style: TextStyle(color: Colors.white, fontSize: 16)))
         ]),
       ));
+
+  _showAmbRequired() async {
+    var alert = AlertDialog(
+      title: Center(
+        child: const Text(
+          'Emergency',
+          style: TextStyle(
+            fontWeight: FontWeight.w600,
+            fontSize: 20,
+          ),
+        ),
+      ),
+      content: const Text(
+        'Do you need an ambulance?',
+        style: TextStyle(
+          fontWeight: FontWeight.w300,
+          fontSize: 15,
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(false),
+          child: const Text(
+            'Cancel',
+          ),
+        ),
+        TextButton(
+          onPressed: () async {
+            Navigator.of(context).pop(false);
+            await widget.mainCubit.notify("EBUTTON", true);
+            // await widget.mainCubit.fetchEmergencyDetails();
+          },
+          child: const Text(
+            'Yes',
+          ),
+        ),
+        TextButton(
+          onPressed: () async {
+            Navigator.of(context).pop(false);
+            await widget.mainCubit.notify("QUESTIONNAIRE", false);
+            // await widget.mainCubit.fetchEmergencyDetails();
+          },
+          child: const Text(
+            'No',
+          ),
+        ),
+      ],
+    );
+    showDialog(context: context, builder: (context) => alert);
+  }
 
   _buildDriverDetails() => Column(children: [
         Container(
@@ -426,6 +477,35 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
               ),
             ])),
       ]);
+
+  _buildEmergencyButton() => InkWell(
+        onTap: () async {
+          if (!_emergency)
+            await widget.mainCubit.notify("EBUTTON", true);
+          else {
+            _showLoader();
+            loc.Location location = await _getLocation();
+            _hideLoader();
+            return widget.homePageAdapter
+                .loadEmergencyScreen(context, UserType.patient, location);
+          }
+        },
+        child: Container(
+            color: Colors.red[400],
+            padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+            child: ListTile(
+              leading: Icon(CupertinoIcons.exclamationmark_bubble,
+                  color: Colors.white),
+              title: Text(
+                "Press here for Emergency Service!",
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+              subtitle: Text(
+                "Emergency Situation ->",
+                style: TextStyle(color: Colors.white, fontSize: 12),
+              ),
+            )),
+      );
 
   _buildHeader() => Container(
       color: kPrimaryLightColor,

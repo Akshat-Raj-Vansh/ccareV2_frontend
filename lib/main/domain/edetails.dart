@@ -62,6 +62,8 @@ class EDetails {
   int get hashCode => patientDetails.hashCode ^ doctorDetails.hashCode ^ driverDetails.hashCode;
 }
 
+enum EStatus {OTW,EMERGENCY,ATH,OGT,END}
+
 
 
 class PatientDetails {
@@ -71,6 +73,7 @@ class PatientDetails {
     final String gender;
     final String contactNumber;    
     final String address;
+    final EStatus status;
   PatientDetails({
     required this.name,
     required this.location,
@@ -78,6 +81,7 @@ class PatientDetails {
     required this.gender,
     required this.contactNumber,
     required this.address,
+    required this.status,
   });
 
   PatientDetails copyWith({
@@ -87,6 +91,7 @@ class PatientDetails {
     String? gender,
     String? contactNumber,
     String? address,
+    EStatus? status,
   }) {
     return PatientDetails(
       name: name ?? this.name,
@@ -95,6 +100,7 @@ class PatientDetails {
       gender: gender ?? this.gender,
       contactNumber: contactNumber ?? this.contactNumber,
       address: address ?? this.address,
+      status: status ?? this.status,
     );
   }
 
@@ -106,6 +112,7 @@ class PatientDetails {
       'gender': gender,
       'contactNumber': contactNumber,
       'address': address,
+      'status': status.toString(),
     };
   }
 
@@ -117,6 +124,8 @@ class PatientDetails {
       gender: map['gender'],
       contactNumber: map['contactNumber'],
       address: map['address'],
+      status:  EStatus.values.firstWhere(
+          (element) => element.toString() == "EStatus." + map["status"]),
     );
   }
 
@@ -126,7 +135,7 @@ class PatientDetails {
 
   @override
   String toString() {
-    return 'PatientDetails(name: $name, location: $location, age: $age, gender: $gender, contactNumber: $contactNumber, address: $address)';
+    return 'PatientDetails(name: $name, location: $location, age: $age, gender: $gender, contactNumber: $contactNumber, address: $address, status: $status)';
   }
 
   @override
@@ -139,7 +148,8 @@ class PatientDetails {
       other.age == age &&
       other.gender == gender &&
       other.contactNumber == contactNumber &&
-      other.address == address;
+      other.address == address &&
+      other.status == status;
   }
 
   @override
@@ -149,7 +159,8 @@ class PatientDetails {
       age.hashCode ^
       gender.hashCode ^
       contactNumber.hashCode ^
-      address.hashCode;
+      address.hashCode ^
+      status.hashCode;
   }
 }
 

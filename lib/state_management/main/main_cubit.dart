@@ -1,10 +1,8 @@
-//@dart=2.9
-
 import 'package:ccarev2_frontend/cache/ilocal_store.dart';
 import 'package:ccarev2_frontend/main/domain/examination.dart' as exam;
 import 'package:ccarev2_frontend/main/domain/main_api_contract.dart';
-import 'package:ccarev2_frontend/main/domain/treatment.dart';
-import 'package:ccarev2_frontend/user/domain/emergency.dart';
+import 'package:ccarev2_frontend/main/domain/question.dart';
+import 'package:ccarev2_frontend/main/domain/treatment.dart' as treat;
 import 'package:ccarev2_frontend/user/domain/location.dart' as loc;
 import 'package:ccarev2_frontend/user/domain/token.dart';
 import 'package:cubit/cubit.dart';
@@ -21,46 +19,27 @@ class MainCubit extends Cubit<MainState> {
     final token = await localStore.fetch();
     final result = await api.getAll(Token(token.value));
 
-    if (result == null) emit(ErrorState("Server Error"));
     if (result.isError) {
-      emit(ErrorState(result.asError.error));
+      emit(ErrorState(result.asError!.error as String));
       return;
     }
-    emit(QuestionnaireState(result.asValue.value));
+    emit(QuestionnaireState(result.asValue!.value));
   }
 
-  notify() async {
+  notify(String action, bool ambRequired,
+      {List<QuestionTree>? assessment}) async {
     print("Inside Notify");
     _startLoading("notify");
     final token = await localStore.fetch();
-    final result = await api.notify(
-        Token(token.value), loc.Location(latitude: 32.82, longitude: 76.14));
-    print(result);
-    if (result == null) emit(ErrorState("Server Error"));
-    if (result.isError) {
-      emit(ErrorState(result.asError.error));
-      return;
-    }
-    emit(EmergencyState(result.asValue.value));
-  }
+    final result = await api.notify(Token(token.value),
+        loc.Location(latitude: 32.82, longitude: 76.14), action, ambRequired,
+        assessment: assessment);
 
-  emergencyRequest() async {
-    print("Inside Emergency Request");
-    _startLoading("Emergency Request");
-    Emergency emergency = Emergency(
-        latitude: 32.82,
-        longitude: 76.14,
-        ambulanceRequired: true,
-        action: "EBUTTON");
-    final token = await localStore.fetch();
-    final result = await api.emergencyRequest(Token(token.value), emergency);
-    print(result);
-    if (result == null) emit(ErrorState("Server Error"));
     if (result.isError) {
-      emit(ErrorState(result.asError.error));
+      emit(ErrorState(result.asError!.error as String));
       return;
     }
-    emit(EmergencyState(result.asValue.value));
+    emit(EmergencyState(result.asValue!.value));
   }
 
   acceptRequest(String patientID) async {
@@ -78,28 +57,22 @@ class MainCubit extends Cubit<MainState> {
     final token = await localStore.fetch();
     final result =
         await api.acceptPatientbyDoctor(Token(token.value), Token(patientID));
-    print(result);
-    if (result == null) emit(ErrorState("Server Error"));
     if (result.isError) {
-      emit(ErrorState(result.asError.error));
+      emit(ErrorState(result.asError!.error as String));
       return;
     }
-    emit(PatientAccepted(result.asValue.value));
+    emit(PatientAccepted(result.asValue!.value));
   }
 
   fetchPatientReportHistory() async {
     _startLoading("PatientReportHistoryFetch");
     final token = await localStore.fetch();
     final result = await api.fetchPatientReportHistory(Token(token.value));
-    if (result == null) {
-      emit(NoReportState("Server Error"));
-      return;
-    }
     if (result.isError) {
-      emit(NoReportState(result.asError.error));
+      emit(ErrorState(result.asError!.error as String));
       return;
     }
-    List<TreatmentReport> reports = result.asValue.value;
+    List<treat.TreatmentReport> reports = result.asValue!.value;
     final report1 = reports[0];
     final report2 = reports[1];
     print(report1.toJson());
@@ -111,16 +84,12 @@ class MainCubit extends Cubit<MainState> {
     _startLoading("PatientReportFetch");
     final token = await localStore.fetch();
     final result = await api.fetchPatientReport(Token(token.value));
-    if (result == null) {
-      print("Result came null");
-      emit(NoReportState("Server Error"));
-      return;
-    }
+
     if (result.isError) {
-      emit(NoReportState(result.asError.error));
+      emit(ErrorState(result.asError!.error as String));
       return;
     }
-    emit(PatientReportFetched(result.asValue.value));
+    emit(PatientReportFetched(result.asValue!.value));
   }
 
   editPatientReport() async {
@@ -138,17 +107,14 @@ class MainCubit extends Cubit<MainState> {
     emit(ViewPatientReport("viewing patient report"));
   }
 
-  savePatientReport(TreatmentReport report) async {
+  savePatientReport(treat.TreatmentReport report) async {
     _startLoading("PatientReportSaved");
     final token = await localStore.fetch();
     final result = await api.savePatientReport(Token(token.value), report);
-    print("Result ${result.asValue.value}");
-    if (result == null) {
-      emit(ErrorState("Server Error"));
-      return;
-    }
+    print("Result ${result.asValue!.value}");
+
     if (result.isError) {
-      emit(ErrorState(result.asError.error));
+      emit(ErrorState(result.asError!.error as String));
       return;
     }
     emit(PatientReportSaved("Saved"));
@@ -163,10 +129,10 @@ class MainCubit extends Cubit<MainState> {
       return;
     }
     if (result.isError) {
-      emit(NoReportState(result.asError.error));
+      emit(ErrorState(result.asError!.error as String));
       return;
     }
-    emit(PatientExamReportFetched(result.asValue.value));
+    emit(PatientExamReportFetched(result.asValue!.value));
   }
 
   editPatientExamReport() async {
@@ -183,13 +149,13 @@ class MainCubit extends Cubit<MainState> {
     _startLoading("PatientReportSaved");
     final token = await localStore.fetch();
     final result = await api.savePatientExamReport(Token(token.value), ereport);
-    print("Result ${result.asValue.value}");
+    print("Result ${result.asValue!.value}");
     if (result == null) {
       emit(ErrorState("Server Error"));
       return;
     }
     if (result.isError) {
-      emit(ErrorState(result.asError.error));
+      emit(ErrorState(result.asError!.error as String));
       return;
     }
     emit(PatientExamReportSaved("Saved"));
@@ -205,16 +171,13 @@ class MainCubit extends Cubit<MainState> {
     final token = await localStore.fetch();
     final result =
         await api.acceptPatientbyDriver(Token(token.value), Token(patientID));
-    print("Result ${result.asValue.value}");
-    if (result == null) {
-      emit(ErrorState("Server Error"));
-      return;
-    }
+    print("Result ${result.asValue!.value}");
+
     if (result.isError) {
-      emit(ErrorState(result.asError.error));
+      emit(ErrorState(result.asError!.error as String));
       return;
     }
-    emit(PatientAccepted(result.asValue.value));
+    emit(PatientAccepted(result.asValue!.value));
   }
 
   doctorAccepted(loc.Location location) async {
@@ -240,25 +203,35 @@ class MainCubit extends Cubit<MainState> {
     _startLoading("getAllpatients");
     final token = await localStore.fetch();
     final result = await api.getAllPatients(token);
-    print(result);
-    if (result == null) emit(ErrorState("Server Error"));
+
     if (result.isError) {
-      emit(ErrorState(result.asError.error));
+      emit(ErrorState(result.asError!.error as String));
       return;
     }
-    emit(AllPatientsState(result.asValue.value));
+    emit(AllPatientsState(result.asValue!.value));
   }
 
   fetchEmergencyDetails() async {
     _startLoading("fetchEmergencyDetails");
     final token = await localStore.fetch();
     final result = await api.fetchEmergencyDetails(token);
-    if (result == null) emit(ErrorState("Server Error"));
     if (result.isError) {
-      emit(NormalState(result.asError.error));
+      emit(NormalState(result.asError!.error as String));
       return;
     }
-    emit(DetailsLoaded(result.asValue.value));
+    emit(DetailsLoaded(result.asValue!.value));
+  }
+
+  statusUpdate(String status) async {
+    _startLoading("Updating Status");
+    final token = await localStore.fetch();
+    final result = await api.updateStatus(token, status);
+    if (result.isError) {
+      emit(ErrorState(result.asError!.error as String));
+      return;
+    }
+    emit(NormalState(result.asValue!.value));
+    //can emit a state
   }
 
   void _startLoading(String from) {
