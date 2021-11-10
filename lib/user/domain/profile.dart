@@ -1,61 +1,62 @@
 import 'dart:convert';
 
-import 'package:ccarev2_frontend/user/domain/location.dart';
 import 'package:flutter/foundation.dart';
+
+import 'package:ccarev2_frontend/user/domain/location.dart';
 
 class DoctorProfile {
   final String name;
-  final String specialization;
-  final String uniqueCode;
-  final String email;
-  final Location location;
   final String hospitalName;
+  final String email;
+  final String phoneNumber;
+  final String type;
+  final Location location;
   DoctorProfile({
     required this.name,
-    required this.specialization,
-    required this.uniqueCode,
-    required this.email,
-    required this.location,
     required this.hospitalName,
+    required this.email,
+    required this.phoneNumber,
+    required this.type,
+    required this.location,
   });
 
   DoctorProfile copyWith({
     String? name,
-    String? specialization,
-    String? uniqueCode,
-    String? email,
-    Location? location,
     String? hospitalName,
+    String? email,
+    String? phoneNumber,
+    String? type,
+    Location? location,
   }) {
     return DoctorProfile(
       name: name ?? this.name,
-      specialization: specialization ?? this.specialization,
-      uniqueCode: uniqueCode ?? this.uniqueCode,
-      email: email ?? this.email,
-      location: location ?? this.location,
       hospitalName: hospitalName ?? this.hospitalName,
+      email: email ?? this.email,
+      phoneNumber: phoneNumber ?? this.phoneNumber,
+      type: type ?? this.type,
+      location: location ?? this.location,
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
       'name': name,
-      'specialization': specialization,
-      'uniqueCode': uniqueCode,
-      'email': email,
-      'location': location.toMap(),
       'hospitalName': hospitalName,
+      'email': email,
+      'phoneNumber': phoneNumber,
+      'type': type,
+      'location': location.toMap(),
     };
   }
 
   factory DoctorProfile.fromMap(Map<String, dynamic> map) {
     return DoctorProfile(
       name: map['name'],
-      specialization: map['specialization'],
-      uniqueCode: map['uniqueCode'],
-      email: map['email'],
-      location: Location.fromMap(map['location']),
       hospitalName: map['hospitalName'],
+      email: map['email'],
+      phoneNumber: map['phoneNumber'],
+      type: map['type'],
+      location: Location.fromMap(map['location']),
     );
   }
 
@@ -66,30 +67,30 @@ class DoctorProfile {
 
   @override
   String toString() {
-    return 'DoctorProfile(name: $name, specialization: $specialization, uniqueCode: $uniqueCode, email: $email, location: $location, hospitalName: $hospitalName)';
+    return 'DoctorProfile(name: $name, hospitalName: $hospitalName, email: $email, phoneNumber: $phoneNumber, type: $type, location: $location)';
   }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-  
+
     return other is DoctorProfile &&
-      other.name == name &&
-      other.specialization == specialization &&
-      other.uniqueCode == uniqueCode &&
-      other.email == email &&
-      other.location == location &&
-      other.hospitalName == hospitalName;
+        other.name == name &&
+        other.hospitalName == hospitalName &&
+        other.email == email &&
+        other.phoneNumber == phoneNumber &&
+        other.type == type &&
+        other.location == location;
   }
 
   @override
   int get hashCode {
     return name.hashCode ^
-      specialization.hashCode ^
-      uniqueCode.hashCode ^
-      email.hashCode ^
-      location.hashCode ^
-      hospitalName.hashCode;
+        hospitalName.hashCode ^
+        email.hashCode ^
+        phoneNumber.hashCode ^
+        type.hashCode ^
+        location.hashCode;
   }
 }
 

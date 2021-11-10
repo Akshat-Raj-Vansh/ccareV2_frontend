@@ -10,7 +10,8 @@ import '../../../user/domain/location.dart' as loc;
 
 class DoctorProfileScreen extends StatefulWidget {
   final ProfileCubit cubit;
-  const DoctorProfileScreen(this.cubit);
+  final String phone;
+  const DoctorProfileScreen(this.cubit, this.phone);
 
   @override
   State<DoctorProfileScreen> createState() => _DoctorProfileScreenState();
@@ -23,10 +24,9 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
   Widget build(BuildContext context) {
     var cubit = CubitProvider.of<ProfileCubit>(context);
     String name;
-    String uniqueCode;
-    String specialization;
+    String hospitalName;
     String email;
-    String hospital;
+    String type;
     return Form(
       key: _formKeyDoctor,
       child: Column(
@@ -46,35 +46,11 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
           SizedBox(height: getProportionateScreenHeight(10)),
           TextFormField(
             keyboardType: TextInputType.text,
-            onSaved: (newValue) => hospital = newValue.toUpperCase(),
+            onSaved: (newValue) => hospitalName = newValue.toUpperCase(),
             validator: (value) => value.isEmpty ? "Hospital is required" : null,
             decoration: const InputDecoration(
               labelText: "Hospital Name",
               hintText: "Enter your Hospital Name",
-              floatingLabelBehavior: FloatingLabelBehavior.always,
-            ),
-          ),
-          SizedBox(height: getProportionateScreenHeight(10)),
-          TextFormField(
-            keyboardType: TextInputType.text,
-            onSaved: (newValue) => specialization = newValue.toUpperCase(),
-            validator: (value) =>
-                value.isEmpty ? "Specialization is required" : null,
-            decoration: const InputDecoration(
-              labelText: "Specialization",
-              hintText: "Enter your Specialization",
-              floatingLabelBehavior: FloatingLabelBehavior.always,
-            ),
-          ),
-          SizedBox(height: getProportionateScreenHeight(10)),
-          TextFormField(
-            keyboardType: TextInputType.text,
-            onSaved: (newValue) => uniqueCode = newValue.toUpperCase(),
-            validator: (value) =>
-                value.isEmpty ? "Unique Code is required" : null,
-            decoration: const InputDecoration(
-              labelText: "Unique Code",
-              hintText: "Enter your Unique Code",
               floatingLabelBehavior: FloatingLabelBehavior.always,
             ),
           ),
@@ -100,14 +76,15 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
                   _formKeyDoctor.currentState.save();
                   lloc.LocationData locationData = await _getLocation();
                   var profile = DoctorProfile(
-                      name: name,
-                      specialization: specialization,
-                      hospitalName: hospital,
-                      uniqueCode: uniqueCode,
-                      email: email,
-                      location: loc.Location(
-                          latitude: locationData.latitude,
-                          longitude: locationData.longitude));
+                    name: name,
+                    hospitalName: hospitalName,
+                    phoneNumber: widget.phone,
+                    email: email,
+                    location: loc.Location(
+                        latitude: locationData.latitude,
+                        longitude: locationData.longitude),
+                    type: "SPOKE",
+                  );
                   print(profile.toString());
                   cubit.addDoctorProfile(profile);
                 } else {
