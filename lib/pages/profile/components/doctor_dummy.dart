@@ -20,6 +20,20 @@ class DoctorProfileScreen extends StatefulWidget {
 class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
   final _formKeyDoctor = GlobalKey<FormState>();
 
+  String _specialization;
+  String _email;
+  String _uniqueCode;
+
+  String _myHospital;
+  String _myName;
+  DType _myType;
+  List<String> hospitals = ['MGMSC Khaneri Rampur', 'NIT Hamirpur'];
+  // List<List<String>> doctors = [
+  //   ['Dr. XY MKR', 'Dr. MN MKR', 'Dr. WZ MKR'],
+  //   ['Dr. XY PHC', 'Dr. MN PHC', 'Dr. WZ PHC'],
+  //   ['Dr. XY NIT', 'Dr. MN NIT', 'Dr. WZ NIT']
+  // ];
+  List<String> doctors = ['Dr. XY MKR', 'Dr. MN MKR', 'Dr. WZ NIT'];
   @override
   Widget build(BuildContext context) {
     var cubit = CubitProvider.of<ProfileCubit>(context);
@@ -32,15 +46,43 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(height: getProportionateScreenHeight(20)),
-          TextFormField(
-            keyboardType: TextInputType.text,
-            onSaved: (newValue) => name = newValue,
-            validator: (value) => value.isEmpty ? "Name is required" : null,
-            decoration: const InputDecoration(
-              labelText: "Full Name",
-              hintText: "Enter your Full Name",
-              floatingLabelBehavior: FloatingLabelBehavior.always,
+          Container(
+            padding: EdgeInsets.only(left: 15, right: 15, top: 5),
+            color: Colors.white,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Expanded(
+                  child: DropdownButtonHideUnderline(
+                    child: ButtonTheme(
+                      alignedDropdown: true,
+                      child: DropdownButton<String>(
+                        value: _myHospital,
+                        iconSize: 30,
+                        icon: (null),
+                        style: TextStyle(
+                          color: Colors.black54,
+                          fontSize: 16,
+                        ),
+                        hint: Text('Select Hospital'),
+                        onChanged: (String newValue) {
+                          setState(() {
+                            _myHospital = newValue;
+                            print(_myHospital);
+                          });
+                        },
+                        items: hospitals?.map((item) {
+                              return new DropdownMenuItem(
+                                child: new Text(item),
+                                value: item.toString(),
+                              );
+                            })?.toList() ??
+                            [],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
           SizedBox(height: getProportionateScreenHeight(10)),
@@ -54,7 +96,7 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
               floatingLabelBehavior: FloatingLabelBehavior.always,
             ),
           ),
-          SizedBox(height: getProportionateScreenHeight(10)),
+          SizedBox(height: getProportionateScreenHeight(20)),
           TextFormField(
             keyboardType: TextInputType.text,
             onSaved: (newValue) => email = newValue.toLowerCase(),
@@ -67,12 +109,55 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
               floatingLabelBehavior: FloatingLabelBehavior.always,
             ),
           ),
+          SizedBox(height: getProportionateScreenHeight(20)),
+          Container(
+            padding: EdgeInsets.only(left: 15, right: 15, top: 5),
+            color: Colors.white,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Expanded(
+                  child: DropdownButtonHideUnderline(
+                    child: ButtonTheme(
+                      alignedDropdown: true,
+                      child: DropdownButton<DType>(
+                        value: _myType,
+                        iconSize: 30,
+                        icon: (null),
+                        style: TextStyle(
+                          color: Colors.black54,
+                          fontSize: 16,
+                        ),
+                        hint: Text('Select Type'),
+                        onChanged: (DType newValue) {
+                          setState(() {
+                            _myType = newValue;
+                            print(_myType);
+                          });
+                        },
+                        items: DType.values.map((DType value) {
+                              return DropdownMenuItem<DType>(
+                                value: value,
+                                child: Text(value.toString().split('.')[1]),
+                              );
+                            })?.toList() ??
+                            [],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
           const Spacer(flex: 1),
           Center(
             child: DefaultButton(
               text: "Save",
               press: () async {
-                if (_formKeyDoctor.currentState.validate()) {
+                if (_formKeyDoctor.currentState.validate() &&
+                    _myName != null &&
+                    _myHospital != null &&
+                    _myType != null) {
                   _formKeyDoctor.currentState.save();
                   lloc.LocationData locationData = await _getLocation();
                   var profile = DoctorProfile(
@@ -86,7 +171,7 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
                     type: "SPOKE",
                   );
                   print(profile.toString());
-                  cubit.addDoctorProfile(profile);
+                  widget.cubit.addDoctorProfile(profile);
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                     content: Text("All Fields are required"),

@@ -40,6 +40,19 @@ class ProfileCubit extends Cubit<ProfileState> {
     emit(AddProfileState(result.asValue.value));
   }
 
+  searchDoctor(String hospital) async {
+    _startLoading();
+    final token = await this.localStore.fetch();
+    //   final result = await api.addDoctorProfile(Token(token.value), profile);
+    // if (result == null) emit(ErrorState("Server Error"));
+    // if (result.isError) {
+    //   emit(ErrorState(result.asError.error));
+    //   return;
+    // }
+    // await this.localStore.updateDetail(false);
+    // emit(AddProfileState(result.asValue.value));
+  }
+
   addDriverProfile(DriverProfile profile) async {
     _startLoading();
 

@@ -228,3 +228,5 @@ class DriverProfile {
         location.hashCode;
   }
 }
+
+enum DType { Spoke, Hub }

@@ -5,6 +5,8 @@ import 'package:ccarev2_frontend/pages/spoke_form/components/history_details.dar
 import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
 import 'package:ccarev2_frontend/state_management/main/main_state.dart';
 import 'package:ccarev2_frontend/user/domain/credential.dart';
+import 'package:ccarev2_frontend/utils/constants.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
 import '../../utils/size_config.dart';
@@ -94,6 +96,7 @@ class _PatientReportHistoryScreenState
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text('Medical History'),
+        backgroundColor: kPrimaryColor,
         actions: [
           IconButton(
             onPressed: () async {
