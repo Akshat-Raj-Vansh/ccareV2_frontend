@@ -10,6 +10,7 @@ class DoctorProfile {
   final String email;
   final Location location;
   final String hospitalName;
+  final DType type;
   DoctorProfile({
     required this.name,
     required this.specialization,
@@ -17,6 +18,7 @@ class DoctorProfile {
     required this.email,
     required this.location,
     required this.hospitalName,
+    required this.type,
   });
 
   DoctorProfile copyWith({
@@ -26,6 +28,7 @@ class DoctorProfile {
     String? email,
     Location? location,
     String? hospitalName,
+    DType? type,
   }) {
     return DoctorProfile(
       name: name ?? this.name,
@@ -34,6 +37,7 @@ class DoctorProfile {
       email: email ?? this.email,
       location: location ?? this.location,
       hospitalName: hospitalName ?? this.hospitalName,
+      type: type ?? this.type,
     );
   }
 
@@ -45,6 +49,7 @@ class DoctorProfile {
       'email': email,
       'location': location.toMap(),
       'hospitalName': hospitalName,
+      'type': type.toString().split('.')[1],
     };
   }
 
@@ -56,6 +61,8 @@ class DoctorProfile {
       email: map['email'],
       location: Location.fromMap(map['location']),
       hospitalName: map['hospitalName'],
+      type: DType.values.firstWhere(
+          (element) => element.toString() == "DType." + map['type']),
     );
   }
 
@@ -66,30 +73,32 @@ class DoctorProfile {
 
   @override
   String toString() {
-    return 'DoctorProfile(name: $name, specialization: $specialization, uniqueCode: $uniqueCode, email: $email, location: $location, hospitalName: $hospitalName)';
+    return 'DoctorProfile(name: $name, specialization: $specialization, uniqueCode: $uniqueCode, email: $email, location: $location, hospitalName: $hospitalName, type: $type)';
   }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-  
+
     return other is DoctorProfile &&
-      other.name == name &&
-      other.specialization == specialization &&
-      other.uniqueCode == uniqueCode &&
-      other.email == email &&
-      other.location == location &&
-      other.hospitalName == hospitalName;
+        other.name == name &&
+        other.specialization == specialization &&
+        other.uniqueCode == uniqueCode &&
+        other.email == email &&
+        other.location == location &&
+        other.hospitalName == hospitalName &&
+        other.type == type;
   }
 
   @override
   int get hashCode {
     return name.hashCode ^
-      specialization.hashCode ^
-      uniqueCode.hashCode ^
-      email.hashCode ^
-      location.hashCode ^
-      hospitalName.hashCode;
+        specialization.hashCode ^
+        uniqueCode.hashCode ^
+        email.hashCode ^
+        location.hashCode ^
+        hospitalName.hashCode ^
+        type.hashCode;
   }
 }
 
@@ -227,3 +236,5 @@ class DriverProfile {
         location.hashCode;
   }
 }
+
+enum DType { Spoke, Hub }

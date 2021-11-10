@@ -92,6 +92,7 @@ class _DoctorHomeUIState extends State<DoctorHomeUI> {
         backgroundColor: Colors.white,
         appBar: AppBar(
           title: Text('CardioCare - Doctor'),
+          backgroundColor: kPrimaryColor,
           actions: [
             IconButton(
               onPressed: () async {

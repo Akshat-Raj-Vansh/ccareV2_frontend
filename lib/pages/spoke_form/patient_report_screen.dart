@@ -216,6 +216,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text('Medical Form'),
+        backgroundColor: kPrimaryColor,
         actions: [
           if (_currentIndex != 0)
             editReport
