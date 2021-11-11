@@ -6,7 +6,6 @@ import 'package:ccarev2_frontend/user/domain/token.dart';
 
 abstract class UserService {
   Future<Result<Details>> login(Credential credential);
-
   Future<Result<String>> addPatientProfile(Token token, PatientProfile profile);
   Future<Result<String>> addDoctorProfile(Token token, DoctorProfile profile);
   Future<Result<String>> addDriverProfile(Token token, DriverProfile profile);

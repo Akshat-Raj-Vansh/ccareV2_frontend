@@ -1,5 +1,6 @@
 //@dart=2.9
 import 'package:async/src/result/result.dart';
+import 'package:ccarev2_frontend/user/domain/details.dart';
 import 'package:ccarev2_frontend/user/domain/profile.dart';
 import 'package:ccarev2_frontend/user/domain/token.dart';
 import 'package:ccarev2_frontend/user/infra/user_api.dart';
@@ -15,29 +16,30 @@ class ProfileCubit extends Cubit<ProfileState> {
 
   addPatientProfile(PatientProfile profile) async {
     _startLoading();
-
     final token = await this.localStore.fetch();
+    Details details = await this.localStore.fetchDetails();
     final result = await api.addPatientProfile(Token(token.value), profile);
     if (result == null) emit(ErrorState("Server Error"));
     if (result.isError) {
       emit(ErrorState(result.asError.error));
       return;
     }
-    await this.localStore.updateDetail(false);
-    emit(AddProfileState(result.asValue.value));
+    await this.localStore.updateNewUser(false);
+    emit(AddProfileState(details));
   }
 
   addDoctorProfile(DoctorProfile profile) async {
     _startLoading();
     final token = await this.localStore.fetch();
+    Details details = await this.localStore.fetchDetails();
     final result = await api.addDoctorProfile(Token(token.value), profile);
     if (result == null) emit(ErrorState("Server Error"));
     if (result.isError) {
       emit(ErrorState(result.asError.error));
       return;
     }
-    await this.localStore.updateDetail(false);
-    emit(AddProfileState(result.asValue.value));
+    await this.localStore.updateNewUser(false);
+    emit(AddProfileState(details));
   }
 
   searchDoctor(String hospital) async {
@@ -57,14 +59,15 @@ class ProfileCubit extends Cubit<ProfileState> {
     _startLoading();
 
     final token = await this.localStore.fetch();
+    Details details = await this.localStore.fetchDetails();
     final result = await api.addDriverProfile(Token(token.value), profile);
     if (result == null) emit(ErrorState("Server Error"));
     if (result.isError) {
       emit(ErrorState(result.asError.error));
       return;
     }
-    await this.localStore.updateDetail(false);
-    emit(AddProfileState(result.asValue.value));
+    await this.localStore.updateNewUser(false);
+    emit(AddProfileState(details));
   }
 
   void _startLoading() {

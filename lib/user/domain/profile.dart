@@ -9,7 +9,7 @@ class DoctorProfile {
   final String hospitalName;
   final String email;
   final String phoneNumber;
-  final String type;
+  final DoctorType type;
   final Location location;
   DoctorProfile({
     required this.name,
@@ -25,7 +25,7 @@ class DoctorProfile {
     String? hospitalName,
     String? email,
     String? phoneNumber,
-    String? type,
+    DoctorType? type,
     Location? location,
   }) {
     return DoctorProfile(
@@ -44,7 +44,7 @@ class DoctorProfile {
       'hospitalName': hospitalName,
       'email': email,
       'phoneNumber': phoneNumber,
-      'type': type,
+      'type': type.toString().split('.')[1],
       'location': location.toMap(),
     };
   }
@@ -55,7 +55,8 @@ class DoctorProfile {
       hospitalName: map['hospitalName'],
       email: map['email'],
       phoneNumber: map['phoneNumber'],
-      type: map['type'],
+      type: DoctorType.values.firstWhere(
+          (element) => element.toString() == "DoctorType." + map['type']),
       location: Location.fromMap(map['location']),
     );
   }
@@ -229,4 +230,4 @@ class DriverProfile {
   }
 }
 
-enum DType { Spoke, Hub }
+enum DoctorType { NA, Spoke, Hub }

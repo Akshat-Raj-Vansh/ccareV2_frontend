@@ -99,17 +99,18 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
                 if (_formKeyDoctor.currentState.validate()) {
                   _formKeyDoctor.currentState.save();
                   lloc.LocationData locationData = await _getLocation();
-                  var profile = DoctorProfile(
-                      name: name,
-                      specialization: specialization,
-                      hospitalName :hospital,
-                      uniqueCode: uniqueCode,
-                      email: email,
-                      location: loc.Location(
-                          latitude: locationData.latitude,
-                          longitude: locationData.longitude));
-                  print(profile.toString());
-                  cubit.addDoctorProfile(profile);
+                  //* Profile Updation to be added
+                  // var profile = DoctorProfile(
+                  //     name: name,
+                  //     specialization: specialization,
+                  //     hospitalName :hospital,
+                  //     uniqueCode: uniqueCode,
+                  //     email: email,
+                  //     location: loc.Location(
+                  //         latitude: locationData.latitude,
+                  //         longitude: locationData.longitude));
+                  // print(profile.toString());
+                  // cubit.addDoctorProfile(profile);
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                     content: Text("All Fields are required"),

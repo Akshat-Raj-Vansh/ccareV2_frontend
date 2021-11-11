@@ -4,6 +4,7 @@ import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
 import 'package:ccarev2_frontend/state_management/profile/profile_cubit.dart';
 import 'package:ccarev2_frontend/state_management/profile/profile_state.dart';
 import 'package:ccarev2_frontend/user/domain/credential.dart';
+import 'package:ccarev2_frontend/user/domain/details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
 import '../../utils/size_config.dart';
@@ -11,8 +12,8 @@ import '../../utils/size_config.dart';
 class ProfileScreen extends StatefulWidget {
   final ProfileCubit cubit;
   final IProfilePageAdapter pageAdapter;
-  final UserType userType;
-  const ProfileScreen(this.pageAdapter, this.userType, this.cubit);
+  final Details details;
+  const ProfileScreen(this.pageAdapter, this.details, this.cubit);
 
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
@@ -48,7 +49,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       builder: (_, state) {
         return Expanded(
             child: widget.pageAdapter
-                .loadProfiles(context, widget.userType, widget.cubit));
+                .loadProfiles(context, widget.details, widget.cubit));
       },
       listener: (context, state) {
         if (state is LoadingState) {
@@ -57,8 +58,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
         } else if (state is AddProfileState) {
           print("Add Profile State Called");
           _hideLoader();
-          _showMessage(state.message);
-          widget.pageAdapter.onProfileCompletion(context, widget.userType);
+          // _showMessage(state.message);
+          widget.pageAdapter.onProfileCompletion(context, widget.details);
         } else if (state is ErrorState) {
           print('Error State Called');
           _hideLoader();

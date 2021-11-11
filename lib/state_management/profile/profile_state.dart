@@ -1,3 +1,4 @@
+import 'package:ccarev2_frontend/user/domain/details.dart';
 import 'package:ccarev2_frontend/user/domain/profile.dart';
 import 'package:equatable/equatable.dart';
 
@@ -16,16 +17,15 @@ class LoadingState extends ProfileState {
 }
 
 class AddProfileState extends ProfileState {
-  final String message;
-  AddProfileState(this.message);
+  final Details details;
+  AddProfileState(this.details);
   @override
-  List<Object> get props => [message];
+  List<Object> get props => [details];
 }
 
 class ErrorState extends ProfileState {
   final String error;
   ErrorState(this.error) {}
   @override
-  // TODO: implement props
   List<Object> get props => [this.error];
 }

@@ -1,5 +1,6 @@
 //@dart=2.9
 import 'package:ccarev2_frontend/pages/splash/splash_screen.dart';
+import 'package:ccarev2_frontend/user/domain/details.dart';
 import 'package:ccarev2_frontend/utils/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -98,13 +99,12 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
                       } else if (state is LoginSuccessState) {
                         print("Login Success State Called");
                         _hideLoader();
-
+                        Details details = state.details;
                         print(widget.userType);
                         state.details.newUser
-                            ? widget.pageAdatper
-                                .onAuthSuccess(context, widget.userType)
+                            ? widget.pageAdatper.onAuthSuccess(context, details)
                             : widget.pageAdatper
-                                .onLoginSuccess(context, widget.userType);
+                                .onLoginSuccess(context, details);
                         print(state.details.toString());
                       } else if (state is PhoneVerificationState) {
                         _hideLoader();
@@ -135,8 +135,7 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
                       print("LoadingStateCalled");
                       _showLoader();
                     } else if (state is profileState.AddProfileState) {
-                      widget.pageAdatper
-                          .onLoginSuccess(context, widget.userType);
+                      widget.pageAdatper.onLoginSuccess(context, state.details);
                     } else {
                       _hideLoader();
                       if (state is profileState.ErrorState) {

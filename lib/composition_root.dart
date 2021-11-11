@@ -1,7 +1,11 @@
 //@dart=2.9
 import 'package:ccarev2_frontend/pages/emergency/emergency_screen.dart';
+import 'package:ccarev2_frontend/pages/home/components/doctor_hub.dart';
+import 'package:ccarev2_frontend/pages/home/components/doctor_spoke.dart';
 import 'package:ccarev2_frontend/services/Notifications/notificationContoller.dart';
+import 'package:ccarev2_frontend/user/domain/details.dart';
 import 'package:ccarev2_frontend/user/domain/location.dart';
+import 'package:ccarev2_frontend/user/domain/profile.dart';
 import 'package:common/infra/MHttpClient.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
@@ -54,8 +58,13 @@ class CompositionRoot {
     mainAPI = MainAPI(client, baseUrl);
     mainCubit = MainCubit(localStore, mainAPI);
     userCubit = UserCubit(localStore, userAPI);
-    homePageAdapter = HomePageAdapter(createPatientHomeUI, createDoctorHomeUI,
-        createDriverHomeUI, createEmergencyUI, splashScreen);
+    homePageAdapter = HomePageAdapter(
+        createPatientHomeUI,
+        createSpokeDoctorHomeUI,
+        createHubDoctorHomeUI,
+        createDriverHomeUI,
+        createEmergencyUI,
+        splashScreen);
     profilePageAdapter =
         ProfilePageAdapter(homePageAdapter, createProfileScreen);
     authPageAdapter = AuthPageAdapter(profilePageAdapter, createLoginScreen);
@@ -63,14 +72,15 @@ class CompositionRoot {
 
   static Future<Widget> start() async {
     var token = await localStore.fetch();
-    var isnewUser = await localStore.fetchNewUser();
-    var userType = await localStore.fetchUserType();
-    print("user type ${userType}");
+    // var isnewUser = await localStore.fetchNewUser();
+    // var userType = await localStore.fetchUserType();
+    Details details = await localStore.fetchDetails();
+    print("user type ${details.user_type}");
     return token == null
         ? splashScreen()
-        : isnewUser
-            ? createProfileScreen(userType)
-            : createHomeUI(userType);
+        : details.newUser
+            ? createProfileScreen(details)
+            : createHomeUI(details);
   }
 
   static Widget splashScreen() {
@@ -91,23 +101,27 @@ class CompositionRoot {
     );
   }
 
-  static Widget createHomeUI(UserType userType) {
+  static Widget createHomeUI(Details details) {
+    UserType userType = details.user_type;
     if (userType == UserType.patient)
       return createPatientHomeUI();
-    else if (userType == UserType.doctor)
-      return createDoctorHomeUI();
-    else
-      return createDriverHomeUI();
+    else if (userType == UserType.doctor) {
+      if (details.doctor_type == DoctorType.Spoke)
+        return createSpokeDoctorHomeUI();
+      else
+        createHubDoctorHomeUI();
+    }
+    return createDriverHomeUI();
   }
 
-  static Widget createProfileScreen(UserType userType) {
+  static Widget createProfileScreen(Details details) {
     ProfileCubit profileCubit = ProfileCubit(localStore, userAPI);
     return MultiCubitProvider(
       providers: [
         CubitProvider<UserCubit>(create: (context) => userCubit),
         CubitProvider<ProfileCubit>(create: (context) => profileCubit),
       ],
-      child: ProfileScreen(profilePageAdapter, userType, profileCubit),
+      child: ProfileScreen(profilePageAdapter, details, profileCubit),
     );
   }
 
@@ -122,7 +136,7 @@ class CompositionRoot {
     ], child: PatientHomeUI(mainCubit, userCubit, homePageAdapter));
   }
 
-  static Widget createDoctorHomeUI() {
+  static Widget createSpokeDoctorHomeUI() {
     return MultiCubitProvider(providers: [
       CubitProvider<UserCubit>(
         create: (context) => userCubit,
@@ -130,7 +144,18 @@ class CompositionRoot {
       CubitProvider<MainCubit>(
         create: (context) => mainCubit,
       ),
-    ], child: DoctorHomeUI(mainCubit, userCubit, homePageAdapter));
+    ], child: HomeScreenSpoke(mainCubit, userCubit, homePageAdapter));
+  }
+
+  static Widget createHubDoctorHomeUI() {
+    return MultiCubitProvider(providers: [
+      CubitProvider<UserCubit>(
+        create: (context) => userCubit,
+      ),
+      CubitProvider<MainCubit>(
+        create: (context) => mainCubit,
+      ),
+    ], child: HomeScreenHub(mainCubit, userCubit, homePageAdapter));
   }
 
   static Widget createDriverHomeUI() {

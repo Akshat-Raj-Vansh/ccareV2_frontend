@@ -1,5 +1,6 @@
 import 'package:ccarev2_frontend/user/domain/credential.dart';
 import 'package:ccarev2_frontend/user/domain/details.dart';
+import 'package:ccarev2_frontend/user/domain/profile.dart';
 import 'package:ccarev2_frontend/user/domain/token.dart';
 
 abstract class ILocalStore {
@@ -7,9 +8,11 @@ abstract class ILocalStore {
   Future<bool> fetchNewUser();
   delete();
   save(Details details);
-  updateDetail(bool newUser);
+  updateNewUser(bool newUser);
+  updateUserType(UserType type);
+  updatePhoneNumber(String phone);
+  updateDoctorType(DoctorType type);
+  Future<Details> fetchDetails();
   saveTempToken(String token);
   Future<Token> fetchTempToken();
-  saveUserType(UserType type);
-  Future<UserType> fetchUserType();
 }

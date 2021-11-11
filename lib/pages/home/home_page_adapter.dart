@@ -1,4 +1,6 @@
+import 'package:ccarev2_frontend/user/domain/details.dart';
 import 'package:ccarev2_frontend/user/domain/location.dart';
+import 'package:ccarev2_frontend/user/domain/profile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../user/domain/credential.dart';
@@ -6,7 +8,7 @@ import '../../state_management/user/user_cubit.dart';
 import '../../state_management/main/main_cubit.dart';
 
 abstract class IHomePageAdapter {
-  void loadHomeUI(BuildContext context, UserType userType);
+  void loadHomeUI(BuildContext context, Details details);
   void onLogout(BuildContext context, UserCubit userCubit);
   void loadEmergencyScreen(
       BuildContext context, UserType userType, Location location);
@@ -14,27 +16,41 @@ abstract class IHomePageAdapter {
 
 class HomePageAdapter extends IHomePageAdapter {
   final Widget Function() patientHomeScreen;
-  final Widget Function() doctorHomeScreen;
+  final Widget Function() doctorSpokeHomeScreen;
+  final Widget Function() doctorHubHomeScreen;
   final Widget Function() driverHomeScreen;
   final Widget Function(UserType userType, Location location) emergencyScreen;
   final Widget Function() splashScreen;
 
-  HomePageAdapter(this.patientHomeScreen, this.doctorHomeScreen,
-      this.driverHomeScreen, this.emergencyScreen, this.splashScreen);
+  HomePageAdapter(
+      this.patientHomeScreen,
+      this.doctorSpokeHomeScreen,
+      this.doctorHubHomeScreen,
+      this.driverHomeScreen,
+      this.emergencyScreen,
+      this.splashScreen);
 
   @override
-  void loadHomeUI(BuildContext context, UserType userType) {
+  void loadHomeUI(BuildContext context, Details details) {
+    UserType userType = details.user_type;
+    DoctorType doctorType = details.doctor_type;
     if (userType == UserType.patient)
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => patientHomeScreen()),
           (Route<dynamic> route) => false);
-    else if (userType == UserType.doctor)
-      Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (context) => doctorHomeScreen()),
-          (Route<dynamic> route) => false);
-    else
+    else if (userType == UserType.doctor) {
+      if (doctorType == DoctorType.Spoke)
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => doctorSpokeHomeScreen()),
+            (Route<dynamic> route) => false);
+      else if (doctorType == DoctorType.Hub)
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => doctorHubHomeScreen()),
+            (Route<dynamic> route) => false);
+    } else
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => driverHomeScreen()),

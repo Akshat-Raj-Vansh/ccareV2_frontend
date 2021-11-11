@@ -1,12 +1,13 @@
 import 'package:ccarev2_frontend/pages/profile/profile_page_adapter.dart';
 import 'package:ccarev2_frontend/user/domain/credential.dart';
+import 'package:ccarev2_frontend/user/domain/details.dart';
 import 'package:ccarev2_frontend/user/domain/user_service_contract.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 abstract class IAuthPageAdapter {
-  void onAuthSuccess(BuildContext context, UserType userType);
-  void onLoginSuccess(BuildContext context, UserType userType);
+  void onAuthSuccess(BuildContext context, Details details);
+  void onLoginSuccess(BuildContext context, Details details);
   void onSplashScreenComplete(BuildContext context, UserType userType);
 }
 
@@ -20,21 +21,22 @@ class AuthPageAdapter extends IAuthPageAdapter {
   @override
   void onAuthSuccess(
     BuildContext context,
-    UserType userType,
+    Details details,
   ) {
     // Navigator.pushAndRemoveUntil(
     //     context,
     //     MaterialPageRoute(builder: (context) => onUserAuthenticated(userType)),
     //     (Route<dynamic> route) => false);
-    profilePageAdapter.onLoginSuccess(context, userType);
+
+    profilePageAdapter.onLoginSuccess(context, details);
   }
 
   @override
   void onLoginSuccess(
     BuildContext context,
-    UserType userType,
+    Details details,
   ) {
-    profilePageAdapter.onProfileCompletion(context, userType);
+    profilePageAdapter.onProfileCompletion(context, details);
   }
 
   @override

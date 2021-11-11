@@ -20,65 +20,43 @@ class DoctorProfileScreen extends StatefulWidget {
 class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
   final _formKeyDoctor = GlobalKey<FormState>();
 
-  String _specialization;
   String _email;
-  String _uniqueCode;
+  DoctorType _doctorType;
 
-  String _myHospital;
-  String _myName;
-  DType _myType;
-  List<String> hospitals = ['MGMSC Khaneri Rampur', 'NIT Hamirpur'];
-  // List<List<String>> doctors = [
-  //   ['Dr. XY MKR', 'Dr. MN MKR', 'Dr. WZ MKR'],
-  //   ['Dr. XY PHC', 'Dr. MN PHC', 'Dr. WZ PHC'],
-  //   ['Dr. XY NIT', 'Dr. MN NIT', 'Dr. WZ NIT']
-  // ];
-  List<String> doctors = ['Dr. XY MKR', 'Dr. MN MKR', 'Dr. WZ NIT'];
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    // TODO: Search doctor profile using Phone Number
+  }
+
   @override
   Widget build(BuildContext context) {
     var cubit = CubitProvider.of<ProfileCubit>(context);
-    String name;
-    String hospitalName;
-    String email;
-    String type;
     return Form(
       key: _formKeyDoctor,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          SizedBox(height: getProportionateScreenHeight(10)),
+          // LMWH
           Container(
             padding: EdgeInsets.only(left: 15, right: 15, top: 5),
             color: Colors.white,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Expanded(
-                  child: DropdownButtonHideUnderline(
-                    child: ButtonTheme(
-                      alignedDropdown: true,
-                      child: DropdownButton<String>(
-                        value: _myHospital,
-                        iconSize: 30,
-                        icon: (null),
-                        style: TextStyle(
-                          color: Colors.black54,
-                          fontSize: 16,
-                        ),
-                        hint: Text('Select Hospital'),
-                        onChanged: (String newValue) {
-                          setState(() {
-                            _myHospital = newValue;
-                            print(_myHospital);
-                          });
-                        },
-                        items: hospitals?.map((item) {
-                              return new DropdownMenuItem(
-                                child: new Text(item),
-                                value: item.toString(),
-                              );
-                            })?.toList() ??
-                            [],
-                      ),
+              children: [
+                Text('Email ID: '),
+                Container(
+                  width: SizeConfig.screenWidth * 0.4,
+                  child: TextFormField(
+                    keyboardType: TextInputType.number,
+                    focusNode: null,
+                    initialValue: "",
+                    onSaved: (newValue) => _email = newValue,
+                    decoration: const InputDecoration(
+                      hintText: "Enter LMWH",
+                      floatingLabelBehavior: FloatingLabelBehavior.always,
                     ),
                   ),
                 ),
@@ -86,62 +64,38 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
             ),
           ),
           SizedBox(height: getProportionateScreenHeight(10)),
-          TextFormField(
-            keyboardType: TextInputType.text,
-            onSaved: (newValue) => hospitalName = newValue.toUpperCase(),
-            validator: (value) => value.isEmpty ? "Hospital is required" : null,
-            decoration: const InputDecoration(
-              labelText: "Hospital Name",
-              hintText: "Enter your Hospital Name",
-              floatingLabelBehavior: FloatingLabelBehavior.always,
-            ),
-          ),
-          SizedBox(height: getProportionateScreenHeight(20)),
-          TextFormField(
-            keyboardType: TextInputType.text,
-            onSaved: (newValue) => email = newValue.toLowerCase(),
-            validator: (value) => value.isEmpty || !value.contains('@')
-                ? "Email is required"
-                : null,
-            decoration: const InputDecoration(
-              labelText: "Email",
-              hintText: "Enter your Email",
-              floatingLabelBehavior: FloatingLabelBehavior.always,
-            ),
-          ),
-          SizedBox(height: getProportionateScreenHeight(20)),
           Container(
             padding: EdgeInsets.only(left: 15, right: 15, top: 5),
             color: Colors.white,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
+                Text('Doctor Type: '),
                 Expanded(
                   child: DropdownButtonHideUnderline(
                     child: ButtonTheme(
                       alignedDropdown: true,
-                      child: DropdownButton<DType>(
-                        value: _myType,
+                      child: DropdownButton<DoctorType>(
+                        value: DoctorType.NA,
                         iconSize: 30,
                         icon: (null),
                         style: TextStyle(
                           color: Colors.black54,
                           fontSize: 16,
                         ),
-                        hint: Text('Select Type'),
-                        onChanged: (DType newValue) {
+                        hint: Text('Select Doctor Type'),
+                        onChanged: (DoctorType newValue) {
                           setState(() {
-                            _myType = newValue;
-                            print(_myType);
+                            _doctorType = newValue;
+                            print(_doctorType);
                           });
                         },
-                        items: DType.values.map((DType value) {
-                              return DropdownMenuItem<DType>(
-                                value: value,
-                                child: Text(value.toString().split('.')[1]),
-                              );
-                            })?.toList() ??
-                            [],
+                        items: DoctorType.values.map((DoctorType value) {
+                          return DropdownMenuItem<DoctorType>(
+                            value: value,
+                            child: Text(value.toString().split('.')[1]),
+                          );
+                        }).toList(),
                       ),
                     ),
                   ),
@@ -154,29 +108,29 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
             child: DefaultButton(
               text: "Save",
               press: () async {
-                if (_formKeyDoctor.currentState.validate() &&
-                    _myName != null &&
-                    _myHospital != null &&
-                    _myType != null) {
-                  _formKeyDoctor.currentState.save();
-                  lloc.LocationData locationData = await _getLocation();
-                  var profile = DoctorProfile(
-                    name: name,
-                    hospitalName: hospitalName,
-                    phoneNumber: widget.phone,
-                    email: email,
-                    location: loc.Location(
-                        latitude: locationData.latitude,
-                        longitude: locationData.longitude),
-                    type: "SPOKE",
-                  );
-                  print(profile.toString());
-                  widget.cubit.addDoctorProfile(profile);
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                    content: Text("All Fields are required"),
-                  ));
-                }
+                // if (_formKeyDoctor.currentState.validate() &&
+                //     _myName != null &&
+                //     _myHospital != null &&
+                //     _myType != null) {
+                //   _formKeyDoctor.currentState.save();
+                //   lloc.LocationData locationData = await _getLocation();
+                //   var profile = DoctorProfile(
+                //     name: name,
+                //     hospitalName: hospitalName,
+                //     phoneNumber: widget.phone,
+                //     email: email,
+                //     location: loc.Location(
+                //         latitude: locationData.latitude,
+                //         longitude: locationData.longitude),
+                //     type: "SPOKE",
+                //   );
+                //   print(profile.toString());
+                //   widget.cubit.addDoctorProfile(profile);
+                // } else {
+                //   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                //     content: Text("All Fields are required"),
+                //   ));
+                //  }
               },
             ),
           ),
