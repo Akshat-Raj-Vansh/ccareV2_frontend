@@ -54,6 +54,8 @@ class CompositionRoot {
     // secureClient = SecureClient(MHttpClient(client), localStore);
     baseUrl = "http://192.168.0.139:3000";
     // baseUrl = "https://cardiocarenith.herokuapp.com";
+    //baseUrl = "http://192.168.80.55:3000";
+
     userAPI = UserAPI(client, baseUrl);
     mainAPI = MainAPI(client, baseUrl);
     mainCubit = MainCubit(localStore, mainAPI);
@@ -71,12 +73,17 @@ class CompositionRoot {
   }
 
   static Future<Widget> start() async {
-    var token = await localStore.fetch();
+    // var token = await localStore.fetch();
     // var isnewUser = await localStore.fetchNewUser();
     // var userType = await localStore.fetchUserType();
     Details details = await localStore.fetchDetails();
+    print("COMPOSITION ROOT START");
+
+    if (details == null) return splashScreen();
     print("user type ${details.user_type}");
-    return token == null
+    print('DETAILS:');
+    print(details.toJson());
+    return details.user_token == null
         ? splashScreen()
         : details.newUser
             ? createProfileScreen(details)
@@ -103,14 +110,11 @@ class CompositionRoot {
 
   static Widget createHomeUI(Details details) {
     UserType userType = details.user_type;
-    if (userType == UserType.patient)
+    if (userType == UserType.PATIENT)
       return createPatientHomeUI();
-    else if (userType == UserType.doctor) {
-      if (details.doctor_type == DoctorType.Spoke)
-        return createSpokeDoctorHomeUI();
-      else
-        createHubDoctorHomeUI();
-    }
+    else if (userType == UserType.SPOKE)
+      return createSpokeDoctorHomeUI();
+    else if (userType == UserType.HUB) return createHubDoctorHomeUI();
     return createDriverHomeUI();
   }
 

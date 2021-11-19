@@ -59,7 +59,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           print("Add Profile State Called");
           _hideLoader();
           // _showMessage(state.message);
-          widget.pageAdapter.onProfileCompletion(context, widget.details);
+          widget.pageAdapter.onProfileCompletion(context, state.details);
         } else if (state is ErrorState) {
           print('Error State Called');
           _hideLoader();

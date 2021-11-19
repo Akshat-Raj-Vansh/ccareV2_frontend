@@ -41,7 +41,7 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
     _getUserLocation();
 
     NotificationController.configure(
-        CubitProvider.of<MainCubit>(context), UserType.patient, context);
+        CubitProvider.of<MainCubit>(context), UserType.PATIENT, context);
     NotificationController.fcmHandler();
   }
 
@@ -68,12 +68,12 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
   }
 
   _getUserLocation() {
-    if (widget.userType == UserType.patient) {
+    if (widget.userType == UserType.PATIENT) {
       _patientLocation =
           LatLng(widget.location.latitude, widget.location.longitude);
       _center = _patientLocation;
       _addPatientMarker();
-    } else if (widget.userType == UserType.patient) {
+    } else if (widget.userType == UserType.PATIENT) {
       _doctorLocation =
           LatLng(widget.location.latitude, widget.location.longitude);
       _center = _doctorLocation;

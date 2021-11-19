@@ -1,6 +1,7 @@
 import 'package:ccarev2_frontend/user/domain/details.dart';
 import 'package:ccarev2_frontend/user/domain/location.dart';
 import 'package:ccarev2_frontend/user/domain/profile.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../user/domain/credential.dart';
@@ -32,25 +33,26 @@ class HomePageAdapter extends IHomePageAdapter {
 
   @override
   void loadHomeUI(BuildContext context, Details details) {
+    print('HOME PAGE ADAPTER/LOAD HOME UI');
+    print('DETAILS:');
+    print(details.toJson());
     UserType userType = details.user_type;
-    DoctorType doctorType = details.doctor_type;
-    if (userType == UserType.patient)
+    if (userType == UserType.PATIENT)
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => patientHomeScreen()),
           (Route<dynamic> route) => false);
-    else if (userType == UserType.doctor) {
-      if (doctorType == DoctorType.Spoke)
-        Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (context) => doctorSpokeHomeScreen()),
-            (Route<dynamic> route) => false);
-      else if (doctorType == DoctorType.Hub)
-        Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (context) => doctorHubHomeScreen()),
-            (Route<dynamic> route) => false);
-    } else
+    else if (userType == UserType.SPOKE) {
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => doctorSpokeHomeScreen()),
+          (Route<dynamic> route) => false);
+    } else if (userType == UserType.HUB)
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => doctorHubHomeScreen()),
+          (Route<dynamic> route) => false);
+    else
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => driverHomeScreen()),

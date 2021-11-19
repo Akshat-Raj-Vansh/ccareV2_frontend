@@ -230,4 +230,4 @@ class DriverProfile {
   }
 }
 
-enum DoctorType { NA, Spoke, Hub }
+enum DoctorType { SPOKE, HUB }

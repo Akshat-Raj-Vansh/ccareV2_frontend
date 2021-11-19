@@ -94,17 +94,17 @@ class _BodyState extends State<Body> {
                           text: "Patient",
                           press: () => widget.pageAdapter
                               .onSplashScreenComplete(
-                                  context, UserType.patient),
+                                  context, UserType.PATIENT),
                         ),
                         _button(
                           text: "Doctor",
                           press: () => widget.pageAdapter
-                              .onSplashScreenComplete(context, UserType.doctor),
+                              .onSplashScreenComplete(context, UserType.DOCTOR),
                         ),
                         _button(
                           text: "Driver",
                           press: () => widget.pageAdapter
-                              .onSplashScreenComplete(context, UserType.driver),
+                              .onSplashScreenComplete(context, UserType.DRIVER),
                         ),
                       ],
                     ),

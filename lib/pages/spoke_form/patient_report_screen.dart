@@ -262,7 +262,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
       ),
       resizeToAvoidBottomInset: false,
       body: _buildFormBody(),
-      floatingActionButton: widget.user == UserType.doctor
+      floatingActionButton: widget.user == UserType.DOCTOR
           ? SpeedDial(
               animatedIcon: AnimatedIcons.menu_close,
               children: [

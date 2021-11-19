@@ -11,7 +11,6 @@ abstract class ILocalStore {
   updateNewUser(bool newUser);
   updateUserType(UserType type);
   updatePhoneNumber(String phone);
-  updateDoctorType(DoctorType type);
   Future<Details> fetchDetails();
   saveTempToken(String token);
   Future<Token> fetchTempToken();

@@ -41,10 +41,10 @@ class ProfilePageAdapter extends IProfilePageAdapter {
       BuildContext context, Details details, ProfileCubit cubit) {
     UserType userType = details.user_type;
     switch (userType) {
-      case UserType.patient:
+      case UserType.PATIENT:
         return PatientProfileScreen(cubit);
-      case UserType.doctor:
-        return DoctorProfileScreen(cubit, details.phone_number);
+      case UserType.DOCTOR:
+        return DoctorProfileScreen(cubit, details);
       default:
         return DriverProfileScreen(cubit);
     }

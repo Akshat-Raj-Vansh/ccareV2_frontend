@@ -50,6 +50,7 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+    print('AUTH PAGE');
     animationController =
         AnimationController(vsync: this, duration: const Duration(minutes: 2));
     animationController.reverse(

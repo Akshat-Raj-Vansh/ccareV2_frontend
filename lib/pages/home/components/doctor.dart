@@ -40,7 +40,7 @@ class _DoctorHomeUIState extends State<DoctorHomeUI> {
     super.initState();
     CubitProvider.of<MainCubit>(context).fetchEmergencyDetails();
     NotificationController.configure(
-        widget.mainCubit, UserType.doctor, context);
+        widget.mainCubit, UserType.DOCTOR, context);
     NotificationController.fcmHandler();
   }
 
@@ -328,7 +328,7 @@ class _DoctorHomeUIState extends State<DoctorHomeUI> {
               MaterialPageRoute(
                 builder: (context) => PatientReportScreen(
                   mainCubit: widget.mainCubit,
-                  user: UserType.doctor,
+                  user: UserType.DOCTOR,
                   patientDetails: eDetails.patientDetails,
                 ),
               ));

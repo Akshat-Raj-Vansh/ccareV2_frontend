@@ -33,10 +33,10 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
   LatLng _patientLocation;
   LatLng _doctorLocation;
   EDetails eDetails;
-  EStatus patientStatus=EStatus.EMERGENCY;
-  dynamic currentState=null;
-  LatLng _userLocation=LatLng(40, 23);
-  bool loader=false;
+  EStatus patientStatus = EStatus.EMERGENCY;
+  dynamic currentState = null;
+  LatLng _userLocation = LatLng(40, 23);
+  bool loader = false;
   static bool _doctorAccepted = false;
   static bool _patientAccepted = false;
   final Set<Marker> _markers = {};
@@ -46,22 +46,24 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
   void initState() {
     super.initState();
     NotificationController.configure(
-        CubitProvider.of<MainCubit>(context), UserType.driver, context);
+        CubitProvider.of<MainCubit>(context), UserType.DRIVER, context);
     NotificationController.fcmHandler();
     CubitProvider.of<MainCubit>(context).fetchEmergencyDetails();
     _getLocation();
   }
-_makingPhoneCall() async {
-  // String url = eDetails.patientDetails.contactNumber;
-  String url = eDetails.patientDetails.contactNumber;
 
-  // if (await canLaunch("tel://$url")) {
+  _makingPhoneCall() async {
+    // String url = eDetails.patientDetails.contactNumber;
+    String url = eDetails.patientDetails.contactNumber;
+
+    // if (await canLaunch("tel://$url")) {
     await launch("tel:$url");
-  // } else {
-  //   throw 'Could not launch $url';
-  // }
-}
-_addPatientMarker() => _markers.add(Marker(
+    // } else {
+    //   throw 'Could not launch $url';
+    // }
+  }
+
+  _addPatientMarker() => _markers.add(Marker(
         // This marker id can be anything that uniquely identifies each marker.
         markerId: MarkerId(_patientLocation.toString()),
         position: _patientLocation,
@@ -350,15 +352,15 @@ _addPatientMarker() => _markers.add(Marker(
   }
 
   _buildBottomSheet(BuildContext context) => Container(
-        decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(40), topRight: Radius.circular(40))),
-       width: double.infinity,
-        height:patientStatus==EStatus.EMERGENCY ? 250:200,
-        child: patientStatus==EStatus.EMERGENCY ? _buildPatientDetails():_buildOTWDetails()
-
-      );
+      decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(40), topRight: Radius.circular(40))),
+      width: double.infinity,
+      height: patientStatus == EStatus.EMERGENCY ? 250 : 200,
+      child: patientStatus == EStatus.EMERGENCY
+          ? _buildPatientDetails()
+          : _buildOTWDetails());
 
   _buildPatientDetails() => Column(children: [
         Container(
@@ -384,85 +386,116 @@ _addPatientMarker() => _markers.add(Marker(
                   CircleAvatar(
                     radius: 25,
                     backgroundImage: AssetImage("/assets/images/dummy.jpeg"),
-                    
                   ),
-                  SizedBox(width:10),
-                   Text(eDetails.patientDetails.name,style: TextStyle(
-                fontSize: 18,
-                color:Colors.blue,fontWeight: FontWeight.bold),),
+                  SizedBox(width: 10),
+                  Text(
+                    eDetails.patientDetails.name,
+                    style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.blue,
+                        fontWeight: FontWeight.bold),
+                  ),
                 ],
               ),
-             
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                TextButton.icon(onPressed: _makingPhoneCall, icon: Icon(Icons.phone), label: Text("CALL")),
-                TextButton.icon(onPressed: ()=>print("CANCEL"), icon: Icon(Icons.cancel), label: Text("CANCEL"))
-              ],),
-               RichText(text: TextSpan(style:GoogleFonts.montserrat(color: Colors.blue)
-              ,children: [
-                WidgetSpan(child: Icon(FontAwesomeIcons.mapMarker,color:Colors.blue,size:15)),
-                TextSpan(text:" Destination :"),
-                TextSpan(text:eDetails.patientDetails.address,style:TextStyle(color:Colors.blue))
-            ],
-          ),
-        ),
-        SizedBox(height:10),
+                  TextButton.icon(
+                      onPressed: _makingPhoneCall,
+                      icon: Icon(Icons.phone),
+                      label: Text("CALL")),
+                  TextButton.icon(
+                      onPressed: () => print("CANCEL"),
+                      icon: Icon(Icons.cancel),
+                      label: Text("CANCEL"))
+                ],
+              ),
+              RichText(
+                text: TextSpan(
+                  style: GoogleFonts.montserrat(color: Colors.blue),
+                  children: [
+                    WidgetSpan(
+                        child: Icon(FontAwesomeIcons.mapMarker,
+                            color: Colors.blue, size: 15)),
+                    TextSpan(text: " Destination :"),
+                    TextSpan(
+                        text: eDetails.patientDetails.address,
+                        style: TextStyle(color: Colors.blue))
+                  ],
+                ),
+              ),
+              SizedBox(height: 10),
               Container(
-                width:double.infinity,
+                width: double.infinity,
                 child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(shape:RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))),
-                  onPressed: () async {
-                    CubitProvider.of<MainCubit>(context).statusUpdate("OTW");
+                    style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20))),
+                    onPressed: () async {
+                      CubitProvider.of<MainCubit>(context).statusUpdate("OTW");
 
-                    setState((){
-                      patientStatus = EStatus.OTW;
-                    });
-                }, child: Text("PICK")),
-              )])),]);
-_buildOTWDetails() => Column(children: [
+                      setState(() {
+                        patientStatus = EStatus.OTW;
+                      });
+                    },
+                    child: Text("PICK")),
+              )
+            ])),
+      ]);
+  _buildOTWDetails() => Column(children: [
         Container(
-           width: SizeConfig.screenWidth,
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+            width: SizeConfig.screenWidth,
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Row(
                 children: [
                   CircleAvatar(
                     radius: 25,
                     backgroundImage: AssetImage("/assets/images/dummy.jpeg"),
-                    
                   ),
-                  SizedBox(width:10),
-                   Text(eDetails.patientDetails.name,style: TextStyle(
-                fontSize: 18,
-                color:Colors.blue,fontWeight: FontWeight.bold),),
+                  SizedBox(width: 10),
+                  Text(
+                    eDetails.patientDetails.name,
+                    style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.blue,
+                        fontWeight: FontWeight.bold),
+                  ),
                 ],
               ),
-              SizedBox(height:10),
-               RichText(text: TextSpan(style:GoogleFonts.montserrat(color: Colors.blue)
-              ,children: [
-                WidgetSpan(child: Icon(FontAwesomeIcons.mapMarker,color:Colors.blue,size:15)),
-                TextSpan(text:" Destination :"),
-                TextSpan(text:eDetails.doctorDetails?.address,style:TextStyle(color:Colors.blue))
-            ],
-          ),
-        ),
-        SizedBox(height:10),
+              SizedBox(height: 10),
+              RichText(
+                text: TextSpan(
+                  style: GoogleFonts.montserrat(color: Colors.blue),
+                  children: [
+                    WidgetSpan(
+                        child: Icon(FontAwesomeIcons.mapMarker,
+                            color: Colors.blue, size: 15)),
+                    TextSpan(text: " Destination :"),
+                    TextSpan(
+                        text: eDetails.doctorDetails?.address,
+                        style: TextStyle(color: Colors.blue))
+                  ],
+                ),
+              ),
+              SizedBox(height: 10),
               Container(
-                width:double.infinity,
+                width: double.infinity,
                 child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(shape:RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))),
-                  onPressed: () async{
-                    CubitProvider.of<MainCubit>(context).statusUpdate("ATH");
-                    setState((){
-                      _patientAccepted=false;
-                    });
-                  //TODO:Backend #2 should make this ambulance availabe now
-                }, child: Text("DROP")),
+                    style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20))),
+                    onPressed: () async {
+                      CubitProvider.of<MainCubit>(context).statusUpdate("ATH");
+                      setState(() {
+                        _patientAccepted = false;
+                      });
+                      //TODO:Backend #2 should make this ambulance availabe now
+                    },
+                    child: Text("DROP")),
               )
-
-      ])),]);
+            ])),
+      ]);
 }

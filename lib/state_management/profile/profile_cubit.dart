@@ -1,5 +1,6 @@
 //@dart=2.9
 import 'package:async/src/result/result.dart';
+import 'package:ccarev2_frontend/user/domain/credential.dart';
 import 'package:ccarev2_frontend/user/domain/details.dart';
 import 'package:ccarev2_frontend/user/domain/profile.dart';
 import 'package:ccarev2_frontend/user/domain/token.dart';
@@ -29,9 +30,13 @@ class ProfileCubit extends Cubit<ProfileState> {
   }
 
   addDoctorProfile(DoctorProfile profile) async {
+    print("PROFILE CUBIT/ADD DOCTOR PROFILE");
     _startLoading();
     final token = await this.localStore.fetch();
-    Details details = await this.localStore.fetchDetails();
+    UserType userType =
+        profile.type == DoctorType.SPOKE ? UserType.SPOKE : UserType.HUB;
+    await this.localStore.updateUserType(userType);
+
     final result = await api.addDoctorProfile(Token(token.value), profile);
     if (result == null) emit(ErrorState("Server Error"));
     if (result.isError) {
@@ -39,6 +44,9 @@ class ProfileCubit extends Cubit<ProfileState> {
       return;
     }
     await this.localStore.updateNewUser(false);
+    Details details = await this.localStore.fetchDetails();
+    print("DETAILS:");
+    print(details.toJson());
     emit(AddProfileState(details));
   }
 

@@ -17,12 +17,12 @@ const String temp_data_key = "CACHED__DATA";
 
 class LocalStore implements ILocalStore {
   final SharedPreferences sharedPreferences;
-
   LocalStore(this.sharedPreferences);
 
   @override
   Future<Token> fetch() {
     String data = sharedPreferences.getString(token_key);
+    print('LOCAL STORE FETCH');
     print(data);
     if (data != null) {
       Details details = Details.fromMap(jsonDecode(data));
@@ -55,15 +55,18 @@ class LocalStore implements ILocalStore {
   @override
   void updateNewUser(bool newUser) {
     String data = sharedPreferences.getString(token_key);
+    print('LOCAL STORE UPDATE NEW USER');
     print(data);
     if (data != null) {
       Details details = Details.fromMap(jsonDecode(data));
       Details new_details = Details(
-          newUser: newUser,
-          user_token: details.user_token,
-          phone_number: details.phone_number,
-          user_type: details.user_type,
-          doctor_type: details.doctor_type);
+        newUser: newUser,
+        user_token: details.user_token,
+        phone_number: details.phone_number,
+        user_type: details.user_type,
+        name: details.name,
+        hospital: details.hospital,
+      );
       sharedPreferences.setString(token_key, jsonEncode(new_details.toMap()));
     }
   }
@@ -72,6 +75,7 @@ class LocalStore implements ILocalStore {
   void updateUserType(UserType type) {
     // return sharedPreferences.setString(auth_key, type.toString());
     String data = sharedPreferences.getString(token_key);
+    print('LOCAL STORE UPDATE USER TYPE');
     print(data);
     if (data != null) {
       Details details = Details.fromMap(jsonDecode(data));
@@ -80,7 +84,8 @@ class LocalStore implements ILocalStore {
           user_token: details.user_token,
           phone_number: details.phone_number,
           user_type: type,
-          doctor_type: details.doctor_type);
+          name: details.name,
+          hospital: details.hospital);
       sharedPreferences.setString(token_key, jsonEncode(new_details.toMap()));
     }
   }
@@ -97,27 +102,28 @@ class LocalStore implements ILocalStore {
           user_token: details.user_token,
           phone_number: phone,
           user_type: details.user_type,
-          doctor_type: details.doctor_type);
+          name: details.name,
+          hospital: details.hospital);
       sharedPreferences.setString(token_key, jsonEncode(new_details.toMap()));
     }
   }
 
-  @override
-  void updateDoctorType(DoctorType type) {
-    // return sharedPreferences.setString(auth_key, type.toString());
-    String data = sharedPreferences.getString(token_key);
-    print(data);
-    if (data != null) {
-      Details details = Details.fromMap(jsonDecode(data));
-      Details new_details = Details(
-          newUser: details.newUser,
-          user_token: details.user_token,
-          phone_number: details.phone_number,
-          user_type: details.user_type,
-          doctor_type: type);
-      sharedPreferences.setString(token_key, jsonEncode(new_details.toMap()));
-    }
-  }
+  // @override
+  // void updateDoctorType(DoctorType type) {
+  //   // return sharedPreferences.setString(auth_key, type.toString());
+  //   String data = sharedPreferences.getString(token_key);
+  //   print(data);
+  //   if (data != null) {
+  //     Details details = Details.fromMap(jsonDecode(data));
+  //     Details new_details = Details(
+  //         newUser: details.newUser,
+  //         user_token: details.user_token,
+  //         phone_number: details.phone_number,
+  //         user_type: details.user_type,
+  //         doctor_type: type);
+  //     sharedPreferences.setString(token_key, jsonEncode(new_details.toMap()));
+  //   }
+  // }
 
   @override
   Future<Details> fetchDetails() {

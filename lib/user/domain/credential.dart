@@ -11,9 +11,9 @@ class Credential {
   Map<String, dynamic> toMap() {
     return {
       'phoneNumber': phone,
-      'user_type': type == UserType.patient
+      'user_type': type == UserType.PATIENT
           ? "PATIENT"
-          : type == UserType.doctor
+          : type == UserType.DOCTOR
               ? "DOCTOR"
               : "DRIVER",
       'fcmToken': fcmToken,
@@ -27,10 +27,10 @@ class Credential {
     return Credential(
       map['phoneNumber'],
       map['user_type'] == 'DOCTOR'
-          ? UserType.doctor
+          ? UserType.DOCTOR
           : map['user_type'] == 'PATIENT'
-              ? UserType.patient
-              : UserType.driver,
+              ? UserType.PATIENT
+              : UserType.DRIVER,
       map['fcmToken'],
       Token(map["fireBaseToken"]),
     );
@@ -39,4 +39,4 @@ class Credential {
       Credential.fromMap(json.decode(source));
 }
 
-enum UserType { doctor, patient, driver }
+enum UserType { DOCTOR, PATIENT, DRIVER, SPOKE, HUB }

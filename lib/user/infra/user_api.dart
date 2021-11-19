@@ -23,13 +23,17 @@ class UserAPI implements UserService {
   @override
   Future<Result<Details>> login(Credential credential) async {
     String endpoint = baseUrl + "/user/signin";
-    print(credential.phone);
     var header = {
       "Content-Type": "application/json",
     };
     dynamic response = await _client.post(Uri.parse(endpoint),
         body: credential.toJson(), headers: header);
+    print('LOGIN API CALL');
+    print("CREDENTIAL:");
+    print(credential.toJson());
+    print('RESPONSE:');
     print(response.statusCode);
+    print(response.body);
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
       print(transformError(map));
@@ -47,9 +51,13 @@ class UserAPI implements UserService {
       "Content-Type": "application/json",
       "Authorization": token.value
     };
-    print(profile.toJson());
+
     var response = await _client.post(Uri.parse(endpoint),
         headers: header, body: profile.toJson());
+    print('ADD DOCTOR PROFILE API CALL');
+    print(profile.toJson());
+    print(response.statusCode);
+    print(response.body);
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
       print(transformError(map));

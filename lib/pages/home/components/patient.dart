@@ -50,7 +50,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
     super.initState();
     CubitProvider.of<MainCubit>(context).fetchEmergencyDetails();
     NotificationController.configure(
-        widget.mainCubit, UserType.patient, context);
+        widget.mainCubit, UserType.PATIENT, context);
     NotificationController.fcmHandler();
   }
 
@@ -111,7 +111,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
               loc.Location location = await _getLocation();
               _hideLoader();
               return widget.homePageAdapter
-                  .loadEmergencyScreen(context, UserType.patient, location);
+                  .loadEmergencyScreen(context, UserType.PATIENT, location);
             },
             icon: Icon(FontAwesomeIcons.mapMarkedAlt),
           ),
@@ -226,7 +226,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
               context,
               MaterialPageRoute(
                 builder: (context) => PatientReportScreen(
-                    mainCubit: widget.mainCubit, user: UserType.patient),
+                    mainCubit: widget.mainCubit, user: UserType.PATIENT),
               ));
         },
         child: Container(
@@ -338,7 +338,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                   loc.Location location = await _getLocation();
                   _hideLoader();
                   return widget.homePageAdapter
-                      .loadEmergencyScreen(context, UserType.patient, location);
+                      .loadEmergencyScreen(context, UserType.PATIENT, location);
                 }
               },
               icon: Icon(
@@ -487,7 +487,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
             loc.Location location = await _getLocation();
             _hideLoader();
             return widget.homePageAdapter
-                .loadEmergencyScreen(context, UserType.patient, location);
+                .loadEmergencyScreen(context, UserType.PATIENT, location);
           }
         },
         child: Container(

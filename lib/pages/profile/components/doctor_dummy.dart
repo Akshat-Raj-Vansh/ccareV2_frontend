@@ -1,6 +1,7 @@
 //@dart=2.9
 import 'package:ccarev2_frontend/components/default_button.dart';
 import 'package:ccarev2_frontend/state_management/profile/profile_cubit.dart';
+import 'package:ccarev2_frontend/user/domain/details.dart';
 import 'package:ccarev2_frontend/user/domain/profile.dart';
 import 'package:ccarev2_frontend/utils/size_config.dart';
 import 'package:flutter/material.dart';
@@ -10,8 +11,8 @@ import '../../../user/domain/location.dart' as loc;
 
 class DoctorProfileScreen extends StatefulWidget {
   final ProfileCubit cubit;
-  final String phone;
-  const DoctorProfileScreen(this.cubit, this.phone);
+  final Details details;
+  const DoctorProfileScreen(this.cubit, this.details);
 
   @override
   State<DoctorProfileScreen> createState() => _DoctorProfileScreenState();
@@ -20,14 +21,23 @@ class DoctorProfileScreen extends StatefulWidget {
 class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
   final _formKeyDoctor = GlobalKey<FormState>();
 
+//  _docID: string,
+//   name: string,
+//   hospitalName:string,
+//   email: string,
+//   phoneNumber:string,
+//   type:string,
+//   location: { coordinates: Location };
+
   String _email;
   DoctorType _doctorType;
 
   @override
   void initState() {
-    // TODO: implement initState
+    print("DOCTOR PROFILE");
+    print("DETAILS");
+    print(widget.details.toJson());
     super.initState();
-    // TODO: Search doctor profile using Phone Number
   }
 
   @override
@@ -39,23 +49,65 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(height: getProportionateScreenHeight(10)),
-          // LMWH
+          Container(
+            padding: EdgeInsets.only(left: 15, right: 15, top: 5),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Name: ', style: TextStyle(fontSize: 16)),
+                Text(widget.details.name, style: TextStyle(fontSize: 16)),
+              ],
+            ),
+          ),
+          SizedBox(height: getProportionateScreenHeight(10)),
+          Container(
+            padding: EdgeInsets.only(left: 15, right: 15, top: 5),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Hospital: ', style: TextStyle(fontSize: 16)),
+                Text(widget.details.hospital, style: TextStyle(fontSize: 16)),
+              ],
+            ),
+          ),
+          // SizedBox(height: getProportionateScreenHeight(10)),
+          // Container(
+          //   padding: EdgeInsets.only(left: 15, right: 15, top: 5),
+          //   color: Colors.white,
+          //   child: Row(
+          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //     children: [
+          //       Text('Phone: '),
+          //       Text(widget.details.phone_number),
+          //     ],
+          //   ),
+          // ),
+          SizedBox(height: getProportionateScreenHeight(10)),
+          Container(
+            padding: EdgeInsets.only(left: 15, right: 15, top: 5),
+            child: TextButton(
+              child: Text('Pick your location', style: TextStyle(fontSize: 16)),
+              onPressed: () {},
+            ),
+          ),
+          SizedBox(height: getProportionateScreenHeight(10)),
+          //Email
           Container(
             padding: EdgeInsets.only(left: 15, right: 15, top: 5),
             color: Colors.white,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Email ID: '),
+                Text('Email ID: ', style: TextStyle(fontSize: 16)),
                 Container(
                   width: SizeConfig.screenWidth * 0.4,
                   child: TextFormField(
-                    keyboardType: TextInputType.number,
+                    keyboardType: TextInputType.emailAddress,
                     focusNode: null,
                     initialValue: "",
                     onSaved: (newValue) => _email = newValue,
                     decoration: const InputDecoration(
-                      hintText: "Enter LMWH",
+                      hintText: "Enter Email ID",
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                     ),
                   ),
@@ -76,7 +128,7 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
                     child: ButtonTheme(
                       alignedDropdown: true,
                       child: DropdownButton<DoctorType>(
-                        value: DoctorType.NA,
+                        value: _doctorType,
                         iconSize: 30,
                         icon: (null),
                         style: TextStyle(
@@ -108,29 +160,26 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
             child: DefaultButton(
               text: "Save",
               press: () async {
-                // if (_formKeyDoctor.currentState.validate() &&
-                //     _myName != null &&
-                //     _myHospital != null &&
-                //     _myType != null) {
-                //   _formKeyDoctor.currentState.save();
-                //   lloc.LocationData locationData = await _getLocation();
-                //   var profile = DoctorProfile(
-                //     name: name,
-                //     hospitalName: hospitalName,
-                //     phoneNumber: widget.phone,
-                //     email: email,
-                //     location: loc.Location(
-                //         latitude: locationData.latitude,
-                //         longitude: locationData.longitude),
-                //     type: "SPOKE",
-                //   );
-                //   print(profile.toString());
-                //   widget.cubit.addDoctorProfile(profile);
-                // } else {
-                //   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                //     content: Text("All Fields are required"),
-                //   ));
-                //  }
+                if (_formKeyDoctor.currentState.validate()) {
+                  _formKeyDoctor.currentState.save();
+                  lloc.LocationData locationData = await _getLocation();
+                  var profile = DoctorProfile(
+                    name: widget.details.name,
+                    hospitalName: widget.details.hospital,
+                    phoneNumber: widget.details.phone_number,
+                    email: _email,
+                    location: loc.Location(
+                        latitude: locationData.latitude,
+                        longitude: locationData.longitude),
+                    type: _doctorType,
+                  );
+                  print(profile.toString());
+                  widget.cubit.addDoctorProfile(profile);
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                    content: Text("All Fields are required"),
+                  ));
+                }
               },
             ),
           ),

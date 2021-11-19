@@ -34,11 +34,11 @@ class UserCubit extends Cubit<UserState> {
   verifyOTP() async {
     emit(OTPVerificationState());
   }
+
   void signOut() async {
     await this.localStore.delete();
     emit(SignOutSuccessState());
   }
-
 
   void _setResultOfAuthState(Result<dynamic> result) {
     if (result.asError != null) {
@@ -47,6 +47,9 @@ class UserCubit extends Cubit<UserState> {
     }
     if (result.asValue.value is Details) {
       localStore.save(result.asValue.value as Details);
+      print('INSIDE USER CUBIT/LOGIN');
+      print('DETAILS:');
+      print((result.asValue.value as Details).toJson());
       emit(LoginSuccessState(result.asValue.value as Details));
     }
   }
