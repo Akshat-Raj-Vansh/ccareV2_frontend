@@ -52,11 +52,23 @@ class MainCubit extends Cubit<MainState> {
     emit(AcceptState(patientID));
   }
 
-  acceptPatientByDoctor(String patientID) async {
-    _startLoading("AcceptPatientbydoctor");
+  acceptPatientBySpoke(String patientID) async {
+    _startLoading("AcceptPatientbySpoke");
     final token = await localStore.fetch();
     final result =
-        await api.acceptPatientbyDoctor(Token(token.value), Token(patientID));
+        await api.acceptPatientbySpoke(Token(token.value), Token(patientID));
+    if (result.isError) {
+      emit(ErrorState(result.asError!.error as String));
+      return;
+    }
+    emit(PatientAccepted(result.asValue!.value));
+  }
+
+  acceptPatientByHub(String patientID) async {
+    _startLoading("AcceptPatientbySpoke");
+    final token = await localStore.fetch();
+    final result =
+        await api.acceptPatientbySpoke(Token(token.value), Token(patientID));
     if (result.isError) {
       emit(ErrorState(result.asError!.error as String));
       return;
@@ -209,6 +221,19 @@ class MainCubit extends Cubit<MainState> {
       return;
     }
     emit(AllPatientsState(result.asValue!.value));
+  }
+
+  getAllHubDoctors() async {
+    print("MAIN CUBIT/GET ALL HUB DOCTORS");
+    _startLoading("GET ALL HUB DOCTORS LOADING STATE");
+    final token = await localStore.fetch();
+    final result = await api.getAllHubDoctors(token);
+
+    if (result.isError) {
+      emit(ErrorState(result.asError!.error as String));
+      return;
+    }
+    emit(AllHubDoctorsState(result.asValue!.value));
   }
 
   fetchEmergencyDetails() async {

@@ -94,17 +94,17 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
         title: Text('CardioCare - Doctor'),
         backgroundColor: kPrimaryColor,
         actions: [
-          IconButton(
-            onPressed: () async {
-              // _showLoader();
-              // loc.Location location = await _getLocation();
-              // _hideLoader();
-              // return widget.homePageAdapter
-              //     .loadEmergencyScreen(context, UserType.doctor, location);
-              _showMessage("View location of Patient and Ambulance?");
-            },
-            icon: Icon(Icons.map),
-          ),
+          // IconButton(
+          //   onPressed: () async {
+          //     // _showLoader();
+          //     // loc.Location location = await _getLocation();
+          //     // _hideLoader();
+          //     // return widget.homePageAdapter
+          //     //     .loadEmergencyScreen(context, UserType.doctor, location);
+          //     _showMessage("View location of Patient and Ambulance?");
+          //   },
+          //   icon: Icon(Icons.map),
+          // ),
           IconButton(
             onPressed: () async {
               await showDialog(
@@ -206,7 +206,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
                       TextButton(
                         onPressed: () async {
                           widget.mainCubit
-                              .acceptPatientByDoctor(state.patientID);
+                              .acceptPatientBySpoke(state.patientID);
                         },
                         child: const Text(
                           'Yes',

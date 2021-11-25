@@ -19,6 +19,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 // class DoctorHomeUI extends StatefulWidget {
 //   final MainCubit mainCubit;
+
 //   final UserCubit userCubit;
 //   final IHomePageAdapter homePageAdapter;
 //   const DoctorHomeUI(this.mainCubit, this.userCubit, this.homePageAdapter);

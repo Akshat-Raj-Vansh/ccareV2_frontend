@@ -16,8 +16,6 @@ class PatientProfileScreen extends StatefulWidget {
 
 class _PatientProfileScreenState extends State<PatientProfileScreen> {
   final _formKeyPatient = GlobalKey<FormState>();
-  
-
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +60,10 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
               floatingLabelBehavior: FloatingLabelBehavior.always,
             ),
           ),
-          SizedBox(height: getProportionateScreenHeight(10)),
+          //SizedBox(height: getProportionateScreenHeight(10)),
+          const Spacer(
+            flex: 1,
+          ),
           Center(
             child: DefaultButton(
               text: "Save",
@@ -81,6 +82,7 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
               },
             ),
           ),
+          SizedBox(height: 30),
         ],
       ),
     );

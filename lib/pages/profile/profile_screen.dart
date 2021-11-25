@@ -1,12 +1,8 @@
 //@dart=2.9
 import 'package:ccarev2_frontend/pages/profile/profile_page_adapter.dart';
-import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
 import 'package:ccarev2_frontend/state_management/profile/profile_cubit.dart';
 import 'package:ccarev2_frontend/state_management/profile/profile_state.dart';
 import 'package:ccarev2_frontend/user/domain/credential.dart';
-import 'package:ccarev2_frontend/user/domain/details.dart';
-import 'package:ccarev2_frontend/user/domain/doc_info.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
 import '../../utils/size_config.dart';
@@ -22,7 +18,6 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  Info docInfo;
   @override
   void initState() {
     print("PROFILE SCREEN");
@@ -47,9 +42,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
           children: [
             SizedBox(height: SizeConfig.screenHeight * 0.04),
             _showLogo(context),
-            if (widget.userType == UserType.HUB ||
-                widget.userType == UserType.SPOKE)
-              _showInfo(context),
             _buildUI(context),
             SizedBox(height: SizeConfig.screenHeight * 0.02),
           ],
@@ -58,24 +50,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  _showInfo(BuildContext context) => Center(
-        child: Text('HELLO WORLD'),
-      );
   _buildUI(BuildContext context) => CubitConsumer<ProfileCubit, ProfileState>(
       cubit: widget.cubit,
       builder: (_, state) {
+        print("INSIDE BUILDER PROFILE SCREEN");
+        print('STATE:');
+        print(state.toString());
         return Expanded(
-            child: widget.pageAdapter
-                .loadProfiles(context, widget.userType, widget.cubit));
+          child: widget.pageAdapter
+              .loadProfiles(context, widget.userType, widget.cubit),
+        );
       },
       listener: (context, state) {
         if (state is LoadingState) {
           print("Loading State Called");
           _showLoader();
-        } else if (state is DocInfoState) {
-          print("Doc Info State Called");
-          _hideLoader();
-          docInfo = state.docInfo;
         } else if (state is AddProfileState) {
           print("Add Profile State Called");
           _hideLoader();

@@ -1,6 +1,5 @@
 //@dart=2.9
 import 'package:ccarev2_frontend/pages/splash/splash_screen.dart';
-import 'package:ccarev2_frontend/user/domain/details.dart';
 import 'package:ccarev2_frontend/utils/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -46,7 +45,7 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
   AnimationController animationController;
   final PageController _controller = PageController();
 
-  final _formkey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
   @override
   void initState() {
     super.initState();
@@ -100,7 +99,6 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
                       } else if (state is LoginSuccessState) {
                         print("Login Success State Called");
                         _hideLoader();
-                        Details details = state.details;
                         print(widget.userType);
                         state.details.newUser
                             ? widget.pageAdatper
@@ -249,7 +247,7 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
               EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
           child: SingleChildScrollView(
             child: Form(
-              key: _formkey,
+              key: _formKey,
               child: Column(
                 children: [
                   SizedBox(height: SizeConfig.screenHeight * 0.02),
@@ -289,7 +287,7 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
                           width: MediaQuery.of(context).size.width * 0.70,
                           backgroundColor: Colors.white,
                           textAlign: TextAlign.center,
-                          onSubmitted: (value) {
+                          onChanged: (value) {
                             _phone = value;
                           },
                           validator: (phone) => phone.isEmpty
@@ -302,7 +300,8 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
                   SizedBox(height: SizeConfig.screenHeight * 0.06),
                   RaisedButton(
                     onPressed: () async {
-                      if (_formkey.currentState.validate()) {
+                      print('LOGIN BUTTON CLICKED');
+                      if (_formKey.currentState.validate()) {
                         cubit.verifyPhone();
                       }
                     },
@@ -342,95 +341,99 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
         padding:
             EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
         child: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(height: SizeConfig.screenHeight * 0.02),
-              Row(
-                children: [
-                  IconButton(
-                    onPressed: () => _controller.previousPage(
-                        duration: const Duration(microseconds: 1000),
-                        curve: Curves.elasticIn),
-                    icon: const Icon(
-                      Icons.arrow_back_ios,
-                      color: Colors.black,
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                SizedBox(height: SizeConfig.screenHeight * 0.02),
+                Row(
+                  children: [
+                    IconButton(
+                      onPressed: () => _controller.previousPage(
+                          duration: const Duration(microseconds: 1000),
+                          curve: Curves.elasticIn),
+                      icon: const Icon(
+                        Icons.arrow_back_ios,
+                        color: Colors.black,
+                      ),
+                    ),
+                    const Text(
+                      'Enter OTP',
+                      textAlign: TextAlign.center,
+                      style:
+                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 30),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    CustomTextFormField(
+                        hint: "OTP",
+                        obscureText: false,
+                        keyboardType: TextInputType.number,
+                        color: kPrimaryColor,
+                        width: MediaQuery.of(context).size.width * 0.40,
+                        backgroundColor: Colors.white,
+                        textAlign: TextAlign.center,
+                        initialValue: "",
+                        onChanged: (value) {
+                          _otp = value;
+                        },
+                        validator: (otp) => otp.isEmpty || otp == ""
+                            ? "Please enter the OTP"
+                            : otp.length != 6
+                                ? "Please enter a valid OTP"
+                                : null),
+                    buildTimer(),
+                  ],
+                ),
+                SizedBox(height: SizeConfig.screenHeight * 0.02),
+                Text(
+                  "We sent your code to - $_phone",
+                  style: const TextStyle(color: Colors.green, fontSize: 16),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    animationController.reverse(
+                        from: animationController.value == 0
+                            ? 1.0
+                            : animationController.value);
+                    cubit.verifyPhone();
+                  },
+                  child: const Text(
+                    "Resend OTP Code",
+                    style: TextStyle(
+                        color: Colors.green,
+                        decoration: TextDecoration.underline),
+                  ),
+                ),
+                SizedBox(height: SizeConfig.screenHeight * 0.02),
+                RaisedButton(
+                  onPressed: () {
+                    _verifyOTP(_otp, _verificationCode);
+                  },
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30)),
+                  padding: const EdgeInsets.all(0),
+                  child: Container(
+                    width: MediaQuery.of(context).size.width / 1.5,
+                    alignment: Alignment.center,
+                    padding: const EdgeInsets.only(top: 8, bottom: 8),
+                    decoration: ShapeDecoration(
+                      color: kPrimaryColor,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30)),
+                    ),
+                    child: const Text(
+                      "Verify",
+                      style: TextStyle(color: Colors.white, fontSize: 20),
                     ),
                   ),
-                  const Text(
-                    'Enter OTP',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 30),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  CustomTextFormField(
-                      hint: "OTP",
-                      obscureText: false,
-                      keyboardType: TextInputType.number,
-                      color: kPrimaryColor,
-                      width: MediaQuery.of(context).size.width * 0.40,
-                      backgroundColor: Colors.white,
-                      textAlign: TextAlign.center,
-                      initialValue: "",
-                      onChanged: (value) {
-                        _otp = value;
-                      },
-                      validator: (otp) => otp.isEmpty || otp == ""
-                          ? "Please enter the OTP"
-                          : otp.length != 6
-                              ? "Please enter a valid OTP"
-                              : null),
-                  buildTimer(),
-                ],
-              ),
-              SizedBox(height: SizeConfig.screenHeight * 0.02),
-              Text(
-                "We sent your code to - $_phone",
-                style: const TextStyle(color: Colors.green, fontSize: 16),
-              ),
-              GestureDetector(
-                onTap: () {
-                  animationController.reverse(
-                      from: animationController.value == 0
-                          ? 1.0
-                          : animationController.value);
-                  cubit.verifyPhone();
-                },
-                child: const Text(
-                  "Resend OTP Code",
-                  style: TextStyle(
-                      color: Colors.green,
-                      decoration: TextDecoration.underline),
                 ),
-              ),
-              SizedBox(height: SizeConfig.screenHeight * 0.02),
-              RaisedButton(
-                onPressed: () {
-                  _verifyOTP(_otp, _verificationCode);
-                },
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30)),
-                padding: const EdgeInsets.all(0),
-                child: Container(
-                  width: MediaQuery.of(context).size.width / 1.5,
-                  alignment: Alignment.center,
-                  padding: const EdgeInsets.only(top: 8, bottom: 8),
-                  decoration: ShapeDecoration(
-                    color: kPrimaryColor,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30)),
-                  ),
-                  child: const Text(
-                    "Verify",
-                    style: TextStyle(color: Colors.white, fontSize: 20),
-                  ),
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

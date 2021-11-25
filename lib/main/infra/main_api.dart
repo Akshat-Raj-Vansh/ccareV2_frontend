@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:ccarev2_frontend/main/domain/edetails.dart';
 import 'package:ccarev2_frontend/main/domain/examination.dart';
 import 'package:ccarev2_frontend/main/domain/treatment.dart' as treat;
+import 'package:ccarev2_frontend/user/domain/doc_info.dart';
 import 'package:ccarev2_frontend/user/domain/emergency.dart';
 import 'package:ccarev2_frontend/user/domain/location.dart';
 import 'package:ccarev2_frontend/utils/constants.dart';
@@ -20,6 +21,20 @@ class MainAPI extends IMainAPI {
   };
 
   MainAPI(this._client, this.baseUrl);
+  transformError(Map map) {
+    var contents = map["error"] ?? map['errors'];
+    print(contents);
+    if (contents is String) return contents;
+    String errStr = "ERRORS";
+    (contents as Map<dynamic, dynamic>).forEach((key, value) {
+      print("${key} : ${value}\n");
+    });
+
+    return errStr;
+  }
+
+  // Patient Side APIs
+
   @override
   Future<Result<List<QuestionTree>>> getAll(Token token) async {
     String endpoint = baseUrl + "/emergency/patient/getAllQuestions";
@@ -41,54 +56,6 @@ class MainAPI extends IMainAPI {
         .map<QuestionTree>(
             (element) => QuestionTree.fromJson(jsonEncode(element)))
         .toList());
-  }
-
-  transformError(Map map) {
-    var contents = map["error"] ?? map['errors'];
-    print(contents);
-    if (contents is String) return contents;
-    String errStr = "ERRORS";
-    (contents as Map<dynamic, dynamic>).forEach((key, value) {
-      print("${key} : ${value}\n");
-    });
-
-    return errStr;
-  }
-
-  @override
-  Future<Result<String>> notify(
-      Token token, Location location, String action, bool ambRequired,
-      {List<QuestionTree>? assessment}) async {
-    String endpoint = baseUrl + "/emergency/patient/notify";
-    assessment?.removeLast();
-    var ans = assessment
-        ?.map((e) => {"question": e.question, "answer": e.answers})
-        .toList();
-    print(ans);
-    var body = {
-      "latitude": location.latitude,
-      'longitude': location.longitude,
-      "action": action,
-      "ambulanceRequired": ambRequired,
-      "assessment":ans
-    };
-    var header = {
-      "Content-Type": "application/json",
-      "Authorization": token.value
-    };
-    var response = await _client.post(
-      Uri.parse(endpoint),
-      headers: header,
-      body: jsonEncode(body),
-    );
-    if (response.statusCode != 200) {
-      print("error");
-      Map map = jsonDecode(response.body);
-      print(transformError(map));
-      return Result.error(transformError(map));
-    }
-    dynamic json = jsonDecode(response.body);
-    return Result.value(json['message']);
   }
 
   @override
@@ -116,36 +83,31 @@ class MainAPI extends IMainAPI {
   }
 
   @override
-  Future<Result<Location>> acceptPatientbyDoctor(
-      Token token, Token patient) async {
-    String endpoint = baseUrl + "/emergency/doctor/acceptPatient";
+  Future<Result<String>> notify(
+      Token token, Location location, String action, bool ambRequired,
+      {List<QuestionTree>? assessment}) async {
+    String endpoint = baseUrl + "/emergency/patient/notify";
+    assessment?.removeLast();
+    var ans = assessment
+        ?.map((e) => {"question": e.question, "answer": e.answers})
+        .toList();
+    print(ans);
+    var body = {
+      "latitude": location.latitude,
+      'longitude': location.longitude,
+      "action": action,
+      "ambulanceRequired": ambRequired,
+      "assessment": ans
+    };
     var header = {
       "Content-Type": "application/json",
       "Authorization": token.value
     };
-    var response = await _client.post(Uri.parse(endpoint),
-        headers: header, body: jsonEncode({"patID": patient.value}));
-    if (response.statusCode != 200) {
-      Map map = jsonDecode(response.body);
-      print(transformError(map));
-      return Result.error(transformError(map));
-    }
-    dynamic json = jsonDecode(response.body);
-    return Result.value(
-        Location(longitude: json['longtitude'], latitude: json["latitude"]));
-  }
-
-  @override
-  Future<Result<Location>> acceptPatientbyDriver(
-      Token token, Token patient) async {
-    String endpoint = baseUrl + "/emergency/driver/acceptPatient";
-    var header = {
-      "Content-Type": "application/json",
-      "Authorization": token.value
-    };
-    var response = await _client.post(Uri.parse(endpoint),
-        headers: header, body: jsonEncode({"patID": patient.value}));
-    print("Response: " + response.body);
+    var response = await _client.post(
+      Uri.parse(endpoint),
+      headers: header,
+      body: jsonEncode(body),
+    );
     if (response.statusCode != 200) {
       print("error");
       Map map = jsonDecode(response.body);
@@ -153,14 +115,14 @@ class MainAPI extends IMainAPI {
       return Result.error(transformError(map));
     }
     dynamic json = jsonDecode(response.body);
-    return Result.value(
-        Location(longitude: json['longitude'], latitude: json["latitude"]));
+    return Result.value(json['message']);
   }
 
+  // Doctors Side APIs
+
   @override
-  Future<Result<List<treat.TreatmentReport>>> fetchPatientReportHistory(
-      Token token) async {
-    String endpoint = baseUrl + "/treatment/getHistory";
+  Future<Result<EDetails>> fetchEmergencyDetails(Token token) async {
+    String endpoint = baseUrl + "/emergency/fetchEmergencyDetails";
     var header = {
       "Content-Type": "application/json",
       "Authorization": token.value
@@ -173,11 +135,8 @@ class MainAPI extends IMainAPI {
       print(transformError(map));
       return Result.error(transformError(map));
     }
-    List<treat.TreatmentReport> report =
-        (jsonDecode(response.body)['history'] as List)
-            .map((data) => treat.TreatmentReport.fromJson(jsonEncode(data)))
-            .toList();
-    return Result.value(report);
+    dynamic json = jsonDecode(response.body);
+    return Result.value(EDetails.fromJson(jsonEncode(json)));
   }
 
   @override
@@ -207,22 +166,26 @@ class MainAPI extends IMainAPI {
   }
 
   @override
-  Future<Result<String>> savePatientReport(
-      Token token, treat.TreatmentReport report) async {
-    String endpoint = baseUrl + "/treatment/doctor/updateReport";
+  Future<Result<List<treat.TreatmentReport>>> fetchPatientReportHistory(
+      Token token) async {
+    String endpoint = baseUrl + "/treatment/getHistory";
     var header = {
       "Content-Type": "application/json",
       "Authorization": token.value
     };
-    var response = await _client.post(Uri.parse(endpoint),
-        headers: header, body: report.toJson());
+    var response = await _client.get(Uri.parse(endpoint), headers: header);
+    print(response.statusCode);
+    print(response.body);
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
       print(transformError(map));
       return Result.error(transformError(map));
     }
-    dynamic json = jsonDecode(response.body);
-    return Result.value(json["message"]);
+    List<treat.TreatmentReport> report =
+        (jsonDecode(response.body)['history'] as List)
+            .map((data) => treat.TreatmentReport.fromJson(jsonEncode(data)))
+            .toList();
+    return Result.value(report);
   }
 
   @override
@@ -251,23 +214,72 @@ class MainAPI extends IMainAPI {
     return Result.value(Examination.fromJson(jsonEncode(report)));
   }
 
+  // Hub Side APIs
+
   @override
-  Future<Result<String>> savePatientExamReport(
-      Token token, Examination examination) async {
-    String endpoint = baseUrl + "/treatment/doctor/updateTreatment";
+  Future<Result<Location>> acceptPatientbyHub(
+      Token token, Token patient) async {
+    String endpoint = baseUrl + "/emergency/doctor/acceptPatient";
     var header = {
       "Content-Type": "application/json",
       "Authorization": token.value
     };
     var response = await _client.post(Uri.parse(endpoint),
-        headers: header, body: examination.toJson());
+        headers: header, body: jsonEncode({"patID": patient.value}));
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
       print(transformError(map));
       return Result.error(transformError(map));
     }
     dynamic json = jsonDecode(response.body);
-    return Result.value(json["message"]);
+    return Result.value(
+        Location(longitude: json['longtitude'], latitude: json["latitude"]));
+  }
+
+  // Driver Side APIs
+
+  @override
+  Future<Result<Location>> acceptPatientbyDriver(
+      Token token, Token patient) async {
+    String endpoint = baseUrl + "/emergency/driver/acceptPatient";
+    var header = {
+      "Content-Type": "application/json",
+      "Authorization": token.value
+    };
+    var response = await _client.post(Uri.parse(endpoint),
+        headers: header, body: jsonEncode({"patID": patient.value}));
+    print("Response: " + response.body);
+    if (response.statusCode != 200) {
+      print("error");
+      Map map = jsonDecode(response.body);
+      print(transformError(map));
+      return Result.error(transformError(map));
+    }
+    dynamic json = jsonDecode(response.body);
+    return Result.value(
+        Location(longitude: json['longitude'], latitude: json["latitude"]));
+  }
+
+  // Spoke Side APIs
+
+  @override
+  Future<Result<Location>> acceptPatientbySpoke(
+      Token token, Token patient) async {
+    String endpoint = baseUrl + "/emergency/doctor/acceptPatient";
+    var header = {
+      "Content-Type": "application/json",
+      "Authorization": token.value
+    };
+    var response = await _client.post(Uri.parse(endpoint),
+        headers: header, body: jsonEncode({"patID": patient.value}));
+    if (response.statusCode != 200) {
+      Map map = jsonDecode(response.body);
+      print(transformError(map));
+      return Result.error(transformError(map));
+    }
+    dynamic json = jsonDecode(response.body);
+    return Result.value(
+        Location(longitude: json['longtitude'], latitude: json["latitude"]));
   }
 
   @override
@@ -289,22 +301,63 @@ class MainAPI extends IMainAPI {
   }
 
   @override
-  Future<Result<EDetails>> fetchEmergencyDetails(Token token) async {
-    String endpoint = baseUrl + "/emergency/fetchEmergencyDetails";
+  Future<Result<List<Info>>> getAllHubDoctors(Token token) async {
+    String endpoint = baseUrl + "/user/fetchHubDoctors";
     var header = {
       "Content-Type": "application/json",
       "Authorization": token.value
     };
     var response = await _client.get(Uri.parse(endpoint), headers: header);
-    print(response.statusCode);
-    print(response.body);
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
       print(transformError(map));
       return Result.error(transformError(map));
     }
     dynamic json = jsonDecode(response.body);
-    return Result.value(EDetails.fromJson(jsonEncode(json)));
+
+    //! Needs to be parsed
+    List<Info> hubDoctors = [
+      Info(name: "name", hospital: 'hospital', phone: "phone")
+    ];
+    return Result.value(hubDoctors);
+  }
+
+  @override
+  Future<Result<String>> savePatientReport(
+      Token token, treat.TreatmentReport report) async {
+    String endpoint = baseUrl + "/treatment/doctor/updateReport";
+    var header = {
+      "Content-Type": "application/json",
+      "Authorization": token.value
+    };
+    var response = await _client.post(Uri.parse(endpoint),
+        headers: header, body: report.toJson());
+    if (response.statusCode != 200) {
+      Map map = jsonDecode(response.body);
+      print(transformError(map));
+      return Result.error(transformError(map));
+    }
+    dynamic json = jsonDecode(response.body);
+    return Result.value(json["message"]);
+  }
+
+  @override
+  Future<Result<String>> savePatientExamReport(
+      Token token, Examination examination) async {
+    String endpoint = baseUrl + "/treatment/doctor/updateTreatment";
+    var header = {
+      "Content-Type": "application/json",
+      "Authorization": token.value
+    };
+    var response = await _client.post(Uri.parse(endpoint),
+        headers: header, body: examination.toJson());
+    if (response.statusCode != 200) {
+      Map map = jsonDecode(response.body);
+      print(transformError(map));
+      return Result.error(transformError(map));
+    }
+    dynamic json = jsonDecode(response.body);
+    return Result.value(json["message"]);
   }
 
   @override
@@ -314,8 +367,28 @@ class MainAPI extends IMainAPI {
       "Content-Type": "application/json",
       "Authorization": token.value
     };
-    var response = await _client
-        .post(Uri.parse(endpoint), headers: header, body: jsonEncode({'status': status}));
+    var response = await _client.post(Uri.parse(endpoint),
+        headers: header, body: jsonEncode({'status': status}));
+    print(response.statusCode);
+    print(response.body);
+    if (response.statusCode != 200) {
+      Map map = jsonDecode(response.body);
+      print(transformError(map));
+      return Result.error(transformError(map));
+    }
+    dynamic json = jsonDecode(response.body);
+    return Result.value(json["message"]);
+  }
+
+  @override
+  Future<Result<String>> consultHub(Token token, String docID) async {
+    String endpoint = baseUrl + "/spoke/consult";
+    var header = {
+      "Content-Type": "application/json",
+      "Authorization": token.value
+    };
+    var response = await _client.post(Uri.parse(endpoint),
+        headers: header, body: jsonEncode({'hubDocID': docID}));
     print(response.statusCode);
     print(response.body);
     if (response.statusCode != 200) {

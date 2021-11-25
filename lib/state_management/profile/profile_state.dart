@@ -23,6 +23,12 @@ class AddProfileState extends ProfileState {
   List<Object> get props => [details];
 }
 
+class LoadingDocInfo extends ProfileState {
+  LoadingDocInfo();
+  @override
+  List<Object> get props => [];
+}
+
 class DocInfoState extends ProfileState {
   final Info docInfo;
   DocInfoState(this.docInfo);

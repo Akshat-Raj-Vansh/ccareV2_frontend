@@ -104,20 +104,58 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
     return Scaffold(
       appBar: AppBar(
         title: Text('CardioCare - Patient'),
+        backgroundColor: kPrimaryColor,
         actions: [
+          // IconButton(
+          //   onPressed: () async {
+          //     _showLoader();
+          //     loc.Location location = await _getLocation();
+          //     _hideLoader();
+          //     return widget.homePageAdapter
+          //         .loadEmergencyScreen(context, UserType.PATIENT, location);
+          //   },
+          //   icon: Icon(FontAwesomeIcons.mapMarkedAlt),
+          // ),
           IconButton(
             onPressed: () async {
-              _showLoader();
-              loc.Location location = await _getLocation();
-              _hideLoader();
-              return widget.homePageAdapter
-                  .loadEmergencyScreen(context, UserType.PATIENT, location);
+              await showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text(
+                        'Are you sure?',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 20,
+                        ),
+                      ),
+                      content: const Text(
+                        'Do you want to logout?',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w300,
+                          fontSize: 15,
+                        ),
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.of(context).pop(false),
+                          child: const Text(
+                            'Cancel',
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () async {
+                            widget.homePageAdapter
+                                .onLogout(context, widget.userCubit);
+                          },
+                          child: const Text(
+                            'Yes',
+                          ),
+                        ),
+                      ],
+                    ),
+                  ) ??
+                  false;
             },
-            icon: Icon(FontAwesomeIcons.mapMarkedAlt),
-          ),
-          IconButton(
-            onPressed: () =>
-                widget.homePageAdapter.onLogout(context, widget.userCubit),
             icon: Icon(Icons.logout),
           ),
         ],
@@ -182,6 +220,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              if (!_notificationSent) _buildHeader(),
               if (_notificationSent && (!_doctorAccepted || !_driverAccepted))
                 _buildNotificationSend(),
               _buildPatientReportButton(),
@@ -197,7 +236,6 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                 ),
               if (_doctorAccepted) _buildDoctorDetails(),
               if (_driverAccepted) _buildDriverDetails(),
-              if (!_notificationSent) _buildHeader(),
             ],
           ),
         ),
@@ -231,11 +269,11 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
         },
         child: Container(
           width: SizeConfig.screenWidth,
-          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+          margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           decoration: BoxDecoration(
               color: kPrimaryLightColor,
-              borderRadius: BorderRadius.circular(20)),
+              borderRadius: BorderRadius.circular(5)),
           child: Text(
             "View Patient's Medical Report",
             style: TextStyle(color: Colors.white, fontSize: 14),
@@ -255,8 +293,12 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
         },
         child: Container(
           width: SizeConfig.screenWidth,
-          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+          margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(5),
+              border: Border.all(color: kPrimaryColor)),
           child: Text(
             "View your Medical Report History",
             style: TextStyle(color: kPrimaryColor, fontSize: 14),

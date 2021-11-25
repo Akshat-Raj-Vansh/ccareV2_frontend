@@ -30,48 +30,43 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
     print("DOCTOR PROFILE");
     print("USERTYPE");
     print(widget.userType.toString());
+    print('CALLING GET DOC INFO');
+    widget.cubit.getDocInfo();
     super.initState();
   }
 
   @override
-  Widget build(BuildContext context) {
-    print('CALLING GET DOC INFO');
-    widget.cubit.getDocInfo();
-    // return CubitConsumer<ProfileCubit, ProfileState>(
-    //     cubit: cubit,
-    //     builder: (_, state) {
-    //       print("INSIDE BUILDER DOCTOR PROFILE");
-    //       print("CALLING GET DOC INFO");
-    //       print('STATE:');
-    //       print(state.toString());
-    //       cubit.getDocInfo();
-    //       if (state is DocInfoState) {
-    //         print("Doc Info State Called");
-    //         docInfo = state.docInfo;
-    //         _hideLoader();
-    //         docInfo = state.docInfo;
-    //         return _buildForm();
-    //       }
-    //       return Center(
-    //         child: CircularProgressIndicator(
-    //           backgroundColor: Colors.green,
-    //         ),
-    //       );
-    //     },
-    //     listener: (context, state) {
-    //       if (state is DocInfoState) {
-    //         print("Doc Info State Called");
-    //         docInfo = state.docInfo;
-    //         _hideLoader();
-    //         docInfo = state.docInfo;
-    //         return _buildForm();
-    //       } else if (state is ErrorState) {
-    //         print('Error State Called');
-    //         _hideLoader();
-    //         _showMessage(state.error);
-    //       }
-    //     });
-    return _buildForm();
+  Widget build(BuildContext ctx) {
+    // ProfileCubit cubit = CubitProvider.of<ProfileCubit>(ctx);
+
+    return CubitConsumer<ProfileCubit, ProfileState>(
+        cubit: widget.cubit,
+        builder: (ctx, state) {
+          print("INSIDE BUILDER DOCTOR PROFILE");
+          print('STATE:');
+          print(state.toString());
+          if (state is DocInfoState) {
+            print("Doc Info State Called");
+            docInfo = state.docInfo;
+            return _buildForm();
+          }
+          if (state is LoadingState) {
+            return Center();
+          }
+          return Center(
+            child: CircularProgressIndicator(
+              backgroundColor: Colors.green,
+            ),
+          );
+        },
+        listener: (ctx, state) {
+          if (state is LoadingDocInfo) {
+            print("Doctor Profile Screen Loading State Called");
+          } else if (state is ErrorState) {
+            print('Error State Called');
+            _showMessage(state.error);
+          }
+        });
   }
 
   _buildForm() => Form(
@@ -86,7 +81,7 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text('Name: ', style: TextStyle(fontSize: 16)),
-                  Text('docInfo.name', style: TextStyle(fontSize: 16)),
+                  Text(docInfo.name, style: TextStyle(fontSize: 16)),
                 ],
               ),
             ),
@@ -97,31 +92,29 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text('Hospital: ', style: TextStyle(fontSize: 16)),
-                  Text('docInfo.hospital', style: TextStyle(fontSize: 16)),
+                  Text(docInfo.hospital, style: TextStyle(fontSize: 16)),
                 ],
               ),
             ),
             SizedBox(height: getProportionateScreenHeight(10)),
             Container(
               padding: EdgeInsets.only(left: 15, right: 15, top: 5),
-              color: Colors.white,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text('Phone: '),
-                  Text('docInfo.phone'),
+                  Text(docInfo.phone),
                 ],
               ),
             ),
             SizedBox(height: getProportionateScreenHeight(10)),
             Container(
               padding: EdgeInsets.only(left: 15, right: 15, top: 5),
-              color: Colors.white,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text('Type: '),
-                  Text('widget.userType.toString().split(\'.\')[1]'),
+                  Text(widget.userType.toString().split('.')[1]),
                 ],
               ),
             ),
@@ -138,7 +131,6 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
             //Email
             Container(
               padding: EdgeInsets.only(left: 15, right: 15, top: 5),
-              color: Colors.white,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -162,7 +154,7 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
             // SizedBox(height: getProportionateScreenHeight(10)),
             // Container(
             //   padding: EdgeInsets.only(left: 15, right: 15, top: 5),
-            //   color: Colors.white,
+            //
             //   child: Row(
             //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
             //     children: <Widget>[
@@ -208,9 +200,9 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
                     _formKeyDoctor.currentState.save();
                     lloc.LocationData locationData = await _getLocation();
                     var profile = DoctorProfile(
-                      name: 'Dr. Akshat Raj Vansh',
-                      hospitalName: 'MGMSC Rajajipuram Lucknow',
-                      phoneNumber: '7355026029',
+                      name: docInfo.name,
+                      hospitalName: docInfo.hospital,
+                      phoneNumber: docInfo.phone,
                       email: _email,
                       location: loc.Location(
                           latitude: locationData.latitude,
@@ -231,6 +223,34 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
           ],
         ),
       );
+
+  _showLoader() {
+    var alert = const AlertDialog(
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      content: Center(
+          child: CircularProgressIndicator(
+        backgroundColor: Colors.green,
+      )),
+    );
+
+    showDialog(
+        context: context, barrierDismissible: true, builder: (_) => alert);
+  }
+
+  _hideLoader() {
+    Navigator.of(context, rootNavigator: true).pop();
+  }
+
+  _showMessage(String msg) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      backgroundColor: Theme.of(context).accentColor,
+      content: Text(
+        msg,
+        style: Theme.of(context).textTheme.caption.copyWith(fontSize: 16),
+      ),
+    ));
+  }
 
   Future<lloc.LocationData> _getLocation() async {
     lloc.LocationData _location = await lloc.Location().getLocation();
