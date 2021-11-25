@@ -1,7 +1,7 @@
 //@dart=2.9
-import 'package:ccarev2_frontend/services/Notifications/component/DOCTOR.dart';
+import 'package:ccarev2_frontend/services/Notifications/component/doctor.dart';
 import 'package:ccarev2_frontend/services/Notifications/component/driver.dart';
-import 'package:ccarev2_frontend/services/Notifications/component/PATIENT.dart';
+import 'package:ccarev2_frontend/services/Notifications/component/patient.dart';
 import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
 import 'package:ccarev2_frontend/user/domain/credential.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';

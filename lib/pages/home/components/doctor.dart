@@ -1,21 +1,21 @@
-// //@dart=2.9
-// import 'package:camera/camera.dart';
-// import 'package:ccarev2_frontend/main/domain/edetails.dart';
-// import 'package:ccarev2_frontend/pages/home/home_page_adapter.dart';
-// import 'package:ccarev2_frontend/pages/spoke_form/patient_report_screen.dart';
-// import 'package:ccarev2_frontend/pages/spoke_form/patient_exam_screen.dart';
-// import 'package:ccarev2_frontend/pages/spoke_form/patient_history_screen.dart';
-// import 'package:ccarev2_frontend/services/Notifications/notificationContoller.dart';
-// import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
-// import 'package:ccarev2_frontend/state_management/main/main_state.dart';
-// import 'package:ccarev2_frontend/state_management/user/user_cubit.dart';
-// import 'package:ccarev2_frontend/user/domain/credential.dart';
-// import 'package:ccarev2_frontend/utils/constants.dart';
-// import 'package:ccarev2_frontend/utils/size_config.dart';
-// import 'package:flutter/cupertino.dart';
-// import 'package:flutter/material.dart';
-// import 'package:google_fonts/google_fonts.dart';
-// import 'package:flutter_cubit/flutter_cubit.dart';
+//@dart=2.9
+import 'package:camera/camera.dart';
+import 'package:ccarev2_frontend/main/domain/edetails.dart';
+import 'package:ccarev2_frontend/pages/home/home_page_adapter.dart';
+import 'package:ccarev2_frontend/pages/spoke_form/patient_exam_screen.dart';
+import 'package:ccarev2_frontend/pages/spoke_form/patient_history_screen.dart';
+import 'package:ccarev2_frontend/pages/spoke_form/patient_report_screen.dart';
+import 'package:ccarev2_frontend/services/Notifications/notificationContoller.dart';
+import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
+import 'package:ccarev2_frontend/state_management/main/main_state.dart';
+import 'package:ccarev2_frontend/state_management/user/user_cubit.dart';
+import 'package:ccarev2_frontend/user/domain/credential.dart';
+import 'package:ccarev2_frontend/utils/constants.dart';
+import 'package:ccarev2_frontend/utils/size_config.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_cubit/flutter_cubit.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 // class DoctorHomeUI extends StatefulWidget {
 //   final MainCubit mainCubit;
