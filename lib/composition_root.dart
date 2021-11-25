@@ -86,8 +86,8 @@ class CompositionRoot {
     return details.user_token == null
         ? splashScreen()
         : details.newUser
-            ? createProfileScreen(details)
-            : createHomeUI(details);
+            ? createProfileScreen(details.user_type)
+            : createHomeUI(details.user_type);
   }
 
   static Widget splashScreen() {
@@ -108,8 +108,7 @@ class CompositionRoot {
     );
   }
 
-  static Widget createHomeUI(Details details) {
-    UserType userType = details.user_type;
+  static Widget createHomeUI(UserType userType) {
     if (userType == UserType.PATIENT)
       return createPatientHomeUI();
     else if (userType == UserType.SPOKE)
@@ -118,14 +117,14 @@ class CompositionRoot {
     return createDriverHomeUI();
   }
 
-  static Widget createProfileScreen(Details details) {
+  static Widget createProfileScreen(UserType userType) {
     ProfileCubit profileCubit = ProfileCubit(localStore, userAPI);
     return MultiCubitProvider(
       providers: [
         CubitProvider<UserCubit>(create: (context) => userCubit),
         CubitProvider<ProfileCubit>(create: (context) => profileCubit),
       ],
-      child: ProfileScreen(profilePageAdapter, details, profileCubit),
+      child: ProfileScreen(profilePageAdapter, userType, profileCubit),
     );
   }
 

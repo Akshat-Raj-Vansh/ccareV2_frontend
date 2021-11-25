@@ -6,8 +6,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 abstract class IAuthPageAdapter {
-  void onAuthSuccess(BuildContext context, Details details);
-  void onLoginSuccess(BuildContext context, Details details);
+  void onAuthSuccess(BuildContext context, UserType userType);
+  void onLoginSuccess(BuildContext context, UserType userType);
   void onSplashScreenComplete(BuildContext context, UserType userType);
 }
 
@@ -21,26 +21,29 @@ class AuthPageAdapter extends IAuthPageAdapter {
   @override
   void onAuthSuccess(
     BuildContext context,
-    Details details,
+    UserType userType,
   ) {
     // Navigator.pushAndRemoveUntil(
     //     context,
     //     MaterialPageRoute(builder: (context) => onUserAuthenticated(userType)),
     //     (Route<dynamic> route) => false);
 
-    profilePageAdapter.onLoginSuccess(context, details);
+    profilePageAdapter.onLoginSuccess(context, userType);
   }
 
   @override
   void onLoginSuccess(
     BuildContext context,
-    Details details,
+    UserType userType,
   ) {
-    profilePageAdapter.onProfileCompletion(context, details);
+    profilePageAdapter.onProfileCompletion(context, userType);
   }
 
   @override
   void onSplashScreenComplete(BuildContext context, UserType userType) {
+    print('AUTH PAGE ADAPTER/ON SPLASH SCREEN COMPLETE');
+    print("USERTYPE:");
+    print(userType);
     Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (context) => authPage(userType)),

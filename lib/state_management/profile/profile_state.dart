@@ -1,5 +1,5 @@
 import 'package:ccarev2_frontend/user/domain/details.dart';
-import 'package:ccarev2_frontend/user/domain/profile.dart';
+import 'package:ccarev2_frontend/user/domain/doc_info.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class ProfileState extends Equatable {}
@@ -21,6 +21,13 @@ class AddProfileState extends ProfileState {
   AddProfileState(this.details);
   @override
   List<Object> get props => [details];
+}
+
+class DocInfoState extends ProfileState {
+  final Info docInfo;
+  DocInfoState(this.docInfo);
+  @override
+  List<Object> get props => [this.docInfo];
 }
 
 class ErrorState extends ProfileState {

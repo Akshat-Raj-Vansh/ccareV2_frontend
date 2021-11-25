@@ -9,7 +9,7 @@ import '../../state_management/user/user_cubit.dart';
 import '../../state_management/main/main_cubit.dart';
 
 abstract class IHomePageAdapter {
-  void loadHomeUI(BuildContext context, Details details);
+  void loadHomeUI(BuildContext context, UserType userType);
   void onLogout(BuildContext context, UserCubit userCubit);
   void loadEmergencyScreen(
       BuildContext context, UserType userType, Location location);
@@ -32,11 +32,10 @@ class HomePageAdapter extends IHomePageAdapter {
       this.splashScreen);
 
   @override
-  void loadHomeUI(BuildContext context, Details details) {
+  void loadHomeUI(BuildContext context, UserType userType) {
     print('HOME PAGE ADAPTER/LOAD HOME UI');
-    print('DETAILS:');
-    print(details.toJson());
-    UserType userType = details.user_type;
+    print('USERTYPE:');
+    print(userType.toString());
     if (userType == UserType.PATIENT)
       Navigator.pushAndRemoveUntil(
           context,

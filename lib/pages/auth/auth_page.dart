@@ -103,9 +103,10 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
                         Details details = state.details;
                         print(widget.userType);
                         state.details.newUser
-                            ? widget.pageAdatper.onAuthSuccess(context, details)
+                            ? widget.pageAdatper
+                                .onAuthSuccess(context, widget.userType)
                             : widget.pageAdatper
-                                .onLoginSuccess(context, details);
+                                .onLoginSuccess(context, widget.userType);
                         print(state.details.toString());
                       } else if (state is PhoneVerificationState) {
                         _hideLoader();
@@ -136,7 +137,8 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
                       print("LoadingStateCalled");
                       _showLoader();
                     } else if (state is profileState.AddProfileState) {
-                      widget.pageAdatper.onLoginSuccess(context, state.details);
+                      widget.pageAdatper
+                          .onLoginSuccess(context, widget.userType);
                     } else {
                       _hideLoader();
                       if (state is profileState.ErrorState) {
@@ -287,7 +289,7 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
                           width: MediaQuery.of(context).size.width * 0.70,
                           backgroundColor: Colors.white,
                           textAlign: TextAlign.center,
-                          onChanged: (value) {
+                          onSubmitted: (value) {
                             _phone = value;
                           },
                           validator: (phone) => phone.isEmpty
@@ -500,6 +502,8 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
     _showLoader();
     String _msg = "OTP VERIFICATION INCOMPLETE";
     print('INSIDE VERIFY OTP');
+    print('USERTYPE:');
+    print(widget.userType);
     try {
       await FirebaseAuth.instance
           .signInWithCredential(

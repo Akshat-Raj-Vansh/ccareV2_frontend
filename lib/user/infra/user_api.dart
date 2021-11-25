@@ -21,7 +21,7 @@ class UserAPI implements UserService {
   );
 
   @override
-  Future<Result<Details>> login(Credential credential) async {
+  Future<Result<Details>> loginOld(Credential credential) async {
     String endpoint = baseUrl + "/user/signin";
     var header = {
       "Content-Type": "application/json",
@@ -41,6 +41,29 @@ class UserAPI implements UserService {
     }
     dynamic json = jsonDecode(response.body);
     return Result.value(Details.fromJson(jsonEncode(json)));
+  }
+
+  @override
+  Future<Result<dynamic>> loginNew(Credential credential) async {
+    String endpoint = baseUrl + "/user/signin";
+    var header = {
+      "Content-Type": "application/json",
+    };
+    dynamic response = await _client.post(Uri.parse(endpoint),
+        body: credential.toJson(), headers: header);
+    print('DOC LOGIN API CALL');
+    print("CREDENTIAL:");
+    print(credential.toJson());
+    print('RESPONSE:');
+    print(response.statusCode);
+    print(response.body);
+    if (response.statusCode != 200) {
+      Map map = jsonDecode(response.body);
+      print(transformError(map));
+      return Result.error(transformError(map));
+    }
+    dynamic json = jsonDecode(response.body);
+    return Result.value(json);
   }
 
   @override

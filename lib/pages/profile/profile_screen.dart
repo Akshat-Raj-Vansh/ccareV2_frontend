@@ -5,6 +5,8 @@ import 'package:ccarev2_frontend/state_management/profile/profile_cubit.dart';
 import 'package:ccarev2_frontend/state_management/profile/profile_state.dart';
 import 'package:ccarev2_frontend/user/domain/credential.dart';
 import 'package:ccarev2_frontend/user/domain/details.dart';
+import 'package:ccarev2_frontend/user/domain/doc_info.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
 import '../../utils/size_config.dart';
@@ -12,14 +14,23 @@ import '../../utils/size_config.dart';
 class ProfileScreen extends StatefulWidget {
   final ProfileCubit cubit;
   final IProfilePageAdapter pageAdapter;
-  final Details details;
-  const ProfileScreen(this.pageAdapter, this.details, this.cubit);
+  final UserType userType;
+  const ProfileScreen(this.pageAdapter, this.userType, this.cubit);
 
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  Info docInfo;
+  @override
+  void initState() {
+    print("PROFILE SCREEN");
+    print("USERTYPE");
+    print(widget.userType);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -36,6 +47,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
           children: [
             SizedBox(height: SizeConfig.screenHeight * 0.04),
             _showLogo(context),
+            if (widget.userType == UserType.HUB ||
+                widget.userType == UserType.SPOKE)
+              _showInfo(context),
             _buildUI(context),
             SizedBox(height: SizeConfig.screenHeight * 0.02),
           ],
@@ -44,22 +58,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
+  _showInfo(BuildContext context) => Center(
+        child: Text('HELLO WORLD'),
+      );
   _buildUI(BuildContext context) => CubitConsumer<ProfileCubit, ProfileState>(
       cubit: widget.cubit,
       builder: (_, state) {
         return Expanded(
             child: widget.pageAdapter
-                .loadProfiles(context, widget.details, widget.cubit));
+                .loadProfiles(context, widget.userType, widget.cubit));
       },
       listener: (context, state) {
         if (state is LoadingState) {
           print("Loading State Called");
           _showLoader();
+        } else if (state is DocInfoState) {
+          print("Doc Info State Called");
+          _hideLoader();
+          docInfo = state.docInfo;
         } else if (state is AddProfileState) {
           print("Add Profile State Called");
           _hideLoader();
           // _showMessage(state.message);
-          widget.pageAdapter.onProfileCompletion(context, state.details);
+          widget.pageAdapter.onProfileCompletion(context, widget.userType);
         } else if (state is ErrorState) {
           print('Error State Called');
           _hideLoader();

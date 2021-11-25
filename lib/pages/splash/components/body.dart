@@ -97,10 +97,49 @@ class _BodyState extends State<Body> {
                                   context, UserType.PATIENT),
                         ),
                         _button(
-                          text: "Doctor",
-                          press: () => widget.pageAdapter
-                              .onSplashScreenComplete(context, UserType.DOCTOR),
-                        ),
+                            text: "Doctor",
+                            press: () async {
+                              await showDialog(
+                                    context: context,
+                                    builder: (context) => AlertDialog(
+                                      title: const Text(
+                                        'Doctor Type',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 20,
+                                        ),
+                                      ),
+                                      content: const Text(
+                                        'Choose the type of doctor-',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w300,
+                                          fontSize: 15,
+                                        ),
+                                      ),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () => widget.pageAdapter
+                                              .onSplashScreenComplete(
+                                                  context, UserType.SPOKE),
+                                          child: const Text(
+                                            'SPOKE',
+                                          ),
+                                        ),
+                                        TextButton(
+                                          onPressed: () => widget.pageAdapter
+                                              .onSplashScreenComplete(
+                                                  context, UserType.HUB),
+                                          child: const Text(
+                                            'HUB',
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ) ??
+                                  false;
+                              // widget.pageAdapter.onSplashScreenComplete(
+                              //     context, UserType.DOCTOR);
+                            }),
                         _button(
                           text: "Driver",
                           press: () => widget.pageAdapter

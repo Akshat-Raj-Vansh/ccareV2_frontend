@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:ccarev2_frontend/user/domain/credential.dart';
 import 'package:flutter/foundation.dart';
 
 import 'package:ccarev2_frontend/user/domain/location.dart';
@@ -9,7 +10,7 @@ class DoctorProfile {
   final String hospitalName;
   final String email;
   final String phoneNumber;
-  final DoctorType type;
+  final UserType type;
   final Location location;
   DoctorProfile({
     required this.name,
@@ -25,7 +26,7 @@ class DoctorProfile {
     String? hospitalName,
     String? email,
     String? phoneNumber,
-    DoctorType? type,
+    UserType? type,
     Location? location,
   }) {
     return DoctorProfile(
@@ -55,8 +56,8 @@ class DoctorProfile {
       hospitalName: map['hospitalName'],
       email: map['email'],
       phoneNumber: map['phoneNumber'],
-      type: DoctorType.values.firstWhere(
-          (element) => element.toString() == "DoctorType." + map['type']),
+      type: UserType.values.firstWhere(
+          (element) => element.toString() == "UserType." + map['type']),
       location: Location.fromMap(map['location']),
     );
   }
@@ -229,5 +230,3 @@ class DriverProfile {
         location.hashCode;
   }
 }
-
-enum DoctorType { SPOKE, HUB }

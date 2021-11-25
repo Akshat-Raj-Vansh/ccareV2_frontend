@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:async/src/result/result.dart';
 import 'package:ccarev2_frontend/user/domain/details.dart';
+import 'package:ccarev2_frontend/user/domain/doc_info.dart';
 import 'package:ccarev2_frontend/user/domain/token.dart';
 import 'package:ccarev2_frontend/user/infra/user_api.dart';
 import 'package:cubit/cubit.dart';
@@ -21,9 +22,9 @@ class UserCubit extends Cubit<UserState> {
 
   login(Credential credential) async {
     _startLoading();
-    final result = await userAPI.login(credential);
+    final result = await userAPI.loginNew(credential);
     if (result == null) print("result is null");
-    _setResultOfAuthState(result);
+    _setResultOfAuthStateNew(result);
   }
 
   verifyPhone() async {
@@ -40,18 +41,41 @@ class UserCubit extends Cubit<UserState> {
     emit(SignOutSuccessState());
   }
 
-  void _setResultOfAuthState(Result<dynamic> result) {
+  // void _setResultOfAuthState(Result<dynamic> result) {
+  //   if (result.asError != null) {
+  //     emit(ErrorState(result.asError.error));
+  //     return;
+  //   }
+  //   if (result.asValue.value is Details) {
+  //     localStore.save(result.asValue.value as Details);
+  //     print('INSIDE USER CUBIT/LOGIN');
+  //     print('DETAILS:');
+  //     print((result.asValue.value as Details).toJson());
+  //     emit(LoginSuccessState(result.asValue.value as Details));
+  //   }
+  // }
+
+  void _setResultOfAuthStateNew(Result<dynamic> result) {
     if (result.asError != null) {
       emit(ErrorState(result.asError.error));
       return;
     }
-    if (result.asValue.value is Details) {
-      localStore.save(result.asValue.value as Details);
-      print('INSIDE USER CUBIT/LOGIN');
-      print('DETAILS:');
-      print((result.asValue.value as Details).toJson());
-      emit(LoginSuccessState(result.asValue.value as Details));
+    print('USER CUBIT/ SET RESULT OF AUTH STATE NEW');
+    print('JSON OBJECT:');
+    print(result.asValue.value);
+    Details details = Details.fromJson(jsonEncode(result.asValue.value));
+    print('DETAILS:');
+    print(details.toString());
+    localStore.save(details);
+    if (details.newUser) {
+      Info docInfo = Info.fromJson(jsonEncode(result.asValue.value));
+      print('INFO:');
+      print(docInfo.toString());
+      localStore.saveInfo(docInfo);
     }
+    print('INSIDE USER CUBIT/LOGIN');
+    print('DETAILS:');
+    emit(LoginSuccessState(details));
   }
 
   void _startLoading() {

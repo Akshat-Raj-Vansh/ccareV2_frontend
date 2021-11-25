@@ -13,9 +13,11 @@ class Credential {
       'phoneNumber': phone,
       'user_type': type == UserType.PATIENT
           ? "PATIENT"
-          : type == UserType.DOCTOR
-              ? "DOCTOR"
-              : "DRIVER",
+          : type == UserType.HUB
+              ? "HUB"
+              : type == UserType.SPOKE
+                  ? "SPOKE"
+                  : "DRIVER",
       'fcmToken': fcmToken,
       'fireBaseToken': token.value,
     };
@@ -26,11 +28,13 @@ class Credential {
   factory Credential.fromMap(Map<String, dynamic> map) {
     return Credential(
       map['phoneNumber'],
-      map['user_type'] == 'DOCTOR'
-          ? UserType.DOCTOR
-          : map['user_type'] == 'PATIENT'
-              ? UserType.PATIENT
-              : UserType.DRIVER,
+      map['user_type'] == 'HUB'
+          ? UserType.HUB
+          : map['user_type'] == 'SPOKE'
+              ? UserType.SPOKE
+              : map['user_type'] == 'PATIENT'
+                  ? UserType.PATIENT
+                  : UserType.DRIVER,
       map['fcmToken'],
       Token(map["fireBaseToken"]),
     );

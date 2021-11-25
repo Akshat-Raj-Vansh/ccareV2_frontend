@@ -89,67 +89,68 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          title: Text('CardioCare - Doctor'),
-          backgroundColor: kPrimaryColor,
-          actions: [
-            IconButton(
-              onPressed: () async {
-                // _showLoader();
-                // loc.Location location = await _getLocation();
-                // _hideLoader();
-                // return widget.homePageAdapter
-                //     .loadEmergencyScreen(context, UserType.doctor, location);
-                _showMessage("View location of Patient and Ambulance?");
-              },
-              icon: Icon(Icons.map),
-            ),
-            IconButton(
-              onPressed: () async {
-                await showDialog(
-                      context: context,
-                      builder: (context) => AlertDialog(
-                        title: const Text(
-                          'Are you sure?',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 20,
-                          ),
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: Text('CardioCare - Doctor'),
+        backgroundColor: kPrimaryColor,
+        actions: [
+          IconButton(
+            onPressed: () async {
+              // _showLoader();
+              // loc.Location location = await _getLocation();
+              // _hideLoader();
+              // return widget.homePageAdapter
+              //     .loadEmergencyScreen(context, UserType.doctor, location);
+              _showMessage("View location of Patient and Ambulance?");
+            },
+            icon: Icon(Icons.map),
+          ),
+          IconButton(
+            onPressed: () async {
+              await showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text(
+                        'Are you sure?',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 20,
                         ),
-                        content: const Text(
-                          'Do you want to logout?',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w300,
-                            fontSize: 15,
-                          ),
-                        ),
-                        actions: [
-                          TextButton(
-                            onPressed: () => Navigator.of(context).pop(false),
-                            child: const Text(
-                              'Cancel',
-                            ),
-                          ),
-                          TextButton(
-                            onPressed: () async {
-                              widget.homePageAdapter
-                                  .onLogout(context, widget.userCubit);
-                            },
-                            child: const Text(
-                              'Yes',
-                            ),
-                          ),
-                        ],
                       ),
-                    ) ??
-                    false;
-              },
-              icon: Icon(Icons.logout),
-            ),
-          ],
-        ),
-        body: CubitConsumer<MainCubit, MainState>(builder: (_, state) {
+                      content: const Text(
+                        'Do you want to logout?',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w300,
+                          fontSize: 15,
+                        ),
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.of(context).pop(false),
+                          child: const Text(
+                            'Cancel',
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () async {
+                            widget.homePageAdapter
+                                .onLogout(context, widget.userCubit);
+                          },
+                          child: const Text(
+                            'Yes',
+                          ),
+                        ),
+                      ],
+                    ),
+                  ) ??
+                  false;
+            },
+            icon: Icon(Icons.logout),
+          ),
+        ],
+      ),
+      body: CubitConsumer<MainCubit, MainState>(
+        builder: (_, state) {
           if (state is DetailsLoaded) {
             currentState = DetailsLoaded;
             eDetails = state.eDetails;
@@ -168,7 +169,8 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
           if (currentState == null)
             return Center(child: CircularProgressIndicator());
           return _buildUI(context);
-        }, listener: (context, state) async {
+        },
+        listener: (context, state) async {
           if (state is LoadingState) {
             print("Loading State Called");
             _showLoader();
@@ -223,7 +225,50 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
             print("AllPatientsState State Called");
             _hideLoader();
           }
-        }));
+        },
+      ),
+      drawer: Drawer(
+        // Add a ListView to the drawer. This ensures the user can scroll
+        // through the options in the drawer if there isn't enough vertical
+        // space to fit everything.
+        child: ListView(
+          // Important: Remove any padding from the ListView.
+          padding: EdgeInsets.zero,
+          children: [
+            const DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
+              child: Text('CardioCare - Hub'),
+            ),
+            ListTile(
+              title: const Text('My Profile'),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: const Text('My Patients'),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: const Text('Consultation'),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: const Text('Settings'),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   _buildUI(BuildContext buildContext) => Stack(children: [

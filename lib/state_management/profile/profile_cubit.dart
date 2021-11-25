@@ -2,6 +2,7 @@
 import 'package:async/src/result/result.dart';
 import 'package:ccarev2_frontend/user/domain/credential.dart';
 import 'package:ccarev2_frontend/user/domain/details.dart';
+import 'package:ccarev2_frontend/user/domain/doc_info.dart';
 import 'package:ccarev2_frontend/user/domain/profile.dart';
 import 'package:ccarev2_frontend/user/domain/token.dart';
 import 'package:ccarev2_frontend/user/infra/user_api.dart';
@@ -29,14 +30,23 @@ class ProfileCubit extends Cubit<ProfileState> {
     emit(AddProfileState(details));
   }
 
+  getDocInfo() async {
+    print("PROFILE CUBIT/GET DOC INFO PROFILE");
+    _startLoading();
+    final docInfo = await this.localStore.fetchDocInfo();
+    if (docInfo == null) {
+      emit(ErrorState("No info found!"));
+      return;
+    }
+    print('DOC INFO JSON:');
+    print(docInfo.toJson());
+    emit(DocInfoState(docInfo));
+  }
+
   addDoctorProfile(DoctorProfile profile) async {
     print("PROFILE CUBIT/ADD DOCTOR PROFILE");
     _startLoading();
     final token = await this.localStore.fetch();
-    UserType userType =
-        profile.type == DoctorType.SPOKE ? UserType.SPOKE : UserType.HUB;
-    await this.localStore.updateUserType(userType);
-
     final result = await api.addDoctorProfile(Token(token.value), profile);
     if (result == null) emit(ErrorState("Server Error"));
     if (result.isError) {

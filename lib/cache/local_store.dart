@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:ccarev2_frontend/user/domain/credential.dart';
 import 'package:ccarev2_frontend/user/domain/details.dart';
+import 'package:ccarev2_frontend/user/domain/doc_info.dart';
 import 'package:ccarev2_frontend/user/domain/profile.dart';
 import 'package:ccarev2_frontend/user/domain/token.dart';
 
@@ -11,6 +12,7 @@ import 'package:ccarev2_frontend/cache/ilocal_store.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 const String token_key = "CACHED__TOKEN_AND_DATA";
+const String info_key = "CACHED__INFO";
 const String temp_token_key = "CACHED_TEMP_TOKEN";
 const String auth_key = "CACHED__TYPE";
 const String temp_data_key = "CACHED__DATA";
@@ -43,6 +45,19 @@ class LocalStore implements ILocalStore {
   }
 
   @override
+  Future<Info> fetchDocInfo() {
+    String data = sharedPreferences.getString(info_key);
+    print("LOCAL STORE/FETCH DOC INFO");
+    print("DATA:");
+    print(data);
+    if (data != null) {
+      Info docInfo = Info.fromMap(jsonDecode(data));
+      return Future.value(docInfo);
+    }
+    return null;
+  }
+
+  @override
   delete() {
     sharedPreferences.remove(token_key);
   }
@@ -50,6 +65,11 @@ class LocalStore implements ILocalStore {
   @override
   void save(Details details) {
     sharedPreferences.setString(token_key, jsonEncode(details.toMap()));
+  }
+
+  @override
+  void saveInfo(Info docInfo) {
+    sharedPreferences.setString(info_key, jsonEncode(docInfo.toMap()));
   }
 
   @override
@@ -62,48 +82,9 @@ class LocalStore implements ILocalStore {
       Details new_details = Details(
         newUser: newUser,
         user_token: details.user_token,
-        phone_number: details.phone_number,
         user_type: details.user_type,
-        name: details.name,
-        hospital: details.hospital,
+        phone: details.phone,
       );
-      sharedPreferences.setString(token_key, jsonEncode(new_details.toMap()));
-    }
-  }
-
-  @override
-  void updateUserType(UserType type) {
-    // return sharedPreferences.setString(auth_key, type.toString());
-    String data = sharedPreferences.getString(token_key);
-    print('LOCAL STORE UPDATE USER TYPE');
-    print(data);
-    if (data != null) {
-      Details details = Details.fromMap(jsonDecode(data));
-      Details new_details = Details(
-          newUser: details.newUser,
-          user_token: details.user_token,
-          phone_number: details.phone_number,
-          user_type: type,
-          name: details.name,
-          hospital: details.hospital);
-      sharedPreferences.setString(token_key, jsonEncode(new_details.toMap()));
-    }
-  }
-
-  @override
-  void updatePhoneNumber(String phone) {
-    // return sharedPreferences.setString(auth_key, type.toString());
-    String data = sharedPreferences.getString(token_key);
-    print(data);
-    if (data != null) {
-      Details details = Details.fromMap(jsonDecode(data));
-      Details new_details = Details(
-          newUser: details.newUser,
-          user_token: details.user_token,
-          phone_number: phone,
-          user_type: details.user_type,
-          name: details.name,
-          hospital: details.hospital);
       sharedPreferences.setString(token_key, jsonEncode(new_details.toMap()));
     }
   }
