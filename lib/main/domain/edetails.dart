@@ -67,6 +67,7 @@ enum EStatus {OTW,EMERGENCY,ATH,OGT,END}
 
 
 class PatientDetails {
+  final String id;
     final String name;
    final Location location;
     final int age;
@@ -75,6 +76,7 @@ class PatientDetails {
     final String address;
     final EStatus status;
   PatientDetails({
+    required this.id,
     required this.name,
     required this.location,
     required this.age,
@@ -85,6 +87,7 @@ class PatientDetails {
   });
 
   PatientDetails copyWith({
+    String? id,
     String? name,
     Location? location,
     int? age,
@@ -94,6 +97,7 @@ class PatientDetails {
     EStatus? status,
   }) {
     return PatientDetails(
+      id: id ?? this.id,
       name: name ?? this.name,
       location: location ?? this.location,
       age: age ?? this.age,
@@ -106,6 +110,7 @@ class PatientDetails {
 
   Map<String, dynamic> toMap() {
     return {
+      'id': id,
       'name': name,
       'location': location.toMap(),
       'age': age,
@@ -118,6 +123,7 @@ class PatientDetails {
 
   factory PatientDetails.fromMap(Map<String, dynamic> map) {
     return PatientDetails(
+      id: map['id'],
       name: map['name'],
       location: Location.fromMap(map['location']),
       age: map['age'],
@@ -135,7 +141,7 @@ class PatientDetails {
 
   @override
   String toString() {
-    return 'PatientDetails(name: $name, location: $location, age: $age, gender: $gender, contactNumber: $contactNumber, address: $address, status: $status)';
+    return 'PatientDetails(id: $id, name: $name, location: $location, age: $age, gender: $gender, contactNumber: $contactNumber, address: $address, status: $status)';
   }
 
   @override
@@ -143,6 +149,7 @@ class PatientDetails {
     if (identical(this, other)) return true;
   
     return other is PatientDetails &&
+      other.id == id &&
       other.name == name &&
       other.location == location &&
       other.age == age &&
@@ -154,7 +161,8 @@ class PatientDetails {
 
   @override
   int get hashCode {
-    return name.hashCode ^
+    return id.hashCode ^
+      name.hashCode ^
       location.hashCode ^
       age.hashCode ^
       gender.hashCode ^
@@ -165,12 +173,14 @@ class PatientDetails {
 }
 
 class DoctorDetails {
+  final String id;
    final String name;
    final Location location;
     final String hospital;
     final String contactNumber;  
     final String address;
   DoctorDetails({
+    required this.id,
     required this.name,
     required this.location,
     required this.hospital,
@@ -179,6 +189,7 @@ class DoctorDetails {
   });
 
   DoctorDetails copyWith({
+    String? id,
     String? name,
     Location? location,
     String? hospital,
@@ -186,6 +197,7 @@ class DoctorDetails {
     String? address,
   }) {
     return DoctorDetails(
+      id: id ?? this.id,
       name: name ?? this.name,
       location: location ?? this.location,
       hospital: hospital ?? this.hospital,
@@ -196,6 +208,7 @@ class DoctorDetails {
 
   Map<String, dynamic> toMap() {
     return {
+      'id': id,
       'name': name,
       'location': location.toMap(),
       'hospital': hospital,
@@ -206,6 +219,7 @@ class DoctorDetails {
 
   factory DoctorDetails.fromMap(Map<String, dynamic> map) {
     return DoctorDetails(
+      id: map['id'],
       name: map['name'],
       location: Location.fromMap(map['location']),
       hospital: map['hospital'],
@@ -220,7 +234,7 @@ class DoctorDetails {
 
   @override
   String toString() {
-    return 'DoctorDetails(name: $name, location: $location, hospital: $hospital, contactNumber: $contactNumber, address: $address)';
+    return 'DoctorDetails(id: $id, name: $name, location: $location, hospital: $hospital, contactNumber: $contactNumber, address: $address)';
   }
 
   @override
@@ -228,6 +242,7 @@ class DoctorDetails {
     if (identical(this, other)) return true;
   
     return other is DoctorDetails &&
+      other.id == id &&
       other.name == name &&
       other.location == location &&
       other.hospital == hospital &&
@@ -237,7 +252,8 @@ class DoctorDetails {
 
   @override
   int get hashCode {
-    return name.hashCode ^
+    return id.hashCode ^
+      name.hashCode ^
       location.hashCode ^
       hospital.hashCode ^
       contactNumber.hashCode ^
@@ -247,12 +263,14 @@ class DoctorDetails {
 
 
 class DriverDetails {
+  final String id;
    final String name;
    final Location location;
     final String plateNumber;
     final String contactNumber;  
     final String address;
   DriverDetails({
+    required this.id,
     required this.name,
     required this.location,
     required this.plateNumber,
@@ -261,6 +279,7 @@ class DriverDetails {
   });
 
   DriverDetails copyWith({
+    String? id,
     String? name,
     Location? location,
     String? plateNumber,
@@ -268,6 +287,7 @@ class DriverDetails {
     String? address,
   }) {
     return DriverDetails(
+      id: id ?? this.id,
       name: name ?? this.name,
       location: location ?? this.location,
       plateNumber: plateNumber ?? this.plateNumber,
@@ -278,6 +298,7 @@ class DriverDetails {
 
   Map<String, dynamic> toMap() {
     return {
+      'id': id,
       'name': name,
       'location': location.toMap(),
       'plateNumber': plateNumber,
@@ -288,6 +309,7 @@ class DriverDetails {
 
   factory DriverDetails.fromMap(Map<String, dynamic> map) {
     return DriverDetails(
+      id: map['id'],
       name: map['name'],
       location: Location.fromMap(map['location']),
       plateNumber: map['plateNumber'],
@@ -302,7 +324,7 @@ class DriverDetails {
 
   @override
   String toString() {
-    return 'DriverDetails(name: $name, location: $location, plateNumber: $plateNumber, contactNumber: $contactNumber, address: $address)';
+    return 'DriverDetails(id: $id, name: $name, location: $location, plateNumber: $plateNumber, contactNumber: $contactNumber, address: $address)';
   }
 
   @override
@@ -310,6 +332,7 @@ class DriverDetails {
     if (identical(this, other)) return true;
   
     return other is DriverDetails &&
+      other.id == id &&
       other.name == name &&
       other.location == location &&
       other.plateNumber == plateNumber &&
@@ -319,7 +342,8 @@ class DriverDetails {
 
   @override
   int get hashCode {
-    return name.hashCode ^
+    return id.hashCode ^
+      name.hashCode ^
       location.hashCode ^
       plateNumber.hashCode ^
       contactNumber.hashCode ^
