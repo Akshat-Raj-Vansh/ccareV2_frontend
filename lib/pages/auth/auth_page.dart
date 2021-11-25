@@ -382,6 +382,9 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
                       onChanged: (value) {
                         _otp = value;
                       },
+                      onSubmitted: (value){
+                         _otp = value;
+                      },
                       validator: (otp) => otp.isEmpty || otp == ""
                           ? "Please enter the OTP"
                           : otp.length != 6
