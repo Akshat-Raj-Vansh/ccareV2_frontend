@@ -24,57 +24,160 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
   final _formKeyDoctor = GlobalKey<FormState>();
 
   String _email;
+  String name;
+  String hospital;
   Info docInfo;
   @override
   void initState() {
-    print("DOCTOR PROFILE");
-    print("USERTYPE");
-    print(widget.userType.toString());
+    print("DOCTORPROFILE");
     super.initState();
+    widget.cubit.getDocInfo();
   }
 
   @override
   Widget build(BuildContext context) {
-    print('CALLING GET DOC INFO');
-    widget.cubit.getDocInfo();
-    // return CubitConsumer<ProfileCubit, ProfileState>(
-    //     cubit: cubit,
-    //     builder: (_, state) {
-    //       print("INSIDE BUILDER DOCTOR PROFILE");
-    //       print("CALLING GET DOC INFO");
-    //       print('STATE:');
-    //       print(state.toString());
-    //       cubit.getDocInfo();
-    //       if (state is DocInfoState) {
-    //         print("Doc Info State Called");
-    //         docInfo = state.docInfo;
-    //         _hideLoader();
-    //         docInfo = state.docInfo;
-    //         return _buildForm();
-    //       }
-    //       return Center(
-    //         child: CircularProgressIndicator(
-    //           backgroundColor: Colors.green,
-    //         ),
-    //       );
-    //     },
-    //     listener: (context, state) {
-    //       if (state is DocInfoState) {
-    //         print("Doc Info State Called");
-    //         docInfo = state.docInfo;
-    //         _hideLoader();
-    //         docInfo = state.docInfo;
-    //         return _buildForm();
-    //       } else if (state is ErrorState) {
-    //         print('Error State Called');
-    //         _hideLoader();
-    //         _showMessage(state.error);
-    //       }
-    //     });
-    return _buildForm();
+ 
+  
+    return CubitConsumer<ProfileCubit, ProfileState>(
+        cubit: widget.cubit,
+        builder: (_, state) {
+          if (state is DocInfoState) {
+            print("Doc Info State Called");
+            docInfo = state.docInfo;
+            // _hideLoader();
+            docInfo = state.docInfo;
+            return _buildOldForm();
+          }
+          return _buildNewForm();
+          
+        },
+        listener: (context, state) {
+            // print(state);
+
+          // if(state is LoadingState)
+          // {
+          //   _showLoader();
+          // }
+          // if (state is DocInfoState) {
+          //   print("Doc Info State Called");
+          //   docInfo = state.docInfo;
+          //   _hideLoader();
+          //   docInfo = state.docInfo;
+          //   return _buildOldForm();
+          // } 
+          // else if (state is DocNotFoundState) {
+          //   print("DocNOt Info State Called");
+           
+          //   _hideLoader();
+          //   return _buildNewForm();
+          // }
+          //  if (state is ErrorState) {
+          //   print('Error State Called');
+          //   // _hideLoader();
+          //   _showMessage(state.error);
+          // }
+        });
+  //  return _buildForm();
+  }
+  _showMessage(String msg) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      backgroundColor: Theme.of(context).accentColor,
+      content: Text(
+        msg,
+        style: Theme.of(context)
+            .textTheme
+            .caption
+            .copyWith(color: Colors.white, fontSize: 16),
+      ),
+    ));
   }
 
-  _buildForm() => Form(
+  _buildNewForm()=>Form(
+      key: _formKeyDoctor,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(height: getProportionateScreenHeight(20)),
+          TextFormField(
+            keyboardType: TextInputType.text,
+            onSaved: (newValue) => name = newValue,
+            validator: (value) => value.isEmpty ? "Name is required" : null,
+            decoration: const InputDecoration(
+              labelText: "Full Name",
+              hintText: "Enter your Full Name",
+              floatingLabelBehavior: FloatingLabelBehavior.always,
+            ),
+          ),
+          SizedBox(height: getProportionateScreenHeight(10)),
+        
+          TextFormField(
+            keyboardType: TextInputType.text,
+            onSaved: (newValue) => hospital = newValue,
+            validator: (value) => value.isEmpty ? "Hospital is required" : null,
+            decoration: const InputDecoration(
+              labelText: "Hospital",
+              hintText: "Enter your Hospital",
+              floatingLabelBehavior: FloatingLabelBehavior.always,
+            ),
+          ),
+
+          TextFormField(
+            keyboardType: TextInputType.text,
+            onSaved: (newValue) => _email = newValue,
+            validator: (value) => value.isEmpty ? "Email is required" : null,
+            decoration: const InputDecoration(
+              labelText: "Email",
+              hintText: "Enter your Email",
+              floatingLabelBehavior: FloatingLabelBehavior.always,
+            ),
+          ), SizedBox(height: getProportionateScreenHeight(10)),
+          Container(
+              padding: EdgeInsets.only(left: 15, right: 15, top: 5),
+              color: Colors.white,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Type: '),
+                  Text(widget.userType.toString().split('.')[1]),
+                ],
+              ),
+            ),
+            SizedBox(height: getProportionateScreenHeight(10)),
+          SizedBox(height: getProportionateScreenHeight(10)),
+            Center(
+              child: DefaultButton(
+                text: "Save",
+                press: () async {
+                  if (_formKeyDoctor.currentState.validate()) {
+                    _formKeyDoctor.currentState.save();
+                    lloc.LocationData locationData = await _getLocation();
+                    var profile = DoctorProfile(
+                      name: name,
+                      hospitalName: hospital,
+                      phoneNumber: "8580405100",
+                      email: _email,
+                      location: loc.Location(
+                          latitude: locationData.latitude,
+                          longitude: locationData.longitude),
+                      type: widget.userType,
+                    );
+                    print(profile.toString());
+                    widget.cubit.addDoctorProfile(profile);
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      content: Text("All Fields are required"),
+                    ));
+                  }
+                },
+              ),
+            ),
+            SizedBox(height: 30),
+      
+        ],
+      ),
+    );
+
+  _buildOldForm() => Form(
         key: _formKeyDoctor,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -86,7 +189,7 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text('Name: ', style: TextStyle(fontSize: 16)),
-                  Text('docInfo.name', style: TextStyle(fontSize: 16)),
+                  Text(docInfo.name, style: TextStyle(fontSize: 16)),
                 ],
               ),
             ),
@@ -97,7 +200,7 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text('Hospital: ', style: TextStyle(fontSize: 16)),
-                  Text('docInfo.hospital', style: TextStyle(fontSize: 16)),
+                  Text(docInfo.hospital, style: TextStyle(fontSize: 16)),
                 ],
               ),
             ),
@@ -109,7 +212,7 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text('Phone: '),
-                  Text('docInfo.phone'),
+                  Text(docInfo.phone),
                 ],
               ),
             ),
@@ -121,7 +224,7 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text('Type: '),
-                  Text('widget.userType.toString().split(\'.\')[1]'),
+                  Text(widget.userType.toString().split('.')[1]),
                 ],
               ),
             ),
@@ -231,6 +334,24 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
           ],
         ),
       );
+
+      _showLoader() {
+    var alert = const AlertDialog(
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      content: Center(
+          child: CircularProgressIndicator(
+        backgroundColor: Colors.green,
+      )),
+    );
+
+    showDialog(
+        context: context, barrierDismissible: true, builder: (_) => alert);
+  }
+
+  _hideLoader() {
+    Navigator.of(context, rootNavigator: true).pop();
+  }
 
   Future<lloc.LocationData> _getLocation() async {
     lloc.LocationData _location = await lloc.Location().getLocation();

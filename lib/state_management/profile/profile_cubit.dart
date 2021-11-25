@@ -35,12 +35,17 @@ class ProfileCubit extends Cubit<ProfileState> {
     _startLoading();
     final docInfo = await this.localStore.fetchDocInfo();
     if (docInfo == null) {
-      emit(ErrorState("No info found!"));
+      print("DOC NOT FOUND");
+      Future.delayed(Duration(seconds: 1), () {
+        emit(DocNotFoundState());
+      });
       return;
     }
     print('DOC INFO JSON:');
     print(docInfo.toJson());
-    emit(DocInfoState(docInfo));
+    Future.delayed(Duration(seconds: 1), () {
+      emit(DocInfoState(docInfo));
+    });
   }
 
   addDoctorProfile(DoctorProfile profile) async {

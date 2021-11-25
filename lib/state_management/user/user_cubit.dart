@@ -60,21 +60,21 @@ class UserCubit extends Cubit<UserState> {
       emit(ErrorState(result.asError.error));
       return;
     }
-    print('USER CUBIT/ SET RESULT OF AUTH STATE NEW');
-    print('JSON OBJECT:');
-    print(result.asValue.value);
+  
+   
     Details details = Details.fromJson(jsonEncode(result.asValue.value));
-    print('DETAILS:');
-    print(details.toString());
+
+
     localStore.save(details);
-    if (details.newUser) {
+    if (details.newUser && details.user_type==UserType.SPOKE && details.user_type==UserType.HUB) {
+      if(result.asValue.value["name"]==null){
+        print("NEW DOCTOR");
+        emit(LoginSuccessState(details));
+        return;
+      }
       Info docInfo = Info.fromJson(jsonEncode(result.asValue.value));
-      print('INFO:');
-      print(docInfo.toString());
       localStore.saveInfo(docInfo);
     }
-    print('INSIDE USER CUBIT/LOGIN');
-    print('DETAILS:');
     emit(LoginSuccessState(details));
   }
 

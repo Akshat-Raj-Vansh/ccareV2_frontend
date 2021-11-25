@@ -26,8 +26,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     print("PROFILE SCREEN");
-    print("USERTYPE");
-    print(widget.userType);
     super.initState();
   }
 
@@ -47,10 +45,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
           children: [
             SizedBox(height: SizeConfig.screenHeight * 0.04),
             _showLogo(context),
-            if (widget.userType == UserType.HUB ||
-                widget.userType == UserType.SPOKE)
-              _showInfo(context),
-            _buildUI(context),
+            // if (widget.userType == UserType.HUB ||
+            //     widget.userType == UserType.SPOKE)
+            //   _showInfo(context),
+             _buildUI(context),
             SizedBox(height: SizeConfig.screenHeight * 0.02),
           ],
         ),
@@ -64,19 +62,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
   _buildUI(BuildContext context) => CubitConsumer<ProfileCubit, ProfileState>(
       cubit: widget.cubit,
       builder: (_, state) {
+        print("Profile Screen $state");
         return Expanded(
             child: widget.pageAdapter
                 .loadProfiles(context, widget.userType, widget.cubit));
       },
       listener: (context, state) {
+        print(state);
         if (state is LoadingState) {
           print("Loading State Called");
           _showLoader();
-        } else if (state is DocInfoState) {
-          print("Doc Info State Called");
-          _hideLoader();
-          docInfo = state.docInfo;
-        } else if (state is AddProfileState) {
+        }
+        //  else if (state is DocInfoState) {
+        //   print("Doc Info State Called");
+        //   _hideLoader();
+        //   docInfo = state.docInfo;
+        // }
+        //  else if (state is DocNotFoundState) {
+        //   print("Doc Not Found State Called");
+        //   _hideLoader();
+        // }
+         else if (state is AddProfileState) {
           print("Add Profile State Called");
           _hideLoader();
           // _showMessage(state.message);

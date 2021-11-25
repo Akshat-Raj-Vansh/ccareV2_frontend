@@ -52,7 +52,7 @@ class CompositionRoot {
     localStore = LocalStore(sharedPreferences);
     client = Client();
     // secureClient = SecureClient(MHttpClient(client), localStore);
-    baseUrl = "http://192.168.0.139:3000";
+    baseUrl = "http://192.168.56.151:3000";
     // baseUrl = "https://cardiocarenith.herokuapp.com";
     //baseUrl = "http://192.168.80.55:3000";
 
