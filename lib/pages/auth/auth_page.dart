@@ -462,10 +462,11 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
 
   _verifyPhone(String phone) async {
     print('INSIDE VERIFY PHONE');
+    print("AuthPage: $_phone");
     String _msg = "VERIFICATION INCOMPLETE";
     try {
       await FirebaseAuth.instance.verifyPhoneNumber(
-          phoneNumber: "+91 " + _phone,
+          phoneNumber: "+91" + _phone,
           verificationCompleted: (PhoneAuthCredential credential) async {
             await FirebaseAuth.instance
                 .signInWithCredential(credential)

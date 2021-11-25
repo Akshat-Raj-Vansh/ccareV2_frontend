@@ -1,12 +1,11 @@
-
 import 'dart:convert';
 
 import 'package:ccarev2_frontend/user/domain/location.dart';
 
 class EDetails {
-  PatientDetails ? patientDetails;
-  DoctorDetails ? doctorDetails;
-  DriverDetails ? driverDetails;
+  PatientDetails? patientDetails;
+  DoctorDetails? doctorDetails;
+  DriverDetails? driverDetails;
   EDetails({
     this.patientDetails,
     this.doctorDetails,
@@ -14,9 +13,9 @@ class EDetails {
   });
 
   EDetails copyWith({
-    PatientDetails ? patientDetails,
-    DoctorDetails ? doctorDetails,
-    DriverDetails ? driverDetails,
+    PatientDetails? patientDetails,
+    DoctorDetails? doctorDetails,
+    DriverDetails? driverDetails,
   }) {
     return EDetails(
       patientDetails: patientDetails ?? this.patientDetails,
@@ -35,46 +34,53 @@ class EDetails {
 
   factory EDetails.fromMap(Map<String, dynamic> map) {
     return EDetails(
-      patientDetails: map['patientDetails']!=null?PatientDetails .fromMap(map['patientDetails']):null,
-      doctorDetails: map['doctorDetails']!=null?DoctorDetails .fromMap(map['doctorDetails']):null,
-      driverDetails: map['driverDetails']!=null?DriverDetails .fromMap(map['driverDetails']):null,
+      patientDetails: map['patientDetails'] != null
+          ? PatientDetails.fromMap(map['patientDetails'])
+          : null,
+      doctorDetails: map['doctorDetails'] != null
+          ? DoctorDetails.fromMap(map['doctorDetails'])
+          : null,
+      driverDetails: map['driverDetails'] != null
+          ? DriverDetails.fromMap(map['driverDetails'])
+          : null,
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory EDetails.fromJson(String source) => EDetails.fromMap(json.decode(source));
+  factory EDetails.fromJson(String source) =>
+      EDetails.fromMap(json.decode(source));
 
   @override
-  String toString() => 'EDetails(patientDetails: $patientDetails, doctorDetails: $doctorDetails, driverDetails: $driverDetails)';
+  String toString() =>
+      'EDetails(patientDetails: $patientDetails, doctorDetails: $doctorDetails, driverDetails: $driverDetails)';
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-  
+
     return other is EDetails &&
-      other.patientDetails == patientDetails &&
-      other.doctorDetails == doctorDetails &&
-      other.driverDetails == driverDetails;
+        other.patientDetails == patientDetails &&
+        other.doctorDetails == doctorDetails &&
+        other.driverDetails == driverDetails;
   }
 
   @override
-  int get hashCode => patientDetails.hashCode ^ doctorDetails.hashCode ^ driverDetails.hashCode;
+  int get hashCode =>
+      patientDetails.hashCode ^ doctorDetails.hashCode ^ driverDetails.hashCode;
 }
 
-enum EStatus {OTW,EMERGENCY,ATH,OGT,END}
-
-
+enum EStatus { OTW, EMERGENCY, ATH, OGT, END }
 
 class PatientDetails {
   final String id;
-    final String name;
-   final Location location;
-    final int age;
-    final String gender;
-    final String contactNumber;    
-    final String address;
-    final EStatus status;
+  final String name;
+  final Location location;
+  final int age;
+  final String gender;
+  final String contactNumber;
+  final String address;
+  final EStatus status;
   PatientDetails({
     required this.id,
     required this.name,
@@ -130,14 +136,15 @@ class PatientDetails {
       gender: map['gender'],
       contactNumber: map['contactNumber'],
       address: map['address'],
-      status:  EStatus.values.firstWhere(
+      status: EStatus.values.firstWhere(
           (element) => element.toString() == "EStatus." + map["status"]),
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory PatientDetails.fromJson(String source) => PatientDetails.fromMap(json.decode(source));
+  factory PatientDetails.fromJson(String source) =>
+      PatientDetails.fromMap(json.decode(source));
 
   @override
   String toString() {
@@ -147,38 +154,38 @@ class PatientDetails {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-  
+
     return other is PatientDetails &&
-      other.id == id &&
-      other.name == name &&
-      other.location == location &&
-      other.age == age &&
-      other.gender == gender &&
-      other.contactNumber == contactNumber &&
-      other.address == address &&
-      other.status == status;
+        other.id == id &&
+        other.name == name &&
+        other.location == location &&
+        other.age == age &&
+        other.gender == gender &&
+        other.contactNumber == contactNumber &&
+        other.address == address &&
+        other.status == status;
   }
 
   @override
   int get hashCode {
     return id.hashCode ^
-      name.hashCode ^
-      location.hashCode ^
-      age.hashCode ^
-      gender.hashCode ^
-      contactNumber.hashCode ^
-      address.hashCode ^
-      status.hashCode;
+        name.hashCode ^
+        location.hashCode ^
+        age.hashCode ^
+        gender.hashCode ^
+        contactNumber.hashCode ^
+        address.hashCode ^
+        status.hashCode;
   }
 }
 
 class DoctorDetails {
   final String id;
-   final String name;
-   final Location location;
-    final String hospital;
-    final String contactNumber;  
-    final String address;
+  final String name;
+  final Location location;
+  final String hospital;
+  final String contactNumber;
+  final String address;
   DoctorDetails({
     required this.id,
     required this.name,
@@ -230,7 +237,8 @@ class DoctorDetails {
 
   String toJson() => json.encode(toMap());
 
-  factory DoctorDetails.fromJson(String source) => DoctorDetails.fromMap(json.decode(source));
+  factory DoctorDetails.fromJson(String source) =>
+      DoctorDetails.fromMap(json.decode(source));
 
   @override
   String toString() {
@@ -240,35 +248,34 @@ class DoctorDetails {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-  
+
     return other is DoctorDetails &&
-      other.id == id &&
-      other.name == name &&
-      other.location == location &&
-      other.hospital == hospital &&
-      other.contactNumber == contactNumber &&
-      other.address == address;
+        other.id == id &&
+        other.name == name &&
+        other.location == location &&
+        other.hospital == hospital &&
+        other.contactNumber == contactNumber &&
+        other.address == address;
   }
 
   @override
   int get hashCode {
     return id.hashCode ^
-      name.hashCode ^
-      location.hashCode ^
-      hospital.hashCode ^
-      contactNumber.hashCode ^
-      address.hashCode;
+        name.hashCode ^
+        location.hashCode ^
+        hospital.hashCode ^
+        contactNumber.hashCode ^
+        address.hashCode;
   }
 }
 
-
 class DriverDetails {
   final String id;
-   final String name;
-   final Location location;
-    final String plateNumber;
-    final String contactNumber;  
-    final String address;
+  final String name;
+  final Location location;
+  final String plateNumber;
+  final String contactNumber;
+  final String address;
   DriverDetails({
     required this.id,
     required this.name,
@@ -320,7 +327,8 @@ class DriverDetails {
 
   String toJson() => json.encode(toMap());
 
-  factory DriverDetails.fromJson(String source) => DriverDetails.fromMap(json.decode(source));
+  factory DriverDetails.fromJson(String source) =>
+      DriverDetails.fromMap(json.decode(source));
 
   @override
   String toString() {
@@ -330,23 +338,23 @@ class DriverDetails {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-  
+
     return other is DriverDetails &&
-      other.id == id &&
-      other.name == name &&
-      other.location == location &&
-      other.plateNumber == plateNumber &&
-      other.contactNumber == contactNumber &&
-      other.address == address;
+        other.id == id &&
+        other.name == name &&
+        other.location == location &&
+        other.plateNumber == plateNumber &&
+        other.contactNumber == contactNumber &&
+        other.address == address;
   }
 
   @override
   int get hashCode {
     return id.hashCode ^
-      name.hashCode ^
-      location.hashCode ^
-      plateNumber.hashCode ^
-      contactNumber.hashCode ^
-      address.hashCode;
+        name.hashCode ^
+        location.hashCode ^
+        plateNumber.hashCode ^
+        contactNumber.hashCode ^
+        address.hashCode;
   }
 }

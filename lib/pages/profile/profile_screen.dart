@@ -21,8 +21,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     print("PROFILE SCREEN");
-    print("USERTYPE");
-    print(widget.userType);
     super.initState();
   }
 
@@ -62,6 +60,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         );
       },
       listener: (context, state) {
+        print(state);
         if (state is LoadingState) {
           print("Loading State Called");
           _showLoader();

@@ -35,6 +35,11 @@ class DocInfoState extends ProfileState {
   @override
   List<Object> get props => [this.docInfo];
 }
+class DocNotFoundState extends ProfileState {
+  @override
+  List<Object> get props => [];
+}
+
 
 class ErrorState extends ProfileState {
   final String error;

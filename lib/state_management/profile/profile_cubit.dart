@@ -35,7 +35,10 @@ class ProfileCubit extends Cubit<ProfileState> {
     print("PROFILE CUBIT/GET DOC INFO PROFILE");
     final docInfo = await this.localStore.fetchDocInfo();
     if (docInfo == null) {
-      emit(ErrorState("No info found!"));
+      print("DOC NOT FOUND");
+      Future.delayed(Duration(seconds: 1), () {
+        emit(DocNotFoundState());
+      });
       return;
     } else {
       print('DOC INFO JSON:');
