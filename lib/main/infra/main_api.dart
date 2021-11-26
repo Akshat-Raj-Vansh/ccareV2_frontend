@@ -4,6 +4,7 @@ import 'package:ccarev2_frontend/main/domain/examination.dart';
 import 'package:ccarev2_frontend/main/domain/treatment.dart' as treat;
 import 'package:ccarev2_frontend/user/domain/doc_info.dart';
 import 'package:ccarev2_frontend/user/domain/emergency.dart';
+import 'package:ccarev2_frontend/user/domain/hub_doc_info.dart';
 import 'package:ccarev2_frontend/user/domain/location.dart';
 import 'package:ccarev2_frontend/utils/constants.dart';
 import 'package:http/http.dart' as http;
@@ -217,9 +218,8 @@ class MainAPI extends IMainAPI {
   // Hub Side APIs
 
   @override
-  Future<Result<Location>> acceptPatientbyHub(
-      Token token, Token patient) async {
-    String endpoint = baseUrl + "/emergency/doctor/acceptPatient";
+  Future<Result<dynamic>> acceptPatientbyHub(Token token, Token patient) async {
+    String endpoint = baseUrl + "/emergency/hub/accept";
     var header = {
       "Content-Type": "application/json",
       "Authorization": token.value
@@ -232,8 +232,24 @@ class MainAPI extends IMainAPI {
       return Result.error(transformError(map));
     }
     dynamic json = jsonDecode(response.body);
-    return Result.value(
-        Location(longitude: json['longtitude'], latitude: json["latitude"]));
+    return Result.value(json);
+  }
+
+  @override
+  Future<Result<EDetails>> fetchHubPatientDetails(Token token) async {
+    String endpoint = baseUrl + "/emergency/hub/accept";
+    var header = {
+      "Content-Type": "application/json",
+      "Authorization": token.value
+    };
+    var response = await _client.get(Uri.parse(endpoint), headers: header);
+    if (response.statusCode != 200) {
+      Map map = jsonDecode(response.body);
+      print(transformError(map));
+      return Result.error(transformError(map));
+    }
+    dynamic json = jsonDecode(response.body);
+    return Result.value(json);
   }
 
   // Driver Side APIs
@@ -301,7 +317,7 @@ class MainAPI extends IMainAPI {
   }
 
   @override
-  Future<Result<List<Info>>> getAllHubDoctors(Token token) async {
+  Future<Result<List<HubInfo>>> getAllHubDoctors(Token token) async {
     String endpoint = baseUrl + "/user/fetchHubDoctors";
     var header = {
       "Content-Type": "application/json",
@@ -314,11 +330,9 @@ class MainAPI extends IMainAPI {
       return Result.error(transformError(map));
     }
     dynamic json = jsonDecode(response.body);
+    List<HubInfo> hubDoctors =
+        List<HubInfo>.from(json.map((info) => HubInfo.fromJson(info)));
 
-    //! Needs to be parsed
-    List<Info> hubDoctors = [
-      Info(name: "name", hospital: 'hospital', phone: "phone")
-    ];
     return Result.value(hubDoctors);
   }
 

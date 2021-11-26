@@ -1,5 +1,6 @@
 //@dart=2.9
-import 'package:ccarev2_frontend/services/Notifications/component/doctor.dart';
+import 'package:ccarev2_frontend/services/Notifications/component/doctor_hub.dart';
+import 'package:ccarev2_frontend/services/Notifications/component/doctor_spoke.dart';
 import 'package:ccarev2_frontend/services/Notifications/component/driver.dart';
 import 'package:ccarev2_frontend/services/Notifications/component/patient.dart';
 import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
@@ -26,8 +27,11 @@ class NotificationController {
       case UserType.PATIENT:
         PatientNotificationHandler.configure(mainCubit, context);
         break;
-      case UserType.DOCTOR:
-        DoctorNotificationHandler.configure(mainCubit, context);
+      case UserType.SPOKE:
+        SpokeNotificationHandler.configure(mainCubit, context);
+        break;
+      case UserType.HUB:
+        HubNotificationHandler.configure(mainCubit, context);
         break;
       default:
         DriverNotificationHandler.configure(mainCubit, context);
@@ -56,8 +60,11 @@ class NotificationController {
       case UserType.PATIENT:
         selected = PatientNotificationHandler.backgroundMessageHandler;
         break;
-      case UserType.DOCTOR:
-        selected = DoctorNotificationHandler.backgroundMessageHandler;
+      case UserType.SPOKE:
+        selected = SpokeNotificationHandler.backgroundMessageHandler;
+        break;
+      case UserType.HUB:
+        selected = HubNotificationHandler.backgroundMessageHandler;
         break;
       default:
         selected = DriverNotificationHandler.backgroundMessageHandler;
@@ -72,8 +79,11 @@ class NotificationController {
       case UserType.PATIENT:
         selected = PatientNotificationHandler.foregroundMessageHandler;
         break;
-      case UserType.DOCTOR:
-        selected = DoctorNotificationHandler.foregroundMessageHandler;
+      case UserType.SPOKE:
+        selected = SpokeNotificationHandler.foregroundMessageHandler;
+        break;
+      case UserType.HUB:
+        selected = HubNotificationHandler.foregroundMessageHandler;
         break;
       default:
         selected = DriverNotificationHandler.foregroundMessageHandler;
@@ -88,8 +98,11 @@ class NotificationController {
       // case UserType.PATIENT:
       //   selected = PatientNotificationHandler.foregroundMessageHandler;
       //   break;
-      case UserType.DOCTOR:
-        selected = DoctorNotificationHandler.onMessageOpenedHandler;
+      case UserType.SPOKE:
+        selected = SpokeNotificationHandler.onMessageOpenedHandler;
+        break;
+      case UserType.HUB:
+        selected = HubNotificationHandler.onMessageOpenedHandler;
         break;
       default:
         selected = DriverNotificationHandler.onMessageOpenedHandler;

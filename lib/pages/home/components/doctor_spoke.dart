@@ -1,5 +1,6 @@
 //@dart=2.9
 import 'package:ccarev2_frontend/main/domain/edetails.dart';
+import 'package:ccarev2_frontend/pages/home/components/doctors_spoke_list.dart';
 import 'package:ccarev2_frontend/pages/home/home_page_adapter.dart';
 import 'package:ccarev2_frontend/pages/spoke_form/patient_exam_screen.dart';
 import 'package:ccarev2_frontend/pages/spoke_form/patient_history_screen.dart';
@@ -39,8 +40,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
   void initState() {
     super.initState();
     CubitProvider.of<MainCubit>(context).fetchEmergencyDetails();
-    NotificationController.configure(
-        widget.mainCubit, UserType.DOCTOR, context);
+    NotificationController.configure(widget.mainCubit, UserType.SPOKE, context);
     NotificationController.fcmHandler();
   }
 
@@ -94,17 +94,18 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
         title: Text('CardioCare - Doctor'),
         backgroundColor: kPrimaryColor,
         actions: [
-          // IconButton(
-          //   onPressed: () async {
-          //     // _showLoader();
-          //     // loc.Location location = await _getLocation();
-          //     // _hideLoader();
-          //     // return widget.homePageAdapter
-          //     //     .loadEmergencyScreen(context, UserType.doctor, location);
-          //     _showMessage("View location of Patient and Ambulance?");
-          //   },
-          //   icon: Icon(Icons.map),
-          // ),
+          if (_patientAccepted)
+            IconButton(
+              onPressed: () async {
+                // _showLoader();
+                // loc.Location location = await _getLocation();
+                // _hideLoader();
+                // return widget.homePageAdapter
+                //     .loadEmergencyScreen(context, UserType.doctor, location);
+                widget.mainCubit.getAllHubDoctors();
+              },
+              icon: Icon(Icons.person_add),
+            ),
           IconButton(
             onPressed: () async {
               await showDialog(
@@ -176,6 +177,18 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
             _showLoader();
           } else if (state is ErrorState) {
             _hideLoader();
+          } else if (state is AllHubDoctorsState) {
+            _hideLoader();
+            print("DOCTOR SPOKE HOME SCREEN/ HUB DOCTORS LIST STATE");
+            showModalBottomSheet(
+                context: context,
+                builder: (_) {
+                  return HubDoctorsList(state.docs, widget.mainCubit);
+                });
+          } else if (state is ConsultHub) {
+            _hideLoader();
+            print("DOCTOR SPOKE HOME SCREEN/CONSULT HUB STATE");
+            print("DOCTOR CONSULTED: ${state.name}");
           } else if (state is AcceptState) {
             _hideLoader();
             print("Accept State Called");

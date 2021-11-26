@@ -28,18 +28,16 @@ class HomeScreenHub extends StatefulWidget {
 
 class _HomeScreenHubState extends State<HomeScreenHub> {
   EDetails eDetails;
-  // static bool _emergency = false;
   static bool _patientAccepted = false;
-  // static bool _driverAccepted = false;
+
   dynamic currentState = null;
   bool loader = false;
 
   @override
   void initState() {
     super.initState();
-    //widget.mainCubit.fetchHubPatientDetails();
-    NotificationController.configure(
-        widget.mainCubit, UserType.DOCTOR, context);
+    widget.mainCubit.fetchHubPatientDetails();
+    NotificationController.configure(widget.mainCubit, UserType.HUB, context);
     NotificationController.fcmHandler();
   }
 
@@ -170,8 +168,7 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
                       TextButton(
                         onPressed: () async {
                           // make api for accept patient by Hub
-                          widget.mainCubit
-                              .acceptPatientBySpoke(state.patientID);
+                          widget.mainCubit.acceptPatientByHub(state.patientID);
                         },
                         child: const Text(
                           'Yes',

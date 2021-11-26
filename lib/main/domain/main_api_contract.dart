@@ -4,6 +4,7 @@ import 'package:ccarev2_frontend/main/domain/examination.dart' as exam;
 import 'package:ccarev2_frontend/main/domain/treatment.dart';
 import 'package:ccarev2_frontend/user/domain/doc_info.dart';
 import 'package:ccarev2_frontend/user/domain/emergency.dart';
+import 'package:ccarev2_frontend/user/domain/hub_doc_info.dart';
 import 'package:ccarev2_frontend/user/domain/location.dart' as loc;
 import '../../user/domain/token.dart';
 import 'question.dart';
@@ -25,7 +26,7 @@ abstract class IMainAPI {
   // Spoke Side APIs
   Future<Result<loc.Location>> acceptPatientbySpoke(Token token, Token patient);
   Future<Result<String>> getAllPatients(Token token);
-  Future<Result<List<Info>>> getAllHubDoctors(Token token);
+  Future<Result<List<HubInfo>>> getAllHubDoctors(Token token);
   Future<Result<String>> savePatientReport(Token token, TreatmentReport report);
   Future<Result<String>> savePatientExamReport(
       Token token, exam.Examination examination);
@@ -37,5 +38,6 @@ abstract class IMainAPI {
       Token token, Token patient);
 
   // Hub Side APIs
-  Future<Result<loc.Location>> acceptPatientbyHub(Token token, Token patient);
+  Future<Result<dynamic>> acceptPatientbyHub(Token token, Token patient);
+  Future<Result<EDetails>> fetchHubPatientDetails(Token token);
 }

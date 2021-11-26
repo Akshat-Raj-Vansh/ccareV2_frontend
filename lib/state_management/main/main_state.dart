@@ -4,6 +4,7 @@ import 'package:ccarev2_frontend/main/domain/examination.dart';
 import 'package:ccarev2_frontend/main/domain/treatment.dart' as treat;
 import 'package:ccarev2_frontend/services/Notifications/component/patient.dart';
 import 'package:ccarev2_frontend/user/domain/doc_info.dart';
+import 'package:ccarev2_frontend/user/domain/hub_doc_info.dart';
 import 'package:ccarev2_frontend/user/domain/location.dart';
 import 'package:equatable/equatable.dart';
 import '../../main/domain/question.dart';
@@ -169,10 +170,24 @@ class AllPatientsState extends MainState {
 }
 
 class AllHubDoctorsState extends MainState {
-  final List<Info> docs;
+  final List<HubInfo> docs;
   AllHubDoctorsState(this.docs);
   @override
   List<Object> get props => [docs];
+}
+
+class ConsultHub extends MainState {
+  final String name;
+  ConsultHub(this.name);
+  @override
+  List<Object> get props => [name];
+}
+
+class HubPatientsLoaded extends MainState {
+  final EDetails details;
+  HubPatientsLoaded(this.details);
+  @override
+  List<Object> get props => [details];
 }
 
 class ErrorState extends MainState {

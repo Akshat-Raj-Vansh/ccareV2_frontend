@@ -6,7 +6,7 @@ import 'package:ccarev2_frontend/user/domain/location.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
-class DoctorNotificationHandler {
+class SpokeNotificationHandler {
   static MainCubit mainCubit;
   static BuildContext context;
   static configure(MainCubit cubit, BuildContext c) {
