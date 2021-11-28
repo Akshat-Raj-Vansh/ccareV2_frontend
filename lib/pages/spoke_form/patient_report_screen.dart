@@ -33,6 +33,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
   bool clickImage = false;
   String imagePath;
   XFile _image;
+  MainState currentState;
   final ImagePicker _imagePicker = ImagePicker();
   final List<Tab> _myTabs = [
     Tab(
@@ -171,15 +172,36 @@ class _PatientReportScreenState extends State<PatientReportScreen>
     return CubitConsumer<MainCubit, MainState>(
       cubit: widget.mainCubit,
       builder: (_, state) {
-        return buildUI();
-      },
-      listener: (context, state) {
         if (state is PatientReportFetched) {
           print("Patient Report Fetched state Called");
+        
           editedReport = state.report;
           noReport = false;
-          _hideLoader();
+          currentState=state;
+          
         }
+        if (state is NoReportState) {
+          
+          print('No Report State Called');
+          currentState=state;
+           editReport = true;
+        }
+        if(currentState==null){
+return Container(
+  width: double.infinity,
+  height: double.infinity,
+  color: Colors.white,
+  child: Center(
+    child: CircularProgressIndicator(),
+  ),
+);
+        }
+          
+          
+       return buildUI();
+      },
+      listener: (context, state) {
+        
         if (state is EditPatientReport) {
           _hideLoader();
           editReport = true;
@@ -202,16 +224,13 @@ class _PatientReportScreenState extends State<PatientReportScreen>
           editReport = false;
           widget.mainCubit.fetchPatientReport();
         }
-        if (state is NoReportState) {
-          print('No Report State Called');
-          _hideLoader();
-          noReport = true;
-        }
+        
       },
     );
   }
 
   buildUI() {
+    print(widget.user);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -262,6 +281,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
       ),
       resizeToAvoidBottomInset: false,
       body: _buildFormBody(),
+    
       floatingActionButton: widget.user == UserType.DOCTOR
           ? SpeedDial(
               animatedIcon: AnimatedIcons.menu_close,
@@ -315,19 +335,19 @@ class _PatientReportScreenState extends State<PatientReportScreen>
             child: _buildReportOverview(),
           ),
           Container(
-            child: editReport ? _buildECGForm() : _buildECGDetails(),
+            child: editReport? _buildECGForm() : _buildECGDetails(),
           ),
           Container(
-            child: editReport ? _buildMedHistForm() : _buildMedHistDetails(),
+            child: editReport  ? _buildMedHistForm() : _buildMedHistDetails(),
           ),
           Container(
-            child: editReport ? _buildChestForm() : _buildChestDetails(),
+            child: editReport  ? _buildChestForm() : _buildChestDetails(),
           ),
           Container(
-            child: editReport ? _buildSymptomsForm() : _buildSymptomsDetails(),
+            child: editReport  ? _buildSymptomsForm() : _buildSymptomsDetails(),
           ),
           Container(
-            child: editReport
+            child: editReport 
                 ? _buildExaminationForm()
                 : _buildExaminationDetails(),
           ),
@@ -444,16 +464,16 @@ class _PatientReportScreenState extends State<PatientReportScreen>
             const SizedBox(
               height: 5,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text("Address: "),
-                Text(widget.patientDetails.address, textAlign: TextAlign.right),
-              ],
-            ),
-            const SizedBox(
-              height: 5,
-            ),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //   children: [
+            //     Text("Address: "),
+            //     Text(widget.patientDetails.address, textAlign: TextAlign.right),
+            //   ],
+            // ),
+            // const SizedBox(
+            //   height: 5,
+            // ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

@@ -62,6 +62,7 @@ class MainAPI extends IMainAPI {
   @override
   Future<Result<String>> emergencyRequest(
       Token token, Emergency emergency) async {
+        print("Emergency Notification Send");
     String endpoint = baseUrl + "/emergency/patient/notify";
     print(endpoint);
     var header = {
@@ -124,6 +125,7 @@ class MainAPI extends IMainAPI {
   @override
   Future<Result<EDetails>> fetchEmergencyDetails(Token token) async {
     String endpoint = baseUrl + "/emergency/fetchEmergencyDetails";
+    print("Fetch Emergency Details");
     var header = {
       "Content-Type": "application/json",
       "Authorization": token.value
@@ -141,7 +143,7 @@ class MainAPI extends IMainAPI {
   }
 
   @override
-  Future<Result<treat.TreatmentReport>> fetchPatientReport(Token token) async {
+  Future<Result<dynamic>> fetchPatientReport(Token token) async {
     String endpoint = baseUrl + "/treatment/getReport";
     var header = {
       "Content-Type": "application/json",
@@ -156,12 +158,10 @@ class MainAPI extends IMainAPI {
       return Result.error(transformError(map));
     }
     dynamic report = jsonDecode(response.body)['report'];
-    try {
-      treat.TreatmentReport.fromJson(jsonEncode(report));
-    } catch (e) {
-      return Result.error("No medical records present");
-    }
-    print(report);
+    print("Report $report");
+    if(report==null)  return report;
+    
+    
 
     return Result.value(treat.TreatmentReport.fromJson(jsonEncode(report)));
   }
@@ -329,9 +329,12 @@ class MainAPI extends IMainAPI {
       print(transformError(map));
       return Result.error(transformError(map));
     }
-    dynamic json = jsonDecode(response.body);
-    List<HubInfo> hubDoctors =
-        List<HubInfo>.from(json.map((info) => HubInfo.fromJson(info)));
+    dynamic json = jsonDecode(response.body)["doctors"] as List;
+    
+    List<HubInfo> hubDoctors = json.map<HubInfo>((data) {
+      print(data);
+      return HubInfo.fromJson(jsonEncode(data));
+    }).toList();
 
     return Result.value(hubDoctors);
   }
@@ -339,13 +342,16 @@ class MainAPI extends IMainAPI {
   @override
   Future<Result<String>> savePatientReport(
       Token token, treat.TreatmentReport report) async {
-    String endpoint = baseUrl + "/treatment/doctor/updateReport";
+        print("Update Patient Report");
+    String endpoint = baseUrl + "/treatment/spoke/updateReport";
     var header = {
       "Content-Type": "application/json",
       "Authorization": token.value
     };
     var response = await _client.post(Uri.parse(endpoint),
         headers: header, body: report.toJson());
+
+    print(response.body);
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
       print(transformError(map));
@@ -358,7 +364,7 @@ class MainAPI extends IMainAPI {
   @override
   Future<Result<String>> savePatientExamReport(
       Token token, Examination examination) async {
-    String endpoint = baseUrl + "/treatment/doctor/updateTreatment";
+    String endpoint = baseUrl + "/treatment/spoke/updateTreatment";
     var header = {
       "Content-Type": "application/json",
       "Authorization": token.value
@@ -396,7 +402,7 @@ class MainAPI extends IMainAPI {
 
   @override
   Future<Result<String>> consultHub(Token token, String docID) async {
-    String endpoint = baseUrl + "/spoke/consult";
+    String endpoint = baseUrl + "/treatment/spoke/consult";
     var header = {
       "Content-Type": "application/json",
       "Authorization": token.value

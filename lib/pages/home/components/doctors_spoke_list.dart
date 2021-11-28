@@ -14,14 +14,14 @@ class HubDoctorsList extends StatelessWidget {
         itemCount: hubDocs.length,
         itemBuilder: (BuildContext context, int index) {
           return InkWell(
-            onTap: () => cubit.consultHub(hubDocs[index].docUID),
+            onTap: () => cubit.consultHub(hubDocs[index].id),
             child: ListTile(
                 leading: Icon(Icons.person),
                 trailing: Text(
-                  hubDocs[index].docInfo.hospital,
+                  hubDocs[index].hospitalName,
                   style: TextStyle(color: Colors.green, fontSize: 15),
                 ),
-                title: Text(hubDocs[index].docInfo.name)),
+                title: Text(hubDocs[index].name)),
           );
         });
   }

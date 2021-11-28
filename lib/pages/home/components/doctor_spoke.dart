@@ -33,6 +33,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
   static bool _emergency = false;
   static bool _patientAccepted = false;
   static bool _driverAccepted = false;
+  static bool _ugt=false;
   dynamic currentState = null;
   bool loader = false;
 
@@ -91,21 +92,21 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('CardioCare - Doctor'),
+        title: Text('SPOKE'),
         backgroundColor: kPrimaryColor,
         actions: [
-          if (_patientAccepted)
-            IconButton(
-              onPressed: () async {
-                // _showLoader();
-                // loc.Location location = await _getLocation();
-                // _hideLoader();
-                // return widget.homePageAdapter
-                //     .loadEmergencyScreen(context, UserType.doctor, location);
-                widget.mainCubit.getAllHubDoctors();
-              },
-              icon: Icon(Icons.person_add),
-            ),
+          // if (_patientAccepted)
+          //   IconButton(
+          //     onPressed: () async {
+          //       // _showLoader();
+          //       // loc.Location location = await _getLocation();
+          //       // _hideLoader();
+          //       // return widget.homePageAdapter
+          //       //     .loadEmergencyScreen(context, UserType.doctor, location);
+          //       widget.mainCubit.getAllHubDoctors();
+          //     },
+          //     icon: Icon(Icons.person_add),
+          //   ),
           IconButton(
             onPressed: () async {
               await showDialog(
@@ -158,6 +159,10 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
             if (eDetails.patientDetails != null) {
               _patientAccepted = true;
               _emergency = true;
+          
+              if(eDetails.patientDetails.status==EStatus.UGT){
+                _ugt=true;
+              }
             }
             if (eDetails.driverDetails != null) {
               _driverAccepted = true;
@@ -298,9 +303,10 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
                 ),
               ),
             if (_patientAccepted) _buildPatientDetails(),
-            if (_patientAccepted) _buildPatientReportButton(),
-            if (_patientAccepted) _buildPatientExamButton(),
-            if (_patientAccepted) _buildPatientReportHistoryButton(),
+            if (_patientAccepted&&_ugt) _buildPatientReportButton(),
+            if (_patientAccepted&&_ugt) _buildPatientExamButton(),
+             if (_patientAccepted&&_ugt) _buildHubList(),
+            if (_patientAccepted&&_ugt) _buildPatientReportHistoryButton(),
             if (_driverAccepted) _buildDriverDetails(),
             if (!_emergency) _buildHeader(),
             // Padding(
@@ -448,6 +454,31 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
           child: Text(
             "View Patient's Medical Report History",
             style: TextStyle(color: kPrimaryColor, fontSize: 14),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      );
+
+      _buildHubList() => InkWell(
+        onTap: () async {
+          widget.mainCubit.getAllHubDoctors();
+          // Navigator.push(
+          //     context,
+          //     MaterialPageRoute(
+          //       builder: (context) =>
+          //           PatientReportHistoryScreen(mainCubit: widget.mainCubit),
+          //     ));
+        },
+        child:  Container(
+          width: SizeConfig.screenWidth,
+          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          decoration: BoxDecoration(
+              color: kPrimaryLightColor,
+              borderRadius: BorderRadius.circular(20)),
+          child: Text(
+            "Consultations",
+            style: TextStyle(color: Colors.white, fontSize: 14),
             textAlign: TextAlign.center,
           ),
         ),

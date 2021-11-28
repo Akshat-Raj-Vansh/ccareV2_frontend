@@ -70,7 +70,7 @@ class EDetails {
       patientDetails.hashCode ^ doctorDetails.hashCode ^ driverDetails.hashCode;
 }
 
-enum EStatus { OTW, EMERGENCY, ATH, OGT, END }
+enum EStatus { OTW, EMERGENCY, ATH, UGT  }
 
 class PatientDetails {
   final String id;
@@ -148,7 +148,7 @@ class PatientDetails {
 
   @override
   String toString() {
-    return 'PatientDetails(id: $id, name: $name, location: $location, age: $age, gender: $gender, contactNumber: $contactNumber, address: $address, status: $status)';
+    return 'PatientDetails(id: $id, name: $name, location: $location, age: $age, gender: $gender, contactNumber: $contactNumber, address: $address, status:$status)';
   }
 
   @override

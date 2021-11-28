@@ -29,11 +29,6 @@ class UserAPI implements UserService {
     dynamic response = await _client.post(Uri.parse(endpoint),
         body: credential.toJson(), headers: header);
     print('LOGIN API CALL');
-    print("CREDENTIAL:");
-    print(credential.toJson());
-    print('RESPONSE:');
-    print(response.statusCode);
-    print(response.body);
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
       print(transformError(map));
@@ -52,11 +47,6 @@ class UserAPI implements UserService {
     dynamic response = await _client.post(Uri.parse(endpoint),
         body: credential.toJson(), headers: header);
     print('DOC LOGIN API CALL');
-    print("CREDENTIAL:");
-    print(credential.toJson());
-    print('RESPONSE:');
-    print(response.statusCode);
-    print(response.body);
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
       print(transformError(map));
@@ -78,9 +68,6 @@ class UserAPI implements UserService {
     var response = await _client.post(Uri.parse(endpoint),
         headers: header, body: profile.toJson());
     print('ADD DOCTOR PROFILE API CALL');
-    print(profile.toJson());
-    print(response.statusCode);
-    print(response.body);
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
       print(transformError(map));

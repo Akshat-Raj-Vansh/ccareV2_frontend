@@ -104,10 +104,14 @@ class MainCubit extends Cubit<MainState> {
   }
 
   fetchPatientReport() async {
-    _startLoading("PatientReportFetch");
+    // _startLoading("PatientReportFetch");
     final token = await localStore.fetch();
     final result = await api.fetchPatientReport(Token(token.value));
 
+    if(result==null){
+      emit(NoReportState("No report exists"));
+      return;
+    }
     if (result.isError) {
       emit(ErrorState(result.asError!.error as String));
       return;

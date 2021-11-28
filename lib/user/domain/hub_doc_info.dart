@@ -3,54 +3,82 @@ import 'dart:convert';
 import 'package:ccarev2_frontend/user/domain/doc_info.dart';
 
 class HubInfo {
-  final Info docInfo;
-  final String docUID;
+final String name;
+final String hospitalName;
+final String email;
+final String phoneNumber;
+final String id;
   HubInfo({
-    required this.docInfo,
-    required this.docUID,
+    required this.name,
+    required this.hospitalName,
+    required this.email,
+    required this.phoneNumber,
+    required this.id,
   });
 
   HubInfo copyWith({
-    Info? docInfo,
-    String? docUID,
+    String? name,
+    String? hospitalName,
+    String? email,
+    String? phoneNumber,
+    String? id,
   }) {
     return HubInfo(
-      docInfo: docInfo ?? this.docInfo,
-      docUID: docUID ?? this.docUID,
+      name: name ?? this.name,
+      hospitalName: hospitalName ?? this.hospitalName,
+      email: email ?? this.email,
+      phoneNumber: phoneNumber ?? this.phoneNumber,
+      id: id ?? this.id,
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
-      'docInfo': docInfo.toMap(),
-      'docUID': docUID,
+      'name': name,
+      'hospitalName': hospitalName,
+      'email': email,
+      'phoneNumber': phoneNumber,
+      'id': id,
     };
   }
 
   factory HubInfo.fromMap(Map<String, dynamic> map) {
     return HubInfo(
-      docInfo: Info.fromMap(map['docInfo']),
-      docUID: map['docUID'],
+      name: map['name'],
+      hospitalName: map['hospitalName'],
+      email: map['email'],
+      phoneNumber: map['phoneNumber'],
+      id: map['id'],
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory HubInfo.fromJson(String source) =>
-      HubInfo.fromMap(json.decode(source));
+  factory HubInfo.fromJson(String source) => HubInfo.fromMap(json.decode(source));
 
   @override
-  String toString() => 'HubInfo(docInfo: $docInfo, docUID: $docUID)';
+  String toString() {
+    return 'HubInfo(name: $name, hospitalName: $hospitalName, email: $email, phoneNumber: $phoneNumber, id: $id)';
+  }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-
+  
     return other is HubInfo &&
-        other.docInfo == docInfo &&
-        other.docUID == docUID;
+      other.name == name &&
+      other.hospitalName == hospitalName &&
+      other.email == email &&
+      other.phoneNumber == phoneNumber &&
+      other.id == id;
   }
 
   @override
-  int get hashCode => docInfo.hashCode ^ docUID.hashCode;
+  int get hashCode {
+    return name.hashCode ^
+      hospitalName.hashCode ^
+      email.hashCode ^
+      phoneNumber.hashCode ^
+      id.hashCode;
+  }
 }
