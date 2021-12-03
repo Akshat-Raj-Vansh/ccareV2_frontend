@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart';
+import 'package:socket_io_client/socket_io_client.dart';
 
 import '../../main/infra/main_api.dart';
 import '../../pages/auth/auth_page.dart';
@@ -52,10 +53,10 @@ class CompositionRoot {
     localStore = LocalStore(sharedPreferences);
     client = Client();
     // secureClient = SecureClient(MHttpClient(client), localStore);
-    baseUrl = "http://192.168.109.151:3000";
+    baseUrl = "http://192.168.252.151:3000";
     // baseUrl = "https://cardiocarenith.herokuapp.com";
     //baseUrl = "http://192.168.80.55:3000";
-
+    
     userAPI = UserAPI(client, baseUrl);
     mainAPI = MainAPI(client, baseUrl);
     mainCubit = MainCubit(localStore, mainAPI);
@@ -71,6 +72,8 @@ class CompositionRoot {
         ProfilePageAdapter(homePageAdapter, createProfileScreen);
     authPageAdapter = AuthPageAdapter(profilePageAdapter, createLoginScreen);
   }
+
+  
 
   static Future<Widget> start() async {
     // var token = await localStore.fetch();

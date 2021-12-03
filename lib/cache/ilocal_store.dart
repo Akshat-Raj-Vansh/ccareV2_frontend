@@ -15,4 +15,6 @@ abstract class ILocalStore {
   Future<Info> fetchDocInfo();
   saveTempToken(String token);
   Future<Token> fetchTempToken();
+
+
 }

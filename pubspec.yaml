@@ -28,21 +28,24 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   aligned_dialog: ^0.0.6
+  cached_network_image: ^3.2.0
+  camera: null
   cupertino_icons: ^1.0.2
   firebase_auth: ^3.0.2
   firebase_core: ^1.5.0
   firebase_messaging: ^10.0.4
-  image_picker: ^0.8.4+3
   flutter:
     sdk: flutter
   flutter_local_notifications: ^8.1.1+1
   flutter_speed_dial: ^4.5.0
   google_maps_flutter: ^2.0.11
+  image_picker: ^0.8.4+3
   location: ^4.3.0
-  camera:
-  path_provider:
-  path:
-  url_launcher:
+  path: null
+  path_provider: null
+  scoped_model: ^1.1.0
+  socket_io_client: ^2.0.0-beta.2
+  url_launcher: null
 
 dev_dependencies:
   common:

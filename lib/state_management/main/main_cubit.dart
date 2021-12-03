@@ -6,6 +6,7 @@ import 'package:ccarev2_frontend/main/domain/treatment.dart' as treat;
 import 'package:ccarev2_frontend/user/domain/location.dart' as loc;
 import 'package:ccarev2_frontend/user/domain/token.dart';
 import 'package:cubit/cubit.dart';
+import 'package:image_picker/image_picker.dart';
 import 'main_state.dart';
 
 class MainCubit extends Cubit<MainState> {
@@ -26,6 +27,17 @@ class MainCubit extends Cubit<MainState> {
     emit(QuestionnaireState(result.asValue!.value));
   }
 
+
+  loadMessages(String patientID)async{
+    _startLoading("loadMessages");
+    final token = await localStore.fetch();
+    final result = await api.getAllMessages(token, patientID);
+    if (result.isError) {
+      emit(ErrorState(result.asError!.error as String));
+      return;
+    }
+    emit(MessagesLoadedState(result.asValue!.value));
+  }
   notify(String action, bool ambRequired,
       {List<QuestionTree>? assessment}) async {
     print("Inside Notify");
@@ -68,12 +80,12 @@ class MainCubit extends Cubit<MainState> {
     _startLoading("AcceptPatientbyHub");
     final token = await localStore.fetch();
     final result =
-        await api.acceptPatientbySpoke(Token(token.value), Token(patientID));
+        await api.acceptPatientbyHub(Token(token.value), Token(patientID));
     if (result.isError) {
       emit(ErrorState(result.asError!.error as String));
       return;
     }
-    emit(PatientAccepted(result.asValue!.value));
+    emit(PatientAcceptedHub());
   }
 
   fetchHubPatientDetails() async {
@@ -85,6 +97,16 @@ class MainCubit extends Cubit<MainState> {
       return;
     }
     emit(HubPatientsLoaded(result.asValue!.value));
+  }
+  fetchHubRequests() async {
+    _startLoading("Fetch Hub Consultation Requests");
+    final token = await localStore.fetch();
+    final result = await api.fetchHubRequests(Token(token.value));
+    if (result.isError) {
+      emit(ErrorState(result.asError!.error as String));
+      return;
+    }
+    emit(HubRequestsLoaded(result.asValue!.value));
   }
 
   fetchPatientReportHistory() async {
@@ -124,9 +146,26 @@ class MainCubit extends Cubit<MainState> {
     emit(EditPatientReport("editing patient report"));
   }
 
-  imageClicked() async {
+  imageClicked(XFile image,String type) async {
     _startLoading("Image Clicked");
+    final token = await localStore.fetch();
+    final result = await this.api.uploadImage(token,image,type);
+    if (result.isError) {
+      emit(ErrorState(result.asError!.error as String));
+      return;
+    }
     emit(ImageCaptured("Image Clicked"));
+  }
+
+  fetchImage(String patientID) async {
+    _startLoading("Image Clicked");
+    final token = await localStore.fetch();
+    final result = await this.api.fetchImage(token, patientID);
+    if (result.isError) {
+      emit(ErrorState(result.asError!.error as String));
+      return;
+    }
+    emit(ImageLoaded(result.asValue!.value));
   }
 
   viewPatientReport() async {

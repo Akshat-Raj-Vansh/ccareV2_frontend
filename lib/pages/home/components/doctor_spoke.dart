@@ -1,5 +1,7 @@
 //@dart=2.9
 import 'package:ccarev2_frontend/main/domain/edetails.dart';
+import 'package:ccarev2_frontend/pages/chat/chatScreen.dart';
+import 'package:ccarev2_frontend/pages/chat/components/chatModel.dart';
 import 'package:ccarev2_frontend/pages/home/components/doctors_spoke_list.dart';
 import 'package:ccarev2_frontend/pages/home/home_page_adapter.dart';
 import 'package:ccarev2_frontend/pages/spoke_form/patient_exam_screen.dart';
@@ -16,6 +18,7 @@ import 'package:flutter_cubit/flutter_cubit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 class HomeScreenSpoke extends StatefulWidget {
   final MainCubit mainCubit;
@@ -33,6 +36,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
   static bool _emergency = false;
   static bool _patientAccepted = false;
   static bool _driverAccepted = false;
+  static bool _hubAccepted=false;
   static bool _ugt=false;
   dynamic currentState = null;
   bool loader = false;
@@ -43,6 +47,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
     CubitProvider.of<MainCubit>(context).fetchEmergencyDetails();
     NotificationController.configure(widget.mainCubit, UserType.SPOKE, context);
     NotificationController.fcmHandler();
+    
   }
 
   // Future<loc.Location> _getLocation() async {
@@ -168,6 +173,9 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
               _driverAccepted = true;
               _emergency = true;
             }
+            if(eDetails.hubDetails!=null){
+              _hubAccepted=true;
+            }
           }
           if (state is NormalState) {
             currentState = NormalState;
@@ -257,7 +265,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
               decoration: BoxDecoration(
                 color: Colors.blue,
               ),
-              child: Text('CardioCare - Hub'),
+              child: Text('CardioCare - Spoke'),
             ),
             ListTile(
               title: const Text('My Profile'),
@@ -305,7 +313,8 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
             if (_patientAccepted) _buildPatientDetails(),
             if (_patientAccepted&&_ugt) _buildPatientReportButton(),
             if (_patientAccepted&&_ugt) _buildPatientExamButton(),
-             if (_patientAccepted&&_ugt) _buildHubList(),
+             if (_patientAccepted&&_ugt&&!_hubAccepted) _buildHubList(),
+             if(_hubAccepted) _buildChatButton(),
             if (_patientAccepted&&_ugt) _buildPatientReportHistoryButton(),
             if (_driverAccepted) _buildDriverDetails(),
             if (!_emergency) _buildHeader(),
@@ -483,6 +492,41 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
           ),
         ),
       );
+ _buildChatButton() => InkWell(
+        onTap: () async {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => 
+              CubitProvider<MainCubit>(
+                  create: (_)=>widget.mainCubit,
+                  child:  
+                ChatPage(eDetails.hubDetails.name,eDetails.hubDetails.id,eDetails.patientDetails.id)
+                )
+              ));
+          // widget.mainCubit.getAllHubDoctors();
+          // Navigator.push(
+          //     context,
+          //     MaterialPageRoute(
+          //       builder: (context) =>
+          //           PatientReportHistoryScreen(mainCubit: widget.mainCubit),
+          //     ));
+        },
+        child:  Container(
+          width: SizeConfig.screenWidth,
+          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          decoration: BoxDecoration(
+              color: kPrimaryLightColor,
+              borderRadius: BorderRadius.circular(20)),
+          child: Text(
+            eDetails.hubDetails.name,
+            style: TextStyle(color: Colors.white, fontSize: 14),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      );
+      
 
   _buildDriverDetails() => Column(children: [
         Container(

@@ -1,9 +1,8 @@
 //@dart=2.9
 import 'dart:io';
 import 'package:ccarev2_frontend/main/domain/edetails.dart';
+import 'package:ccarev2_frontend/pages/home/components/fullImage.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:camera/camera.dart';
-import 'package:ccarev2_frontend/components/default_button.dart';
 import 'package:ccarev2_frontend/main/domain/treatment.dart';
 import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
 import 'package:ccarev2_frontend/state_management/main/main_state.dart';
@@ -55,6 +54,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
       child: Text('Examination'),
     ),
   ];
+  bool ecgUploaded = false;
   bool noReport = true;
   int _currentIndex = 0;
   TreatmentReport editedReport = TreatmentReport.initialize();
@@ -86,7 +86,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
 
     setState(() {
       _image = image;
-      widget.mainCubit.imageClicked();
+      // widget.mainCubit.imageClicked(image);
     });
   }
 
@@ -96,7 +96,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
 
     setState(() {
       _image = image;
-      widget.mainCubit.imageClicked();
+      // widget.mainCubit.imageClicked(image);
     });
   }
 
@@ -164,6 +164,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
   _fetchReport() async {
     print("Fetching patient report");
     widget.mainCubit.fetchPatientReport();
+    // widget.mainCubit.fetchImage(widget.patientDetails.id);
   }
 
   @override
@@ -174,34 +175,36 @@ class _PatientReportScreenState extends State<PatientReportScreen>
       builder: (_, state) {
         if (state is PatientReportFetched) {
           print("Patient Report Fetched state Called");
-        
+
           editedReport = state.report;
           noReport = false;
-          currentState=state;
-          
+          currentState = state;
+          if (editedReport.ecg.ecg_file_id != null) {
+            ecgUploaded = true;
+          }
+        }
+        if (state is ImageLoaded) {
+          _image = state.image;
         }
         if (state is NoReportState) {
-          
           print('No Report State Called');
-          currentState=state;
-           editReport = true;
+          currentState = state;
+          editReport = true;
         }
-        if(currentState==null){
-return Container(
-  width: double.infinity,
-  height: double.infinity,
-  color: Colors.white,
-  child: Center(
-    child: CircularProgressIndicator(),
-  ),
-);
+        if (currentState == null) {
+          return Container(
+            width: double.infinity,
+            height: double.infinity,
+            color: Colors.white,
+            child: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
         }
-          
-          
-       return buildUI();
+
+        return buildUI();
       },
       listener: (context, state) {
-        
         if (state is EditPatientReport) {
           _hideLoader();
           editReport = true;
@@ -224,7 +227,6 @@ return Container(
           editReport = false;
           widget.mainCubit.fetchPatientReport();
         }
-        
       },
     );
   }
@@ -281,7 +283,6 @@ return Container(
       ),
       resizeToAvoidBottomInset: false,
       body: _buildFormBody(),
-    
       floatingActionButton: widget.user == UserType.DOCTOR
           ? SpeedDial(
               animatedIcon: AnimatedIcons.menu_close,
@@ -335,19 +336,19 @@ return Container(
             child: _buildReportOverview(),
           ),
           Container(
-            child: editReport? _buildECGForm() : _buildECGDetails(),
+            child: editReport ? _buildECGForm() : _buildECGDetails(),
           ),
           Container(
-            child: editReport  ? _buildMedHistForm() : _buildMedHistDetails(),
+            child: editReport ? _buildMedHistForm() : _buildMedHistDetails(),
           ),
           Container(
-            child: editReport  ? _buildChestForm() : _buildChestDetails(),
+            child: editReport ? _buildChestForm() : _buildChestDetails(),
           ),
           Container(
-            child: editReport  ? _buildSymptomsForm() : _buildSymptomsDetails(),
+            child: editReport ? _buildSymptomsForm() : _buildSymptomsDetails(),
           ),
           Container(
-            child: editReport 
+            child: editReport
                 ? _buildExaminationForm()
                 : _buildExaminationDetails(),
           ),
@@ -529,7 +530,9 @@ return Container(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('ECG Time: '),
-                Text(editedReport.ecg.ecg_time),
+                Text(DateTime.fromMillisecondsSinceEpoch(
+                        int.parse(editedReport.ecg.ecg_time))
+                    .toString()),
               ],
             ),
             SizedBox(height: getProportionateScreenHeight(10)),
@@ -538,7 +541,33 @@ return Container(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('ECG Scan: '),
-                Text(editedReport.ecg.ecg_file_id),
+                ecgUploaded
+                    ? GestureDetector(
+                        onTap: () {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (_) {
+                            return FullScreenImage(
+                              imageUrl:
+                                  "http://192.168.112.151:3000/treatment/fetchECG?fileID=${editedReport.ecg.ecg_file_id}",
+                              tag: "generate_a_unique_tag",
+                            );
+                          }));
+                        },
+                        child: Hero(
+                          child: Image(
+                              image: NetworkImage(
+                                  "http://192.168.112.151:3000/treatment/fetchECG?fileID=${editedReport.ecg.ecg_file_id}",
+                                  headers: {
+                                    "Authorization":
+                                        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjFhMWU5ZGNiYWI4MjZkZTk4NjBmNzkzIiwiaWF0IjoxNjM4MjY1MzkxLCJleHAiOjE2Mzg4NzAxOTEsImlzcyI6ImNvbS5jY2FyZW5pdGgifQ.K-_DprXx2ipOwWt17DODlMDqQSgtWdv8aARjlPdEuzA"
+                                  }),
+                              width: 100,
+                              height: 100,
+                              fit: BoxFit.cover),
+                          tag: "generate_a_unique_tag",
+                        ),
+                      )
+                    : SizedBox()
               ],
             ),
             SizedBox(height: getProportionateScreenHeight(10)),
@@ -817,29 +846,29 @@ return Container(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(height: getProportionateScreenHeight(20)),
-            // ECG Time
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('ECG Time: '),
-                Container(
-                  width: SizeConfig.screenWidth * 0.4,
-                  child: TextFormField(
-                    keyboardType: TextInputType.text,
-                    focusNode: null,
-                    initialValue: editedReport.ecg.ecg_time,
-                    onChanged: (newValue) =>
-                        editedReport.ecg.ecg_time = newValue,
-                    decoration: const InputDecoration(
-                      hintText: "Enter ECG Time",
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: getProportionateScreenHeight(20)),
-            // ECG Scan
+            // // ECG Time
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //   children: [
+            //     Text('ECG Time: '),
+            //     Container(
+            //       width: SizeConfig.screenWidth * 0.4,
+            //       child: TextFormField(
+            //         keyboardType: TextInputType.text,
+            //         focusNode: null,
+            //         initialValue: editedReport.ecg.ecg_time,
+            //         onChanged: (newValue) =>
+            //             editedReport.ecg.ecg_time = newValue,
+            //         decoration: const InputDecoration(
+            //           hintText: "Enter ECG Time",
+            //           floatingLabelBehavior: FloatingLabelBehavior.always,
+            //         ),
+            //       ),
+            //     ),
+            //   ],
+            // ),
+            // SizedBox(height: getProportionateScreenHeight(20)),
+            // // ECG Scan
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -884,6 +913,26 @@ return Container(
                 ),
               ],
             ),
+            InkWell(
+              onTap: () async {
+                widget.mainCubit.imageClicked(
+                    _image, editedReport.ecg.ecg_type.toString().split(".")[1]);
+              },
+              child: Container(
+                width: SizeConfig.screenWidth,
+                margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                decoration: BoxDecoration(
+                    color: kPrimaryLightColor,
+                    borderRadius: BorderRadius.circular(20)),
+                child: Text(
+                  "Upload ECG",
+                  style: TextStyle(color: Colors.white, fontSize: 14),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+
             SizedBox(height: getProportionateScreenHeight(50)),
             if (clickImage)
               Expanded(

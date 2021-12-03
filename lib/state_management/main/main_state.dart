@@ -2,11 +2,13 @@ import 'package:ccarev2_frontend/cache/local_store.dart';
 import 'package:ccarev2_frontend/main/domain/edetails.dart';
 import 'package:ccarev2_frontend/main/domain/examination.dart';
 import 'package:ccarev2_frontend/main/domain/treatment.dart' as treat;
+import 'package:ccarev2_frontend/pages/chat/components/message.dart';
 import 'package:ccarev2_frontend/services/Notifications/component/patient.dart';
 import 'package:ccarev2_frontend/user/domain/doc_info.dart';
 import 'package:ccarev2_frontend/user/domain/hub_doc_info.dart';
 import 'package:ccarev2_frontend/user/domain/location.dart';
 import 'package:equatable/equatable.dart';
+import 'package:image_picker/image_picker.dart';
 import '../../main/domain/question.dart';
 
 abstract class MainState extends Equatable {}
@@ -113,6 +115,13 @@ class ImageCaptured extends MainState {
   List<Object> get props => [this.msg];
 }
 
+class ImageLoaded extends MainState {
+  final XFile image;
+  ImageLoaded(this.image);
+  @override
+  List<Object> get props => [this.image];
+}
+
 class PatientExamReportFetched extends MainState {
   final Examination ereport;
   PatientExamReportFetched(this.ereport);
@@ -162,6 +171,18 @@ class NormalState extends MainState {
   List<Object> get props => [msg];
 }
 
+class PatientAcceptedHub extends MainState {
+ 
+  @override
+  List<Object> get props => [];
+}
+class MessagesLoadedState extends MainState{
+  final List<Message> messages;
+  MessagesLoadedState(this.messages);
+  @override
+  List<Object> get props => [messages];
+}
+
 class AllPatientsState extends MainState {
   final String msg;
   AllPatientsState(this.msg);
@@ -184,8 +205,14 @@ class ConsultHub extends MainState {
 }
 
 class HubPatientsLoaded extends MainState {
-  final EDetails details;
+  final List<EDetails> details;
   HubPatientsLoaded(this.details);
+  @override
+  List<Object> get props => [details];
+}
+class HubRequestsLoaded extends MainState {
+  final List<EDetails> details;
+  HubRequestsLoaded(this.details);
   @override
   List<Object> get props => [details];
 }

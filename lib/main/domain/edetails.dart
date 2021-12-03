@@ -6,21 +6,25 @@ class EDetails {
   PatientDetails? patientDetails;
   DoctorDetails? doctorDetails;
   DriverDetails? driverDetails;
+  DoctorDetails? hubDetails;
   EDetails({
     this.patientDetails,
     this.doctorDetails,
     this.driverDetails,
+    this.hubDetails,
   });
 
   EDetails copyWith({
     PatientDetails? patientDetails,
     DoctorDetails? doctorDetails,
     DriverDetails? driverDetails,
+    DoctorDetails? hubDetails,
   }) {
     return EDetails(
       patientDetails: patientDetails ?? this.patientDetails,
       doctorDetails: doctorDetails ?? this.doctorDetails,
       driverDetails: driverDetails ?? this.driverDetails,
+      hubDetails: hubDetails ?? this.hubDetails,
     );
   }
 
@@ -29,20 +33,16 @@ class EDetails {
       'patientDetails': patientDetails?.toMap(),
       'doctorDetails': doctorDetails?.toMap(),
       'driverDetails': driverDetails?.toMap(),
+      'hubDetails': hubDetails?.toMap(),
     };
   }
 
   factory EDetails.fromMap(Map<String, dynamic> map) {
     return EDetails(
-      patientDetails: map['patientDetails'] != null
-          ? PatientDetails.fromMap(map['patientDetails'])
-          : null,
-      doctorDetails: map['doctorDetails'] != null
-          ? DoctorDetails.fromMap(map['doctorDetails'])
-          : null,
-      driverDetails: map['driverDetails'] != null
-          ? DriverDetails.fromMap(map['driverDetails'])
-          : null,
+      patientDetails: map['patientDetails'] != null ? PatientDetails.fromMap(map['patientDetails']) : null,
+      doctorDetails: map['doctorDetails'] != null ? DoctorDetails.fromMap(map['doctorDetails']) : null,
+      driverDetails: map['driverDetails'] != null ? DriverDetails.fromMap(map['driverDetails']) : null,
+      hubDetails: map['hubDetails'] != null ? DoctorDetails.fromMap(map['hubDetails']) : null,
     );
   }
 
@@ -52,22 +52,28 @@ class EDetails {
       EDetails.fromMap(json.decode(source));
 
   @override
-  String toString() =>
-      'EDetails(patientDetails: $patientDetails, doctorDetails: $doctorDetails, driverDetails: $driverDetails)';
+  String toString() {
+    return 'EDetails(patientDetails: $patientDetails, doctorDetails: $doctorDetails, driverDetails: $driverDetails, hubDetails: $hubDetails)';
+  }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-
+  
     return other is EDetails &&
-        other.patientDetails == patientDetails &&
-        other.doctorDetails == doctorDetails &&
-        other.driverDetails == driverDetails;
+      other.patientDetails == patientDetails &&
+      other.doctorDetails == doctorDetails &&
+      other.driverDetails == driverDetails &&
+      other.hubDetails == hubDetails;
   }
 
   @override
-  int get hashCode =>
-      patientDetails.hashCode ^ doctorDetails.hashCode ^ driverDetails.hashCode;
+  int get hashCode {
+    return patientDetails.hashCode ^
+      doctorDetails.hashCode ^
+      driverDetails.hashCode ^
+      hubDetails.hashCode;
+  }
 }
 
 enum EStatus { OTW, EMERGENCY, ATH, UGT  }

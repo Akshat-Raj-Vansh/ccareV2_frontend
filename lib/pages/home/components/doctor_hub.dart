@@ -1,5 +1,6 @@
 //@dart=2.9
 import 'package:ccarev2_frontend/main/domain/edetails.dart';
+import 'package:ccarev2_frontend/pages/chat/chatScreen.dart';
 import 'package:ccarev2_frontend/pages/home/home_page_adapter.dart';
 import 'package:ccarev2_frontend/pages/spoke_form/patient_exam_screen.dart';
 import 'package:ccarev2_frontend/pages/spoke_form/patient_history_screen.dart';
@@ -28,14 +29,17 @@ class HomeScreenHub extends StatefulWidget {
 
 class _HomeScreenHubState extends State<HomeScreenHub> {
   EDetails eDetails;
+  EDetails rDetails;
   static bool _patientAccepted = false;
-
+  bool patientsLoaded=false;
+  bool requestsLoaded=false;
   dynamic currentState = null;
   bool loader = false;
 
   @override
   void initState() {
     super.initState();
+    widget.mainCubit.fetchHubRequests();
     widget.mainCubit.fetchHubPatientDetails();
     NotificationController.configure(widget.mainCubit, UserType.HUB, context);
     NotificationController.fcmHandler();
@@ -78,7 +82,7 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          title: Text('CardioCare - Hub'),
+          title: Text('Hub'),
           backgroundColor: kPrimaryColor,
           actions: [
             IconButton(
@@ -126,20 +130,57 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
           ],
         ),
         body: CubitConsumer<MainCubit, MainState>(builder: (_, state) {
-          if (state is DetailsLoaded) {
+          if (state is HubPatientsLoaded) {
+            currentState=state;
+            print(state);
+          eDetails=state.details[0];
+          patientsLoaded=true;
+          }
+          if(state is HubRequestsLoaded){
+            
+            print(state);
+            currentState=state;
+          rDetails=state.details[0];
+          requestsLoaded=true;
+        
+          
+          }
+          if(currentState==null){
             return Center(
-              child: Text('DetailsLoaded'),
+              child: Container(
+                color: Colors.white,
+                child: Text('Loading')),
             );
           }
+          
           return _buildUI(context);
         }, listener: (context, state) async {
-          if (state is LoadingState) {
-            print("Loading State Called");
-            _showLoader();
-          } else if (state is ErrorState) {
-            _hideLoader();
-          } else if (state is AcceptState) {
-            _hideLoader();
+          // if (state is LoadingState) {
+          //   print("Loading State Called");
+          //   _showLoader();
+          // } else
+           if (state is ErrorState) {
+            print("Error State Called");
+            // _hideLoader();
+          }else  if (state is HubPatientsLoaded) {
+           
+          eDetails=state.details[0];
+          patientsLoaded=true;
+          
+
+        }else  if (state is HubRequestsLoaded) {
+            currentState=state;
+          rDetails=state.details[0];
+           requestsLoaded=true;
+         
+          } 
+          else if(state is PatientAcceptedHub){
+            widget.mainCubit.fetchEmergencyDetails();
+            widget.mainCubit.fetchHubRequests();
+          }
+          
+          else if (state is AcceptState) {
+            // _hideLoader();
             print("Accept State Called");
             await showDialog(
                   context: context,
@@ -180,9 +221,9 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
                 false;
             //Create new state PatientAccepted by Hub
           } else if (state is PatientAccepted) {
-            _hideLoader();
+            // _hideLoader();
             print("Inside patient accepted by Doctor state");
-            // CubitProvider.of<MainCubit>(context).fetchEmergencyDetails();
+            widget.mainCubit.fetchEmergencyDetails();
           }
         }));
   }
@@ -191,6 +232,48 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
         SingleChildScrollView(
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            patientsLoaded?_buildPatientLoadedUI(context):SizedBox(),
+            patientsLoaded?_buildChatButton():SizedBox(),
+            requestsLoaded?_buildRequestUI(buildContext):SizedBox(),
+          ]),
+        ),
+      ]);
+
+_buildChatButton() => InkWell(
+        onTap: () async {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                CubitProvider<MainCubit>(
+                  create: (_)=>widget.mainCubit,
+                  child:  ChatPage(eDetails.doctorDetails.name,eDetails.doctorDetails.id,eDetails.patientDetails.id)
+                )
+                  ));
+          // widget.mainCubit.getAllHubDoctors();
+          // Navigator.push(
+          //     context,
+          //     MaterialPageRoute(
+          //       builder: (context) =>
+          //           PatientReportHistoryScreen(mainCubit: widget.mainCubit),
+          //     ));
+        },
+        child:  Container(
+          width: SizeConfig.screenWidth,
+          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          decoration: BoxDecoration(
+              color: kPrimaryLightColor,
+              borderRadius: BorderRadius.circular(20)),
+          child: Text(
+            eDetails.hubDetails.name,
+            style: TextStyle(color: Colors.white, fontSize: 14),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      );
+      
+  _buildPatientLoadedUI(BuildContext context)=>Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             if (!_patientAccepted) _buildHeader(),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -199,7 +282,7 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
                 style: TextStyle(fontSize: 24),
               ),
             ),
-            _buildPatientDetails(),
+            _buildPatientDetails(eDetails),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               child: Text(
@@ -207,13 +290,39 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
                 style: TextStyle(fontSize: 24),
               ),
             ),
-            _buildSpokeDetails(),
+            
+            _buildSpokeDetails(eDetails),
+            //Needs to be conditional
             _buildPatientReportButton(),
             _buildPatientExamButton(),
             _buildPatientReportHistoryButton(),
-          ]),
-        ),
-      ]);
+
+  ]);
+_buildRequestUI(BuildContext buildContext) => Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+    Text(
+  "Requests",
+  style: TextStyle(fontSize: 24),
+),
+    Padding(
+padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+child: Text(
+  "Patient Information",
+  style: TextStyle(fontSize: 24),
+),
+    ),
+    _buildPatientDetails(rDetails),
+    Padding(
+padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+child: Text(
+  "Spoke Doctor Information",
+  style: TextStyle(fontSize: 24),
+),
+    ),
+    
+    _buildSpokeDetails(rDetails),
+    _buildAcceptRequestButton()
+
+  ]);
 
   _buildHeader() => Container(
       color: Colors.green[400],
@@ -230,7 +339,7 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
         ),
       ));
 
-  _buildSpokeDetails() => Column(children: [
+  _buildSpokeDetails(EDetails details) => Column(children: [
         Container(
           width: SizeConfig.screenWidth,
           margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
@@ -253,7 +362,7 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text("Name: "),
-                  Text(eDetails.doctorDetails.name),
+                  Text(details.doctorDetails.name),
                 ],
               ),
               const SizedBox(
@@ -263,7 +372,7 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text("Contact Number: "),
-                  Text(eDetails.doctorDetails.contactNumber),
+                  Text(details.doctorDetails.contactNumber),
                 ],
               ),
               const SizedBox(
@@ -273,7 +382,7 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text("Hospital: "),
-                  Text(eDetails.doctorDetails.hospital),
+                  Text(details.doctorDetails.hospital),
                 ],
               ),
             ],
@@ -281,7 +390,7 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
         ),
       ]);
 
-  _buildPatientDetails() => Column(children: [
+  _buildPatientDetails(EDetails details) => Column(children: [
         Container(
           width: SizeConfig.screenWidth,
           margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
@@ -304,7 +413,7 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text("Name: "),
-                  Text(eDetails.patientDetails.name),
+                  Text(details.patientDetails.name),
                 ],
               ),
               const SizedBox(
@@ -314,7 +423,7 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text("Contact Number: "),
-                  Text(eDetails.patientDetails.contactNumber),
+                  Text(details.patientDetails.contactNumber),
                 ],
               ),
             ],
@@ -343,6 +452,29 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
               borderRadius: BorderRadius.circular(20)),
           child: Text(
             "View/Update Patient's Medical Report",
+            style: TextStyle(color: Colors.white, fontSize: 14),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      );
+
+
+_buildAcceptRequestButton() => InkWell(
+        onTap: () async {
+            widget.mainCubit.acceptPatientByHub(rDetails.patientDetails.id);
+            setState(() {
+              requestsLoaded=false;
+            });
+        },
+        child: Container(
+          width: SizeConfig.screenWidth,
+          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          decoration: BoxDecoration(
+              color: kPrimaryLightColor,
+              borderRadius: BorderRadius.circular(20)),
+          child: Text(
+            "Accept Request",
             style: TextStyle(color: Colors.white, fontSize: 14),
             textAlign: TextAlign.center,
           ),

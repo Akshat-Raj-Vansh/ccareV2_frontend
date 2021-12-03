@@ -1,14 +1,20 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:ccarev2_frontend/main/domain/edetails.dart';
 import 'package:ccarev2_frontend/main/domain/examination.dart';
 import 'package:ccarev2_frontend/main/domain/treatment.dart' as treat;
+import 'package:ccarev2_frontend/pages/chat/components/message.dart';
 import 'package:ccarev2_frontend/user/domain/doc_info.dart';
 import 'package:ccarev2_frontend/user/domain/emergency.dart';
 import 'package:ccarev2_frontend/user/domain/hub_doc_info.dart';
 import 'package:ccarev2_frontend/user/domain/location.dart';
 import 'package:ccarev2_frontend/utils/constants.dart';
+import 'package:http_parser/http_parser.dart';
 import 'package:http/http.dart' as http;
 import 'package:async/src/result/result.dart';
+
+import 'package:image_picker/image_picker.dart';
+
 
 import '../../user/domain/token.dart';
 import '../domain/question.dart';
@@ -74,7 +80,7 @@ class MainAPI extends IMainAPI {
       headers: header,
       body: emergency.toJson(),
     );
-    if (response.statusCode != 200) {
+    if (response.statusCode!= 200) {
       print("error");
       Map map = jsonDecode(response.body);
       print(transformError(map));
@@ -219,7 +225,7 @@ class MainAPI extends IMainAPI {
 
   @override
   Future<Result<dynamic>> acceptPatientbyHub(Token token, Token patient) async {
-    String endpoint = baseUrl + "/emergency/hub/accept";
+    String endpoint = baseUrl + "/treatment/hub/accept";
     var header = {
       "Content-Type": "application/json",
       "Authorization": token.value
@@ -235,10 +241,10 @@ class MainAPI extends IMainAPI {
     return Result.value(json);
   }
 
-  @override
-  Future<Result<EDetails>> fetchHubPatientDetails(Token token) async {
-    String endpoint = baseUrl + "/emergency/hub/accept";
-    var header = {
+ @override
+  Future<Result<List<EDetails>>> fetchHubPatientDetails(Token token) async {
+    String endpoint = baseUrl + "/treatment/hub/fetchPatientDetails";
+    var header = {  
       "Content-Type": "application/json",
       "Authorization": token.value
     };
@@ -248,8 +254,28 @@ class MainAPI extends IMainAPI {
       print(transformError(map));
       return Result.error(transformError(map));
     }
-    dynamic json = jsonDecode(response.body);
-    return Result.value(json);
+    dynamic json = jsonDecode(response.body)["details"] as List;
+    if(json.length==0) return Result.error("No patients found");
+    print(json);
+    return Result.value(json.map<EDetails>((e) => EDetails.fromJson(jsonEncode(e))).toList());
+  }
+  @override
+  Future<Result<List<EDetails>>> fetchHubRequests(Token token) async {
+    String endpoint = baseUrl + "/treatment/hub/fetchRequests";
+    var header = {  
+      "Content-Type": "application/json",
+      "Authorization": token.value
+    };
+    var response = await _client.get(Uri.parse(endpoint), headers: header);
+    if (response.statusCode != 200) {
+      Map map = jsonDecode(response.body);
+      print(transformError(map));
+      return Result.error(transformError(map));
+    }
+    dynamic json = jsonDecode(response.body)["details"] as List;
+    if(json.length==0) return Result.error("No patients found");
+    print(json);
+    return Result.value(json.map<EDetails>((e) => EDetails.fromJson(jsonEncode(e))).toList());
   }
 
   // Driver Side APIs
@@ -418,5 +444,72 @@ class MainAPI extends IMainAPI {
     }
     dynamic json = jsonDecode(response.body);
     return Result.value(json["message"]);
+  }
+
+  @override
+  Future<Result<String>> uploadImage(Token token, XFile image,String type) async {
+    print("Upload Image");
+    print(image.name);
+      String endpoint = baseUrl + "/treatment/spoke/uploadECG";
+    final header = {
+      // "Content-Type": "application/json",
+      "Authorization": token.value
+    };
+    var file = await http.MultipartFile.fromBytes('file', await image.readAsBytes(),filename:image.name, contentType:MediaType('image', 'jpg'));
+    var request = http.MultipartRequest('POST',Uri.parse(endpoint))
+  ..headers["Authorization"]= token.value;
+  request.fields['type'] = type;
+  request.files.add(file);
+    var response = await request.send();
+  
+    if (response.statusCode != 200) {
+      print("error");
+      return Result.error("Server Error");
+    }
+    print("Image Uploaded ,${response.statusCode}");
+    return Result.value("Image Uploaded");
+  }
+
+  @override
+  Future<Result<XFile>> fetchImage(Token token, String patientID) async  {
+   String endpoint = baseUrl + "/treatment/fetchECG";
+    var header = {
+      "Content-Type": "application/json",
+      "Authorization": token.value
+    };
+    var response = await _client.post(Uri.parse(endpoint),
+        headers: header, body: jsonEncode({'patientID': patientID}));
+    print(response.statusCode);
+    print(response.bodyBytes);
+    if (response.statusCode != 200) {
+      Map map = jsonDecode(response.body);
+      print(transformError(map));
+      return Result.error(transformError(map));
+    }
+  
+    return Result.value(XFile.fromData(response.bodyBytes));
+   
+     }
+
+  @override
+  Future<Result<List<Message>>> getAllMessages(Token token, String patientID) async {
+   String endpoint = baseUrl + "/treatment/getAllMessage?patientID=$patientID";
+    var header = {
+      "Content-Type": "application/json",
+      "Authorization": token.value
+    };
+    var response = await _client.get(Uri.parse(endpoint),
+        headers: header);
+    print(response.statusCode);
+    print(response.bodyBytes);
+    if (response.statusCode != 200) {
+      Map map = jsonDecode(response.body);
+      print(transformError(map));
+      return Result.error(transformError(map));
+    }
+  
+  dynamic json = jsonDecode(response.body)["messages"] as List;
+    return json.map<Message>((message)=>Message.fromJson(jsonEncode(message)));
+   
   }
 }
