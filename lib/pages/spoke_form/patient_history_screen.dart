@@ -2,6 +2,7 @@
 import 'package:ccarev2_frontend/components/default_button.dart';
 import 'package:ccarev2_frontend/main/domain/treatment.dart';
 import 'package:ccarev2_frontend/pages/spoke_form/components/history_details.dart';
+import 'package:ccarev2_frontend/pages/spoke_form/components/patient_report_overview.dart';
 import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
 import 'package:ccarev2_frontend/state_management/main/main_state.dart';
 import 'package:ccarev2_frontend/user/domain/credential.dart';
@@ -76,7 +77,7 @@ class _PatientReportHistoryScreenState
       listener: (context, state) {
         if (state is PatientReportHistoryFetched) {
           print("Patient TreatmentReport History Fetched state Called");
-          reports=state.reports;
+          reports = state.reports;
           _hideLoader();
         }
 
@@ -119,11 +120,19 @@ class _PatientReportHistoryScreenState
                   itemCount: reports.length,
                   itemBuilder: (context, index) {
                     return GestureDetector(
-                      onTap: (){
+                      onTap: () {
                         //FIXME: Navigate to the current report page
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ReportOverview(
+                                reports[index],
+                              ),
+                            ));
                       },
                       child: Text(
-                        DateTime.fromMillisecondsSinceEpoch(int.parse(reports[index].report_time))
+                        DateTime.fromMillisecondsSinceEpoch(
+                                int.parse(reports[index].report_time))
                             .toString(),
                       ),
                     );
@@ -139,5 +148,4 @@ class _PatientReportHistoryScreenState
       ),
     );
   }
-
-    }
+}

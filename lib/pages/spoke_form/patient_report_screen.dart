@@ -58,7 +58,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
   bool noReport = true;
   int _currentIndex = 0;
   TreatmentReport editedReport = TreatmentReport.initialize();
-  TreatmentReport previousReport;
+  TreatmentReport previousReport = TreatmentReport.initialize();
   bool previousReportExists = false;
   @override
   void initState() {
@@ -177,6 +177,8 @@ class _PatientReportScreenState extends State<PatientReportScreen>
         if (state is PatientReportFetched) {
           print("Patient Report Fetched state Called");
           editedReport = state.mixReport.currentTreatment;
+          if (state.mixReport.previousTreatment != null)
+            previousReport = state.mixReport.previousTreatment;
           print(editedReport.toString());
           if (state.mixReport.previousTreatment != null) {
             previousReport = state.mixReport.previousTreatment;
@@ -531,6 +533,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
           children: [
             SizedBox(height: getProportionateScreenHeight(15)),
             // ECG Time
+            Text('Current Report'),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -588,6 +591,61 @@ class _PatientReportScreenState extends State<PatientReportScreen>
             ),
 
             SizedBox(height: getProportionateScreenHeight(30)),
+            Text('Previous Report'),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('ECG Time: '),
+                Text(previousReport.ecg.ecg_time == "nill"
+                    ? "nill"
+                    : DateTime.fromMillisecondsSinceEpoch(
+                            int.parse(editedReport.ecg.ecg_time))
+                        .toString()),
+              ],
+            ),
+            SizedBox(height: getProportionateScreenHeight(10)),
+            // ECG Scan
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('ECG Scan: '),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (_) {
+                      return FullScreenImage(
+                        imageUrl:
+                            "http://192.168.0.139:3000/treatment/fetchECG?fileID=${previousReport.ecg.ecg_file_id}",
+                        tag: "generate_a_unique_tag",
+                      );
+                    }));
+                  },
+                  child: Hero(
+                    child: Image(
+                        image: NetworkImage(
+                            "http://192.168.0.139:3000/treatment/fetchECG?fileID=${previousReport.ecg.ecg_file_id}",
+                            headers: {
+                              "Authorization":
+                                  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjFhMWU5ZGNiYWI4MjZkZTk4NjBmNzkzIiwiaWF0IjoxNjM4MjY1MzkxLCJleHAiOjE2Mzg4NzAxOTEsImlzcyI6ImNvbS5jY2FyZW5pdGgifQ.K-_DprXx2ipOwWt17DODlMDqQSgtWdv8aARjlPdEuzA"
+                            }),
+                        width: 100,
+                        height: 100,
+                        fit: BoxFit.cover),
+                    tag: "generate_a_unique_tag",
+                  ),
+                )
+              ],
+            ),
+            SizedBox(height: getProportionateScreenHeight(10)),
+            // ECG Type
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('ECG Type: '),
+                Text(previousReport.ecg.ecg_type.toString().split('.')[1]),
+              ],
+            ),
+
+            SizedBox(height: getProportionateScreenHeight(30)),
           ],
         ),
       );
@@ -600,6 +658,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
           children: [
             SizedBox(height: getProportionateScreenHeight(15)),
             // Smoker
+            Text('Current Report'),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -658,6 +717,68 @@ class _PatientReportScreenState extends State<PatientReportScreen>
               ],
             ),
             SizedBox(height: getProportionateScreenHeight(30)),
+            Text('Current Report'),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Smoker: '),
+                Text(
+                    previousReport.medicalHist.smoker.toString().split('.')[1]),
+              ],
+            ),
+            SizedBox(height: getProportionateScreenHeight(10)),
+            // Diabetic
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Diabetic: '),
+                Text(previousReport.medicalHist.diabetic
+                    .toString()
+                    .split('.')[1]),
+              ],
+            ),
+            SizedBox(height: getProportionateScreenHeight(10)),
+            // Hypertensive
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Hypertensive: '),
+                Text(previousReport.medicalHist.hypertensive
+                    .toString()
+                    .split('.')[1]),
+              ],
+            ),
+            SizedBox(height: getProportionateScreenHeight(10)),
+            // Dyslipidaemia
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Dyslipidaemia: '),
+                Text(previousReport.medicalHist.dyslipidaemia
+                    .toString()
+                    .split('.')[1]),
+              ],
+            ),
+            SizedBox(height: getProportionateScreenHeight(10)),
+            // Old MI
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Old MI: '),
+                Text(
+                    previousReport.medicalHist.old_mi.toString().split('.')[1]),
+              ],
+            ),
+            SizedBox(height: getProportionateScreenHeight(10)),
+            // Trop I
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Trop I: '),
+                Text(previousReport.medicalHist.trop_i),
+              ],
+            ),
+            SizedBox(height: getProportionateScreenHeight(30)),
           ],
         ),
       );
@@ -669,6 +790,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(height: getProportionateScreenHeight(15)),
+            Text('Current Report'),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -730,6 +852,72 @@ class _PatientReportScreenState extends State<PatientReportScreen>
               ],
             ),
             SizedBox(height: getProportionateScreenHeight(30)),
+            Text('Previous Report'),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Chest Pain: '),
+                Text(previousReport.chestReport.chest_pain
+                    .toString()
+                    .split('.')[1]),
+              ],
+            ),
+            SizedBox(height: getProportionateScreenHeight(10)),
+            // Onset
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Site: '),
+                Text(previousReport.chestReport.site.toString().split('.')[1]),
+              ],
+            ),
+            SizedBox(height: getProportionateScreenHeight(10)),
+            // Pain Location
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Location: '),
+                Text(previousReport.chestReport.location
+                    .toString()
+                    .split('.')[1]),
+              ],
+            ),
+            SizedBox(height: getProportionateScreenHeight(10)),
+            // Intensity
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              Text('Intensity: '),
+              Text(previousReport.chestReport.intensity
+                  .toString()
+                  .split('.')[1]),
+            ]),
+            SizedBox(height: getProportionateScreenHeight(10)),
+            // Severity
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              Text('Severity: '),
+              Text(
+                  previousReport.chestReport.severity.toString().split('.')[1]),
+            ]),
+            SizedBox(height: getProportionateScreenHeight(10)),
+            // Radiation
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Radiation: '),
+                Text(previousReport.chestReport.radiation
+                    .toString()
+                    .split('.')[1]),
+              ],
+            ),
+            SizedBox(height: getProportionateScreenHeight(10)),
+            // Duration
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Duration: '),
+                Text(previousReport.chestReport.duration),
+              ],
+            ),
+            SizedBox(height: getProportionateScreenHeight(30)),
           ],
         ),
       );
@@ -741,6 +929,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(height: getProportionateScreenHeight(15)),
+            Text('Current Report'),
             // Blackouts
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -803,6 +992,69 @@ class _PatientReportScreenState extends State<PatientReportScreen>
               ],
             ),
             SizedBox(height: getProportionateScreenHeight(30)),
+            Text('Previous Report'),
+            // Blackouts
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Postural Black Out: '),
+                Text(previousReport.symptoms.postural_black_out
+                    .toString()
+                    .split('.')[1]),
+              ],
+            ),
+            SizedBox(height: getProportionateScreenHeight(10)),
+            // Palpitations
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Light Headedness: '),
+                Text(previousReport.symptoms.light_headedness
+                    .toString()
+                    .split('.')[1]),
+              ],
+            ),
+            SizedBox(height: getProportionateScreenHeight(10)),
+            //Sweating
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Sweating: '),
+                Text(previousReport.symptoms.sweating.toString().split('.')[1]),
+              ],
+            ),
+            SizedBox(height: getProportionateScreenHeight(10)),
+            // Nausea
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Nausea/Vomiting: '),
+                Text(previousReport.symptoms.nausea.toString().split('.')[1]),
+              ],
+            ),
+            SizedBox(height: getProportionateScreenHeight(10)),
+            // Shortness of breath
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Shortness of breath: '),
+                Text(previousReport.symptoms.shortness_of_breath
+                    .toString()
+                    .split('.')[1]),
+              ],
+            ),
+            SizedBox(height: getProportionateScreenHeight(10)),
+            // Loss of conciousness
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Loss of Consciousness: '),
+                Text(previousReport.symptoms.loss_of_consciousness
+                    .toString()
+                    .split('.')[1]),
+              ],
+            ),
+            SizedBox(height: getProportionateScreenHeight(30)),
           ],
         ),
       );
@@ -815,6 +1067,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
           children: [
             SizedBox(height: getProportionateScreenHeight(15)),
             // Pulse Rate
+            Text('Current Details'),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -838,6 +1091,32 @@ class _PatientReportScreenState extends State<PatientReportScreen>
               children: [
                 Text('Local Tederness: '),
                 Text(editedReport.examination.local_tenderness),
+              ],
+            ),
+            Text('Previous Details'),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Pulse Rate: '),
+                Text(previousReport.examination.pulse_rate),
+              ],
+            ),
+            SizedBox(height: getProportionateScreenHeight(10)),
+            // BP
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('BP: '),
+                Text(previousReport.examination.bp),
+              ],
+            ),
+            SizedBox(height: getProportionateScreenHeight(10)),
+            // Local Tenderness
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Local Tederness: '),
+                Text(previousReport.examination.local_tenderness),
               ],
             ),
             SizedBox(height: getProportionateScreenHeight(100)),
