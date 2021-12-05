@@ -220,12 +220,11 @@ class MainAPI extends IMainAPI {
     dynamic report = jsonDecode(response.body)['treatment'];
     print(report);
     try {
-      Examination.fromJson(jsonEncode(report));
+     return Result.value(Examination.fromJson(jsonEncode(report)));
     } catch (e) {
-      return Result.error("No medical records present");
+      return Result.value(Examination.initialize());
     }
 
-    return Result.value(Examination.fromJson(jsonEncode(report)));
   }
 
   // Hub Side APIs
@@ -514,9 +513,12 @@ class MainAPI extends IMainAPI {
       print(transformError(map));
       return Result.error(transformError(map));
     }
+  if(jsonDecode(response.body)["messages"]==null)
+      return Result.error("No Messages");
+   
   
   dynamic json = jsonDecode(response.body)["messages"] as List;
-    return json.map<Message>((message)=>Message.fromJson(jsonEncode(message)));
+    return Result.value(json.map<Message>((message)=>Message.fromJson(jsonEncode(message))).toList());
    
   }
 }

@@ -52,6 +52,7 @@ class _ChatPageState extends State<ChatPage> {
     recieverChatID = widget.patientID + "-" + widget.recieverID;
     print(widget.token);
     chatModel.init(widget.patientID, widget.token);
+    CubitProvider.of<MainCubit>(context).loadMessages(widget.patientID);
   }
 
   Widget buildSingleMessage(Message message) {

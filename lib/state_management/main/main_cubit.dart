@@ -37,6 +37,8 @@ class MainCubit extends Cubit<MainState> {
       emit(ErrorState(result.asError!.error as String));
       return;
     }
+   
+
     emit(MessagesLoadedState(result.asValue!.value));
   }
   fetchToken()async{

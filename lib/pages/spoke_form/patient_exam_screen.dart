@@ -283,16 +283,16 @@ class _PatientExamScreenState extends State<PatientExamScreen>
             const SizedBox(
               height: 5,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text("Address: "),
-                Text(widget.patientDetails.address, textAlign: TextAlign.right),
-              ],
-            ),
-            const SizedBox(
-              height: 5,
-            ),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //   children: [
+            //     Text("Address: "),
+            //     Text(widget.patientDetails.address, textAlign: TextAlign.right),
+            //   ],
+            // ),
+            // const SizedBox(
+            //   height: 5,
+            // ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
