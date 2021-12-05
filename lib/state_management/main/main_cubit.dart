@@ -135,11 +135,9 @@ class MainCubit extends Cubit<MainState> {
       return;
     }
     List<treat.TreatmentReport> reports = result.asValue!.value;
-    final report1 = reports[0];
-    final report2 = reports[1];
-    print(report1.toJson());
-    print(report2.toJson());
-    emit(PatientReportHistoryFetched(report1, report2));
+    
+  
+    emit(PatientReportHistoryFetched(reports));
   }
 
   fetchPatientReport() async {

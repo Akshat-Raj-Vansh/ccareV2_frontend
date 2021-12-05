@@ -67,11 +67,10 @@ class QuestionnaireState extends MainState {
 }
 
 class PatientReportHistoryFetched extends MainState {
-  final treat.TreatmentReport report1;
-  final treat.TreatmentReport report2;
-  PatientReportHistoryFetched(this.report1, this.report2);
+  final List<treat.TreatmentReport> reports;
+  PatientReportHistoryFetched(this.reports);
   @override
-  List<Object> get props => [this.report1, this.report2];
+  List<Object> get props => [this.reports];
 }
 
 class PatientReportFetched extends MainState {
