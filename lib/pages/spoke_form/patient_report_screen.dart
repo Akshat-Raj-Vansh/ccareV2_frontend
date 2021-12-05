@@ -530,9 +530,11 @@ class _PatientReportScreenState extends State<PatientReportScreen>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('ECG Time: '),
-                Text(DateTime.fromMillisecondsSinceEpoch(
-                        int.parse(editedReport.ecg.ecg_time))
-                    .toString()),
+                Text(editedReport.ecg.ecg_time == "nill"
+                    ? "nill"
+                    : DateTime.fromMillisecondsSinceEpoch(
+                            int.parse(editedReport.ecg.ecg_time))
+                        .toString()),
               ],
             ),
             SizedBox(height: getProportionateScreenHeight(10)),

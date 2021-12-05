@@ -44,6 +44,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
   static bool _doctorAccepted = false;
   static bool _driverAccepted = false;
   static bool _notificationSent = false;
+  static String _currentStatus = "UNKNOWN";
   dynamic currentState = null;
   @override
   void initState() {
@@ -167,14 +168,17 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
             // _hideLoader();
             _notificationSent = true;
             eDetails = state.eDetails;
+            _currentStatus = "EMERGENCY";
+            _emergency = true;
             if (eDetails.doctorDetails != null) {
               _doctorAccepted = true;
+              //    _emergency = true;
             }
             if (eDetails.driverDetails != null) {
               _driverAccepted = true;
+              //   _emergency = true;
             }
           }
-
           //TODO: #1 create a new state if no emerency requests have been made
           if (state is NormalState) {
             currentState = NormalState;
@@ -192,10 +196,16 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
           } else if (state is EmergencyState) {
             _hideLoader();
             _notificationSent = true;
+            _emergency = true;
+            _currentStatus = "EMERGENCY";
             print("Emergency State Called");
             _showMessage("Notifications sent to the Doctor and the Ambulance.");
           } else if (state is DetailsLoaded) {
             _hideLoader();
+            //  _currentStatus = EDetails.patientDetails.status;
+          } else if (state is NormalState) {
+            _hideLoader();
+            _showMessage(state.msg);
           } else if (state is ErrorState) {
             _hideLoader();
           } else if (state is QuestionnaireState) {
@@ -221,10 +231,8 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               if (!_notificationSent) _buildHeader(),
-              if (_notificationSent && (!_doctorAccepted || !_driverAccepted))
+              if (_notificationSent && (!_doctorAccepted && !_driverAccepted))
                 _buildNotificationSend(),
-              _buildPatientReportButton(),
-              _buildPatientReportHistoryButton(),
               if (_doctorAccepted || _driverAccepted)
                 Padding(
                   padding:
@@ -234,8 +242,31 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                     style: TextStyle(fontSize: 24),
                   ),
                 ),
+              if (_doctorAccepted || _driverAccepted)
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Status:",
+                        textAlign: TextAlign.left,
+                        style: TextStyle(fontSize: 18),
+                      ),
+                      Text(
+                        _currentStatus,
+                        style: TextStyle(color: Colors.red),
+                      ),
+                    ],
+                  ),
+                ),
               if (_doctorAccepted) _buildDoctorDetails(),
               if (_driverAccepted) _buildDriverDetails(),
+              _buildPatientReportButton(),
+              _buildPatientReportHistoryButton(),
             ],
           ),
         ),
@@ -368,29 +399,32 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
         width: SizeConfig.screenWidth,
         padding: const EdgeInsets.all(5.0),
         child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-          RaisedButton.icon(
-              color: Theme.of(context).primaryColor,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20)),
-              onPressed: () async {
-                if (!_emergency) {
-                  _showAmbRequired();
-                } else {
-                  _showLoader();
-                  loc.Location location = await _getLocation();
-                  _hideLoader();
-                  return widget.homePageAdapter
-                      .loadEmergencyScreen(context, UserType.PATIENT, location);
-                }
-              },
-              icon: Icon(
-                Icons.phone,
-                color: Colors.white,
-              ),
-              label: Text(
-                "Emergency",
-                style: TextStyle(color: Colors.white, fontSize: 16),
-              )),
+          if (_currentStatus != "ATH")
+            RaisedButton.icon(
+                color: Theme.of(context).primaryColor,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20)),
+                onPressed: () async {
+                  print(_emergency);
+                  if (!_emergency) {
+                    _showAmbRequired();
+                  } else {
+                    // _showLoader();
+                    // loc.Location location = await _getLocation();
+                    // _hideLoader();
+                    // return widget.homePageAdapter
+                    //     .loadEmergencyScreen(context, UserType.PATIENT, location);
+                    _updateStatus();
+                  }
+                },
+                icon: Icon(
+                  !_emergency ? Icons.phone : Icons.access_time,
+                  color: Colors.white,
+                ),
+                label: Text(
+                  !_emergency ? "Emergency" : "Change Status",
+                  style: TextStyle(color: Colors.white, fontSize: 16),
+                )),
           RaisedButton.icon(
               color: Theme.of(context).primaryColor,
               shape: RoundedRectangleBorder(
@@ -406,6 +440,22 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                   style: TextStyle(color: Colors.white, fontSize: 16)))
         ]),
       ));
+
+  _updateStatus() {
+    if (_currentStatus == "EMERGENCY") {
+      _currentStatus = "OTW";
+      return widget.mainCubit.statusUpdate("OTW");
+    }
+    _currentStatus = "ATH";
+    return widget.mainCubit.statusUpdate("ATH");
+  }
+
+  _getNextStatus() {
+    if (_currentStatus == "EMERGENCY")
+      return "OTW";
+    else
+      "ATH";
+  }
 
   _showAmbRequired() async {
     var alert = AlertDialog(
