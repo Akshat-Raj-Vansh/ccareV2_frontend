@@ -203,10 +203,8 @@ class MainAPI extends IMainAPI {
     //   });
     // }
     return Result.value({
-      "currentReport":
-          treat.TreatmentReport.fromJson(jsonEncode(currentReport)),
-      "previousReport":
-          treat.TreatmentReport.fromJson(jsonEncode(previousReport))
+      "currentReport": currentReport["ecg"]==null?treat.TreatmentReport.initialize():treat.TreatmentReport.fromJson(jsonEncode(currentReport)),
+      "previousReport":treat.TreatmentReport.fromJson(jsonEncode(previousReport))
     });
   }
 
