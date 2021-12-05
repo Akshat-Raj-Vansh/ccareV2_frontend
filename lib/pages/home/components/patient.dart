@@ -50,6 +50,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
   void initState() {
     super.initState();
     CubitProvider.of<MainCubit>(context).fetchEmergencyDetails();
+    CubitProvider.of<MainCubit>(context).getStatus();
     NotificationController.configure(
         widget.mainCubit, UserType.PATIENT, context);
     NotificationController.fcmHandler();
@@ -183,6 +184,10 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
           if (state is NormalState) {
             currentState = NormalState;
             if (state.msg == "NOT ASSIGNED") _notificationSent = true;
+          }
+          if (state is StatusFetched) {
+            _hideLoader();
+            _currentStatus = state.msg;
           }
           if (currentState == null)
             return Center(child: CircularProgressIndicator());

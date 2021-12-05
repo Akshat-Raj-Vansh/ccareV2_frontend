@@ -58,8 +58,8 @@ class _PatientReportScreenState extends State<PatientReportScreen>
   bool noReport = true;
   int _currentIndex = 0;
   TreatmentReport editedReport = TreatmentReport.initialize();
-TreatmentReport previousReport ;
-bool previousReportExists = false;
+  TreatmentReport previousReport;
+  bool previousReportExists = false;
   @override
   void initState() {
     super.initState();
@@ -176,9 +176,9 @@ bool previousReportExists = false;
       builder: (_, state) {
         if (state is PatientReportFetched) {
           print("Patient Report Fetched state Called");
-
           editedReport = state.mixReport.currentTreatment;
-          if(state.mixReport.previousTreatment!=null){
+          print(editedReport.toString());
+          if (state.mixReport.previousTreatment != null) {
             previousReport = state.mixReport.previousTreatment;
             previousReportExists = true;
           }
@@ -555,7 +555,7 @@ bool previousReportExists = false;
                               MaterialPageRoute(builder: (_) {
                             return FullScreenImage(
                               imageUrl:
-                                  "http://192.168.112.151:3000/treatment/fetchECG?fileID=${editedReport.ecg.ecg_file_id}",
+                                  "http://192.168.0.139:3000/treatment/fetchECG?fileID=${editedReport.ecg.ecg_file_id}",
                               tag: "generate_a_unique_tag",
                             );
                           }));
@@ -563,7 +563,7 @@ bool previousReportExists = false;
                         child: Hero(
                           child: Image(
                               image: NetworkImage(
-                                  "http://192.168.112.151:3000/treatment/fetchECG?fileID=${editedReport.ecg.ecg_file_id}",
+                                  "http://192.168.0.139:3000/treatment/fetchECG?fileID=${editedReport.ecg.ecg_file_id}",
                                   headers: {
                                     "Authorization":
                                         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjFhMWU5ZGNiYWI4MjZkZTk4NjBmNzkzIiwiaWF0IjoxNjM4MjY1MzkxLCJleHAiOjE2Mzg4NzAxOTEsImlzcyI6ImNvbS5jY2FyZW5pdGgifQ.K-_DprXx2ipOwWt17DODlMDqQSgtWdv8aARjlPdEuzA"

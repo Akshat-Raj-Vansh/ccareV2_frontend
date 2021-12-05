@@ -183,6 +183,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
               _hubAccepted = true;
             }
           }
+
           if (state is NormalState) {
             _hideLoader();
             currentState = NormalState;
@@ -199,6 +200,19 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
             _hideLoader();
           } else if (state is TokenLoadedState) {
             token = state.token;
+          }
+          if (state is NewReportGenerated) {
+            _hideLoader();
+            // Navigator.push(
+            //     context,
+            //     MaterialPageRoute(
+            //       builder: (context) => PatientReportScreen(
+            //         mainCubit: widget.mainCubit,
+            //         user: UserType.DOCTOR,
+            //         patientDetails: eDetails.patientDetails,
+            //       ),
+            //     ));
+            _showMessage(state.msg);
           } else if (state is AllHubDoctorsState) {
             _hideLoader();
             print("DOCTOR SPOKE HOME SCREEN/ HUB DOCTORS LIST STATE");
@@ -346,6 +360,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
             if (_patientAccepted && _ugt) _buildPatientExamButton(),
             if (_patientAccepted && _ugt && !_hubAccepted) _buildHubList(),
             if (_hubAccepted) _buildChatButton(),
+            if (_patientAccepted) _buildNewReportButton(),
             if (_patientAccepted && _ugt) _buildPatientReportHistoryButton(),
             if (_driverAccepted) _buildDriverDetails(),
             if (!_emergency) _buildHeader(),
@@ -575,6 +590,26 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
           child: Text(
             eDetails.hubDetails.name,
             style: TextStyle(color: Colors.white, fontSize: 14),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      );
+
+  _buildNewReportButton() => InkWell(
+        onTap: () async {
+          widget.mainCubit.generateNewReport();
+        },
+        child: Container(
+          width: SizeConfig.screenWidth,
+          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: kPrimaryColor)),
+          child: Text(
+            "Create New Report",
+            style: TextStyle(color: kPrimaryColor, fontSize: 14),
             textAlign: TextAlign.center,
           ),
         ),

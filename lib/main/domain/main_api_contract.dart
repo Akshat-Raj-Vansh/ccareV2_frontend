@@ -12,6 +12,9 @@ import '../../user/domain/token.dart';
 import 'question.dart';
 
 abstract class IMainAPI {
+  // General API
+  Future<Result<String>> getStatus(Token token);
+
   // Patient Side APIs
   Future<Result<List<QuestionTree>>> getAll(Token token);
   Future<Result<String>> emergencyRequest(Token token, Emergency emergency);
@@ -24,7 +27,7 @@ abstract class IMainAPI {
   Future<Result<dynamic>> fetchPatientReport(Token token);
   Future<Result<dynamic>> fetchPatientReportHistory(Token token);
   Future<Result<exam.Examination>> fetchPatientExamReport(Token token);
-  Future<Result<List<Message>>> getAllMessages(Token token,String patientID);
+  Future<Result<List<Message>>> getAllMessages(Token token, String patientID);
 
   // Spoke Side APIs
   Future<Result<loc.Location>> acceptPatientbySpoke(Token token, Token patient);
@@ -35,8 +38,9 @@ abstract class IMainAPI {
       Token token, exam.Examination examination);
   Future<Result<String>> updateStatus(Token token, String status);
   Future<Result<String>> consultHub(Token token, String docID);
-  Future<Result<String>> uploadImage(Token token,XFile image,String type);
-  Future<Result<XFile>> fetchImage(Token token,String patientID);
+  Future<Result<String>> uploadImage(Token token, XFile image, String type);
+  Future<Result<XFile>> fetchImage(Token token, String patientID);
+  Future<Result<String>> newReport(Token token);
 
   // Driver Side APIs
   Future<Result<loc.Location>> acceptPatientbyDriver(
@@ -44,7 +48,7 @@ abstract class IMainAPI {
 
   // Hub Side APIs
   Future<Result<dynamic>> acceptPatientbyHub(Token token, Token patient);
-    Future<Result<List<EDetails>>> fetchHubRequests(Token token);
+  Future<Result<List<EDetails>>> fetchHubRequests(Token token);
 
   Future<Result<List<EDetails>>> fetchHubPatientDetails(Token token);
 }

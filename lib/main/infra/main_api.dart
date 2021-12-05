@@ -15,7 +15,6 @@ import 'package:async/src/result/result.dart';
 
 import 'package:image_picker/image_picker.dart';
 
-
 import '../../user/domain/token.dart';
 import '../domain/question.dart';
 import '../domain/main_api_contract.dart';
@@ -38,6 +37,27 @@ class MainAPI extends IMainAPI {
     });
 
     return errStr;
+  }
+
+  @override
+  Future<Result<String>> getStatus(Token token) async {
+    String endpoint = baseUrl + "/emergency/patient/getStatus";
+    var header = {
+      "Content-Type": "application/json",
+      "Authorization": token.value
+    };
+    var response = await _client.get(Uri.parse(endpoint), headers: header);
+    print('@main_api.dart/getStatus response status: ${response.statusCode}');
+    print('@main_api.dart/getStatus response body: ${response.body}');
+    if (response.statusCode != 200) {
+      Map map = jsonDecode(response.body);
+      print(transformError(map));
+      return Result.error(transformError(map));
+    }
+    dynamic json = jsonDecode(response.body);
+    print('@main_api.dart/getStatus json: $json');
+    var result = json["msg"] as String;
+    return Result.value(result);
   }
 
   // Patient Side APIs
@@ -68,7 +88,7 @@ class MainAPI extends IMainAPI {
   @override
   Future<Result<String>> emergencyRequest(
       Token token, Emergency emergency) async {
-        print("Emergency Notification Send");
+    print("Emergency Notification Send");
     String endpoint = baseUrl + "/emergency/patient/notify";
     print(endpoint);
     var header = {
@@ -80,7 +100,7 @@ class MainAPI extends IMainAPI {
       headers: header,
       body: emergency.toJson(),
     );
-    if (response.statusCode!= 200) {
+    if (response.statusCode != 200) {
       print("error");
       Map map = jsonDecode(response.body);
       print(transformError(map));
@@ -165,17 +185,28 @@ class MainAPI extends IMainAPI {
     }
     dynamic currentReport = jsonDecode(response.body)['currentReport'];
     print("Report $currentReport");
-    if(currentReport==null)  return currentReport;
-    dynamic previousReport= jsonDecode(response.body)['previousReport'];
-    if(previousReport==null) 
+    if (currentReport == null) return currentReport;
+    dynamic previousReport = jsonDecode(response.body)['previousReports'];
+    if (previousReport == null)
+      return Result.value({
+        "currentReport": currentReport['ecg'] == null
+            ? treat.TreatmentReport.fromJson(jsonEncode(currentReport))
+            : treat.TreatmentReport.initialize(),
+        "previousReport": null
+      });
+    // if (currentReport['ecg'] == null) {
+    //   print('HELLO WORLD');
+    //   return Result.value({
+    //     "currentReport": treat.TreatmentReport.initialize(),
+    //     "previousReport":
+    //         treat.TreatmentReport.fromJson(jsonEncode(previousReport))
+    //   });
+    // }
     return Result.value({
-      "currentReport": treat.TreatmentReport.fromJson(jsonEncode(currentReport)),
-      "previousReport" :null
-    });
-
-    return Result.value({
-      "currentReport": treat.TreatmentReport.fromJson(jsonEncode(currentReport)),
-      "previousReport":treat.TreatmentReport.fromJson(jsonEncode(previousReport))
+      "currentReport":
+          treat.TreatmentReport.fromJson(jsonEncode(currentReport)),
+      "previousReport":
+          treat.TreatmentReport.fromJson(jsonEncode(previousReport))
     });
   }
 
@@ -199,6 +230,7 @@ class MainAPI extends IMainAPI {
         (jsonDecode(response.body)['history'] as List)
             .map((data) => treat.TreatmentReport.fromJson(jsonEncode(data)))
             .toList();
+    print(report);
     return Result.value(report);
   }
 
@@ -220,11 +252,14 @@ class MainAPI extends IMainAPI {
     dynamic report = jsonDecode(response.body)['treatment'];
     print(report);
     try {
-      Examination.fromJson(jsonEncode(report));
+      return Result.value(report['normalTreatment'] != null
+          ? Examination.fromJson(jsonEncode(report))
+          : Examination.initialize());
     } catch (e) {
-      return Result.error("No medical records present");
+      var res = Examination.initialize();
+      print('@main_api/fetchPatientExamReport res: ${res.toString()}');
+      return Result.value(res);
     }
-
     return Result.value(Examination.fromJson(jsonEncode(report)));
   }
 
@@ -248,10 +283,10 @@ class MainAPI extends IMainAPI {
     return Result.value(json);
   }
 
- @override
+  @override
   Future<Result<List<EDetails>>> fetchHubPatientDetails(Token token) async {
     String endpoint = baseUrl + "/treatment/hub/fetchPatientDetails";
-    var header = {  
+    var header = {
       "Content-Type": "application/json",
       "Authorization": token.value
     };
@@ -262,14 +297,16 @@ class MainAPI extends IMainAPI {
       return Result.error(transformError(map));
     }
     dynamic json = jsonDecode(response.body)["details"] as List;
-    if(json.length==0) return Result.error("No patients found");
+    if (json.length == 0) return Result.error("No patients found");
     print(json);
-    return Result.value(json.map<EDetails>((e) => EDetails.fromJson(jsonEncode(e))).toList());
+    return Result.value(
+        json.map<EDetails>((e) => EDetails.fromJson(jsonEncode(e))).toList());
   }
+
   @override
   Future<Result<List<EDetails>>> fetchHubRequests(Token token) async {
     String endpoint = baseUrl + "/treatment/hub/fetchRequests";
-    var header = {  
+    var header = {
       "Content-Type": "application/json",
       "Authorization": token.value
     };
@@ -280,9 +317,10 @@ class MainAPI extends IMainAPI {
       return Result.error(transformError(map));
     }
     dynamic json = jsonDecode(response.body)["details"] as List;
-    if(json.length==0) return Result.error("No patients found");
+    if (json.length == 0) return Result.error("No patients found");
     print(json);
-    return Result.value(json.map<EDetails>((e) => EDetails.fromJson(jsonEncode(e))).toList());
+    return Result.value(
+        json.map<EDetails>((e) => EDetails.fromJson(jsonEncode(e))).toList());
   }
 
   // Driver Side APIs
@@ -363,7 +401,7 @@ class MainAPI extends IMainAPI {
       return Result.error(transformError(map));
     }
     dynamic json = jsonDecode(response.body)["doctors"] as List;
-    
+
     List<HubInfo> hubDoctors = json.map<HubInfo>((data) {
       print(data);
       return HubInfo.fromJson(jsonEncode(data));
@@ -375,7 +413,7 @@ class MainAPI extends IMainAPI {
   @override
   Future<Result<String>> savePatientReport(
       Token token, treat.TreatmentReport report) async {
-        print("Update Patient Report");
+    print("Update Patient Report");
     String endpoint = baseUrl + "/treatment/spoke/updateReport";
     var header = {
       "Content-Type": "application/json",
@@ -454,21 +492,24 @@ class MainAPI extends IMainAPI {
   }
 
   @override
-  Future<Result<String>> uploadImage(Token token, XFile image,String type) async {
+  Future<Result<String>> uploadImage(
+      Token token, XFile image, String type) async {
     print("Upload Image");
     print(image.name);
-      String endpoint = baseUrl + "/treatment/spoke/uploadECG";
+    String endpoint = baseUrl + "/treatment/spoke/uploadECG";
     final header = {
       // "Content-Type": "application/json",
       "Authorization": token.value
     };
-    var file = await http.MultipartFile.fromBytes('file', await image.readAsBytes(),filename:image.name, contentType:MediaType('image', 'jpg'));
-    var request = http.MultipartRequest('POST',Uri.parse(endpoint))
-  ..headers["Authorization"]= token.value;
-  request.fields['type'] = type;
-  request.files.add(file);
+    var file = await http.MultipartFile.fromBytes(
+        'file', await image.readAsBytes(),
+        filename: image.name, contentType: MediaType('image', 'jpg'));
+    var request = http.MultipartRequest('POST', Uri.parse(endpoint))
+      ..headers["Authorization"] = token.value;
+    request.fields['type'] = type;
+    request.files.add(file);
     var response = await request.send();
-  
+
     if (response.statusCode != 200) {
       print("error");
       return Result.error("Server Error");
@@ -478,8 +519,8 @@ class MainAPI extends IMainAPI {
   }
 
   @override
-  Future<Result<XFile>> fetchImage(Token token, String patientID) async  {
-   String endpoint = baseUrl + "/treatment/fetchECG";
+  Future<Result<XFile>> fetchImage(Token token, String patientID) async {
+    String endpoint = baseUrl + "/treatment/fetchECG";
     var header = {
       "Content-Type": "application/json",
       "Authorization": token.value
@@ -493,30 +534,54 @@ class MainAPI extends IMainAPI {
       print(transformError(map));
       return Result.error(transformError(map));
     }
-  
+
     return Result.value(XFile.fromData(response.bodyBytes));
-   
-     }
+  }
 
   @override
-  Future<Result<List<Message>>> getAllMessages(Token token, String patientID) async {
-   String endpoint = baseUrl + "/treatment/getAllMessage?patientID=$patientID";
+  Future<Result<String>> newReport(Token token) async {
+    String endpoint = baseUrl + "/treatment/spoke/newReport";
     var header = {
       "Content-Type": "application/json",
       "Authorization": token.value
     };
-    var response = await _client.get(Uri.parse(endpoint),
-        headers: header);
-    print(response.statusCode);
-    print(response.bodyBytes);
+    var response = await _client.post(Uri.parse(endpoint),
+        headers: header, body: jsonEncode({}));
+    print('@main_api.dart/newReport response status: ${response.statusCode}');
+    print('@main_api.dart/newReport response body: ${response.body}');
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
       print(transformError(map));
       return Result.error(transformError(map));
     }
-  
-  dynamic json = jsonDecode(response.body)["messages"] as List;
-    return json.map<Message>((message)=>Message.fromJson(jsonEncode(message)));
-   
+    dynamic json = jsonDecode(response.body);
+    return Result.value(json["message"]);
+  }
+
+  @override
+  Future<Result<List<Message>>> getAllMessages(
+      Token token, String patientID) async {
+    String endpoint = baseUrl + "/treatment/getAllMessage?patientID=$patientID";
+    var header = {
+      "Content-Type": "application/json",
+      "Authorization": token.value
+    };
+    var response = await _client.get(Uri.parse(endpoint), headers: header);
+    print(
+        '@main_api.dart/getAllMessages response status: ${response.statusCode}');
+    print('@main_api.dart/getAllMessages response body: ${response.body}');
+    // print(response.statusCode);
+    if (response.statusCode != 200) {
+      Map map = jsonDecode(response.body);
+      print(transformError(map));
+      return Result.error(transformError(map));
+    }
+    if (jsonDecode(response.body)["messages"] == null)
+      return Result.error("error");
+    dynamic json = jsonDecode(response.body)["messages"] as List;
+    print(json.last);
+    return Result.value(json
+        .map<Message>((message) => Message.fromJson(jsonEncode(message)))
+        .toList());
   }
 }

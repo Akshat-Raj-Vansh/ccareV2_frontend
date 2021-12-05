@@ -14,6 +14,9 @@ class Examination {
   Examination.initialize() {
     this.nTreatment = NTreatment.initialize();
     this.thrombolysis = Thrombolysis.initialize();
+    print('-----------------------------');
+    print(this.nTreatment.toString());
+    print(this.thrombolysis.toString());
   }
 
   Examination copyWith({
