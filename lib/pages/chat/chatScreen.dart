@@ -15,7 +15,8 @@ class ChatPage extends StatefulWidget {
   final String name;
   final String recieverID;
   final String patientID;
-  ChatPage(this.name,this.recieverID,this.patientID);
+  final String token;
+  ChatPage(this.name,this.recieverID,this.patientID,this.token);
   @override
   _ChatPageState createState() => _ChatPageState();
 }
@@ -29,7 +30,8 @@ class _ChatPageState extends State<ChatPage> {
   void initState() {
     super.initState();
     recieverChatID = widget.patientID+"-"+widget.recieverID;
-    chatModel.init();
+    print(widget.token);
+    chatModel.init(widget.patientID,widget.token);
   }
 
 

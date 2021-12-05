@@ -38,6 +38,22 @@ class MainCubit extends Cubit<MainState> {
     }
     emit(MessagesLoadedState(result.asValue!.value));
   }
+  fetchToken()async{
+    // _startLoading("loadMessages");
+    final token = await localStore.fetch();
+    print("fetchToken ${token.value}");
+    // if(token==null)
+
+    // final result = await api.getAllMessages(token, patientID);
+    // if (result.isError) {
+    //   emit(ErrorState(result.asError!.error as String));
+    //   return;
+    // }
+    Future.delayed(Duration(milliseconds: 50),(){
+
+    emit(TokenLoadedState(token.value));
+    });
+  }
   notify(String action, bool ambRequired,
       {List<QuestionTree>? assessment}) async {
     print("Inside Notify");

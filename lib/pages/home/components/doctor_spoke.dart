@@ -39,6 +39,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
   static bool _hubAccepted=false;
   static bool _ugt=false;
   dynamic currentState = null;
+  String token;
   bool loader = false;
 
   @override
@@ -47,7 +48,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
     CubitProvider.of<MainCubit>(context).fetchEmergencyDetails();
     NotificationController.configure(widget.mainCubit, UserType.SPOKE, context);
     NotificationController.fcmHandler();
-    
+    CubitProvider.of<MainCubit>(context).fetchToken();
   }
 
   // Future<loc.Location> _getLocation() async {
@@ -158,6 +159,9 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
       ),
       body: CubitConsumer<MainCubit, MainState>(
         builder: (_, state) {
+           if(state is TokenLoadedState){
+            token=state.token;
+          }
           if (state is DetailsLoaded) {
             currentState = DetailsLoaded;
             eDetails = state.eDetails;
@@ -190,7 +194,11 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
             _showLoader();
           } else if (state is ErrorState) {
             _hideLoader();
-          } else if (state is AllHubDoctorsState) {
+          } 
+          
+          else  if(state is TokenLoadedState){
+            token=state.token;
+          }else if (state is AllHubDoctorsState) {
             _hideLoader();
             print("DOCTOR SPOKE HOME SCREEN/ HUB DOCTORS LIST STATE");
             showModalBottomSheet(
@@ -501,7 +509,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
               CubitProvider<MainCubit>(
                   create: (_)=>widget.mainCubit,
                   child:  
-                ChatPage(eDetails.hubDetails.name,eDetails.hubDetails.id,eDetails.patientDetails.id)
+                ChatPage(eDetails.hubDetails.name,eDetails.hubDetails.id,eDetails.patientDetails.id,token)
                 )
               ));
           // widget.mainCubit.getAllHubDoctors();

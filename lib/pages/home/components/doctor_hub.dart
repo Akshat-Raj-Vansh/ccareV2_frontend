@@ -35,12 +35,14 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
   bool requestsLoaded=false;
   dynamic currentState = null;
   bool loader = false;
+  String token;
 
   @override
   void initState() {
     super.initState();
     widget.mainCubit.fetchHubRequests();
     widget.mainCubit.fetchHubPatientDetails();
+    widget.mainCubit.fetchToken();
     NotificationController.configure(widget.mainCubit, UserType.HUB, context);
     NotificationController.fcmHandler();
   }
@@ -145,6 +147,11 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
         
           
           }
+          if(state is TokenLoadedState){
+            token=state.token;
+            print("Inside TokensLoaded State");
+            print(token);
+          }
           if(currentState==null){
             return Center(
               child: Container(
@@ -178,7 +185,11 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
             widget.mainCubit.fetchEmergencyDetails();
             widget.mainCubit.fetchHubRequests();
           }
-          
+          else  if(state is TokenLoadedState){
+            token=state.token;
+            print("Inside TokensLoaded State");
+            print(token);
+          }
           else if (state is AcceptState) {
             // _hideLoader();
             print("Accept State Called");
@@ -247,7 +258,7 @@ _buildChatButton() => InkWell(
                 builder: (context) =>
                 CubitProvider<MainCubit>(
                   create: (_)=>widget.mainCubit,
-                  child:  ChatPage(eDetails.doctorDetails.name,eDetails.doctorDetails.id,eDetails.patientDetails.id)
+                  child:  ChatPage(eDetails.doctorDetails.name,eDetails.doctorDetails.id,eDetails.patientDetails.id,token)
                 )
                   ));
           // widget.mainCubit.getAllHubDoctors();

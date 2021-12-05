@@ -182,6 +182,12 @@ class MessagesLoadedState extends MainState{
   @override
   List<Object> get props => [messages];
 }
+class TokenLoadedState extends MainState{
+  final String token;
+  TokenLoadedState(this.token);
+  @override
+  List<Object> get props => [token];
+}
 
 class AllPatientsState extends MainState {
   final String msg;
