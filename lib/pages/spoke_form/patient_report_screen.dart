@@ -58,7 +58,8 @@ class _PatientReportScreenState extends State<PatientReportScreen>
   bool noReport = true;
   int _currentIndex = 0;
   TreatmentReport editedReport = TreatmentReport.initialize();
-
+TreatmentReport previousReport ;
+bool previousReportExists = false;
   @override
   void initState() {
     super.initState();
@@ -176,7 +177,11 @@ class _PatientReportScreenState extends State<PatientReportScreen>
         if (state is PatientReportFetched) {
           print("Patient Report Fetched state Called");
 
-          editedReport = state.report;
+          editedReport = state.mixReport.currentTreatment;
+          if(state.mixReport.previousTreatment!=null){
+            previousReport = state.mixReport.previousTreatment;
+            previousReportExists = true;
+          }
           noReport = false;
           currentState = state;
           if (editedReport.ecg.ecg_file_id != null) {

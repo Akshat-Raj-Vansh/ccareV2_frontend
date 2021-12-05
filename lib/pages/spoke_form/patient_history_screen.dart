@@ -22,9 +22,7 @@ class PatientReportHistoryScreen extends StatefulWidget {
 
 class _PatientReportHistoryScreenState
     extends State<PatientReportHistoryScreen> {
-  TreatmentReport report1;
-  TreatmentReport report2;
-
+  List<TreatmentReport> reports;
   @override
   void initState() {
     super.initState();
@@ -78,8 +76,7 @@ class _PatientReportHistoryScreenState
       listener: (context, state) {
         if (state is PatientReportHistoryFetched) {
           print("Patient TreatmentReport History Fetched state Called");
-          report1 = state.report1;
-          report2 = state.report2;
+          reports=state.reports;
           _hideLoader();
         }
 
@@ -116,8 +113,25 @@ class _PatientReportHistoryScreenState
           child: Column(
             children: [
               SizedBox(height: SizeConfig.screenHeight * 0.02),
-              _buildReportDetails(),
-              _buildReport(),
+              //FIXME: Build a list of reports
+              Expanded(
+                child: ListView.builder(
+                  itemCount: reports.length,
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      onTap: (){
+                        //FIXME: Navigate to the current report page
+                      },
+                      child: Text(
+                        DateTime.fromMillisecondsSinceEpoch(int.parse(reports[index].report_time))
+                            .toString(),
+                      ),
+                    );
+                  },
+                ),
+              ),
+              // _buildReportDetails(),
+              // _buildReport(),
               SizedBox(height: SizeConfig.screenHeight * 0.02),
             ],
           ),
@@ -126,49 +140,4 @@ class _PatientReportHistoryScreenState
     );
   }
 
-  _buildReportDetails() => Column(children: [
-        Container(
-          width: SizeConfig.screenWidth,
-          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-          child: Text(
-            "TreatmentReport's Details",
-            textAlign: TextAlign.left,
-            style: TextStyle(fontSize: 18),
-          ),
-        ),
-        Container(
-          decoration: BoxDecoration(
-            color: Colors.red[100],
-            borderRadius: BorderRadius.circular(20),
-          ),
-          width: SizeConfig.screenWidth,
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("Last Edited: "),
-                  Text("10th Sept, 2021"),
-                ],
-              ),
-              const SizedBox(
-                height: 5,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("Edited By: "),
-                  Text("Dr. Doom\nApollo Medical Hospital",
-                      textAlign: TextAlign.right),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ]);
-
-  _buildReport() => Text("Hello World");
-}
+    }

@@ -1,6 +1,7 @@
 import 'package:ccarev2_frontend/cache/local_store.dart';
 import 'package:ccarev2_frontend/main/domain/edetails.dart';
 import 'package:ccarev2_frontend/main/domain/examination.dart';
+import 'package:ccarev2_frontend/main/domain/mixReport.dart';
 import 'package:ccarev2_frontend/main/domain/treatment.dart' as treat;
 import 'package:ccarev2_frontend/pages/chat/components/message.dart';
 import 'package:ccarev2_frontend/services/Notifications/component/patient.dart';
@@ -66,18 +67,17 @@ class QuestionnaireState extends MainState {
 }
 
 class PatientReportHistoryFetched extends MainState {
-  final treat.TreatmentReport report1;
-  final treat.TreatmentReport report2;
-  PatientReportHistoryFetched(this.report1, this.report2);
+  final List<treat.TreatmentReport> reports;
+  PatientReportHistoryFetched(this.reports);
   @override
-  List<Object> get props => [this.report1, this.report2];
+  List<Object> get props => [this.reports];
 }
 
 class PatientReportFetched extends MainState {
-  final treat.TreatmentReport report;
-  PatientReportFetched(this.report);
+  final MixReport mixReport;
+  PatientReportFetched(this.mixReport);
   @override
-  List<Object> get props => [this.report];
+  List<Object> get props => [this.mixReport];
 }
 
 class EditExaminationReport extends MainState {
@@ -181,6 +181,12 @@ class MessagesLoadedState extends MainState{
   MessagesLoadedState(this.messages);
   @override
   List<Object> get props => [messages];
+}
+class TokenLoadedState extends MainState{
+  final String token;
+  TokenLoadedState(this.token);
+  @override
+  List<Object> get props => [token];
 }
 
 class AllPatientsState extends MainState {

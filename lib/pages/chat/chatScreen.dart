@@ -6,7 +6,7 @@ import 'package:ccarev2_frontend/user/domain/details.dart';
 import 'package:flutter/material.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:scoped_model/scoped_model.dart';
-
+import 'package:ccarev2_frontend/utils/constants.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
 
 import 'components/message.dart';
@@ -15,7 +15,8 @@ class ChatPage extends StatefulWidget {
   final String name;
   final String recieverID;
   final String patientID;
-  ChatPage(this.name,this.recieverID,this.patientID);
+  final String token;
+  ChatPage(this.name, this.recieverID, this.patientID, this.token);
   @override
   _ChatPageState createState() => _ChatPageState();
 }
@@ -25,22 +26,46 @@ class _ChatPageState extends State<ChatPage> {
   late String recieverChatID;
   late ChatModel chatModel = ChatModel();
   late MainState currentState;
- @override
+  BoxDecoration decA = const BoxDecoration(
+      color: kPrimaryColor,
+      borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(30),
+          topRight: Radius.circular(30),
+          bottomRight: Radius.circular(30)));
+  BoxDecoration decC = const BoxDecoration(
+      color: kPrimaryColor,
+      borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(30),
+          topRight: Radius.circular(30),
+          bottomRight: Radius.circular(30)));
+  BoxDecoration decB = const BoxDecoration(
+      color: kPrimaryColor,
+      borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(30),
+          topRight: Radius.circular(30),
+          bottomLeft: Radius.circular(30)));
+
+  TextStyle styles = const TextStyle(color: Colors.white, fontSize: 18);
+  @override
   void initState() {
     super.initState();
-    recieverChatID = widget.patientID+"-"+widget.recieverID;
-    chatModel.init();
+    recieverChatID = widget.patientID + "-" + widget.recieverID;
+    print(widget.token);
+    chatModel.init(widget.patientID, widget.token);
   }
-
 
   Widget buildSingleMessage(Message message) {
     return Container(
+      decoration: message.senderID == recieverChatID?decA:decB,
       alignment: message.senderID == recieverChatID
           ? Alignment.centerLeft
           : Alignment.centerRight,
       padding: EdgeInsets.all(10.0),
       margin: EdgeInsets.all(10.0),
-      child: Text(message.text),
+      child: Text(
+        message.text,
+        style: styles,
+      ),
     );
   }
 
@@ -49,9 +74,8 @@ class _ChatPageState extends State<ChatPage> {
       model: chatModel,
       child: ScopedModelDescendant<ChatModel>(
         builder: (context, child, model) {
-          List<Message> messages =
-              model.getMessagesForChatID(recieverChatID);
-    
+          List<Message> messages = model.getMessagesForChatID(recieverChatID);
+
           return Container(
             height: MediaQuery.of(context).size.height * 0.75,
             child: ListView.builder(
@@ -84,7 +108,7 @@ class _ChatPageState extends State<ChatPage> {
                 FloatingActionButton(
                   onPressed: () {
                     model.sendMessage(
-                        textEditingController.text,recieverChatID);
+                        textEditingController.text, recieverChatID);
                     textEditingController.text = '';
                   },
                   elevation: 0,
@@ -103,28 +127,34 @@ class _ChatPageState extends State<ChatPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.name),
+        centerTitle: false,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
       ),
-      body: CubitConsumer<MainCubit,MainState>(
-builder: (context,state){
-    if(state is MessagesLoadedState){
-      chatModel.addMessages(state.messages);
-      currentState=state;
-    }
-    if(state==null){
-       return Center(
-              child: Container(
-                color: Colors.white,
-                child: Text('Loading')),
+      body: CubitConsumer<MainCubit, MainState>(
+        builder: (context, state) {
+          if (state is MessagesLoadedState) {
+            chatModel.addMessages(state.messages);
+            currentState = state;
+          }
+          if (state == null) {
+            return Center(
+              child: Container(color: Colors.white, child: Text('Loading')),
             );
-    }
+          }
 
-    return buildBody();
-},listener: (context,state){
-if (state is ErrorState) {
+          return buildBody();
+        },
+        listener: (context, state) {
+          if (state is ErrorState) {
             print("Error State Called");
             // _hideLoader();
           }
-},
+        },
       ),
     );
   }
@@ -138,4 +168,3 @@ if (state is ErrorState) {
     );
   }
 }
-

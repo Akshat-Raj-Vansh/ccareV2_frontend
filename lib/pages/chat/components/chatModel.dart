@@ -19,16 +19,16 @@ class ChatModel extends Model {
   SharedPreferences sharedPreferences;
   ILocalStore localStore;
 
-  void init()  {
-    const patientID = "61a1ea2abab826de9860f7a2";
+  void init(String patientID,String token)  {
+    // const patientID = "61a1ea2abab826de9860f7a2";
   
-    // localStore =  LocalStore(sharedPreferences);
-    // var token = await localStore.fetch();
-    const token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjFhMWU5ZGNiYWI4MjZkZTk4NjBmNzkzIiwiaWF0IjoxNjM4MjY1MzkxLCJleHAiOjE2Mzg4NzAxOTEsImlzcyI6ImNvbS5jY2FyZW5pdGgifQ.K-_DprXx2ipOwWt17DODlMDqQSgtWdv8aARjlPdEuzA";
+    // // localStore =  LocalStore(sharedPreferences);
+    // // var token = await localStore.fetch();
+    // const token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjFhMWU5ZGNiYWI4MjZkZTk4NjBmNzkzIiwiaWF0IjoxNjM4MjY1MzkxLCJleHAiOjE2Mzg4NzAxOTEsImlzcyI6ImNvbS5jY2FyZW5pdGgifQ.K-_DprXx2ipOwWt17DODlMDqQSgtWdv8aARjlPdEuzA";
     userChatID = patientID+"-"+token;
 
 
-  socket = IO.io('http://192.168.252.151:3000',
+  socket = IO.io('http://192.168.77.151:3000',
       IO.OptionBuilder()
        .setTransports(['websocket'])
        .disableAutoConnect()
@@ -41,7 +41,9 @@ class ChatModel extends Model {
     socket.onConnect((_){
      print('connect');
     });
-
+socket.onConnectError((err){
+  print(err);
+});
     socket.on("receive_message", (jsonData){
       print(jsonData);
     Map<String, dynamic> data = json.decode(jsonData);
@@ -60,6 +62,7 @@ class ChatModel extends Model {
 
   void sendMessage(String text, String receiverChatID) {
     messages.add(Message(text, userChatID, receiverChatID));
+    print("UserChatID$userChatID");
     socket.emit("send_message", [
       {
         "content": text,

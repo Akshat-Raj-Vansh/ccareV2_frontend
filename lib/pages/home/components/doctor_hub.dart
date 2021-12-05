@@ -8,6 +8,7 @@ import 'package:ccarev2_frontend/pages/spoke_form/patient_report_screen.dart';
 import 'package:ccarev2_frontend/services/Notifications/notificationContoller.dart';
 import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
 import 'package:ccarev2_frontend/state_management/main/main_state.dart';
+import 'package:ccarev2_frontend/state_management/main/main_state.dart';
 import 'package:ccarev2_frontend/state_management/user/user_cubit.dart';
 import 'package:ccarev2_frontend/user/domain/credential.dart';
 import 'package:ccarev2_frontend/utils/constants.dart';
@@ -35,12 +36,14 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
   bool requestsLoaded = false;
   dynamic currentState = null;
   bool loader = false;
+  String token;
 
   @override
   void initState() {
     super.initState();
     widget.mainCubit.fetchHubRequests();
     widget.mainCubit.fetchHubPatientDetails();
+    widget.mainCubit.fetchToken();
     NotificationController.configure(widget.mainCubit, UserType.HUB, context);
     NotificationController.fcmHandler();
   }
@@ -142,6 +145,11 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
             rDetails = state.details[0];
             requestsLoaded = true;
           }
+          if (state is TokenLoadedState) {
+            token = state.token;
+            print("Inside TokensLoaded State");
+            print(token);
+          }
           if (currentState == null) {
             return Center(
               child: Container(color: Colors.white, child: Text('Loading')),
@@ -167,6 +175,10 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
           } else if (state is PatientAcceptedHub) {
             widget.mainCubit.fetchEmergencyDetails();
             widget.mainCubit.fetchHubRequests();
+          } else if (state is TokenLoadedState) {
+            token = state.token;
+            print("Inside TokensLoaded State");
+            print(token);
           } else if (state is AcceptState) {
             // _hideLoader();
             print("Accept State Called");
@@ -239,7 +251,8 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
                       child: ChatPage(
                           eDetails.doctorDetails.name,
                           eDetails.doctorDetails.id,
-                          eDetails.patientDetails.id))));
+                          eDetails.patientDetails.id,
+                          token))));
           // widget.mainCubit.getAllHubDoctors();
           // Navigator.push(
           //     context,

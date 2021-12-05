@@ -2,12 +2,14 @@
 import 'dart:convert';
 
 class TreatmentReport {
+  String report_time;
   ECG ecg;
   MedicalHist medicalHist;
   ChestReport chestReport;
   Symptoms symptoms;
   Examination examination;
   TreatmentReport({
+    this.report_time,
     this.ecg,
     this.medicalHist,
     this.chestReport,
@@ -23,6 +25,7 @@ class TreatmentReport {
     this.examination = Examination.initialize();
   }
 
+  set report_time_(String report_time) => this.report_time = report_time;
   set ecg_(ECG value) => this.ecg = value;
   set medicalHist_(MedicalHist value) => this.medicalHist = value;
   set chestReport_(ChestReport value) => this.chestReport = value;
@@ -30,6 +33,7 @@ class TreatmentReport {
   set examination_(Examination value) => this.examination = value;
 
   TreatmentReport copyWith({
+    String report_time,
     ECG ecg,
     MedicalHist medicalHist,
     ChestReport chestReport,
@@ -37,6 +41,7 @@ class TreatmentReport {
     Examination examination,
   }) {
     return TreatmentReport(
+      report_time: report_time ?? this.report_time,
       ecg: ecg ?? this.ecg,
       medicalHist: medicalHist ?? this.medicalHist,
       chestReport: chestReport ?? this.chestReport,
@@ -47,6 +52,7 @@ class TreatmentReport {
 
   Map<String, dynamic> toMap() {
     return {
+      'report_time': report_time,
       'ecg': ecg.toMap(),
       'medical_hist': medicalHist.toMap(),
       'chest_report': chestReport.toMap(),
@@ -57,6 +63,7 @@ class TreatmentReport {
 
   factory TreatmentReport.fromMap(Map<String, dynamic> map) {
     return TreatmentReport(
+      report_time: map['report_time'],
       ecg: ECG.fromMap(map['ecg']),
       medicalHist: MedicalHist.fromMap(map['medical_hist']),
       chestReport: ChestReport.fromMap(map['chest_report']),
@@ -72,7 +79,7 @@ class TreatmentReport {
 
   @override
   String toString() {
-    return 'TreatmentReport(ecg: $ecg, medicalHist: $medicalHist, chestReport: $chestReport, symptoms: $symptoms, examination: $examination)';
+    return 'TreatmentReport(report_time: $report_time ecg: $ecg, medicalHist: $medicalHist, chestReport: $chestReport, symptoms: $symptoms, examination: $examination)';
   }
 
   @override
@@ -80,6 +87,7 @@ class TreatmentReport {
     if (identical(this, other)) return true;
 
     return other is TreatmentReport &&
+        other.report_time == report_time &&
         other.ecg == ecg &&
         other.medicalHist == medicalHist &&
         other.chestReport == chestReport &&
@@ -89,7 +97,9 @@ class TreatmentReport {
 
   @override
   int get hashCode {
-    return ecg.hashCode ^
+    return 
+    report_time.hashCode ^
+    ecg.hashCode ^
         medicalHist.hashCode ^
         chestReport.hashCode ^
         symptoms.hashCode ^

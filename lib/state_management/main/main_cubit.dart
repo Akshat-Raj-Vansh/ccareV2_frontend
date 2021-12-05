@@ -1,6 +1,7 @@
 import 'package:ccarev2_frontend/cache/ilocal_store.dart';
 import 'package:ccarev2_frontend/main/domain/examination.dart' as exam;
 import 'package:ccarev2_frontend/main/domain/main_api_contract.dart';
+import 'package:ccarev2_frontend/main/domain/mixReport.dart';
 import 'package:ccarev2_frontend/main/domain/question.dart';
 import 'package:ccarev2_frontend/main/domain/treatment.dart' as treat;
 import 'package:ccarev2_frontend/user/domain/location.dart' as loc;
@@ -37,6 +38,22 @@ class MainCubit extends Cubit<MainState> {
       return;
     }
     emit(MessagesLoadedState(result.asValue!.value));
+  }
+  fetchToken()async{
+    // _startLoading("loadMessages");
+    final token = await localStore.fetch();
+    print("fetchToken ${token.value}");
+    // if(token==null)
+
+    // final result = await api.getAllMessages(token, patientID);
+    // if (result.isError) {
+    //   emit(ErrorState(result.asError!.error as String));
+    //   return;
+    // }
+    Future.delayed(Duration(milliseconds: 50),(){
+
+    emit(TokenLoadedState(token.value));
+    });
   }
   notify(String action, bool ambRequired,
       {List<QuestionTree>? assessment}) async {
@@ -118,11 +135,9 @@ class MainCubit extends Cubit<MainState> {
       return;
     }
     List<treat.TreatmentReport> reports = result.asValue!.value;
-    final report1 = reports[0];
-    final report2 = reports[1];
-    print(report1.toJson());
-    print(report2.toJson());
-    emit(PatientReportHistoryFetched(report1, report2));
+    
+  
+    emit(PatientReportHistoryFetched(reports));
   }
 
   fetchPatientReport() async {
@@ -138,7 +153,7 @@ class MainCubit extends Cubit<MainState> {
       emit(ErrorState(result.asError!.error as String));
       return;
     }
-    emit(PatientReportFetched(result.asValue!.value));
+    emit(PatientReportFetched(MixReport(result.asValue!.value["currentReport"],result.asValue!.value["previousReport"])));
   }
 
   editPatientReport() async {

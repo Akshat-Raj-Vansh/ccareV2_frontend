@@ -163,13 +163,20 @@ class MainAPI extends IMainAPI {
       print(transformError(map));
       return Result.error(transformError(map));
     }
-    dynamic report = jsonDecode(response.body)['report'];
-    print("Report $report");
-    if(report==null)  return report;
-    
-    
+    dynamic currentReport = jsonDecode(response.body)['currentReport'];
+    print("Report $currentReport");
+    if(currentReport==null)  return currentReport;
+    dynamic previousReport= jsonDecode(response.body)['previousReport'];
+    if(previousReport==null) 
+    return Result.value({
+      "currentReport": treat.TreatmentReport.fromJson(jsonEncode(currentReport)),
+      "previousReport" :null
+    });
 
-    return Result.value(treat.TreatmentReport.fromJson(jsonEncode(report)));
+    return Result.value({
+      "currentReport": treat.TreatmentReport.fromJson(jsonEncode(currentReport)),
+      "previousReport":treat.TreatmentReport.fromJson(jsonEncode(previousReport))
+    });
   }
 
   @override
