@@ -1,6 +1,7 @@
 import 'package:ccarev2_frontend/cache/ilocal_store.dart';
 import 'package:ccarev2_frontend/main/domain/examination.dart' as exam;
 import 'package:ccarev2_frontend/main/domain/main_api_contract.dart';
+import 'package:ccarev2_frontend/main/domain/mixReport.dart';
 import 'package:ccarev2_frontend/main/domain/question.dart';
 import 'package:ccarev2_frontend/main/domain/treatment.dart' as treat;
 import 'package:ccarev2_frontend/user/domain/location.dart' as loc;
@@ -154,7 +155,7 @@ class MainCubit extends Cubit<MainState> {
       emit(ErrorState(result.asError!.error as String));
       return;
     }
-    emit(PatientReportFetched(result.asValue!.value));
+    emit(PatientReportFetched(MixReport(result.asValue!.value["currentReport"],result.asValue!.value["previousReport"])));
   }
 
   editPatientReport() async {

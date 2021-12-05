@@ -1,6 +1,7 @@
 import 'package:ccarev2_frontend/cache/local_store.dart';
 import 'package:ccarev2_frontend/main/domain/edetails.dart';
 import 'package:ccarev2_frontend/main/domain/examination.dart';
+import 'package:ccarev2_frontend/main/domain/mixReport.dart';
 import 'package:ccarev2_frontend/main/domain/treatment.dart' as treat;
 import 'package:ccarev2_frontend/pages/chat/components/message.dart';
 import 'package:ccarev2_frontend/services/Notifications/component/patient.dart';
@@ -74,10 +75,10 @@ class PatientReportHistoryFetched extends MainState {
 }
 
 class PatientReportFetched extends MainState {
-  final treat.TreatmentReport report;
-  PatientReportFetched(this.report);
+  final MixReport mixReport;
+  PatientReportFetched(this.mixReport);
   @override
-  List<Object> get props => [this.report];
+  List<Object> get props => [this.mixReport];
 }
 
 class EditExaminationReport extends MainState {
