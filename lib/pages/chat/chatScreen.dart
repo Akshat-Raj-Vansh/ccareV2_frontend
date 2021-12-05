@@ -49,6 +49,7 @@ class _ChatPageState extends State<ChatPage> {
   @override
   void initState() {
     super.initState();
+    CubitProvider.of<MainCubit>(context).loadMessages(widget.patientID);
     recieverChatID = widget.patientID + "-" + widget.recieverID;
     print(widget.token);
     chatModel.init(widget.patientID, widget.token);
@@ -56,16 +57,18 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   Widget buildSingleMessage(Message message) {
-    return Container(
-      decoration: message.senderID == recieverChatID?decA:decB,
+    return Align(
       alignment: message.senderID == recieverChatID
           ? Alignment.centerLeft
           : Alignment.centerRight,
-      padding: EdgeInsets.all(10.0),
-      margin: EdgeInsets.all(10.0),
-      child: Text(
-        message.text,
-        style: styles,
+      child: Container(
+        decoration: message.senderID == recieverChatID ? decA : decB,
+        padding: EdgeInsets.all(10.0),
+        margin: EdgeInsets.all(10.0),
+        child: Text(
+          message.text,
+          style: styles,
+        ),
       ),
     );
   }
@@ -76,7 +79,8 @@ class _ChatPageState extends State<ChatPage> {
       child: ScopedModelDescendant<ChatModel>(
         builder: (context, child, model) {
           List<Message> messages = model.getMessagesForChatID(recieverChatID);
-
+          print("11111111111111111111111");
+          print(messages.last);
           return Container(
             height: MediaQuery.of(context).size.height * 0.75,
             child: ListView.builder(
@@ -139,13 +143,10 @@ class _ChatPageState extends State<ChatPage> {
       body: CubitConsumer<MainCubit, MainState>(
         builder: (context, state) {
           if (state is MessagesLoadedState) {
+            print('Messages loaded state');
+            print(state.messages.last);
             chatModel.addMessages(state.messages);
             currentState = state;
-          }
-          if (state == null) {
-            return Center(
-              child: Container(color: Colors.white, child: Text('Loading')),
-            );
           }
 
           return buildBody();

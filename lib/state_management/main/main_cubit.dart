@@ -28,20 +28,20 @@ class MainCubit extends Cubit<MainState> {
     emit(QuestionnaireState(result.asValue!.value));
   }
 
-
-  loadMessages(String patientID)async{
-    _startLoading("loadMessages");
+  loadMessages(String patientID) async {
+    // _startLoading("loadMessages");
     final token = await localStore.fetch();
     final result = await api.getAllMessages(token, patientID);
     if (result.isError) {
       emit(ErrorState(result.asError!.error as String));
       return;
     }
-   
-
+    print('33333333333333333');
+    print(result.asValue!.value.last);
     emit(MessagesLoadedState(result.asValue!.value));
   }
-  fetchToken()async{
+
+  fetchToken() async {
     // _startLoading("loadMessages");
     final token = await localStore.fetch();
     print("fetchToken ${token.value}");
@@ -52,11 +52,11 @@ class MainCubit extends Cubit<MainState> {
     //   emit(ErrorState(result.asError!.error as String));
     //   return;
     // }
-    Future.delayed(Duration(milliseconds: 50),(){
-
-    emit(TokenLoadedState(token.value));
+    Future.delayed(Duration(milliseconds: 50), () {
+      emit(TokenLoadedState(token.value));
     });
   }
+
   notify(String action, bool ambRequired,
       {List<QuestionTree>? assessment}) async {
     print("Inside Notify");
@@ -117,6 +117,7 @@ class MainCubit extends Cubit<MainState> {
     }
     emit(HubPatientsLoaded(result.asValue!.value));
   }
+
   fetchHubRequests() async {
     _startLoading("Fetch Hub Consultation Requests");
     final token = await localStore.fetch();
@@ -137,8 +138,7 @@ class MainCubit extends Cubit<MainState> {
       return;
     }
     List<treat.TreatmentReport> reports = result.asValue!.value;
-    
-  
+
     emit(PatientReportHistoryFetched(reports));
   }
 
@@ -147,7 +147,7 @@ class MainCubit extends Cubit<MainState> {
     final token = await localStore.fetch();
     final result = await api.fetchPatientReport(Token(token.value));
 
-    if(result==null){
+    if (result == null) {
       emit(NoReportState("No report exists"));
       return;
     }
@@ -155,7 +155,8 @@ class MainCubit extends Cubit<MainState> {
       emit(ErrorState(result.asError!.error as String));
       return;
     }
-    emit(PatientReportFetched(MixReport(result.asValue!.value["currentReport"],result.asValue!.value["previousReport"])));
+    emit(PatientReportFetched(MixReport(result.asValue!.value["currentReport"],
+        result.asValue!.value["previousReport"])));
   }
 
   editPatientReport() async {
@@ -163,10 +164,10 @@ class MainCubit extends Cubit<MainState> {
     emit(EditPatientReport("editing patient report"));
   }
 
-  imageClicked(XFile image,String type) async {
+  imageClicked(XFile image, String type) async {
     _startLoading("Image Clicked");
     final token = await localStore.fetch();
-    final result = await this.api.uploadImage(token,image,type);
+    final result = await this.api.uploadImage(token, image, type);
     if (result.isError) {
       emit(ErrorState(result.asError!.error as String));
       return;
@@ -207,6 +208,8 @@ class MainCubit extends Cubit<MainState> {
     _startLoading("PatientReportFetch");
     final token = await localStore.fetch();
     final result = await api.fetchPatientExamReport(Token(token.value));
+    print(
+        '@main_cubit/fetchPatinetecam result: ${result.asValue!.value.toString()}');
     if (result == null) {
       emit(NoReportState("Server Error"));
       return;
@@ -341,6 +344,28 @@ class MainCubit extends Cubit<MainState> {
     }
     emit(NormalState(result.asValue!.value));
     //can emit a state
+  }
+
+  getStatus() async {
+    _startLoading("Fetching Status");
+    final token = await localStore.fetch();
+    final result = await api.getStatus(token);
+    if (result.isError) {
+      emit(ErrorState(result.asError!.error as String));
+      return;
+    }
+    emit(StatusFetched(result.asValue!.value));
+  }
+
+  generateNewReport() async {
+    _startLoading("Updating Status");
+    final token = await localStore.fetch();
+    final result = await api.newReport(token);
+    if (result.isError) {
+      emit(ErrorState(result.asError!.error as String));
+      return;
+    }
+    emit(NewReportGenerated(result.asValue!.value));
   }
 
   void _startLoading(String from) {

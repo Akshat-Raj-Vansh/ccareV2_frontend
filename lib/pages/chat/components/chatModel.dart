@@ -15,48 +15,47 @@ class ChatModel extends Model {
   String userChatID;
   List<Message> messages = [];
   IO.Socket socket;
- 
+
   SharedPreferences sharedPreferences;
   ILocalStore localStore;
 
-  void init(String patientID,String token)  {
+  void init(String patientID, String token) {
     // const patientID = "61a1ea2abab826de9860f7a2";
-  
+
     // // localStore =  LocalStore(sharedPreferences);
     // // var token = await localStore.fetch();
     // const token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjFhMWU5ZGNiYWI4MjZkZTk4NjBmNzkzIiwiaWF0IjoxNjM4MjY1MzkxLCJleHAiOjE2Mzg4NzAxOTEsImlzcyI6ImNvbS5jY2FyZW5pdGgifQ.K-_DprXx2ipOwWt17DODlMDqQSgtWdv8aARjlPdEuzA";
-    userChatID = patientID+"-"+token;
+    userChatID = patientID + "-" + token;
 
-
-  socket = IO.io('http://192.168.77.151:3000',
-      IO.OptionBuilder()
-       .setTransports(['websocket'])
-       .disableAutoConnect()
-       .setQuery({
-         "token": token,
-          "patientID": patientID
-       })
-       .build());
-       socket.connect();
-    socket.onConnect((_){
-     print('connect');
+    socket = IO.io(
+        'http://192.168.0.139:3000',
+        IO.OptionBuilder()
+            .setTransports(['websocket'])
+            .disableAutoConnect()
+            .setQuery({"token": token, "patientID": patientID})
+            .build());
+    socket.connect();
+    socket.onConnect((_) {
+      print('connect');
     });
-socket.onConnectError((err){
-  print(err);
-});
-    socket.on("receive_message", (jsonData){
+    socket.onConnectError((err) {
+      print(err);
+    });
+    socket.on("receive_message", (jsonData) {
       print(jsonData);
-    Map<String, dynamic> data = json.decode(jsonData);
+      Map<String, dynamic> data = json.decode(jsonData);
       messages.add(Message(
           data['content'], data['senderChatID'], data['receiverChatID']));
       notifyListeners();
     });
-
-   
   }
 
-  void addMessages(List<Message> data){
+  void addMessages(List<Message> data) {
+    print('777777777777777777');
+    print(data.last);
     messages.addAll(data);
+    print('888888888888888888');
+    print(messages.last);
     notifyListeners();
   }
 
@@ -74,6 +73,9 @@ socket.onConnectError((err){
   }
 
   List<Message> getMessagesForChatID(String chatID) {
+    print(messages
+        .where((msg) => msg.senderID == chatID || msg.receiverID == chatID)
+        .toList());
     return messages
         .where((msg) => msg.senderID == chatID || msg.receiverID == chatID)
         .toList();

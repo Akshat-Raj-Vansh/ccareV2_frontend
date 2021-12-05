@@ -33,27 +33,29 @@ class Message {
 
   factory Message.fromMap(Map<String, dynamic> map) {
     return Message(
-      map['text'],
-      map['senderID'],
-      map['receiverID'],
+      map['message'],
+      map['from'],
+      map['to'],
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory Message.fromJson(String source) => Message.fromMap(json.decode(source));
+  factory Message.fromJson(String source) =>
+      Message.fromMap(json.decode(source));
 
   @override
-  String toString() => 'Message(text: $text, senderID: $senderID, receiverID: $receiverID)';
+  String toString() =>
+      'Message(text: $text, senderID: $senderID, receiverID: $receiverID)';
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-  
+
     return other is Message &&
-      other.text == text &&
-      other.senderID == senderID &&
-      other.receiverID == receiverID;
+        other.text == text &&
+        other.senderID == senderID &&
+        other.receiverID == receiverID;
   }
 
   @override

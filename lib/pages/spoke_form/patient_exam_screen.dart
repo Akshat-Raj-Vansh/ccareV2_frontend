@@ -112,6 +112,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
           print("Patient Report Fetched state Called");
           editedReport = state.ereport;
           noReport = false;
+          print(widget.patientDetails.toString());
           _hideLoader();
         }
         if (state is EditPatientExamReport) {
@@ -280,9 +281,9 @@ class _PatientExamScreenState extends State<PatientExamScreen>
                     textAlign: TextAlign.right),
               ],
             ),
-            const SizedBox(
-              height: 5,
-            ),
+            // const SizedBox(
+            //   height: 5,
+            // ),
             // Row(
             //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
             //   children: [
@@ -290,9 +291,9 @@ class _PatientExamScreenState extends State<PatientExamScreen>
             //     Text(widget.patientDetails.address, textAlign: TextAlign.right),
             //   ],
             // ),
-            // const SizedBox(
-            //   height: 5,
-            // ),
+            const SizedBox(
+              height: 5,
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

@@ -36,8 +36,9 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
   static bool _emergency = false;
   static bool _patientAccepted = false;
   static bool _driverAccepted = false;
-  static bool _hubAccepted=false;
-  static bool _ugt=false;
+  static bool _hubAccepted = false;
+  static bool _ugt = false;
+  static String _currentStatus = "UNKNOWN";
   dynamic currentState = null;
   String token;
   bool loader = false;
@@ -98,7 +99,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('SPOKE'),
+        title: Text('CardioCare - SPOKE'),
         backgroundColor: kPrimaryColor,
         actions: [
           // if (_patientAccepted)
@@ -159,8 +160,8 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
       ),
       body: CubitConsumer<MainCubit, MainState>(
         builder: (_, state) {
-           if(state is TokenLoadedState){
-            token=state.token;
+          if (state is TokenLoadedState) {
+            token = state.token;
           }
           if (state is DetailsLoaded) {
             currentState = DetailsLoaded;
@@ -168,20 +169,23 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
             if (eDetails.patientDetails != null) {
               _patientAccepted = true;
               _emergency = true;
-          
-              if(eDetails.patientDetails.status==EStatus.UGT){
-                _ugt=true;
+              _currentStatus =
+                  eDetails.patientDetails.status.toString().split('.')[1];
+              if (eDetails.patientDetails.status == EStatus.UGT) {
+                _ugt = true;
               }
             }
             if (eDetails.driverDetails != null) {
               _driverAccepted = true;
               _emergency = true;
             }
-            if(eDetails.hubDetails!=null){
-              _hubAccepted=true;
+            if (eDetails.hubDetails != null) {
+              _hubAccepted = true;
             }
           }
+
           if (state is NormalState) {
+            _hideLoader();
             currentState = NormalState;
           }
           if (currentState == null)
@@ -194,11 +198,22 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
             _showLoader();
           } else if (state is ErrorState) {
             _hideLoader();
-          } 
-          
-          else  if(state is TokenLoadedState){
-            token=state.token;
-          }else if (state is AllHubDoctorsState) {
+          } else if (state is TokenLoadedState) {
+            token = state.token;
+          }
+          if (state is NewReportGenerated) {
+            _hideLoader();
+            // Navigator.push(
+            //     context,
+            //     MaterialPageRoute(
+            //       builder: (context) => PatientReportScreen(
+            //         mainCubit: widget.mainCubit,
+            //         user: UserType.DOCTOR,
+            //         patientDetails: eDetails.patientDetails,
+            //       ),
+            //     ));
+            _showMessage(state.msg);
+          } else if (state is AllHubDoctorsState) {
             _hideLoader();
             print("DOCTOR SPOKE HOME SCREEN/ HUB DOCTORS LIST STATE");
             showModalBottomSheet(
@@ -318,12 +333,35 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
                   style: TextStyle(fontSize: 24),
                 ),
               ),
+            if (_patientAccepted)
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Status:",
+                      textAlign: TextAlign.left,
+                      style: TextStyle(fontSize: 18),
+                    ),
+                    Text(
+                      _currentStatus,
+                      style: TextStyle(color: Colors.red),
+                    ),
+                  ],
+                ),
+              ),
+            if (_patientAccepted && _currentStatus == "ATH")
+              _buildStartTreatmentButton(),
             if (_patientAccepted) _buildPatientDetails(),
-            if (_patientAccepted&&_ugt) _buildPatientReportButton(),
-            if (_patientAccepted&&_ugt) _buildPatientExamButton(),
-             if (_patientAccepted&&_ugt&&!_hubAccepted) _buildHubList(),
-             if(_hubAccepted) _buildChatButton(),
-            if (_patientAccepted&&_ugt) _buildPatientReportHistoryButton(),
+            if (_patientAccepted && _ugt) _buildPatientReportButton(),
+            if (_patientAccepted && _ugt) _buildPatientExamButton(),
+            if (_patientAccepted && _ugt && !_hubAccepted) _buildHubList(),
+            if (_hubAccepted) _buildChatButton(),
+            if (_patientAccepted) _buildNewReportButton(),
+            if (_patientAccepted && _ugt) _buildPatientReportHistoryButton(),
             if (_driverAccepted) _buildDriverDetails(),
             if (!_emergency) _buildHeader(),
             // Padding(
@@ -402,6 +440,28 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
         ),
       ]);
 
+  _buildStartTreatmentButton() => InkWell(
+        onTap: () async {
+          widget.mainCubit.statusUpdate("UGT");
+          _currentStatus = "UGT";
+          _ugt = true;
+        },
+        child: Container(
+          width: SizeConfig.screenWidth,
+          margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(5),
+              border: Border.all(color: kPrimaryColor)),
+          child: Text(
+            "Start treatment of the Patient",
+            style: TextStyle(color: kPrimaryColor, fontSize: 14),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      );
+
   _buildPatientReportButton() => InkWell(
         onTap: () async {
           Navigator.push(
@@ -476,7 +536,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
         ),
       );
 
-      _buildHubList() => InkWell(
+  _buildHubList() => InkWell(
         onTap: () async {
           widget.mainCubit.getAllHubDoctors();
           // Navigator.push(
@@ -486,7 +546,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
           //           PatientReportHistoryScreen(mainCubit: widget.mainCubit),
           //     ));
         },
-        child:  Container(
+        child: Container(
           width: SizeConfig.screenWidth,
           margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -500,18 +560,18 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
           ),
         ),
       );
- _buildChatButton() => InkWell(
+  _buildChatButton() => InkWell(
         onTap: () async {
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => 
-              CubitProvider<MainCubit>(
-                  create: (_)=>widget.mainCubit,
-                  child:  
-                ChatPage(eDetails.hubDetails.name,eDetails.hubDetails.id,eDetails.patientDetails.id,token)
-                )
-              ));
+                  builder: (context) => CubitProvider<MainCubit>(
+                      create: (_) => widget.mainCubit,
+                      child: ChatPage(
+                          eDetails.hubDetails.name,
+                          eDetails.hubDetails.id,
+                          eDetails.patientDetails.id,
+                          token))));
           // widget.mainCubit.getAllHubDoctors();
           // Navigator.push(
           //     context,
@@ -520,7 +580,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
           //           PatientReportHistoryScreen(mainCubit: widget.mainCubit),
           //     ));
         },
-        child:  Container(
+        child: Container(
           width: SizeConfig.screenWidth,
           margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -534,7 +594,26 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
           ),
         ),
       );
-      
+
+  _buildNewReportButton() => InkWell(
+        onTap: () async {
+          widget.mainCubit.generateNewReport();
+        },
+        child: Container(
+          width: SizeConfig.screenWidth,
+          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: kPrimaryColor)),
+          child: Text(
+            "Create New Report",
+            style: TextStyle(color: kPrimaryColor, fontSize: 14),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      );
 
   _buildDriverDetails() => Column(children: [
         Container(

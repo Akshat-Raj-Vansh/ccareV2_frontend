@@ -63,7 +63,7 @@ class TreatmentReport {
 
   factory TreatmentReport.fromMap(Map<String, dynamic> map) {
     return TreatmentReport(
-      report_time: map['report_time'],
+      report_time: map['report_time'].toString(),
       ecg: ECG.fromMap(map['ecg']),
       medicalHist: MedicalHist.fromMap(map['medical_hist']),
       chestReport: ChestReport.fromMap(map['chest_report']),
@@ -97,9 +97,8 @@ class TreatmentReport {
 
   @override
   int get hashCode {
-    return 
-    report_time.hashCode ^
-    ecg.hashCode ^
+    return report_time.hashCode ^
+        ecg.hashCode ^
         medicalHist.hashCode ^
         chestReport.hashCode ^
         symptoms.hashCode ^

@@ -172,17 +172,20 @@ class NormalState extends MainState {
 }
 
 class PatientAcceptedHub extends MainState {
- 
   @override
   List<Object> get props => [];
 }
-class MessagesLoadedState extends MainState{
+
+class MessagesLoadedState extends MainState {
   final List<Message> messages;
-  MessagesLoadedState(this.messages);
+  MessagesLoadedState(this.messages) {
+    print(messages.last);
+  }
   @override
   List<Object> get props => [messages];
 }
-class TokenLoadedState extends MainState{
+
+class TokenLoadedState extends MainState {
   final String token;
   TokenLoadedState(this.token);
   @override
@@ -216,11 +219,26 @@ class HubPatientsLoaded extends MainState {
   @override
   List<Object> get props => [details];
 }
+
 class HubRequestsLoaded extends MainState {
   final List<EDetails> details;
   HubRequestsLoaded(this.details);
   @override
   List<Object> get props => [details];
+}
+
+class StatusFetched extends MainState {
+  final String msg;
+  StatusFetched(this.msg);
+  @override
+  List<Object> get props => [msg];
+}
+
+class NewReportGenerated extends MainState {
+  final String msg;
+  NewReportGenerated(this.msg);
+  @override
+  List<Object> get props => [msg];
 }
 
 class ErrorState extends MainState {
