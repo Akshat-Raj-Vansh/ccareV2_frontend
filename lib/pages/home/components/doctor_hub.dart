@@ -1,4 +1,6 @@
 //@dart=2.9
+import 'dart:developer';
+
 import 'package:ccarev2_frontend/main/domain/edetails.dart';
 import 'package:ccarev2_frontend/pages/chat/chatScreen.dart';
 import 'package:ccarev2_frontend/pages/home/home_page_adapter.dart';
@@ -134,18 +136,21 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
         ),
         body: CubitConsumer<MainCubit, MainState>(builder: (_, state) {
           if (state is HubPatientsLoaded) {
+            log('LOG > doctor_hub.dart > 139 > state: ${state.toString()}');
             currentState = state;
             print(state);
             eDetails = state.details[0];
             patientsLoaded = true;
           }
           if (state is HubRequestsLoaded) {
-            print(state);
+            log('LOG > doctor_hub.dart > 146 > state: ${state.toString()}');
             currentState = state;
             rDetails = state.details[0];
+            log('LOG > doctor_hub.dart > 149 > rDetails: ${rDetails}');
             requestsLoaded = true;
           }
           if (state is TokenLoadedState) {
+            log('LOG > doctor_hub.dart > 153 > state: ${state.toString()}');
             token = state.token;
             print("Inside TokensLoaded State");
             print(token);
@@ -162,6 +167,7 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
           //   print("Loading State Called");
           //   _showLoader();
           // } else
+          log('LOG > doctor_hub.dart > 165 > state: ${state.toString()}');
           if (state is ErrorState) {
             print("Error State Called");
             // _hideLoader();

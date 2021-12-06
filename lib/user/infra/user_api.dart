@@ -1,6 +1,7 @@
 //@dart=2.9
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:ccarev2_frontend/user/domain/credential.dart';
 import 'package:ccarev2_frontend/user/domain/details.dart';
@@ -47,6 +48,8 @@ class UserAPI implements UserService {
     dynamic response = await _client.post(Uri.parse(endpoint),
         body: credential.toJson(), headers: header);
     print('DOC LOGIN API CALL');
+    log('LOG > user_api.dart > 51 > response.body: ${response.body}',
+        time: DateTime.now());
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
       print(transformError(map));

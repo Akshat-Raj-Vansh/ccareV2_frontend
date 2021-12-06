@@ -1,4 +1,6 @@
 //@dart=2.9
+import 'dart:developer';
+
 import 'package:ccarev2_frontend/components/default_button.dart';
 import 'package:ccarev2_frontend/main/domain/edetails.dart';
 import 'package:ccarev2_frontend/main/domain/examination.dart' as exam;
@@ -109,23 +111,26 @@ class _PatientExamScreenState extends State<PatientExamScreen>
       },
       listener: (context, state) {
         if (state is PatientExamReportFetched) {
-          print("Patient Report Fetched state Called");
+          log('LOG > patient_exam_screen.dart > 112 > state: ${state.toString()}');
           editedReport = state.ereport;
+          log('LOG > patient_exam_screen.dart > 116 > editedReport: ${editedReport}');
           noReport = false;
           print(widget.patientDetails.toString());
           _hideLoader();
         }
         if (state is EditPatientExamReport) {
+          log('LOG > patient_exam_screen.dart > 121 > state: ${state.toString()}');
           _hideLoader();
           editReport = true;
         }
         if (state is ViewPatientExamReport) {
+          log('LOG > patient_exam_screen.dart > 126 > state: ${state.toString()}');
           _hideLoader();
           editReport = false;
           //  widget.mainCubit.fetchPatientReport();
         }
         if (state is PatientExamReportSaved) {
-          print("Patient Exam Report Saved state Called");
+          log('LOG > patient_exam_screen.dart > 131 > state: ${state.toString()}');
           print(state.msg);
           _hideLoader();
           _showMessage('Report Saved');
@@ -133,6 +138,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
           //widget.mainCubit.fetchPatientExamReport();
         }
         if (state is NoReportState) {
+          log('LOG > patient_exam_screen.dart > 140 > state: ${state.toString()}');
           print('No Report State Called');
           _hideLoader();
           noReport = true;
@@ -146,6 +152,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text('Examination Form'),
+        backgroundColor: kPrimaryColor,
         actions: [
           if (_currentIndex != 0)
             editReport
@@ -298,7 +305,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text("Arrived At Hospital: "),
-                Text("Date and Time", textAlign: TextAlign.right),
+                Text(DateTime.now().toString(), textAlign: TextAlign.right),
               ],
             ),
           ],
@@ -318,7 +325,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text("Last Edited: "),
-                Text("10th Sept, 2021"),
+                Text(DateTime.now().toString()),
               ],
             ),
             const SizedBox(
@@ -545,7 +552,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
                 Container(
                   width: SizeConfig.screenWidth * 0.4,
                   child: TextFormField(
-                    keyboardType: TextInputType.number,
+                    keyboardType: TextInputType.text,
                     focusNode: null,
                     initialValue: editedReport.nTreatment.lmwh,
                     onChanged: (newValue) =>
@@ -567,7 +574,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
                 Container(
                   width: SizeConfig.screenWidth * 0.4,
                   child: TextFormField(
-                    keyboardType: TextInputType.number,
+                    keyboardType: TextInputType.text,
                     focusNode: null,
                     initialValue: editedReport.nTreatment.statins,
                     onChanged: (newValue) =>
@@ -589,7 +596,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
                 Container(
                   width: SizeConfig.screenWidth * 0.4,
                   child: TextFormField(
-                    keyboardType: TextInputType.number,
+                    keyboardType: TextInputType.text,
                     focusNode: null,
                     initialValue: editedReport.nTreatment.beta_blockers,
                     onChanged: (newValue) =>
@@ -611,7 +618,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
                 Container(
                   width: SizeConfig.screenWidth * 0.4,
                   child: TextFormField(
-                    keyboardType: TextInputType.number,
+                    keyboardType: TextInputType.text,
                     focusNode: null,
                     initialValue: editedReport.nTreatment.nitrates,
                     onChanged: (newValue) =>
@@ -633,7 +640,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
                 Container(
                   width: SizeConfig.screenWidth * 0.4,
                   child: TextFormField(
-                    keyboardType: TextInputType.number,
+                    keyboardType: TextInputType.text,
                     focusNode: null,
                     initialValue: editedReport.nTreatment.diuretics,
                     onChanged: (newValue) =>
@@ -655,7 +662,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
                 Container(
                   width: SizeConfig.screenWidth * 0.4,
                   child: TextFormField(
-                    keyboardType: TextInputType.number,
+                    keyboardType: TextInputType.text,
                     focusNode: null,
                     initialValue: editedReport.nTreatment.acei_arb,
                     onChanged: (newValue) =>
@@ -767,7 +774,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
                 Container(
                   width: SizeConfig.screenWidth * 0.4,
                   child: TextFormField(
-                    keyboardType: TextInputType.number,
+                    keyboardType: TextInputType.text,
                     focusNode: null,
                     initialValue: editedReport.thrombolysis.reason_for_referral,
                     onChanged: (newValue) => editedReport

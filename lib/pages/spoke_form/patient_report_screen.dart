@@ -1,4 +1,5 @@
 //@dart=2.9
+import 'dart:developer';
 import 'dart:io';
 import 'package:ccarev2_frontend/main/domain/edetails.dart';
 import 'package:ccarev2_frontend/pages/home/components/fullImage.dart';
@@ -176,7 +177,9 @@ class _PatientReportScreenState extends State<PatientReportScreen>
       builder: (_, state) {
         if (state is PatientReportFetched) {
           print("Patient Report Fetched state Called");
+          log('LOG > patient_report_screen.dart > 179 > state: ${state.toString()}');
           editedReport = state.mixReport.currentTreatment;
+          log('LOG > patient_report_screen.dart > 182 > editedReport: ${editedReport}');
           if (state.mixReport.previousTreatment != null)
             previousReport = state.mixReport.previousTreatment;
           print(editedReport.toString());
@@ -191,10 +194,12 @@ class _PatientReportScreenState extends State<PatientReportScreen>
           }
         }
         if (state is ImageLoaded) {
+          log('LOG > patient_report_screen.dart > 195 > state: ${state.toString()}');
           _image = state.image;
         }
         if (state is NoReportState) {
           print('No Report State Called');
+          log('LOG > patient_report_screen.dart > 201 > state: ${state.toString()}');
           currentState = state;
           editReport = true;
         }
@@ -215,20 +220,24 @@ class _PatientReportScreenState extends State<PatientReportScreen>
         if (state is EditPatientReport) {
           _hideLoader();
           editReport = true;
+          log('LOG > patient_report_screen.dart > 222 > state: ${state.toString()}');
         }
         if (state is ViewPatientReport) {
           _hideLoader();
           editReport = false;
+          log('LOG > patient_report_screen.dart > 227 > state: ${state.toString()}');
           //  widget.mainCubit.fetchPatientReport();
         }
         if (state is ImageCaptured) {
           _hideLoader();
           clickImage = true;
+          log('LOG > patient_report_screen.dart > 233 > state: ${state.toString()}');
           //  widget.mainCubit.fetchPatientReport();
         }
         if (state is PatientReportSaved) {
           print("Patient Report Saved state Called");
           print(state.msg);
+          log('LOG > patient_report_screen.dart > 239 > state: ${state.toString()}');
           _hideLoader();
           _showMessage('Report Saved');
           editReport = false;
@@ -336,6 +345,29 @@ class _PatientReportScreenState extends State<PatientReportScreen>
     );
   }
 
+  _buildDetailsBody(_currentReportDetails, _previousReportDetails) => Column(
+        children: [
+          const SizedBox(
+            height: 20,
+          ),
+          Text(
+            "Current Report",
+            textAlign: TextAlign.left,
+            style: TextStyle(fontSize: 18, color: kPrimaryColor),
+          ),
+          _currentReportDetails,
+          const SizedBox(
+            height: 20,
+          ),
+          Text(
+            "Previous Report",
+            textAlign: TextAlign.left,
+            style: TextStyle(fontSize: 18, color: kPrimaryColor),
+          ),
+          _previousReportDetails,
+        ],
+      );
+
   _buildFormBody() => TabBarView(
         controller: _tabController,
         children: <Widget>[
@@ -343,21 +375,35 @@ class _PatientReportScreenState extends State<PatientReportScreen>
             child: _buildReportOverview(),
           ),
           Container(
-            child: editReport ? _buildECGForm() : _buildECGDetails(),
+            child: editReport
+                ? _buildECGForm()
+                : _buildDetailsBody(_buildECGDetails(editedReport),
+                    _buildECGDetails(previousReport)),
           ),
           Container(
-            child: editReport ? _buildMedHistForm() : _buildMedHistDetails(),
+              child: editReport
+                  ? _buildMedHistForm()
+                  : _buildDetailsBody(_buildMedHistDetails(editedReport),
+                      _buildMedHistDetails(previousReport))
+              //   : _buildMedHistDetails(editedReport),
+              ),
+          Container(
+            child: editReport
+                ? _buildChestForm()
+                : _buildDetailsBody(_buildChestDetails(editedReport),
+                    _buildChestDetails(previousReport)),
           ),
           Container(
-            child: editReport ? _buildChestForm() : _buildChestDetails(),
-          ),
-          Container(
-            child: editReport ? _buildSymptomsForm() : _buildSymptomsDetails(),
+            child: editReport
+                ? _buildSymptomsForm()
+                : _buildDetailsBody(_buildSymptomsDetails(editedReport),
+                    _buildSymptomsDetails(previousReport)),
           ),
           Container(
             child: editReport
                 ? _buildExaminationForm()
-                : _buildExaminationDetails(),
+                : _buildDetailsBody(_buildExaminationDetails(editedReport),
+                    _buildExaminationDetails(previousReport)),
           ),
         ],
       );
@@ -367,10 +413,8 @@ class _PatientReportScreenState extends State<PatientReportScreen>
           children: [
             // Patient Arrival Detail and Personal Information
             _buildPatientDetails(),
-
             // Report Edit details
             _buildEditDetails(),
-
             SizedBox(height: getProportionateScreenHeight(20)),
 
             // Patient Medical Report
@@ -385,7 +429,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
                 style: TextStyle(fontSize: 18, color: kPrimaryColor),
               ),
             ),
-            _buildECGDetails(),
+            _buildECGDetails(editedReport),
 
             // Medical History
             Container(
@@ -398,7 +442,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
                 style: TextStyle(fontSize: 18, color: kPrimaryColor),
               ),
             ),
-            _buildMedHistDetails(),
+            _buildMedHistDetails(editedReport),
 
             // Chest Report
             Container(
@@ -411,7 +455,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
                 style: TextStyle(fontSize: 18, color: kPrimaryColor),
               ),
             ),
-            _buildChestDetails(),
+            _buildChestDetails(editedReport),
 
             // Symptoms Report
             Container(
@@ -424,7 +468,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
                 style: TextStyle(fontSize: 18, color: kPrimaryColor),
               ),
             ),
-            _buildSymptomsDetails(),
+            _buildSymptomsDetails(editedReport),
 
             // Examination Report
             Container(
@@ -437,7 +481,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
                 style: TextStyle(fontSize: 18, color: kPrimaryColor),
               ),
             ),
-            _buildExaminationDetails(),
+            _buildExaminationDetails(editedReport),
           ],
         ),
       );
@@ -486,7 +530,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text("Arrived At Hospital: "),
-                Text("Date and Time", textAlign: TextAlign.right),
+                Text(DateTime.now().toString(), textAlign: TextAlign.right),
               ],
             ),
           ],
@@ -506,7 +550,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text("Last Edited: "),
-                Text("10th Sept, 2021"),
+                Text(DateTime.now().toString()),
               ],
             ),
             const SizedBox(
@@ -524,7 +568,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
         ),
       );
 
-  _buildECGDetails() => Container(
+  _buildECGDetails(TreatmentReport treatmentReport) => Container(
         width: SizeConfig.screenWidth,
         margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
@@ -533,12 +577,11 @@ class _PatientReportScreenState extends State<PatientReportScreen>
           children: [
             SizedBox(height: getProportionateScreenHeight(15)),
             // ECG Time
-            Text('Current Report'),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('ECG Time: '),
-                Text(editedReport.ecg.ecg_time == "nill"
+                Text(treatmentReport.ecg.ecg_time == "nill"
                     ? "nill"
                     : DateTime.fromMillisecondsSinceEpoch(
                             int.parse(editedReport.ecg.ecg_time))
@@ -551,14 +594,15 @@ class _PatientReportScreenState extends State<PatientReportScreen>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('ECG Scan: '),
-                ecgUploaded
+                //  ecgUploaded
+                treatmentReport.ecg.ecg_file_id != "nill"
                     ? GestureDetector(
                         onTap: () {
                           Navigator.push(context,
                               MaterialPageRoute(builder: (_) {
                             return FullScreenImage(
                               imageUrl:
-                                  "http://192.168.0.139:3000/treatment/fetchECG?fileID=${editedReport.ecg.ecg_file_id}",
+                                  "http://192.168.0.139:3000/treatment/fetchECG?fileID=${treatmentReport.ecg.ecg_file_id}",
                               tag: "generate_a_unique_tag",
                             );
                           }));
@@ -566,7 +610,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
                         child: Hero(
                           child: Image(
                               image: NetworkImage(
-                                  "http://192.168.0.139:3000/treatment/fetchECG?fileID=${editedReport.ecg.ecg_file_id}",
+                                  "http://192.168.0.139:3000/treatment/fetchECG?fileID=${treatmentReport.ecg.ecg_file_id}",
                                   headers: {
                                     "Authorization":
                                         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjFhMWU5ZGNiYWI4MjZkZTk4NjBmNzkzIiwiaWF0IjoxNjM4MjY1MzkxLCJleHAiOjE2Mzg4NzAxOTEsImlzcyI6ImNvbS5jY2FyZW5pdGgifQ.K-_DprXx2ipOwWt17DODlMDqQSgtWdv8aARjlPdEuzA"
@@ -586,62 +630,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('ECG Type: '),
-                Text(editedReport.ecg.ecg_type.toString().split('.')[1]),
-              ],
-            ),
-
-            SizedBox(height: getProportionateScreenHeight(30)),
-            Text('Previous Report'),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('ECG Time: '),
-                Text(previousReport.ecg.ecg_time == "nill"
-                    ? "nill"
-                    : DateTime.fromMillisecondsSinceEpoch(
-                            int.parse(editedReport.ecg.ecg_time))
-                        .toString()),
-              ],
-            ),
-            SizedBox(height: getProportionateScreenHeight(10)),
-            // ECG Scan
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('ECG Scan: '),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (_) {
-                      return FullScreenImage(
-                        imageUrl:
-                            "http://192.168.0.139:3000/treatment/fetchECG?fileID=${previousReport.ecg.ecg_file_id}",
-                        tag: "generate_a_unique_tag",
-                      );
-                    }));
-                  },
-                  child: Hero(
-                    child: Image(
-                        image: NetworkImage(
-                            "http://192.168.0.139:3000/treatment/fetchECG?fileID=${previousReport.ecg.ecg_file_id}",
-                            headers: {
-                              "Authorization":
-                                  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjFhMWU5ZGNiYWI4MjZkZTk4NjBmNzkzIiwiaWF0IjoxNjM4MjY1MzkxLCJleHAiOjE2Mzg4NzAxOTEsImlzcyI6ImNvbS5jY2FyZW5pdGgifQ.K-_DprXx2ipOwWt17DODlMDqQSgtWdv8aARjlPdEuzA"
-                            }),
-                        width: 100,
-                        height: 100,
-                        fit: BoxFit.cover),
-                    tag: "generate_a_unique_tag",
-                  ),
-                )
-              ],
-            ),
-            SizedBox(height: getProportionateScreenHeight(10)),
-            // ECG Type
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('ECG Type: '),
-                Text(previousReport.ecg.ecg_type.toString().split('.')[1]),
+                Text(treatmentReport.ecg.ecg_type.toString().split('.')[1]),
               ],
             ),
 
@@ -649,7 +638,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
           ],
         ),
       );
-  _buildMedHistDetails() => Container(
+  _buildMedHistDetails(TreatmentReport treatmentReport) => Container(
         width: SizeConfig.screenWidth,
         margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
@@ -658,12 +647,13 @@ class _PatientReportScreenState extends State<PatientReportScreen>
           children: [
             SizedBox(height: getProportionateScreenHeight(15)),
             // Smoker
-            Text('Current Report'),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('Smoker: '),
-                Text(editedReport.medicalHist.smoker.toString().split('.')[1]),
+                Text(treatmentReport.medicalHist.smoker
+                    .toString()
+                    .split('.')[1]),
               ],
             ),
             SizedBox(height: getProportionateScreenHeight(10)),
@@ -672,67 +662,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('Diabetic: '),
-                Text(
-                    editedReport.medicalHist.diabetic.toString().split('.')[1]),
-              ],
-            ),
-            SizedBox(height: getProportionateScreenHeight(10)),
-            // Hypertensive
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Hypertensive: '),
-                Text(editedReport.medicalHist.hypertensive
-                    .toString()
-                    .split('.')[1]),
-              ],
-            ),
-            SizedBox(height: getProportionateScreenHeight(10)),
-            // Dyslipidaemia
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Dyslipidaemia: '),
-                Text(editedReport.medicalHist.dyslipidaemia
-                    .toString()
-                    .split('.')[1]),
-              ],
-            ),
-            SizedBox(height: getProportionateScreenHeight(10)),
-            // Old MI
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Old MI: '),
-                Text(editedReport.medicalHist.old_mi.toString().split('.')[1]),
-              ],
-            ),
-            SizedBox(height: getProportionateScreenHeight(10)),
-            // Trop I
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Trop I: '),
-                Text(editedReport.medicalHist.trop_i),
-              ],
-            ),
-            SizedBox(height: getProportionateScreenHeight(30)),
-            Text('Current Report'),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Smoker: '),
-                Text(
-                    previousReport.medicalHist.smoker.toString().split('.')[1]),
-              ],
-            ),
-            SizedBox(height: getProportionateScreenHeight(10)),
-            // Diabetic
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Diabetic: '),
-                Text(previousReport.medicalHist.diabetic
+                Text(treatmentReport.medicalHist.diabetic
                     .toString()
                     .split('.')[1]),
               ],
@@ -743,7 +673,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('Hypertensive: '),
-                Text(previousReport.medicalHist.hypertensive
+                Text(treatmentReport.medicalHist.hypertensive
                     .toString()
                     .split('.')[1]),
               ],
@@ -754,7 +684,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('Dyslipidaemia: '),
-                Text(previousReport.medicalHist.dyslipidaemia
+                Text(treatmentReport.medicalHist.dyslipidaemia
                     .toString()
                     .split('.')[1]),
               ],
@@ -765,8 +695,9 @@ class _PatientReportScreenState extends State<PatientReportScreen>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('Old MI: '),
-                Text(
-                    previousReport.medicalHist.old_mi.toString().split('.')[1]),
+                Text(treatmentReport.medicalHist.old_mi
+                    .toString()
+                    .split('.')[1]),
               ],
             ),
             SizedBox(height: getProportionateScreenHeight(10)),
@@ -775,14 +706,14 @@ class _PatientReportScreenState extends State<PatientReportScreen>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('Trop I: '),
-                Text(previousReport.medicalHist.trop_i),
+                Text(treatmentReport.medicalHist.trop_i),
               ],
             ),
             SizedBox(height: getProportionateScreenHeight(30)),
           ],
         ),
       );
-  _buildChestDetails() => Container(
+  _buildChestDetails(TreatmentReport treatmentReport) => Container(
         width: SizeConfig.screenWidth,
         margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
@@ -790,12 +721,11 @@ class _PatientReportScreenState extends State<PatientReportScreen>
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(height: getProportionateScreenHeight(15)),
-            Text('Current Report'),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('Chest Pain: '),
-                Text(editedReport.chestReport.chest_pain
+                Text(treatmentReport.chestReport.chest_pain
                     .toString()
                     .split('.')[1]),
               ],
@@ -806,7 +736,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('Site: '),
-                Text(editedReport.chestReport.site.toString().split('.')[1]),
+                Text(treatmentReport.chestReport.site.toString().split('.')[1]),
               ],
             ),
             SizedBox(height: getProportionateScreenHeight(10)),
@@ -815,69 +745,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('Location: '),
-                Text(
-                    editedReport.chestReport.location.toString().split('.')[1]),
-              ],
-            ),
-            SizedBox(height: getProportionateScreenHeight(10)),
-            // Intensity
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-              Text('Intensity: '),
-              Text(editedReport.chestReport.intensity.toString().split('.')[1]),
-            ]),
-            SizedBox(height: getProportionateScreenHeight(10)),
-            // Severity
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-              Text('Severity: '),
-              Text(editedReport.chestReport.severity.toString().split('.')[1]),
-            ]),
-            SizedBox(height: getProportionateScreenHeight(10)),
-            // Radiation
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Radiation: '),
-                Text(editedReport.chestReport.radiation
-                    .toString()
-                    .split('.')[1]),
-              ],
-            ),
-            SizedBox(height: getProportionateScreenHeight(10)),
-            // Duration
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Duration: '),
-                Text(editedReport.chestReport.duration),
-              ],
-            ),
-            SizedBox(height: getProportionateScreenHeight(30)),
-            Text('Previous Report'),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Chest Pain: '),
-                Text(previousReport.chestReport.chest_pain
-                    .toString()
-                    .split('.')[1]),
-              ],
-            ),
-            SizedBox(height: getProportionateScreenHeight(10)),
-            // Onset
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Site: '),
-                Text(previousReport.chestReport.site.toString().split('.')[1]),
-              ],
-            ),
-            SizedBox(height: getProportionateScreenHeight(10)),
-            // Pain Location
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Location: '),
-                Text(previousReport.chestReport.location
+                Text(treatmentReport.chestReport.location
                     .toString()
                     .split('.')[1]),
               ],
@@ -886,7 +754,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
             // Intensity
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
               Text('Intensity: '),
-              Text(previousReport.chestReport.intensity
+              Text(treatmentReport.chestReport.intensity
                   .toString()
                   .split('.')[1]),
             ]),
@@ -894,8 +762,9 @@ class _PatientReportScreenState extends State<PatientReportScreen>
             // Severity
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
               Text('Severity: '),
-              Text(
-                  previousReport.chestReport.severity.toString().split('.')[1]),
+              Text(treatmentReport.chestReport.severity
+                  .toString()
+                  .split('.')[1]),
             ]),
             SizedBox(height: getProportionateScreenHeight(10)),
             // Radiation
@@ -903,7 +772,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('Radiation: '),
-                Text(previousReport.chestReport.radiation
+                Text(treatmentReport.chestReport.radiation
                     .toString()
                     .split('.')[1]),
               ],
@@ -914,14 +783,14 @@ class _PatientReportScreenState extends State<PatientReportScreen>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('Duration: '),
-                Text(previousReport.chestReport.duration),
+                Text(treatmentReport.chestReport.duration),
               ],
             ),
             SizedBox(height: getProportionateScreenHeight(30)),
           ],
         ),
       );
-  _buildSymptomsDetails() => Container(
+  _buildSymptomsDetails(TreatmentReport treatmentReport) => Container(
         width: SizeConfig.screenWidth,
         margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
@@ -929,13 +798,12 @@ class _PatientReportScreenState extends State<PatientReportScreen>
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(height: getProportionateScreenHeight(15)),
-            Text('Current Report'),
             // Blackouts
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('Postural Black Out: '),
-                Text(editedReport.symptoms.postural_black_out
+                Text(treatmentReport.symptoms.postural_black_out
                     .toString()
                     .split('.')[1]),
               ],
@@ -946,7 +814,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('Light Headedness: '),
-                Text(editedReport.symptoms.light_headedness
+                Text(treatmentReport.symptoms.light_headedness
                     .toString()
                     .split('.')[1]),
               ],
@@ -957,7 +825,8 @@ class _PatientReportScreenState extends State<PatientReportScreen>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('Sweating: '),
-                Text(editedReport.symptoms.sweating.toString().split('.')[1]),
+                Text(
+                    treatmentReport.symptoms.sweating.toString().split('.')[1]),
               ],
             ),
             SizedBox(height: getProportionateScreenHeight(10)),
@@ -966,7 +835,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('Nausea/Vomiting: '),
-                Text(editedReport.symptoms.nausea.toString().split('.')[1]),
+                Text(treatmentReport.symptoms.nausea.toString().split('.')[1]),
               ],
             ),
             SizedBox(height: getProportionateScreenHeight(10)),
@@ -975,7 +844,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('Shortness of breath: '),
-                Text(editedReport.symptoms.shortness_of_breath
+                Text(treatmentReport.symptoms.shortness_of_breath
                     .toString()
                     .split('.')[1]),
               ],
@@ -986,70 +855,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('Loss of Consciousness: '),
-                Text(editedReport.symptoms.loss_of_consciousness
-                    .toString()
-                    .split('.')[1]),
-              ],
-            ),
-            SizedBox(height: getProportionateScreenHeight(30)),
-            Text('Previous Report'),
-            // Blackouts
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Postural Black Out: '),
-                Text(previousReport.symptoms.postural_black_out
-                    .toString()
-                    .split('.')[1]),
-              ],
-            ),
-            SizedBox(height: getProportionateScreenHeight(10)),
-            // Palpitations
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Light Headedness: '),
-                Text(previousReport.symptoms.light_headedness
-                    .toString()
-                    .split('.')[1]),
-              ],
-            ),
-            SizedBox(height: getProportionateScreenHeight(10)),
-            //Sweating
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Sweating: '),
-                Text(previousReport.symptoms.sweating.toString().split('.')[1]),
-              ],
-            ),
-            SizedBox(height: getProportionateScreenHeight(10)),
-            // Nausea
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Nausea/Vomiting: '),
-                Text(previousReport.symptoms.nausea.toString().split('.')[1]),
-              ],
-            ),
-            SizedBox(height: getProportionateScreenHeight(10)),
-            // Shortness of breath
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Shortness of breath: '),
-                Text(previousReport.symptoms.shortness_of_breath
-                    .toString()
-                    .split('.')[1]),
-              ],
-            ),
-            SizedBox(height: getProportionateScreenHeight(10)),
-            // Loss of conciousness
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Loss of Consciousness: '),
-                Text(previousReport.symptoms.loss_of_consciousness
+                Text(treatmentReport.symptoms.loss_of_consciousness
                     .toString()
                     .split('.')[1]),
               ],
@@ -1058,7 +864,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
           ],
         ),
       );
-  _buildExaminationDetails() => Container(
+  _buildExaminationDetails(TreatmentReport treatmentReport) => Container(
         width: SizeConfig.screenWidth,
         margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
@@ -1067,12 +873,11 @@ class _PatientReportScreenState extends State<PatientReportScreen>
           children: [
             SizedBox(height: getProportionateScreenHeight(15)),
             // Pulse Rate
-            Text('Current Details'),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('Pulse Rate: '),
-                Text(editedReport.examination.pulse_rate),
+                Text(treatmentReport.examination.pulse_rate),
               ],
             ),
             SizedBox(height: getProportionateScreenHeight(10)),
@@ -1081,7 +886,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('BP: '),
-                Text(editedReport.examination.bp),
+                Text(treatmentReport.examination.bp),
               ],
             ),
             SizedBox(height: getProportionateScreenHeight(10)),
@@ -1090,33 +895,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('Local Tederness: '),
-                Text(editedReport.examination.local_tenderness),
-              ],
-            ),
-            Text('Previous Details'),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Pulse Rate: '),
-                Text(previousReport.examination.pulse_rate),
-              ],
-            ),
-            SizedBox(height: getProportionateScreenHeight(10)),
-            // BP
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('BP: '),
-                Text(previousReport.examination.bp),
-              ],
-            ),
-            SizedBox(height: getProportionateScreenHeight(10)),
-            // Local Tenderness
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Local Tederness: '),
-                Text(previousReport.examination.local_tenderness),
+                Text(treatmentReport.examination.local_tenderness),
               ],
             ),
             SizedBox(height: getProportionateScreenHeight(100)),

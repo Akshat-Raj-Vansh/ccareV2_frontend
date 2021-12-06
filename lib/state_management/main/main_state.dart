@@ -234,6 +234,13 @@ class StatusFetched extends MainState {
   List<Object> get props => [msg];
 }
 
+class ReportingTimeFetched extends MainState {
+  final String msg;
+  ReportingTimeFetched(this.msg);
+  @override
+  List<Object> get props => [msg];
+}
+
 class NewReportGenerated extends MainState {
   final String msg;
   NewReportGenerated(this.msg);

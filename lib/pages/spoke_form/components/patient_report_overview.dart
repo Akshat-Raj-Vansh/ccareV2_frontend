@@ -15,7 +15,11 @@ class ReportOverview extends StatefulWidget {
 class _ReportOverviewState extends State<ReportOverview> {
   @override
   Widget build(BuildContext context) {
-    return _buildReportOverview();
+    return Scaffold(
+        appBar: AppBar(
+          title: Text(widget.report.report_time),
+        ),
+        body: _buildReportOverview());
   }
 
   _buildReportOverview() => SingleChildScrollView(
@@ -119,30 +123,33 @@ class _ReportOverviewState extends State<ReportOverview> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('ECG Scan: '),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (_) {
-                      return FullScreenImage(
-                        imageUrl:
-                            "http://192.168.0.139:3000/treatment/fetchECG?fileID=${widget.report.ecg.ecg_file_id}",
-                        tag: "generate_a_unique_tag",
-                      );
-                    }));
-                  },
-                  child: Hero(
-                    child: Image(
-                        image: NetworkImage(
-                            "http://192.168.0.139:3000/treatment/fetchECG?fileID=${widget.report.ecg.ecg_file_id}",
-                            headers: {
-                              "Authorization":
-                                  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjFhMWU5ZGNiYWI4MjZkZTk4NjBmNzkzIiwiaWF0IjoxNjM4MjY1MzkxLCJleHAiOjE2Mzg4NzAxOTEsImlzcyI6ImNvbS5jY2FyZW5pdGgifQ.K-_DprXx2ipOwWt17DODlMDqQSgtWdv8aARjlPdEuzA"
-                            }),
-                        width: 100,
-                        height: 100,
-                        fit: BoxFit.cover),
-                    tag: "generate_a_unique_tag",
-                  ),
-                )
+                widget.report.ecg.ecg_file_id != "nill"
+                    ? GestureDetector(
+                        onTap: () {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (_) {
+                            return FullScreenImage(
+                              imageUrl:
+                                  "http://192.168.0.139:3000/treatment/fetchECG?fileID=${widget.report.ecg.ecg_file_id}",
+                              tag: "generate_a_unique_tag",
+                            );
+                          }));
+                        },
+                        child: Hero(
+                          child: Image(
+                              image: NetworkImage(
+                                  "http://192.168.0.139:3000/treatment/fetchECG?fileID=${widget.report.ecg.ecg_file_id}",
+                                  headers: {
+                                    "Authorization":
+                                        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjFhMWU5ZGNiYWI4MjZkZTk4NjBmNzkzIiwiaWF0IjoxNjM4MjY1MzkxLCJleHAiOjE2Mzg4NzAxOTEsImlzcyI6ImNvbS5jY2FyZW5pdGgifQ.K-_DprXx2ipOwWt17DODlMDqQSgtWdv8aARjlPdEuzA"
+                                  }),
+                              width: 100,
+                              height: 100,
+                              fit: BoxFit.cover),
+                          tag: "generate_a_unique_tag",
+                        ),
+                      )
+                    : Text('No ECG Uploaded'),
               ],
             ),
             SizedBox(height: getProportionateScreenHeight(10)),

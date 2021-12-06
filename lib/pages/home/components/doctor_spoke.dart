@@ -1,4 +1,6 @@
 //@dart=2.9
+import 'dart:developer';
+
 import 'package:ccarev2_frontend/main/domain/edetails.dart';
 import 'package:ccarev2_frontend/pages/chat/chatScreen.dart';
 import 'package:ccarev2_frontend/pages/chat/components/chatModel.dart';
@@ -195,14 +197,17 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
         listener: (context, state) async {
           if (state is LoadingState) {
             print("Loading State Called");
+            log('LOG > doctor_spoke.dart > 197 > state: ${state.toString()}');
             _showLoader();
           } else if (state is ErrorState) {
             _hideLoader();
+            log('LOG > doctor_spoke.dart > 204 > state: ${state.toString()}');
           } else if (state is TokenLoadedState) {
             token = state.token;
           }
           if (state is NewReportGenerated) {
             _hideLoader();
+            log('LOG > doctor_spoke.dart > 212 > state: ${state.toString()}');
             // Navigator.push(
             //     context,
             //     MaterialPageRoute(
@@ -215,7 +220,8 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
             _showMessage(state.msg);
           } else if (state is AllHubDoctorsState) {
             _hideLoader();
-            print("DOCTOR SPOKE HOME SCREEN/ HUB DOCTORS LIST STATE");
+            log('LOG > doctor_spoke.dart > 223 > state: ${state.toString()}',
+                time: DateTime.now());
             showModalBottomSheet(
                 context: context,
                 builder: (_) {
@@ -223,11 +229,12 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
                 });
           } else if (state is ConsultHub) {
             _hideLoader();
-            print("DOCTOR SPOKE HOME SCREEN/CONSULT HUB STATE");
-            print("DOCTOR CONSULTED: ${state.name}");
+            log('LOG > doctor_spoke.dart > 231 > state: ${state.toString()}',
+                time: DateTime.now());
           } else if (state is AcceptState) {
             _hideLoader();
-            print("Accept State Called");
+            log('LOG > doctor_spoke.dart > 237 > state: ${state.toString()}',
+                time: DateTime.now());
             await showDialog(
                   context: context,
                   builder: (context) => AlertDialog(
@@ -256,6 +263,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
                         onPressed: () async {
                           widget.mainCubit
                               .acceptPatientBySpoke(state.patientID);
+                          Navigator.of(context).pop(false);
                         },
                         child: const Text(
                           'Yes',
@@ -268,10 +276,12 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
           } else if (state is PatientAccepted) {
             _hideLoader();
             _emergency = true;
-            print("Inside patient accepted by Doctor state");
+            log('LOG > doctor_spoke.dart > 280 > state: ${state.toString()}',
+                time: DateTime.now());
             CubitProvider.of<MainCubit>(context).fetchEmergencyDetails();
           } else if (state is AllPatientsState) {
-            print("AllPatientsState State Called");
+            log('LOG > doctor_spoke.dart > 284 > state: ${state.toString()}',
+                time: DateTime.now());
             _hideLoader();
           }
         },
@@ -360,7 +370,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
             if (_patientAccepted && _ugt) _buildPatientExamButton(),
             if (_patientAccepted && _ugt && !_hubAccepted) _buildHubList(),
             if (_hubAccepted) _buildChatButton(),
-            if (_patientAccepted) _buildNewReportButton(),
+            if (_patientAccepted && _ugt) _buildNewReportButton(),
             if (_patientAccepted && _ugt) _buildPatientReportHistoryButton(),
             if (_driverAccepted) _buildDriverDetails(),
             if (!_emergency) _buildHeader(),

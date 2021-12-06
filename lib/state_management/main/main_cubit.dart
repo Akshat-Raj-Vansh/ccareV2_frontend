@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:ccarev2_frontend/cache/ilocal_store.dart';
 import 'package:ccarev2_frontend/main/domain/examination.dart' as exam;
 import 'package:ccarev2_frontend/main/domain/main_api_contract.dart';
@@ -36,8 +38,7 @@ class MainCubit extends Cubit<MainState> {
       emit(ErrorState(result.asError!.error as String));
       return;
     }
-    print('33333333333333333');
-    print(result.asValue!.value.last);
+    log('LOG > main_cubit.dart > 39 > result.asValue!.value.last: ${result.asValue!.value.last}');
     emit(MessagesLoadedState(result.asValue!.value));
   }
 
@@ -88,11 +89,25 @@ class MainCubit extends Cubit<MainState> {
     final token = await localStore.fetch();
     final result =
         await api.acceptPatientbySpoke(Token(token.value), Token(patientID));
+    log('LOG > main_cubit.dart > 92 > result.asValue!.value: ${result.asValue!.value}');
     if (result.isError) {
       emit(ErrorState(result.asError!.error as String));
       return;
     }
     emit(PatientAccepted(result.asValue!.value));
+  }
+
+  getPatientReportingTime(String patientID) async {
+    _startLoading("Get Patient Reporting Time Loading State");
+    final token = await localStore.fetch();
+    final result = await api.fetchPatientReportingTime(
+        Token(token.value), Token(patientID));
+    log('LOG > main_cubit.dart > getPatientReportingTime > 105 > result.asValue!.value: ${result.asValue!.value}');
+    if (result.isError) {
+      emit(ErrorState(result.asError!.error as String));
+      return;
+    }
+    emit(ReportingTimeFetched(result.asValue!.value));
   }
 
   acceptPatientByHub(String patientID) async {
@@ -111,6 +126,7 @@ class MainCubit extends Cubit<MainState> {
     _startLoading("Fetch Hub Patient Details");
     final token = await localStore.fetch();
     final result = await api.fetchHubPatientDetails(Token(token.value));
+    log('LOG > main_cubit.dart > fetchHubPatientDetails > 129 > result.asValue!.value: ${result.asValue!.value}');
     if (result.isError) {
       emit(ErrorState(result.asError!.error as String));
       return;
@@ -122,6 +138,7 @@ class MainCubit extends Cubit<MainState> {
     _startLoading("Fetch Hub Consultation Requests");
     final token = await localStore.fetch();
     final result = await api.fetchHubRequests(Token(token.value));
+    log('LOG > main_cubit.dart > fetchHubRequests > 140 > result.asValue!.value: ${result.asValue!.value}');
     if (result.isError) {
       emit(ErrorState(result.asError!.error as String));
       return;
@@ -146,7 +163,7 @@ class MainCubit extends Cubit<MainState> {
     // _startLoading("PatientReportFetch");
     final token = await localStore.fetch();
     final result = await api.fetchPatientReport(Token(token.value));
-
+    log('LOG > main_cubit.dart > fetchPatientReport > 164 > result.asValue!.value["currentReport"]: ${result.asValue!.value["currentReport"]}');
     if (result == null) {
       emit(NoReportState("No report exists"));
       return;
@@ -208,8 +225,7 @@ class MainCubit extends Cubit<MainState> {
     _startLoading("PatientReportFetch");
     final token = await localStore.fetch();
     final result = await api.fetchPatientExamReport(Token(token.value));
-    print(
-        '@main_cubit/fetchPatinetecam result: ${result.asValue!.value.toString()}');
+    log('LOG > main_cubit.dart > fetchPatientExamReport > 226 > result.asValue!.value: ${result.asValue!.value}');
     if (result == null) {
       emit(NoReportState("Server Error"));
       return;

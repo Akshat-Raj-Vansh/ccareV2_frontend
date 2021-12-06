@@ -14,6 +14,7 @@ import 'question.dart';
 abstract class IMainAPI {
   // General API
   Future<Result<String>> getStatus(Token token);
+  Future<Result<String>> fetchPatientReportingTime(Token token, Token patient);
 
   // Patient Side APIs
   Future<Result<List<QuestionTree>>> getAll(Token token);

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 import 'package:ccarev2_frontend/main/domain/edetails.dart';
 import 'package:ccarev2_frontend/main/domain/examination.dart';
@@ -49,6 +50,28 @@ class MainAPI extends IMainAPI {
     var response = await _client.get(Uri.parse(endpoint), headers: header);
     print('@main_api.dart/getStatus response status: ${response.statusCode}');
     print('@main_api.dart/getStatus response body: ${response.body}');
+    if (response.statusCode != 200) {
+      Map map = jsonDecode(response.body);
+      print(transformError(map));
+      return Result.error(transformError(map));
+    }
+    dynamic json = jsonDecode(response.body);
+    print('@main_api.dart/getStatus json: $json');
+    var result = json["msg"] as String;
+    return Result.value(result);
+  }
+
+  @override
+  Future<Result<String>> fetchPatientReportingTime(
+      Token token, Token patient) async {
+    String endpoint = baseUrl + "/treatment/getReportingTime";
+    var header = {
+      "Content-Type": "application/json",
+      "Authorization": token.value
+    };
+    var response = await _client.get(Uri.parse(endpoint), headers: header);
+    log('LOG > main_api.dart > fetchPatientReportingTime > 73 > response.statusCode: ${response.statusCode}');
+    log('LOG > main_api.dart > fetchPatientReportingTime > 74 > response.body: ${response.body}');
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
       print(transformError(map));
@@ -176,8 +199,8 @@ class MainAPI extends IMainAPI {
       "Authorization": token.value
     };
     var response = await _client.get(Uri.parse(endpoint), headers: header);
-    print(response.statusCode);
-    print(response.body);
+    log('LOG > main_api.dart > fetchPatientReport > 202 > response.statusCode: ${response.statusCode}');
+    log('LOG > main_api.dart > fetchPatientReport > 203 > response.body: ${response.body}');
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
       print(transformError(map));
@@ -189,7 +212,7 @@ class MainAPI extends IMainAPI {
     dynamic previousReport = jsonDecode(response.body)['previousReports'];
     if (previousReport == null)
       return Result.value({
-        "currentReport": currentReport['ecg'] == null
+        "currentReport": currentReport['ecg'] != null
             ? treat.TreatmentReport.fromJson(jsonEncode(currentReport))
             : treat.TreatmentReport.initialize(),
         "previousReport": null
@@ -203,8 +226,11 @@ class MainAPI extends IMainAPI {
     //   });
     // }
     return Result.value({
-      "currentReport": currentReport["ecg"]==null?treat.TreatmentReport.initialize():treat.TreatmentReport.fromJson(jsonEncode(currentReport)),
-      "previousReport":treat.TreatmentReport.fromJson(jsonEncode(previousReport))
+      "currentReport": currentReport["ecg"] == null
+          ? treat.TreatmentReport.initialize()
+          : treat.TreatmentReport.fromJson(jsonEncode(currentReport)),
+      "previousReport":
+          treat.TreatmentReport.fromJson(jsonEncode(previousReport))
     });
   }
 
@@ -240,25 +266,29 @@ class MainAPI extends IMainAPI {
       "Authorization": token.value
     };
     var response = await _client.get(Uri.parse(endpoint), headers: header);
-    print(response.statusCode);
-    print(response.body);
+    log('LOG > main_api.dart > fetchPatientExamReport > 269 > response.statusCode: ${response.statusCode}');
+    log('LOG > main_api.dart > fetchPatientExamReport > 270 > response.body: ${response.body}');
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
       print(transformError(map));
       return Result.error(transformError(map));
     }
     dynamic report = jsonDecode(response.body)['treatment'];
-    print(report);
-    try {
-      return Result.value(report['normalTreatment'] != null
-          ? Examination.fromJson(jsonEncode(report))
-          : Examination.initialize());
-    } catch (e) {
-      var res = Examination.initialize();
-      print('@main_api/fetchPatientExamReport res: ${res.toString()}');
-      return Result.value(res);
-    }
+    log('LOG > main_api.dart > fetchPatientExamReport > 277 > report: ${report}');
+    var init = Examination.initialize();
+    if (report['normalTreatment'] == null) return Result.value(init);
     return Result.value(Examination.fromJson(jsonEncode(report)));
+
+    // try {
+    //   return Result.value(report['normalTreatment'] != null
+    //       ? Examination.fromJson(jsonEncode(report))
+    //       : Examination.initialize());
+    // } catch (e) {
+    //   var res = Examination.initialize();
+    //   print('@main_api/fetchPatientExamReport res: ${res.toString()}');
+    //   return Result.value(res);
+    // }
+    // return Result.value(Examination.fromJson(jsonEncode(report)));
   }
 
   // Hub Side APIs
@@ -357,6 +387,8 @@ class MainAPI extends IMainAPI {
     };
     var response = await _client.post(Uri.parse(endpoint),
         headers: header, body: jsonEncode({"patID": patient.value}));
+    log('LOG > main_api.dart > 360 > response.statusCode: ${response.statusCode}');
+    log('LOG > main_api.dart > 361 > response.body: ${response.body}');
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
       print(transformError(map));
