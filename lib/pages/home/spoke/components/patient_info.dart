@@ -21,9 +21,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class PatientInfo extends StatefulWidget {
-  final MainCubit mainCubit;
   final String patientID;
-  const PatientInfo(this.mainCubit, this.patientID);
+  const PatientInfo(this.patientID);
 
   @override
   _PatientInfoState createState() => _PatientInfoState();
@@ -40,15 +39,15 @@ class _PatientInfoState extends State<PatientInfo> {
   dynamic currentState = null;
   String token;
   bool loader = false;
-
+  MainCubit mainCubit;
   @override
   void initState() {
     super.initState();
-    CubitProvider.of<MainCubit>(context)
-        .fetchEmergencyDetails(patientID: widget.patientID);
-    NotificationController.configure(widget.mainCubit, UserType.SPOKE, context);
+    mainCubit = CubitProvider.of<MainCubit>(context);
+    mainCubit.fetchEmergencyDetails(patientID: widget.patientID);
+    NotificationController.configure(mainCubit, UserType.SPOKE, context);
     NotificationController.fcmHandler();
-    CubitProvider.of<MainCubit>(context).fetchToken();
+    mainCubit.fetchToken();
   }
 
   // Future<loc.Location> _getLocation() async {
@@ -171,7 +170,7 @@ class _PatientInfoState extends State<PatientInfo> {
             showModalBottomSheet(
                 context: context,
                 builder: (_) {
-                  return HubDoctorsList(state.docs, widget.mainCubit);
+                  return HubDoctorsList(state.docs, mainCubit);
                 });
           } else if (state is ConsultHub) {
             _hideLoader();
@@ -207,8 +206,7 @@ class _PatientInfoState extends State<PatientInfo> {
                       ),
                       TextButton(
                         onPressed: () async {
-                          widget.mainCubit
-                              .acceptPatientBySpoke(state.patientID);
+                          mainCubit.acceptPatientBySpoke(state.patientID);
                           Navigator.of(context).pop(false);
                         },
                         child: const Text(
@@ -399,7 +397,7 @@ class _PatientInfoState extends State<PatientInfo> {
 
   _buildStartTreatmentButton() => InkWell(
         onTap: () async {
-          widget.mainCubit.statusUpdate("UGT");
+          mainCubit.statusUpdate("UGT");
           _currentStatus = "UGT";
           _ugt = true;
         },
@@ -425,7 +423,7 @@ class _PatientInfoState extends State<PatientInfo> {
               context,
               MaterialPageRoute(
                 builder: (context) => PatientReportScreen(
-                  mainCubit: widget.mainCubit,
+                  mainCubit: mainCubit,
                   user: UserType.DOCTOR,
                   patientDetails: eDetails.patientDetails,
                 ),
@@ -452,7 +450,7 @@ class _PatientInfoState extends State<PatientInfo> {
               context,
               MaterialPageRoute(
                 builder: (context) => PatientExamScreen(
-                  mainCubit: widget.mainCubit,
+                  mainCubit: mainCubit,
                   patientDetails: eDetails.patientDetails,
                 ),
               ));
@@ -478,7 +476,7 @@ class _PatientInfoState extends State<PatientInfo> {
               context,
               MaterialPageRoute(
                 builder: (context) =>
-                    PatientReportHistoryScreen(mainCubit: widget.mainCubit),
+                    PatientReportHistoryScreen(mainCubit: mainCubit),
               ));
         },
         child: Container(
@@ -495,7 +493,7 @@ class _PatientInfoState extends State<PatientInfo> {
 
   _buildHubList() => InkWell(
         onTap: () async {
-          widget.mainCubit.getAllHubDoctors();
+          mainCubit.getAllHubDoctors();
           // Navigator.push(
           //     context,
           //     MaterialPageRoute(
@@ -523,7 +521,7 @@ class _PatientInfoState extends State<PatientInfo> {
               context,
               MaterialPageRoute(
                   builder: (context) => CubitProvider<MainCubit>(
-                      create: (_) => widget.mainCubit,
+                      create: (_) => mainCubit,
                       child: ChatPage(
                           eDetails.hubDetails.name,
                           eDetails.hubDetails.id,
@@ -554,7 +552,7 @@ class _PatientInfoState extends State<PatientInfo> {
 
   _buildNewReportButton() => InkWell(
         onTap: () async {
-          widget.mainCubit.generateNewReport();
+          mainCubit.generateNewReport();
         },
         child: Container(
           width: SizeConfig.screenWidth,

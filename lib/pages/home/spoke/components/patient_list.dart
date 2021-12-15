@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:ccarev2_frontend/main/domain/edetails.dart';
+import 'package:ccarev2_frontend/pages/home/spoke/components/patient_info.dart';
 import 'package:ccarev2_frontend/services/Notifications/notificationContoller.dart';
 import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
 import 'package:ccarev2_frontend/state_management/main/main_state.dart';
@@ -92,8 +93,15 @@ class _PatientListState extends State<PatientList> {
         itemCount: _patients.length,
         itemBuilder: (BuildContext context, int index) {
           return InkWell(
-            onTap: () => CubitProvider.of<MainCubit>(context)
-                .fetchEmergencyDetails(patientID: _patients[index].id),
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (ctx) => CubitProvider<MainCubit>(
+                  create: (ctx) => CubitProvider.of<MainCubit>(context),
+                  child: PatientInfo(_patients[index].id),
+                ),
+              ),
+            ),
             child: ListTile(
                 leading: Icon(Icons.person),
                 trailing: Text(
