@@ -15,7 +15,6 @@ import 'package:socket_io_client/socket_io_client.dart';
 
 import '../../main/infra/main_api.dart';
 import '../../pages/auth/auth_page.dart';
-import '../../pages/home/components/doctor.dart';
 import '../../pages/home/components/driver.dart';
 import '../../pages/home/components/patient.dart';
 import '../../pages/home/home_page_adapter.dart';

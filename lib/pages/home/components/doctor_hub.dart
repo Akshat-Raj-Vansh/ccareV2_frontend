@@ -179,7 +179,7 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
             rDetails = state.details[0];
             requestsLoaded = true;
           } else if (state is PatientAcceptedHub) {
-            widget.mainCubit.fetchEmergencyDetails();
+            widget.mainCubit.fetchEmergencyDetails(eDetails.patientDetails.id);
             widget.mainCubit.fetchHubRequests();
           } else if (state is TokenLoadedState) {
             token = state.token;
