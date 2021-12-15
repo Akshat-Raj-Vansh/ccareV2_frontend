@@ -5,6 +5,7 @@ import 'package:ccarev2_frontend/main/domain/edetails.dart';
 import 'package:ccarev2_frontend/pages/chat/chatScreen.dart';
 import 'package:ccarev2_frontend/pages/chat/components/chatModel.dart';
 import 'package:ccarev2_frontend/pages/home/components/doctors_spoke_list.dart';
+import 'package:ccarev2_frontend/pages/home/components/patient_list.dart';
 import 'package:ccarev2_frontend/pages/home/home_page_adapter.dart';
 import 'package:ccarev2_frontend/pages/spoke_form/patient_exam_screen.dart';
 import 'package:ccarev2_frontend/pages/spoke_form/patient_history_screen.dart';
@@ -255,7 +256,14 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
             ListTile(
               title: const Text('My Patients'),
               onTap: () {
-                Navigator.pop(context);
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (ctx) => CubitProvider<MainCubit>(
+                        create: (ctx) => CubitProvider.of<MainCubit>(context),
+                        child: PatientList(),
+                      ),
+                    ));
               },
             ),
             ListTile(

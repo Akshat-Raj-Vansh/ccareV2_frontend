@@ -49,7 +49,7 @@ class _PatientInfoState extends State<PatientInfo> {
   void initState() {
     super.initState();
     CubitProvider.of<MainCubit>(context)
-        .fetchEmergencyDetails(widget.patientID);
+        .fetchEmergencyDetails(patientID: widget.patientID);
     NotificationController.configure(widget.mainCubit, UserType.SPOKE, context);
     NotificationController.fcmHandler();
     CubitProvider.of<MainCubit>(context).fetchToken();
@@ -229,7 +229,7 @@ class _PatientInfoState extends State<PatientInfo> {
             log('LOG > doctor_spoke.dart > 280 > state: ${state.toString()}',
                 time: DateTime.now());
             CubitProvider.of<MainCubit>(context)
-                .fetchEmergencyDetails(widget.patientID);
+                .fetchEmergencyDetails(patientID: widget.patientID);
           } else if (state is AllPatientsState) {
             log('LOG > doctor_spoke.dart > 284 > state: ${state.toString()}',
                 time: DateTime.now());
