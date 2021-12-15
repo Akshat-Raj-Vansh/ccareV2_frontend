@@ -351,10 +351,10 @@ class MainCubit extends Cubit<MainState> {
     emit(ConsultHub(result.asValue!.value));
   }
 
-  fetchEmergencyDetails(String patientID) async {
+  fetchEmergencyDetails({String? patientID}) async {
     _startLoading("fetchEmergencyDetails");
     final token = await localStore.fetch();
-    final result = await api.fetchEmergencyDetails(token, patientID);
+    final result = await api.fetchEmergencyDetails(token, patientID: patientID);
     if (result.isError) {
       emit(NormalState(result.asError!.error as String));
       return;

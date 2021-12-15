@@ -34,13 +34,13 @@ class HomeScreenSpoke extends StatefulWidget {
 }
 
 class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
-  EDetails eDetails;
-  static bool _emergency = false;
-  static bool _patientAccepted = false;
-  static bool _driverAccepted = false;
-  static bool _hubAccepted = false;
-  static bool _ugt = false;
-  static String _currentStatus = "UNKNOWN";
+  // EDetails eDetails;
+  // static bool _emergency = false;
+  // static bool _patientAccepted = false;
+  // static bool _driverAccepted = false;
+  // static bool _hubAccepted = false;
+  // static bool _ugt = false;
+  // static String _currentStatus = "UNKNOWN";
   dynamic currentState = null;
   String token;
   bool loader = false;
@@ -103,88 +103,32 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
       appBar: AppBar(
         title: Text('CardioCare - SPOKE'),
         backgroundColor: kPrimaryColor,
-        actions: [
-          // if (_patientAccepted)
-          //   IconButton(
-          //     onPressed: () async {
-          //       // _showLoader();
-          //       // loc.Location location = await _getLocation();
-          //       // _hideLoader();
-          //       // return widget.homePageAdapter
-          //       //     .loadEmergencyScreen(context, UserType.doctor, location);
-          //       widget.mainCubit.getAllHubDoctors();
-          //     },
-          //     icon: Icon(Icons.person_add),
-          //   ),
-          IconButton(
-            onPressed: () async {
-              await showDialog(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      title: const Text(
-                        'Are you sure?',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 20,
-                        ),
-                      ),
-                      content: const Text(
-                        'Do you want to logout?',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w300,
-                          fontSize: 15,
-                        ),
-                      ),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.of(context).pop(false),
-                          child: const Text(
-                            'Cancel',
-                          ),
-                        ),
-                        TextButton(
-                          onPressed: () async {
-                            widget.homePageAdapter
-                                .onLogout(context, widget.userCubit);
-                          },
-                          child: const Text(
-                            'Yes',
-                          ),
-                        ),
-                      ],
-                    ),
-                  ) ??
-                  false;
-            },
-            icon: Icon(Icons.logout),
-          ),
-        ],
       ),
       body: CubitConsumer<MainCubit, MainState>(
         builder: (_, state) {
-          if (state is TokenLoadedState) {
-            token = state.token;
-          }
-          if (state is DetailsLoaded) {
-            currentState = DetailsLoaded;
-            eDetails = state.eDetails;
-            if (eDetails.patientDetails != null) {
-              _patientAccepted = true;
-              _emergency = true;
-              _currentStatus =
-                  eDetails.patientDetails.status.toString().split('.')[1];
-              if (eDetails.patientDetails.status == EStatus.UGT) {
-                _ugt = true;
-              }
-            }
-            if (eDetails.driverDetails != null) {
-              _driverAccepted = true;
-              _emergency = true;
-            }
-            if (eDetails.hubDetails != null) {
-              _hubAccepted = true;
-            }
-          }
+          // if (state is TokenLoadedState) {
+          //   token = state.token;
+          // }
+          // if (state is DetailsLoaded) {
+          //   currentState = DetailsLoaded;
+          //   eDetails = state.eDetails;
+          //   if (eDetails.patientDetails != null) {
+          //     _patientAccepted = true;
+          //     _emergency = true;
+          //     _currentStatus =
+          //         eDetails.patientDetails.status.toString().split('.')[1];
+          //     if (eDetails.patientDetails.status == EStatus.UGT) {
+          //       _ugt = true;
+          //     }
+          //   }
+          //   if (eDetails.driverDetails != null) {
+          //     _driverAccepted = true;
+          //     _emergency = true;
+          //   }
+          //   if (eDetails.hubDetails != null) {
+          //     _hubAccepted = true;
+          //   }
+          // }
 
           if (state is NormalState) {
             //   _hideLoader();
@@ -205,33 +149,34 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
           } else if (state is TokenLoadedState) {
             token = state.token;
           }
-          if (state is NewReportGenerated) {
-            _hideLoader();
-            log('LOG > doctor_spoke.dart > 212 > state: ${state.toString()}');
-            // Navigator.push(
-            //     context,
-            //     MaterialPageRoute(
-            //       builder: (context) => PatientReportScreen(
-            //         mainCubit: widget.mainCubit,
-            //         user: UserType.DOCTOR,
-            //         patientDetails: eDetails.patientDetails,
-            //       ),
-            //     ));
-            _showMessage(state.msg);
-          } else if (state is AllHubDoctorsState) {
-            _hideLoader();
-            log('LOG > doctor_spoke.dart > 223 > state: ${state.toString()}',
-                time: DateTime.now());
-            showModalBottomSheet(
-                context: context,
-                builder: (_) {
-                  return HubDoctorsList(state.docs, widget.mainCubit);
-                });
-          } else if (state is ConsultHub) {
-            _hideLoader();
-            log('LOG > doctor_spoke.dart > 231 > state: ${state.toString()}',
-                time: DateTime.now());
-          } else if (state is AcceptState) {
+          // if (state is NewReportGenerated) {
+          //   _hideLoader();
+          //   log('LOG > doctor_spoke.dart > 212 > state: ${state.toString()}');
+          //   // Navigator.push(
+          //   //     context,
+          //   //     MaterialPageRoute(
+          //   //       builder: (context) => PatientReportScreen(
+          //   //         mainCubit: widget.mainCubit,
+          //   //         user: UserType.DOCTOR,
+          //   //         patientDetails: eDetails.patientDetails,
+          //   //       ),
+          //   //     ));
+          //   _showMessage(state.msg);
+          // } else if (state is AllHubDoctorsState) {
+          //   _hideLoader();
+          //   log('LOG > doctor_spoke.dart > 223 > state: ${state.toString()}',
+          //       time: DateTime.now());
+          //   showModalBottomSheet(
+          //       context: context,
+          //       builder: (_) {
+          //         return HubDoctorsList(state.docs, widget.mainCubit);
+          //       });
+          // } else if (state is ConsultHub) {
+          //   _hideLoader();
+          //   log('LOG > doctor_spoke.dart > 231 > state: ${state.toString()}',
+          //       time: DateTime.now());
+          //}
+          else if (state is AcceptState) {
             _hideLoader();
             log('LOG > doctor_spoke.dart > 237 > state: ${state.toString()}',
                 time: DateTime.now());
@@ -275,15 +220,16 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
                 false;
           } else if (state is PatientAccepted) {
             _hideLoader();
-            _emergency = true;
+            // _emergency = true;
             log('LOG > doctor_spoke.dart > 280 > state: ${state.toString()}',
                 time: DateTime.now());
-            CubitProvider.of<MainCubit>(context).fetchEmergencyDetails();
-          } else if (state is AllPatientsState) {
-            log('LOG > doctor_spoke.dart > 284 > state: ${state.toString()}',
-                time: DateTime.now());
-            _hideLoader();
+            //   CubitProvider.of<MainCubit>(context).fetchEmergencyDetails();
           }
+          // else if (state is AllPatientsState) {
+          //   log('LOG > doctor_spoke.dart > 284 > state: ${state.toString()}',
+          //       time: DateTime.now());
+          //   _hideLoader();
+          // }
         },
       ),
       drawer: Drawer(
@@ -322,6 +268,48 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
               title: const Text('Settings'),
               onTap: () {
                 Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: const Text('Log out'),
+              onTap: () async {
+                await showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: const Text(
+                          'Are you sure?',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 20,
+                          ),
+                        ),
+                        content: const Text(
+                          'Do you want to logout?',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w300,
+                            fontSize: 15,
+                          ),
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.of(context).pop(false),
+                            child: const Text(
+                              'Cancel',
+                            ),
+                          ),
+                          TextButton(
+                            onPressed: () async {
+                              widget.homePageAdapter
+                                  .onLogout(context, widget.userCubit);
+                            },
+                            child: const Text(
+                              'Yes',
+                            ),
+                          ),
+                        ],
+                      ),
+                    ) ??
+                    false;
               },
             ),
           ],
