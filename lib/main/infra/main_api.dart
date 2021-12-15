@@ -172,8 +172,8 @@ class MainAPI extends IMainAPI {
   // Doctors Side APIs
 
   @override
-  Future<Result<EDetails>> fetchEmergencyDetails(
-      Token token, String patientID) async {
+  Future<Result<EDetails>> fetchEmergencyDetails(Token token,
+      {String? patientID}) async {
     String endpoint =
         baseUrl + "/emergency/fetchEmergencyDetails?patientID=$patientID";
     print("Fetch Emergency Details");
