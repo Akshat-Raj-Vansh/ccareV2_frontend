@@ -206,6 +206,13 @@ class AllHubDoctorsState extends MainState {
   List<Object> get props => [docs];
 }
 
+class PatientsLoaded extends MainState {
+  final List<PatientDetails> patients;
+  PatientsLoaded(this.patients);
+  @override
+  List<Object> get props => [patients];
+}
+
 class ConsultHub extends MainState {
   final String name;
   ConsultHub(this.name);

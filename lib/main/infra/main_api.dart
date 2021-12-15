@@ -172,8 +172,10 @@ class MainAPI extends IMainAPI {
   // Doctors Side APIs
 
   @override
-  Future<Result<EDetails>> fetchEmergencyDetails(Token token) async {
-    String endpoint = baseUrl + "/emergency/fetchEmergencyDetails";
+  Future<Result<EDetails>> fetchEmergencyDetails(
+      Token token, String patientID) async {
+    String endpoint =
+        baseUrl + "/emergency/fetchEmergencyDetails?patientID=$patientID";
     print("Fetch Emergency Details");
     var header = {
       "Content-Type": "application/json",
@@ -400,7 +402,7 @@ class MainAPI extends IMainAPI {
   }
 
   @override
-  Future<Result<String>> getAllPatients(Token token) async {
+  Future<Result<List<PatientDetails>>> getAllPatients(Token token) async {
     String endpoint = baseUrl + "/emergency/doctor/getAllPatients";
     var header = {
       "Content-Type": "application/json",
@@ -414,7 +416,10 @@ class MainAPI extends IMainAPI {
       return Result.error(transformError(map));
     }
     dynamic json = jsonDecode(response.body);
-    return Result.value(json["message"]);
+    return Result.value(json
+        .map<PatientDetails>(
+            (element) => PatientDetails.fromJson(jsonEncode(element)))
+        .toList());
   }
 
   @override

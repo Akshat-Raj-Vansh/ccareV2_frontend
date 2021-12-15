@@ -1,6 +1,8 @@
 //@dart=2.9
 import 'dart:developer';
 
+import 'package:flutter/material.dart';
+
 import 'package:ccarev2_frontend/main/domain/edetails.dart';
 import 'package:ccarev2_frontend/pages/chat/chatScreen.dart';
 import 'package:ccarev2_frontend/pages/chat/components/chatModel.dart';
@@ -22,18 +24,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-class HomeScreenSpoke extends StatefulWidget {
+class PatientInfo extends StatefulWidget {
   final MainCubit mainCubit;
-  final UserCubit userCubit;
-  final IHomePageAdapter homePageAdapter;
-
-  const HomeScreenSpoke(this.mainCubit, this.userCubit, this.homePageAdapter);
+  final String patientID;
+  const PatientInfo(this.mainCubit, this.patientID);
 
   @override
-  _HomeScreenSpokeState createState() => _HomeScreenSpokeState();
+  _PatientInfoState createState() => _PatientInfoState();
 }
 
-class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
+class _PatientInfoState extends State<PatientInfo> {
   EDetails eDetails;
   static bool _emergency = false;
   static bool _patientAccepted = false;
@@ -48,7 +48,8 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
   @override
   void initState() {
     super.initState();
-    // CubitProvider.of<MainCubit>(context).fetchEmergencyDetails();
+    CubitProvider.of<MainCubit>(context)
+        .fetchEmergencyDetails(widget.patientID);
     NotificationController.configure(widget.mainCubit, UserType.SPOKE, context);
     NotificationController.fcmHandler();
     CubitProvider.of<MainCubit>(context).fetchToken();
@@ -103,62 +104,11 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
       appBar: AppBar(
         title: Text('CardioCare - SPOKE'),
         backgroundColor: kPrimaryColor,
-        actions: [
-          // if (_patientAccepted)
-          //   IconButton(
-          //     onPressed: () async {
-          //       // _showLoader();
-          //       // loc.Location location = await _getLocation();
-          //       // _hideLoader();
-          //       // return widget.homePageAdapter
-          //       //     .loadEmergencyScreen(context, UserType.doctor, location);
-          //       widget.mainCubit.getAllHubDoctors();
-          //     },
-          //     icon: Icon(Icons.person_add),
-          //   ),
-          IconButton(
-            onPressed: () async {
-              await showDialog(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      title: const Text(
-                        'Are you sure?',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 20,
-                        ),
-                      ),
-                      content: const Text(
-                        'Do you want to logout?',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w300,
-                          fontSize: 15,
-                        ),
-                      ),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.of(context).pop(false),
-                          child: const Text(
-                            'Cancel',
-                          ),
-                        ),
-                        TextButton(
-                          onPressed: () async {
-                            widget.homePageAdapter
-                                .onLogout(context, widget.userCubit);
-                          },
-                          child: const Text(
-                            'Yes',
-                          ),
-                        ),
-                      ],
-                    ),
-                  ) ??
-                  false;
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
             },
-            icon: Icon(Icons.logout),
-          ),
-        ],
+            icon: Icon(Icons.arrow_back_ios)),
       ),
       body: CubitConsumer<MainCubit, MainState>(
         builder: (_, state) {
@@ -278,7 +228,8 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
             _emergency = true;
             log('LOG > doctor_spoke.dart > 280 > state: ${state.toString()}',
                 time: DateTime.now());
-            CubitProvider.of<MainCubit>(context).fetchEmergencyDetails();
+            CubitProvider.of<MainCubit>(context)
+                .fetchEmergencyDetails(widget.patientID);
           } else if (state is AllPatientsState) {
             log('LOG > doctor_spoke.dart > 284 > state: ${state.toString()}',
                 time: DateTime.now());

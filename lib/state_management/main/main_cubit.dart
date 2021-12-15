@@ -146,6 +146,18 @@ class MainCubit extends Cubit<MainState> {
     emit(HubRequestsLoaded(result.asValue!.value));
   }
 
+  getAllPatients() async {
+    _startLoading("Get All Patients");
+    final token = await localStore.fetch();
+    final result = await api.getAllPatients(Token(token.value));
+    log('LOG > main_cubit.dart > getAllPatients > 153 > result.asValue!.value: ${result.asValue!.value}');
+    if (result.isError) {
+      emit(ErrorState(result.asError!.error as String));
+      return;
+    }
+    emit(PatientsLoaded(result.asValue!.value));
+  }
+
   fetchPatientReportHistory() async {
     _startLoading("PatientReportHistoryFetch");
     final token = await localStore.fetch();
@@ -300,18 +312,18 @@ class MainCubit extends Cubit<MainState> {
     emit(DriverAccepted(location));
   }
 
-  getAllPatients() async {
-    print("Inside get all patients");
-    _startLoading("getAllpatients");
-    final token = await localStore.fetch();
-    final result = await api.getAllPatients(token);
+  // getAllPatients() async {
+  //   print("Inside get all patients");
+  //   _startLoading("getAllpatients");
+  //   final token = await localStore.fetch();
+  //   final result = await api.getAllPatients(token);
 
-    if (result.isError) {
-      emit(ErrorState(result.asError!.error as String));
-      return;
-    }
-    emit(AllPatientsState(result.asValue!.value));
-  }
+  //   if (result.isError) {
+  //     emit(ErrorState(result.asError!.error as String));
+  //     return;
+  //   }
+  //   emit(AllPatientsState(result.asValue!.value));
+  // }
 
   getAllHubDoctors() async {
     _startLoading("GET ALL HUB DOCTORS LOADING STATE");
@@ -339,10 +351,10 @@ class MainCubit extends Cubit<MainState> {
     emit(ConsultHub(result.asValue!.value));
   }
 
-  fetchEmergencyDetails() async {
+  fetchEmergencyDetails(String patientID) async {
     _startLoading("fetchEmergencyDetails");
     final token = await localStore.fetch();
-    final result = await api.fetchEmergencyDetails(token);
+    final result = await api.fetchEmergencyDetails(token, patientID);
     if (result.isError) {
       emit(NormalState(result.asError!.error as String));
       return;

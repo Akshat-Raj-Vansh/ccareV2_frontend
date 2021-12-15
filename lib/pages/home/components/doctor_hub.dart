@@ -226,11 +226,12 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
                 ) ??
                 false;
             //Create new state PatientAccepted by Hub
-          } else if (state is PatientAccepted) {
-            // _hideLoader();
-            print("Inside patient accepted by Doctor state");
-            widget.mainCubit.fetchEmergencyDetails();
           }
+          // else if (state is PatientAccepted) {
+          //   // _hideLoader();
+          //   print("Inside patient accepted by Doctor state");
+          //   widget.mainCubit.fetchEmergencyDetails();
+          // }
         }));
   }
 

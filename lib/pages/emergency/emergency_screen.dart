@@ -13,7 +13,8 @@ import 'package:ccarev2_frontend/services/Notifications/notificationContoller.da
 class EmergencyScreen extends StatefulWidget {
   final UserType userType;
   final loc.Location location;
-  EmergencyScreen({this.userType, this.location});
+  final String patientID;
+  EmergencyScreen({this.userType, this.location, this.patientID});
 
   @override
   _EmergencyScreenState createState() => _EmergencyScreenState();
@@ -64,7 +65,8 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
   }
 
   _getLocations() {
-    CubitProvider.of<MainCubit>(context).fetchEmergencyDetails();
+    CubitProvider.of<MainCubit>(context)
+        .fetchEmergencyDetails(widget.patientID);
   }
 
   _getUserLocation() {

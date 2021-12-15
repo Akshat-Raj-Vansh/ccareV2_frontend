@@ -24,7 +24,7 @@ abstract class IMainAPI {
       {List<QuestionTree>? assessment});
 
   // Doctors Side APIs
-  Future<Result<EDetails>> fetchEmergencyDetails(Token token);
+  Future<Result<EDetails>> fetchEmergencyDetails(Token token, String patientID);
   Future<Result<dynamic>> fetchPatientReport(Token token);
   Future<Result<dynamic>> fetchPatientReportHistory(Token token);
   Future<Result<exam.Examination>> fetchPatientExamReport(Token token);
@@ -32,7 +32,7 @@ abstract class IMainAPI {
 
   // Spoke Side APIs
   Future<Result<loc.Location>> acceptPatientbySpoke(Token token, Token patient);
-  Future<Result<String>> getAllPatients(Token token);
+  Future<Result<List<PatientDetails>>> getAllPatients(Token token);
   Future<Result<List<HubInfo>>> getAllHubDoctors(Token token);
   Future<Result<String>> savePatientReport(Token token, TreatmentReport report);
   Future<Result<String>> savePatientExamReport(
