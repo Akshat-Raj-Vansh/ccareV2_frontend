@@ -27,12 +27,12 @@ void main() {
     test('returns patient and driver details',() async {
       String token =  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjEzOGQyMDhlYmQzY2M4MmUxZmY2NWUyIiwiaWF0IjoxNjMxMTEzNzM3LCJleHAiOjE2MzE3MTg1MzcsImlzcyI6ImNvbS5jY2FyZW5pdGgifQ.OBCE6xyzGe0X6O3QoDIld5zIaXzN6GequUVzTreEtHY";
    
-        dynamic result = await api.fetchEmergencyDetails(Token(token));
+        // dynamic result = await api.fetchEmergencyDetails(Token(token),patientID:token.value);
        
-        if(result.isError)
-          print(result.asError.error);
-        else 
-        print(result.asValue.value);
+        // if(result.isError)
+        //   print(result.asError.error);
+        // else 
+        // print(result.asValue.value);
     });
   });
 

@@ -36,7 +36,7 @@ class PatientNotificationHandler {
         print("LOCATION DOCTOR");
         print(message.data["location"]);
         mainCubit.doctorAccepted(Location.fromJson(message.data["location"]));
-        await mainCubit.fetchEmergencyDetails();
+        await mainCubit.fetchEmergencyDetails(message.data["patientID"]);
       }
       if (message.data["user"] == "DRIVER") {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -52,7 +52,7 @@ class PatientNotificationHandler {
         print("LOCATION DRIVER");
         print(message.data["location"]);
         mainCubit.driverAccepted(Location.fromJson(message.data["location"]));
-        await mainCubit.fetchEmergencyDetails();
+        await mainCubit.fetchEmergencyDetails(message.data["patientID"]);
       }
     }
   }

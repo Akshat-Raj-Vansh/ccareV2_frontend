@@ -1,0 +1,45 @@
+//@dart=2.9
+import 'package:ccarev2_frontend/main/domain/edetails.dart';
+import 'package:ccarev2_frontend/pages/home/components/hub/hub_patient_info.dart';
+import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
+import 'package:ccarev2_frontend/user/domain/hub_doc_info.dart';
+import 'package:flutter/material.dart';
+
+import 'package:flutter_cubit/flutter_cubit.dart';
+
+class AcceptedPatientList extends StatelessWidget {
+  final List<EDetails> details;
+  final MainCubit cubit;
+  const AcceptedPatientList(this.details,this.cubit);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+        itemCount: details.length,
+        itemBuilder: (BuildContext context, int index) {
+          return InkWell(
+            onTap: () =>{
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      CubitProvider(
+                        create:(_)=>cubit,
+                        child:HubPatientInfo(details:details[index]),
+                      )
+                     
+                ),
+              ),
+            },
+            
+            child: ListTile(
+                leading: Icon(Icons.person),
+                trailing: Text(
+                  details[index].patientDetails.age as String,
+                  style: TextStyle(color: Colors.green, fontSize: 15),
+                ),
+                title: Text(details[index].patientDetails.name)),
+          );
+        });
+  }
+}

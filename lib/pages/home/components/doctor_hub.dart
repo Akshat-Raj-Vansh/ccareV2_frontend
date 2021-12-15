@@ -3,6 +3,8 @@ import 'dart:developer';
 
 import 'package:ccarev2_frontend/main/domain/edetails.dart';
 import 'package:ccarev2_frontend/pages/chat/chatScreen.dart';
+import 'package:ccarev2_frontend/pages/home/components/hub/hub_patient_list.dart';
+import 'package:ccarev2_frontend/pages/home/components/hub/hub_request_list.dart';
 import 'package:ccarev2_frontend/pages/home/home_page_adapter.dart';
 import 'package:ccarev2_frontend/pages/spoke_form/patient_exam_screen.dart';
 import 'package:ccarev2_frontend/pages/spoke_form/patient_history_screen.dart';
@@ -31,11 +33,12 @@ class HomeScreenHub extends StatefulWidget {
 }
 
 class _HomeScreenHubState extends State<HomeScreenHub> {
-  EDetails eDetails;
-  EDetails rDetails;
-  static bool _patientAccepted = false;
+  List<EDetails> eDetails;
+  List<EDetails> rDetails;
+  // static bool _patientAccepted = false;
   bool patientsLoaded = false;
   bool requestsLoaded = false;
+
   dynamic currentState = null;
   bool loader = false;
   String token;
@@ -139,13 +142,13 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
             log('LOG > doctor_hub.dart > 139 > state: ${state.toString()}');
             currentState = state;
             print(state);
-            eDetails = state.details[0];
+            eDetails = state.details;
             patientsLoaded = true;
           }
           if (state is HubRequestsLoaded) {
             log('LOG > doctor_hub.dart > 146 > state: ${state.toString()}');
             currentState = state;
-            rDetails = state.details[0];
+            rDetails = state.details;
             log('LOG > doctor_hub.dart > 149 > rDetails: ${rDetails}');
             requestsLoaded = true;
           }
@@ -172,14 +175,14 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
             print("Error State Called");
             // _hideLoader();
           } else if (state is HubPatientsLoaded) {
-            eDetails = state.details[0];
+            eDetails = state.details;
             patientsLoaded = true;
           } else if (state is HubRequestsLoaded) {
             currentState = state;
-            rDetails = state.details[0];
+            rDetails = state.details;
             requestsLoaded = true;
           } else if (state is PatientAcceptedHub) {
-            widget.mainCubit.fetchEmergencyDetails();
+            widget.mainCubit.fetchHubPatientDetails();
             widget.mainCubit.fetchHubRequests();
           } else if (state is TokenLoadedState) {
             token = state.token;
@@ -229,7 +232,7 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
           } else if (state is PatientAccepted) {
             // _hideLoader();
             print("Inside patient accepted by Doctor state");
-            widget.mainCubit.fetchEmergencyDetails();
+            widget.mainCubit.fetchHubPatientDetails();
           }
         }));
   }
@@ -240,298 +243,302 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             // patientsLoaded ? _buildPatientLoadedUI(context) : SizedBox(),
             // patientsLoaded ? _buildChatButton() : SizedBox(),
-            _buildPatientLoadedUI(context),
-            _buildChatButton(),
-            requestsLoaded ? _buildRequestUI(buildContext) : SizedBox(),
+            // _buildPatientLoadedUI(context),
+            // _buildChatButton(),
+            //  requestsLoaded ? _buildRequestUI(buildContext) : SizedBox(),
+            requestsLoaded ? RequestPatientList(patients:rDetails.map<PatientDetails>((e) => e.patientDetails).toList() , mainCubit: widget.mainCubit) :SizedBox(),
+            patientsLoaded? AcceptedPatientList(eDetails,widget.mainCubit):Text("No Patients"),
+            !patientsLoaded&&!requestsLoaded?Text("No Patients and Requests"):SizedBox(),
+           
           ]),
         ),
       ]);
 
-  _buildChatButton() => InkWell(
-        onTap: () async {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => CubitProvider<MainCubit>(
-                      create: (_) => widget.mainCubit,
-                      child: ChatPage(
-                          eDetails.doctorDetails.name,
-                          eDetails.doctorDetails.id,
-                          eDetails.patientDetails.id,
-                          token))));
-          // widget.mainCubit.getAllHubDoctors();
-          // Navigator.push(
-          //     context,
-          //     MaterialPageRoute(
-          //       builder: (context) =>
-          //           PatientReportHistoryScreen(mainCubit: widget.mainCubit),
-          //     ));
-        },
-        child: Container(
-          width: SizeConfig.screenWidth,
-          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          decoration: BoxDecoration(
-              color: kPrimaryLightColor,
-              borderRadius: BorderRadius.circular(20)),
-          child: Text(
-            eDetails.doctorDetails.name,
-            style: TextStyle(color: Colors.white, fontSize: 14),
-            textAlign: TextAlign.center,
-          ),
-        ),
-      );
+  // _buildChatButton() => InkWell(
+  //       onTap: () async {
+  //         Navigator.push(
+  //             context,
+  //             MaterialPageRoute(
+  //                 builder: (context) => CubitProvider<MainCubit>(
+  //                     create: (_) => widget.mainCubit,
+  //                     child: ChatPage(
+  //                         eDetails.doctorDetails.name,
+  //                         eDetails.doctorDetails.id,
+  //                         eDetails.patientDetails.id,
+  //                         token))));
+  //         // widget.mainCubit.getAllHubDoctors();
+  //         // Navigator.push(
+  //         //     context,
+  //         //     MaterialPageRoute(
+  //         //       builder: (context) =>
+  //         //           PatientReportHistoryScreen(mainCubit: widget.mainCubit),
+  //         //     ));
+  //       },
+  //       child: Container(
+  //         width: SizeConfig.screenWidth,
+  //         margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+  //         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+  //         decoration: BoxDecoration(
+  //             color: kPrimaryLightColor,
+  //             borderRadius: BorderRadius.circular(20)),
+  //         child: Text(
+  //           eDetails.doctorDetails.name,
+  //           style: TextStyle(color: Colors.white, fontSize: 14),
+  //           textAlign: TextAlign.center,
+  //         ),
+  //       ),
+  //     );
 
-  _buildPatientLoadedUI(BuildContext context) =>
-      Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        if (!_patientAccepted) _buildHeader(),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          child: Text(
-            "Patient Information",
-            style: TextStyle(fontSize: 24),
-          ),
-        ),
-        _buildPatientDetails(eDetails),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          child: Text(
-            "Spoke Doctor Information",
-            style: TextStyle(fontSize: 24),
-          ),
-        ),
+  // _buildPatientLoadedUI(BuildContext context) =>
+  //     Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+  //       if (!_patientAccepted) _buildHeader(),
+  //       Padding(
+  //         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+  //         child: Text(
+  //           "Patient Information",
+  //           style: TextStyle(fontSize: 24),
+  //         ),
+  //       ),
+  //       _buildPatientDetails(eDetails),
+  //       Padding(
+  //         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+  //         child: Text(
+  //           "Spoke Doctor Information",
+  //           style: TextStyle(fontSize: 24),
+  //         ),
+  //       ),
 
-        _buildSpokeDetails(eDetails),
-        //Needs to be conditional
-        _buildPatientReportButton(),
-        _buildPatientExamButton(),
-        _buildPatientReportHistoryButton(),
-      ]);
-  _buildRequestUI(BuildContext buildContext) =>
-      Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Text(
-          "Requests",
-          style: TextStyle(fontSize: 24),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          child: Text(
-            "Patient Information",
-            style: TextStyle(fontSize: 24),
-          ),
-        ),
-        _buildPatientDetails(rDetails),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          child: Text(
-            "Spoke Doctor Information",
-            style: TextStyle(fontSize: 24),
-          ),
-        ),
-        _buildSpokeDetails(rDetails),
-        _buildAcceptRequestButton()
-      ]);
+  //       _buildSpokeDetails(eDetails),
+  //       //Needs to be conditional
+  //       _buildPatientReportButton(),
+  //       _buildPatientExamButton(),
+  //       _buildPatientReportHistoryButton(),
+  //     ]);
+  // _buildRequestUI(BuildContext buildContext) =>
+  //     Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+  //       Text(
+  //         "Requests",
+  //         style: TextStyle(fontSize: 24),
+  //       ),
+  //       Padding(
+  //         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+  //         child: Text(
+  //           "Patient Information",
+  //           style: TextStyle(fontSize: 24),
+  //         ),
+  //       ),
+  //       _buildPatientDetails(rDetails),
+  //       Padding(
+  //         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+  //         child: Text(
+  //           "Spoke Doctor Information",
+  //           style: TextStyle(fontSize: 24),
+  //         ),
+  //       ),
+  //       _buildSpokeDetails(rDetails),
+  //       _buildAcceptRequestButton()
+  //     ]);
 
-  _buildHeader() => Container(
-      color: Colors.green[400],
-      padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-      child: ListTile(
-        leading: Icon(CupertinoIcons.person, color: Colors.white),
-        title: Text(
-          "No Patients Accepted Yet!!",
-          style: TextStyle(color: Colors.white, fontSize: 20),
-        ),
-        subtitle: Text(
-          "Keep an eye out for the Patients",
-          style: TextStyle(color: Colors.white, fontSize: 12),
-        ),
-      ));
+  // _buildHeader() => Container(
+  //     color: Colors.green[400],
+  //     padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+  //     child: ListTile(
+  //       leading: Icon(CupertinoIcons.person, color: Colors.white),
+  //       title: Text(
+  //         "No Patients Accepted Yet!!",
+  //         style: TextStyle(color: Colors.white, fontSize: 20),
+  //       ),
+  //       subtitle: Text(
+  //         "Keep an eye out for the Patients",
+  //         style: TextStyle(color: Colors.white, fontSize: 12),
+  //       ),
+  //     ));
 
-  _buildSpokeDetails(EDetails details) => Column(children: [
-        Container(
-          width: SizeConfig.screenWidth,
-          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-          child: Text(
-            "Spoke Doctor's Information",
-            textAlign: TextAlign.left,
-            style: TextStyle(fontSize: 18),
-          ),
-        ),
-        Container(
-          decoration: BoxDecoration(
-              color: Colors.red[100], borderRadius: BorderRadius.circular(20)),
-          width: SizeConfig.screenWidth,
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("Name: "),
-                  Text(details.doctorDetails.name),
-                ],
-              ),
-              const SizedBox(
-                height: 5,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("Contact Number: "),
-                  Text(details.doctorDetails.contactNumber),
-                ],
-              ),
-              const SizedBox(
-                height: 5,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("Hospital: "),
-                  Text(details.doctorDetails.hospital),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ]);
+  // _buildSpokeDetails(EDetails details) => Column(children: [
+  //       Container(
+  //         width: SizeConfig.screenWidth,
+  //         margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+  //         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+  //         child: Text(
+  //           "Spoke Doctor's Information",
+  //           textAlign: TextAlign.left,
+  //           style: TextStyle(fontSize: 18),
+  //         ),
+  //       ),
+  //       Container(
+  //         decoration: BoxDecoration(
+  //             color: Colors.red[100], borderRadius: BorderRadius.circular(20)),
+  //         width: SizeConfig.screenWidth,
+  //         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+  //         margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+  //         child: Column(
+  //           children: [
+  //             Row(
+  //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //               children: [
+  //                 Text("Name: "),
+  //                 Text(details.doctorDetails.name),
+  //               ],
+  //             ),
+  //             const SizedBox(
+  //               height: 5,
+  //             ),
+  //             Row(
+  //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //               children: [
+  //                 Text("Contact Number: "),
+  //                 Text(details.doctorDetails.contactNumber),
+  //               ],
+  //             ),
+  //             const SizedBox(
+  //               height: 5,
+  //             ),
+  //             Row(
+  //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //               children: [
+  //                 Text("Hospital: "),
+  //                 Text(details.doctorDetails.hospital),
+  //               ],
+  //             ),
+  //           ],
+  //         ),
+  //       ),
+  //     ]);
 
-  _buildPatientDetails(EDetails details) => Column(children: [
-        Container(
-          width: SizeConfig.screenWidth,
-          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-          child: Text(
-            "Patient's Information",
-            textAlign: TextAlign.left,
-            style: TextStyle(fontSize: 18),
-          ),
-        ),
-        Container(
-          decoration: BoxDecoration(
-              color: Colors.red[100], borderRadius: BorderRadius.circular(20)),
-          width: SizeConfig.screenWidth,
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("Name: "),
-                  Text(details.patientDetails.name),
-                ],
-              ),
-              const SizedBox(
-                height: 5,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("Contact Number: "),
-                  Text(details.patientDetails.contactNumber),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ]);
+  // _buildPatientDetails(EDetails details) => Column(children: [
+  //       Container(
+  //         width: SizeConfig.screenWidth,
+  //         margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+  //         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+  //         child: Text(
+  //           "Patient's Information",
+  //           textAlign: TextAlign.left,
+  //           style: TextStyle(fontSize: 18),
+  //         ),
+  //       ),
+  //       Container(
+  //         decoration: BoxDecoration(
+  //             color: Colors.red[100], borderRadius: BorderRadius.circular(20)),
+  //         width: SizeConfig.screenWidth,
+  //         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+  //         margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+  //         child: Column(
+  //           children: [
+  //             Row(
+  //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //               children: [
+  //                 Text("Name: "),
+  //                 Text(details.patientDetails.name),
+  //               ],
+  //             ),
+  //             const SizedBox(
+  //               height: 5,
+  //             ),
+  //             Row(
+  //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //               children: [
+  //                 Text("Contact Number: "),
+  //                 Text(details.patientDetails.contactNumber),
+  //               ],
+  //             ),
+  //           ],
+  //         ),
+  //       ),
+  //     ]);
 
-  _buildPatientReportButton() => InkWell(
-        onTap: () async {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => PatientReportScreen(
-                  mainCubit: widget.mainCubit,
-                  user: UserType.DOCTOR,
-                  patientDetails: eDetails.patientDetails,
-                ),
-              ));
-        },
-        child: Container(
-          width: SizeConfig.screenWidth,
-          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          decoration: BoxDecoration(
-              color: kPrimaryLightColor,
-              borderRadius: BorderRadius.circular(20)),
-          child: Text(
-            "View/Update Patient's Medical Report",
-            style: TextStyle(color: Colors.white, fontSize: 14),
-            textAlign: TextAlign.center,
-          ),
-        ),
-      );
+  // _buildPatientReportButton() => InkWell(
+  //       onTap: () async {
+  //         Navigator.push(
+  //             context,
+  //             MaterialPageRoute(
+  //               builder: (context) => PatientReportScreen(
+  //                 mainCubit: widget.mainCubit,
+  //                 user: UserType.DOCTOR,
+  //                 patientDetails: eDetails.patientDetails,
+  //               ),
+  //             ));
+  //       },
+  //       child: Container(
+  //         width: SizeConfig.screenWidth,
+  //         margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+  //         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+  //         decoration: BoxDecoration(
+  //             color: kPrimaryLightColor,
+  //             borderRadius: BorderRadius.circular(20)),
+  //         child: Text(
+  //           "View/Update Patient's Medical Report",
+  //           style: TextStyle(color: Colors.white, fontSize: 14),
+  //           textAlign: TextAlign.center,
+  //         ),
+  //       ),
+  //     );
 
-  _buildAcceptRequestButton() => InkWell(
-        onTap: () async {
-          widget.mainCubit.acceptPatientByHub(rDetails.patientDetails.id);
-          setState(() {
-            requestsLoaded = false;
-          });
-        },
-        child: Container(
-          width: SizeConfig.screenWidth,
-          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          decoration: BoxDecoration(
-              color: kPrimaryLightColor,
-              borderRadius: BorderRadius.circular(20)),
-          child: Text(
-            "Accept Request",
-            style: TextStyle(color: Colors.white, fontSize: 14),
-            textAlign: TextAlign.center,
-          ),
-        ),
-      );
+  // _buildAcceptRequestButton() => InkWell(
+  //       onTap: () async {
+  //         widget.mainCubit.acceptPatientByHub(rDetails.patientDetails.id);
+  //         setState(() {
+  //           requestsLoaded = false;
+  //         });
+  //       },
+  //       child: Container(
+  //         width: SizeConfig.screenWidth,
+  //         margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+  //         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+  //         decoration: BoxDecoration(
+  //             color: kPrimaryLightColor,
+  //             borderRadius: BorderRadius.circular(20)),
+  //         child: Text(
+  //           "Accept Request",
+  //           style: TextStyle(color: Colors.white, fontSize: 14),
+  //           textAlign: TextAlign.center,
+  //         ),
+  //       ),
+  //     );
 
-  _buildPatientExamButton() => InkWell(
-        onTap: () async {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => PatientExamScreen(
-                  mainCubit: widget.mainCubit,
-                  patientDetails: eDetails.patientDetails,
-                ),
-              ));
-        },
-        child: Container(
-          width: SizeConfig.screenWidth,
-          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          decoration: BoxDecoration(
-              color: kPrimaryLightColor,
-              borderRadius: BorderRadius.circular(20)),
-          child: Text(
-            "View/Update Patient's Exam Report",
-            style: TextStyle(color: Colors.white, fontSize: 14),
-            textAlign: TextAlign.center,
-          ),
-        ),
-      );
+  // _buildPatientExamButton() => InkWell(
+  //       onTap: () async {
+  //         Navigator.push(
+  //             context,
+  //             MaterialPageRoute(
+  //               builder: (context) => PatientExamScreen(
+  //                 mainCubit: widget.mainCubit,
+  //                 patientDetails: eDetails.patientDetails,
+  //               ),
+  //             ));
+  //       },
+  //       child: Container(
+  //         width: SizeConfig.screenWidth,
+  //         margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+  //         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+  //         decoration: BoxDecoration(
+  //             color: kPrimaryLightColor,
+  //             borderRadius: BorderRadius.circular(20)),
+  //         child: Text(
+  //           "View/Update Patient's Exam Report",
+  //           style: TextStyle(color: Colors.white, fontSize: 14),
+  //           textAlign: TextAlign.center,
+  //         ),
+  //       ),
+  //     );
 
-  _buildPatientReportHistoryButton() => InkWell(
-        onTap: () async {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) =>
-                    PatientReportHistoryScreen(mainCubit: widget.mainCubit),
-              ));
-        },
-        child: Container(
-          width: SizeConfig.screenWidth,
-          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          child: Text(
-            "View Patient's Medical Report History",
-            style: TextStyle(color: kPrimaryColor, fontSize: 14),
-            textAlign: TextAlign.center,
-          ),
-        ),
-      );
+  // _buildPatientReportHistoryButton() => InkWell(
+  //       onTap: () async {
+  //         Navigator.push(
+  //             context,
+  //             MaterialPageRoute(
+  //               builder: (context) =>
+  //                   PatientReportHistoryScreen(mainCubit: widget.mainCubit),
+  //             ));
+  //       },
+  //       child: Container(
+  //         width: SizeConfig.screenWidth,
+  //         margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+  //         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+  //         child: Text(
+  //           "View Patient's Medical Report History",
+  //           style: TextStyle(color: kPrimaryColor, fontSize: 14),
+  //           textAlign: TextAlign.center,
+  //         ),
+  //       ),
+  //     );
 }
