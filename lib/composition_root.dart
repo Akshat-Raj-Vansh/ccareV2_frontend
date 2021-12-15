@@ -54,8 +54,9 @@ class CompositionRoot {
     // secureClient = SecureClient(MHttpClient(client), localStore);
     // baseUrl = "http://192.168.252.151:3000";
     // baseUrl = "https://cardiocarenith.herokuapp.com";
-    baseUrl = "http://192.168.0.139:3000";
+    //baseUrl = "http://192.168.0.139:3000";
 
+    baseUrl = "http://192.168.95.55:3000";
     userAPI = UserAPI(client, baseUrl);
     mainAPI = MainAPI(client, baseUrl);
     mainCubit = MainCubit(localStore, mainAPI);

@@ -7,6 +7,8 @@ import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
 import 'package:ccarev2_frontend/state_management/main/main_state.dart';
 import 'package:ccarev2_frontend/user/domain/credential.dart';
 import 'package:ccarev2_frontend/user/domain/hub_doc_info.dart';
+import 'package:ccarev2_frontend/utils/constants.dart';
+import 'package:ccarev2_frontend/utils/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
 
@@ -65,28 +67,44 @@ class _PatientListState extends State<PatientList> {
 
   @override
   Widget build(BuildContext context) {
-    return CubitConsumer<MainCubit, MainState>(builder: (_, state) {
-      if (state is PatientsLoaded) {
-        currentState = PatientsLoaded;
-        _patients = state.patients;
-      }
-      if (state is NormalState) {
-        //   _hideLoader();
-        currentState = NormalState;
-      }
-      if (currentState == null)
-        return Center(child: CircularProgressIndicator());
-      return _buildList(context);
-    }, listener: (context, state) async {
-      if (state is LoadingState) {
-        print("Loading State Called");
-        log('LOG > doctor_spoke.dart > 197 > state: ${state.toString()}');
-        _showLoader();
-      } else if (state is ErrorState) {
-        _hideLoader();
-        log('LOG > doctor_spoke.dart > 204 > state: ${state.toString()}');
-      }
-    });
+    SizeConfig().init(context);
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('CardioCare - My Patients'),
+        backgroundColor: kPrimaryColor,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(Icons.arrow_back_ios),
+        ),
+      ),
+      body: CubitConsumer<MainCubit, MainState>(
+        builder: (_, state) {
+          if (state is PatientsLoaded) {
+            currentState = PatientsLoaded;
+            _patients = state.patients;
+          }
+          if (state is NormalState) {
+            //   _hideLoader();
+            currentState = NormalState;
+          }
+          if (currentState == null)
+            return Center(child: CircularProgressIndicator());
+          return _buildList(context);
+        },
+        listener: (context, state) async {
+          if (state is LoadingState) {
+            print("Loading State Called");
+            log('LOG > doctor_spoke.dart > 197 > state: ${state.toString()}');
+            _showLoader();
+          } else if (state is ErrorState) {
+            _hideLoader();
+            log('LOG > doctor_spoke.dart > 204 > state: ${state.toString()}');
+          }
+        },
+      ),
+    );
   }
 
   _buildList(context) => ListView.builder(

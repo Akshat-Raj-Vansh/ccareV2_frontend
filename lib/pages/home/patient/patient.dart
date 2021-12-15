@@ -50,7 +50,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
   void initState() {
     super.initState();
     CubitProvider.of<MainCubit>(context).fetchEmergencyDetails();
-    CubitProvider.of<MainCubit>(context).getStatus();
+    //CubitProvider.of<MainCubit>(context).getStatus();
     NotificationController.configure(
         widget.mainCubit, UserType.PATIENT, context);
     NotificationController.fcmHandler();
@@ -180,7 +180,6 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
               //   _emergency = true;
             }
           }
-          //TODO: #1 create a new state if no emerency requests have been made
           if (state is NormalState) {
             currentState = NormalState;
             if (state.msg == "NOT ASSIGNED") _notificationSent = true;
@@ -210,7 +209,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
             //  _currentStatus = EDetails.patientDetails.status;
           } else if (state is NormalState) {
             _hideLoader();
-            _showMessage(state.msg);
+            // _showMessage(state.msg);
           } else if (state is ErrorState) {
             _hideLoader();
           } else if (state is QuestionnaireState) {
@@ -270,7 +269,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                 ),
               if (_doctorAccepted) _buildDoctorDetails(),
               if (_driverAccepted) _buildDriverDetails(),
-              _buildPatientReportButton(),
+              if (_emergency) _buildPatientReportButton(),
               _buildPatientReportHistoryButton(),
             ],
           ),
@@ -311,7 +310,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
               color: kPrimaryLightColor,
               borderRadius: BorderRadius.circular(5)),
           child: Text(
-            "View Patient's Medical Report",
+            "View your current Medical Report",
             style: TextStyle(color: Colors.white, fontSize: 14),
             textAlign: TextAlign.center,
           ),

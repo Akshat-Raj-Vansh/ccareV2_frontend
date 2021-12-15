@@ -42,7 +42,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
   // static bool _hubAccepted = false;
   // static bool _ugt = false;
   // static String _currentStatus = "UNKNOWN";
-  dynamic currentState = null;
+  dynamic currentState = NormalState;
   String token;
   bool loader = false;
 
@@ -245,16 +245,27 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
               decoration: BoxDecoration(
                 color: kPrimaryColor,
               ),
-              child: Text('CardioCare - Spoke'),
+              child: Text(
+                'CardioCare  Spoke',
+                style: TextStyle(color: Colors.white, fontSize: 43),
+              ),
             ),
             ListTile(
-              title: const Text('My Profile'),
+              leading: Icon(Icons.person),
+              title: const Text(
+                'My Profile',
+                style: TextStyle(color: Colors.black54),
+              ),
               onTap: () {
                 Navigator.pop(context);
               },
             ),
             ListTile(
-              title: const Text('My Patients'),
+              leading: Icon(Icons.group),
+              title: const Text(
+                'My Patients',
+                style: TextStyle(color: Colors.black54),
+              ),
               onTap: () {
                 Navigator.push(
                     context,
@@ -267,19 +278,31 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
               },
             ),
             ListTile(
-              title: const Text('Consultation'),
+              leading: Icon(Icons.question_answer),
+              title: const Text(
+                'Consultation',
+                style: TextStyle(color: Colors.black54),
+              ),
               onTap: () {
                 Navigator.pop(context);
               },
             ),
             ListTile(
-              title: const Text('Settings'),
+              leading: Icon(Icons.settings),
+              title: const Text(
+                'Settings',
+                style: TextStyle(color: Colors.black54),
+              ),
               onTap: () {
                 Navigator.pop(context);
               },
             ),
             ListTile(
-              title: const Text('Log out'),
+              leading: Icon(Icons.logout),
+              title: const Text(
+                'Log out',
+                style: TextStyle(color: Colors.black54),
+              ),
               onTap: () async {
                 await showDialog(
                       context: context,

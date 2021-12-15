@@ -403,13 +403,12 @@ class MainAPI extends IMainAPI {
 
   @override
   Future<Result<List<PatientDetails>>> getAllPatients(Token token) async {
-    String endpoint = baseUrl + "/emergency/doctor/getAllPatients";
+    String endpoint = baseUrl + "/emergency/doctor/getAllPatient";
     var header = {
       "Content-Type": "application/json",
       "Authorization": token.value
     };
-    var response = await _client
-        .post(Uri.parse(endpoint), headers: header, body: {"json": "json"});
+    var response = await _client.post(Uri.parse(endpoint), headers: header);
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
       print(transformError(map));
