@@ -1,7 +1,7 @@
 //@dart=2.9
 import 'package:ccarev2_frontend/pages/emergency/emergency_screen.dart';
 import 'package:ccarev2_frontend/pages/home/components/doctor_hub.dart';
-import 'package:ccarev2_frontend/pages/home/components/doctor_spoke.dart';
+import 'package:ccarev2_frontend/pages/home/spoke/doctor_spoke.dart';
 import 'package:ccarev2_frontend/services/Notifications/notificationContoller.dart';
 import 'package:ccarev2_frontend/user/domain/details.dart';
 import 'package:ccarev2_frontend/user/domain/location.dart';
@@ -16,7 +16,7 @@ import 'package:socket_io_client/socket_io_client.dart';
 import '../../main/infra/main_api.dart';
 import '../../pages/auth/auth_page.dart';
 import '../../pages/home/components/driver.dart';
-import '../../pages/home/components/patient.dart';
+import 'pages/home/patient/patient.dart';
 import '../../pages/home/home_page_adapter.dart';
 import '../../pages/profile/profile_page_adapter.dart';
 import '../../pages/profile/profile_screen.dart';

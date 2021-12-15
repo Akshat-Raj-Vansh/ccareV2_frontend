@@ -1,18 +1,17 @@
 //@dart=2.9
 import 'dart:developer';
 
+import 'package:ccarev2_frontend/pages/home/spoke/components/hub_list.dart';
+import 'package:flutter/material.dart';
+
 import 'package:ccarev2_frontend/main/domain/edetails.dart';
 import 'package:ccarev2_frontend/pages/chat/chatScreen.dart';
-import 'package:ccarev2_frontend/pages/chat/components/chatModel.dart';
-import 'package:ccarev2_frontend/pages/home/components/doctors_spoke_list.dart';
-import 'package:ccarev2_frontend/pages/home/home_page_adapter.dart';
 import 'package:ccarev2_frontend/pages/spoke_form/patient_exam_screen.dart';
 import 'package:ccarev2_frontend/pages/spoke_form/patient_history_screen.dart';
 import 'package:ccarev2_frontend/pages/spoke_form/patient_report_screen.dart';
 import 'package:ccarev2_frontend/services/Notifications/notificationContoller.dart';
 import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
 import 'package:ccarev2_frontend/state_management/main/main_state.dart';
-import 'package:ccarev2_frontend/state_management/user/user_cubit.dart';
 import 'package:ccarev2_frontend/user/domain/credential.dart';
 import 'package:ccarev2_frontend/utils/constants.dart';
 import 'package:ccarev2_frontend/utils/size_config.dart';
@@ -20,20 +19,16 @@ import 'package:flutter_cubit/flutter_cubit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:scoped_model/scoped_model.dart';
 
-class HomeScreenSpoke extends StatefulWidget {
-  final MainCubit mainCubit;
-  final UserCubit userCubit;
-  final IHomePageAdapter homePageAdapter;
-
-  const HomeScreenSpoke(this.mainCubit, this.userCubit, this.homePageAdapter);
+class PatientInfo extends StatefulWidget {
+  final String patientID;
+  const PatientInfo(this.patientID);
 
   @override
-  _HomeScreenSpokeState createState() => _HomeScreenSpokeState();
+  _PatientInfoState createState() => _PatientInfoState();
 }
 
-class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
+class _PatientInfoState extends State<PatientInfo> {
   EDetails eDetails;
   static bool _emergency = false;
   static bool _patientAccepted = false;
@@ -44,14 +39,15 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
   dynamic currentState = null;
   String token;
   bool loader = false;
-
+  MainCubit mainCubit;
   @override
   void initState() {
     super.initState();
-    // CubitProvider.of<MainCubit>(context).fetchEmergencyDetails();
-    NotificationController.configure(widget.mainCubit, UserType.SPOKE, context);
+    mainCubit = CubitProvider.of<MainCubit>(context);
+    mainCubit.fetchEmergencyDetails(patientID: widget.patientID);
+    NotificationController.configure(mainCubit, UserType.SPOKE, context);
     NotificationController.fcmHandler();
-    CubitProvider.of<MainCubit>(context).fetchToken();
+    mainCubit.fetchToken();
   }
 
   // Future<loc.Location> _getLocation() async {
@@ -103,32 +99,37 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
       appBar: AppBar(
         title: Text('CardioCare - SPOKE'),
         backgroundColor: kPrimaryColor,
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(Icons.arrow_back_ios)),
       ),
       body: CubitConsumer<MainCubit, MainState>(
         builder: (_, state) {
-          // if (state is TokenLoadedState) {
-          //   token = state.token;
-          // }
-          // if (state is DetailsLoaded) {
-          //   currentState = DetailsLoaded;
-          //   eDetails = state.eDetails;
-          //   if (eDetails.patientDetails != null) {
-          //     _patientAccepted = true;
-          //     _emergency = true;
-          //     _currentStatus =
-          //         eDetails.patientDetails.status.toString().split('.')[1];
-          //     if (eDetails.patientDetails.status == EStatus.UGT) {
-          //       _ugt = true;
-          //     }
-          //   }
-          //   if (eDetails.driverDetails != null) {
-          //     _driverAccepted = true;
-          //     _emergency = true;
-          //   }
-          //   if (eDetails.hubDetails != null) {
-          //     _hubAccepted = true;
-          //   }
-          // }
+          if (state is TokenLoadedState) {
+            token = state.token;
+          }
+          if (state is DetailsLoaded) {
+            currentState = DetailsLoaded;
+            eDetails = state.eDetails;
+            if (eDetails.patientDetails != null) {
+              _patientAccepted = true;
+              _emergency = true;
+              _currentStatus =
+                  eDetails.patientDetails.status.toString().split('.')[1];
+              if (eDetails.patientDetails.status == EStatus.UGT) {
+                _ugt = true;
+              }
+            }
+            if (eDetails.driverDetails != null) {
+              _driverAccepted = true;
+              _emergency = true;
+            }
+            if (eDetails.hubDetails != null) {
+              _hubAccepted = true;
+            }
+          }
 
           if (state is NormalState) {
             //   _hideLoader();
@@ -149,34 +150,33 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
           } else if (state is TokenLoadedState) {
             token = state.token;
           }
-          // if (state is NewReportGenerated) {
-          //   _hideLoader();
-          //   log('LOG > doctor_spoke.dart > 212 > state: ${state.toString()}');
-          //   // Navigator.push(
-          //   //     context,
-          //   //     MaterialPageRoute(
-          //   //       builder: (context) => PatientReportScreen(
-          //   //         mainCubit: widget.mainCubit,
-          //   //         user: UserType.DOCTOR,
-          //   //         patientDetails: eDetails.patientDetails,
-          //   //       ),
-          //   //     ));
-          //   _showMessage(state.msg);
-          // } else if (state is AllHubDoctorsState) {
-          //   _hideLoader();
-          //   log('LOG > doctor_spoke.dart > 223 > state: ${state.toString()}',
-          //       time: DateTime.now());
-          //   showModalBottomSheet(
-          //       context: context,
-          //       builder: (_) {
-          //         return HubDoctorsList(state.docs, widget.mainCubit);
-          //       });
-          // } else if (state is ConsultHub) {
-          //   _hideLoader();
-          //   log('LOG > doctor_spoke.dart > 231 > state: ${state.toString()}',
-          //       time: DateTime.now());
-          //}
-          else if (state is AcceptState) {
+          if (state is NewReportGenerated) {
+            _hideLoader();
+            log('LOG > doctor_spoke.dart > 212 > state: ${state.toString()}');
+            // Navigator.push(
+            //     context,
+            //     MaterialPageRoute(
+            //       builder: (context) => PatientReportScreen(
+            //         mainCubit: widget.mainCubit,
+            //         user: UserType.DOCTOR,
+            //         patientDetails: eDetails.patientDetails,
+            //       ),
+            //     ));
+            _showMessage(state.msg);
+          } else if (state is AllHubDoctorsState) {
+            _hideLoader();
+            log('LOG > doctor_spoke.dart > 223 > state: ${state.toString()}',
+                time: DateTime.now());
+            showModalBottomSheet(
+                context: context,
+                builder: (_) {
+                  return HubDoctorsList(state.docs, mainCubit);
+                });
+          } else if (state is ConsultHub) {
+            _hideLoader();
+            log('LOG > doctor_spoke.dart > 231 > state: ${state.toString()}',
+                time: DateTime.now());
+          } else if (state is AcceptState) {
             _hideLoader();
             log('LOG > doctor_spoke.dart > 237 > state: ${state.toString()}',
                 time: DateTime.now());
@@ -206,8 +206,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
                       ),
                       TextButton(
                         onPressed: () async {
-                          widget.mainCubit
-                              .acceptPatientBySpoke(state.patientID);
+                          mainCubit.acceptPatientBySpoke(state.patientID);
                           Navigator.of(context).pop(false);
                         },
                         child: const Text(
@@ -220,16 +219,16 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
                 false;
           } else if (state is PatientAccepted) {
             _hideLoader();
-            // _emergency = true;
+            _emergency = true;
             log('LOG > doctor_spoke.dart > 280 > state: ${state.toString()}',
                 time: DateTime.now());
-            //   CubitProvider.of<MainCubit>(context).fetchEmergencyDetails();
+            CubitProvider.of<MainCubit>(context)
+                .fetchEmergencyDetails(patientID: widget.patientID);
+          } else if (state is AllPatientsState) {
+            log('LOG > doctor_spoke.dart > 284 > state: ${state.toString()}',
+                time: DateTime.now());
+            _hideLoader();
           }
-          // else if (state is AllPatientsState) {
-          //   log('LOG > doctor_spoke.dart > 284 > state: ${state.toString()}',
-          //       time: DateTime.now());
-          //   _hideLoader();
-          // }
         },
       ),
       drawer: Drawer(
@@ -268,48 +267,6 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
               title: const Text('Settings'),
               onTap: () {
                 Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              title: const Text('Log out'),
-              onTap: () async {
-                await showDialog(
-                      context: context,
-                      builder: (context) => AlertDialog(
-                        title: const Text(
-                          'Are you sure?',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 20,
-                          ),
-                        ),
-                        content: const Text(
-                          'Do you want to logout?',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w300,
-                            fontSize: 15,
-                          ),
-                        ),
-                        actions: [
-                          TextButton(
-                            onPressed: () => Navigator.of(context).pop(false),
-                            child: const Text(
-                              'Cancel',
-                            ),
-                          ),
-                          TextButton(
-                            onPressed: () async {
-                              widget.homePageAdapter
-                                  .onLogout(context, widget.userCubit);
-                            },
-                            child: const Text(
-                              'Yes',
-                            ),
-                          ),
-                        ],
-                      ),
-                    ) ??
-                    false;
               },
             ),
           ],
@@ -440,7 +397,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
 
   _buildStartTreatmentButton() => InkWell(
         onTap: () async {
-          widget.mainCubit.statusUpdate("UGT");
+          mainCubit.statusUpdate("UGT");
           _currentStatus = "UGT";
           _ugt = true;
         },
@@ -466,7 +423,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
               context,
               MaterialPageRoute(
                 builder: (context) => PatientReportScreen(
-                  mainCubit: widget.mainCubit,
+                  mainCubit: mainCubit,
                   user: UserType.DOCTOR,
                   patientDetails: eDetails.patientDetails,
                 ),
@@ -493,7 +450,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
               context,
               MaterialPageRoute(
                 builder: (context) => PatientExamScreen(
-                  mainCubit: widget.mainCubit,
+                  mainCubit: mainCubit,
                   patientDetails: eDetails.patientDetails,
                 ),
               ));
@@ -519,7 +476,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
               context,
               MaterialPageRoute(
                 builder: (context) =>
-                    PatientReportHistoryScreen(mainCubit: widget.mainCubit),
+                    PatientReportHistoryScreen(mainCubit: mainCubit),
               ));
         },
         child: Container(
@@ -536,7 +493,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
 
   _buildHubList() => InkWell(
         onTap: () async {
-          widget.mainCubit.getAllHubDoctors();
+          mainCubit.getAllHubDoctors();
           // Navigator.push(
           //     context,
           //     MaterialPageRoute(
@@ -564,7 +521,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
               context,
               MaterialPageRoute(
                   builder: (context) => CubitProvider<MainCubit>(
-                      create: (_) => widget.mainCubit,
+                      create: (_) => mainCubit,
                       child: ChatPage(
                           eDetails.hubDetails.name,
                           eDetails.hubDetails.id,
@@ -595,7 +552,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
 
   _buildNewReportButton() => InkWell(
         onTap: () async {
-          widget.mainCubit.generateNewReport();
+          mainCubit.generateNewReport();
         },
         child: Container(
           width: SizeConfig.screenWidth,
