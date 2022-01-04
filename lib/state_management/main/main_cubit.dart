@@ -42,6 +42,20 @@ class MainCubit extends Cubit<MainState> {
     emit(MessagesLoadedState(result.asValue!.value));
   }
 
+  recentHistory() async {
+    final token = await localStore.fetch();
+    print("fetchToken ${token.value}");
+    final result = await api.fetchLastReport(
+      Token(token.value),
+    );
+
+    if (result.isError) {
+      emit(ErrorState(result.asError!.error as String));
+      return;
+    }
+    emit(PreviousHistory(result.asValue!.value));
+  }
+
   fetchToken() async {
     // _startLoading("loadMessages");
     final token = await localStore.fetch();

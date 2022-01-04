@@ -6,7 +6,6 @@ import 'package:ccarev2_frontend/user/domain/profile.dart';
 import 'package:ccarev2_frontend/utils/size_config.dart';
 import 'package:flutter/material.dart';
 
-
 class PatientProfileScreen extends StatefulWidget {
   final ProfileCubit cubit;
   const PatientProfileScreen(this.cubit);
@@ -17,12 +16,12 @@ class PatientProfileScreen extends StatefulWidget {
 
 class _PatientProfileScreenState extends State<PatientProfileScreen> {
   final _formKeyPatient = GlobalKey<FormState>();
+  String name;
+  int age;
+  Gender gender = Gender.MALE;
 
   @override
   Widget build(BuildContext context) {
-    String name;
-    int age;
-    String gender="MALE";
     return Form(
       key: _formKeyPatient,
       child: Column(
@@ -43,7 +42,9 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
           TextFormField(
             keyboardType: TextInputType.number,
             onSaved: (newValue) => age = int.parse(newValue),
-            validator: (value) => value.isEmpty ? "Age is required" : (int.parse(value)>120?"Enter valid age":null),
+            validator: (value) => value.isEmpty
+                ? "Age is required"
+                : (int.parse(value) > 120 ? "Enter valid age" : null),
             decoration: const InputDecoration(
               labelText: "Age ",
               hintText: "Enter your Age",
@@ -52,30 +53,30 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
           ),
           SizedBox(height: getProportionateScreenHeight(10)),
           Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('ECG Type: '),
-                Container(
-                  width: SizeConfig.screenWidth * 0.4,
-                  child: DropdownButton<Gender>(
-                    isDense: false,
-                    value:Gender.MALE,
-                    onChanged: (Gender newValue) {
-                      setState(() {
-                        gender=newValue.toString().split(".")[1];
-                        print(gender);
-                      });
-                    },
-                    items: Gender.values.map((Gender value) {
-                      return DropdownMenuItem<Gender>(
-                        value: value,
-                        child: Text(value.toString().split('.')[1]),
-                      );
-                    }).toList(),
-                  ),
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('Gender: '),
+              Container(
+                width: SizeConfig.screenWidth * 0.4,
+                child: DropdownButton<Gender>(
+                  isDense: false,
+                  value: gender,
+                  onChanged: (Gender newValue) {
+                    setState(() {
+                      gender = newValue;
+                      print(gender);
+                    });
+                  },
+                  items: Gender.values.map((Gender value) {
+                    return DropdownMenuItem<Gender>(
+                      value: value,
+                      child: Text(value.toString().split('.')[1]),
+                    );
+                  }).toList(),
                 ),
-              ],
-            ),
+              ),
+            ],
+          ),
           //SizedBox(height: getProportionateScreenHeight(10)),
           const Spacer(
             flex: 1,
@@ -86,8 +87,10 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
               press: () {
                 if (_formKeyPatient.currentState.validate()) {
                   _formKeyPatient.currentState.save();
-                  var profile =
-                      PatientProfile(name: name, gender: gender, age: age);
+                  var profile = PatientProfile(
+                      name: name,
+                      gender: gender.toString().split(".")[1],
+                      age: age);
                   print(profile.toString());
                   widget.cubit.addPatientProfile(profile);
                 } else {

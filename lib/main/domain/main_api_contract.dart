@@ -19,6 +19,7 @@ abstract class IMainAPI {
 
   // Patient Side APIs
   Future<Result<List<QuestionTree>>> getAll(Token token);
+  Future<Result<TreatmentReport>> fetchLastReport(Token token);
   Future<Result<String>> emergencyRequest(Token token, Emergency emergency);
   Future<Result<String>> notify(
       Token token, loc.Location location, String action, bool ambRequired,
