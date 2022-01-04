@@ -22,7 +22,7 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
   Widget build(BuildContext context) {
     String name;
     int age;
-    String gender="MALE";
+    Gender gender =Gender.MALE;
     return Form(
       key: _formKeyPatient,
       child: Column(
@@ -54,15 +54,15 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
           Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('ECG Type: '),
+                Text('Gender: '),
                 Container(
                   width: SizeConfig.screenWidth * 0.4,
                   child: DropdownButton<Gender>(
                     isDense: false,
-                    value:Gender.MALE,
+                    value:gender,
                     onChanged: (Gender newValue) {
                       setState(() {
-                        gender=newValue.toString().split(".")[1];
+                        gender=newValue;
                         print(gender);
                       });
                     },
@@ -87,7 +87,7 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
                 if (_formKeyPatient.currentState.validate()) {
                   _formKeyPatient.currentState.save();
                   var profile =
-                      PatientProfile(name: name, gender: gender, age: age);
+                      PatientProfile(name: name, gender: gender.toString().split(".")[1], age: age);
                   print(profile.toString());
                   widget.cubit.addPatientProfile(profile);
                 } else {
