@@ -28,7 +28,7 @@ class AuthPage extends StatefulWidget {
   _AuthPageState createState() => _AuthPageState();
 }
 
-class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
+class _AuthPageState extends State<AuthPage> {
   String _verificationCode = "";
   String _otp = "";
   String _phone = "";
@@ -38,12 +38,6 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
     return int.parse("FF" + color.toUpperCase(), radix: 16);
   }
 
-  // String get timeString {
-  //   Duration duration =
-  //       animationController.duration * animationController.value;
-  //   return '${duration.inMinutes}:${(duration.inSeconds % 60).toString().padLeft(2, '0')}';
-  // }
-
   AnimationController animationController;
   final PageController _controller = PageController();
 
@@ -52,17 +46,7 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     print('AUTH PAGE');
-    // animationController =
-    //     AnimationController(vsync: this, duration: const Duration(minutes: 2));
-    // animationController.reverse(
-    //     from: animationController.value == 0 ? 1.0 : animationController.value);
     FirebaseMessaging.instance.getToken().then((value) => _fcmToken = value);
-  }
-
-  @override
-  void dispose() {
-    animationController.dispose();
-    super.dispose();
   }
 
   @override
@@ -245,228 +229,6 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
         ),
       );
 
-  // _phoneForm(BuildContext context, UserCubit cubit) => Container(
-  //       height: 300,
-  //       color: Colors.white,
-  //       width: double.infinity,
-  //       child: Padding(
-  //         padding:
-  //             EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
-  //         child: SingleChildScrollView(
-  //           child: Form(
-  //             key: _formKey,
-  //             child: Column(
-  //               children: [
-  //                 SizedBox(height: SizeConfig.screenHeight * 0.02),
-  //                 Row(
-  //                   children: [
-  //                     IconButton(
-  //                       onPressed: () => _onBackPressed(context),
-  //                       icon: const Icon(
-  //                         Icons.close,
-  //                         color: Colors.black,
-  //                       ),
-  //                     ),
-  //                     const Text(
-  //                       'Enter Mobile Number',
-  //                       textAlign: TextAlign.center,
-  //                       style: TextStyle(
-  //                           fontSize: 24, fontWeight: FontWeight.bold),
-  //                     ),
-  //                   ],
-  //                 ),
-  //                 const SizedBox(height: 30),
-  //                 Row(
-  //                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-  //                   children: [
-  //                     const Text(
-  //                       '+91',
-  //                       style: TextStyle(
-  //                         color: kPrimaryColor,
-  //                         fontSize: 18,
-  //                       ),
-  //                     ),
-  //                     CustomTextFormField(
-  //                         hint: "Mobile Number",
-  //                         obscureText: false,
-  //                         keyboardType: TextInputType.number,
-  //                         color: kPrimaryColor,
-  //                         width: MediaQuery.of(context).size.width * 0.70,
-  //                         backgroundColor: Colors.white,
-  //                         textAlign: TextAlign.center,
-  //                         onChanged: (value) {
-  //                           _phone = value;
-  //                         },
-  //                         validator: (phone) => phone.isEmpty
-  //                             ? "Please enter a Phone Number"
-  //                             : phone.length != 10
-  //                                 ? "Please enter a valid Phone Number"
-  //                                 : null),
-  //                   ],
-  //                 ),
-  //                 SizedBox(height: SizeConfig.screenHeight * 0.06),
-  //                 RaisedButton(
-  //                   onPressed: () async {
-  //                     print('LOGIN BUTTON CLICKED');
-  //                     if (_formKey.currentState.validate()) {
-  //                       cubit.verifyPhone();
-  //                     }
-  //                   },
-  //                   shape: RoundedRectangleBorder(
-  //                       borderRadius: BorderRadius.circular(30)),
-  //                   padding: const EdgeInsets.all(0),
-  //                   child: Container(
-  //                     width: MediaQuery.of(context).size.width / 1.5,
-  //                     alignment: Alignment.center,
-  //                     padding: const EdgeInsets.only(top: 8, bottom: 8),
-  //                     decoration: ShapeDecoration(
-  //                       color: kPrimaryColor,
-  //                       shape: RoundedRectangleBorder(
-  //                           borderRadius: BorderRadius.circular(30)),
-  //                     ),
-  //                     child: const Text(
-  //                       "Login",
-  //                       style: TextStyle(color: Colors.white, fontSize: 20),
-  //                     ),
-  //                   ),
-  //                 ),
-  //               ],
-  //             ),
-  //           ),
-  //         ),
-  //       ),
-  //     );
-
-  // _otpForm(BuildContext context, UserCubit cubit) {
-  //   animationController.reverse(
-  //       from: animationController.value == 0 ? 1.0 : animationController.value);
-  //   return Container(
-  //     height: 300,
-  //     color: Colors.white,
-  //     width: double.infinity,
-  //     child: Padding(
-  //       padding:
-  //           EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
-  //       child: SingleChildScrollView(
-  //         child: Form(
-  //           key: _formKey,
-  //           child: Column(
-  //             children: [
-  //               SizedBox(height: SizeConfig.screenHeight * 0.02),
-  //               Row(
-  //                 children: [
-  //                   IconButton(
-  //                     onPressed: () => _controller.previousPage(
-  //                         duration: const Duration(microseconds: 1000),
-  //                         curve: Curves.elasticIn),
-  //                     icon: const Icon(
-  //                       Icons.arrow_back_ios,
-  //                       color: Colors.black,
-  //                     ),
-  //                   ),
-  //                   const Text(
-  //                     'Enter OTP',
-  //                     textAlign: TextAlign.center,
-  //                     style:
-  //                         TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-  //                   ),
-  //                 ],
-  //               ),
-  //               const SizedBox(height: 30),
-  //               Row(
-  //                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-  //                 children: [
-  //                   CustomTextFormField(
-  //                       hint: "OTP",
-  //                       obscureText: false,
-  //                       keyboardType: TextInputType.number,
-  //                       color: kPrimaryColor,
-  //                       width: MediaQuery.of(context).size.width * 0.40,
-  //                       backgroundColor: Colors.white,
-  //                       textAlign: TextAlign.center,
-  //                       initialValue: "",
-  //                       onChanged: (value) {
-  //                         _otp = value;
-  //                       },
-  //                       validator: (otp) => otp.isEmpty || otp == ""
-  //                           ? "Please enter the OTP"
-  //                           : otp.length != 6
-  //                               ? "Please enter a valid OTP"
-  //                               : null),
-  //                   buildTimer(),
-  //                 ],
-  //               ),
-  //               SizedBox(height: SizeConfig.screenHeight * 0.02),
-  //               Text(
-  //                 "We sent your code to - $_phone",
-  //                 style: const TextStyle(color: Colors.green, fontSize: 16),
-  //               ),
-  //               GestureDetector(
-  //                 onTap: () {
-  //                   animationController.reverse(
-  //                       from: animationController.value == 0
-  //                           ? 1.0
-  //                           : animationController.value);
-  //                   cubit.verifyPhone();
-  //                 },
-  //                 child: const Text(
-  //                   "Resend OTP Code",
-  //                   style: TextStyle(
-  //                       color: Colors.green,
-  //                       decoration: TextDecoration.underline),
-  //                 ),
-  //               ),
-  //               SizedBox(height: SizeConfig.screenHeight * 0.02),
-  //               RaisedButton(
-  //                 onPressed: () {
-  //                   _verifyOTP(_otp, _verificationCode);
-  //                 },
-  //                 shape: RoundedRectangleBorder(
-  //                     borderRadius: BorderRadius.circular(30)),
-  //                 padding: const EdgeInsets.all(0),
-  //                 child: Container(
-  //                   width: MediaQuery.of(context).size.width / 1.5,
-  //                   alignment: Alignment.center,
-  //                   padding: const EdgeInsets.only(top: 8, bottom: 8),
-  //                   decoration: ShapeDecoration(
-  //                     color: kPrimaryColor,
-  //                     shape: RoundedRectangleBorder(
-  //                         borderRadius: BorderRadius.circular(30)),
-  //                   ),
-  //                   child: const Text(
-  //                     "Verify",
-  //                     style: TextStyle(color: Colors.white, fontSize: 20),
-  //                   ),
-  //                 ),
-  //               ),
-  //             ],
-  //           ),
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
-
-  // Row buildTimer() {
-  //   return Row(
-  //     mainAxisAlignment: MainAxisAlignment.center,
-  //     children: [
-  //       const Text("Resend OTP in ",
-  //           style: TextStyle(fontSize: 16, color: kPrimaryColor)),
-  //       AnimatedBuilder(
-  //         animation: animationController,
-  //         builder: (_, child) {
-  //           return Text(timeString,
-  //               style: const TextStyle(
-  //                   fontSize: 16,
-  //                   color: kPrimaryColor,
-  //                   fontWeight: FontWeight.bold));
-  //         },
-  //       )
-  //     ],
-  //   );
-  // }
-
   _verifyPhone(String phone) async {
     print('INSIDE VERIFY PHONE');
     print("AuthPage: $_phone");
@@ -526,9 +288,13 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
               widget.userType, _fcmToken, Token(value.user.uid.toString())));
         } else {
           _msg = "VERIFICATION FAILED. INVALID OTP.";
+          print('INVALID OTP');
           _hideLoader();
           _showMessage(_msg);
         }
+      }).catchError((err) {
+        print("INVALID OTP 2");
+        _showMessage('WRONG OTP ENTERED');
       });
     } catch (e) {
       _msg = "VERIFICATION FAILED " + e.toString();

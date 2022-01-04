@@ -69,6 +69,8 @@ class _PhoneFormState extends State<PhoneForm> {
                         backgroundColor: Colors.white,
                         textAlign: TextAlign.center,
                         onChanged: (value) {
+                          if (value.length > 10)
+                            _formKey.currentState!.validate();
                           _phone = value;
                         },
                         validator: (phone) => phone.isEmpty

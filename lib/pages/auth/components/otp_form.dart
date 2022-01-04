@@ -30,6 +30,13 @@ class _OTPFormState extends State<OTPForm> with TickerProviderStateMixin {
   }
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    animationController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       height: 300,
@@ -77,6 +84,8 @@ class _OTPFormState extends State<OTPForm> with TickerProviderStateMixin {
                         textAlign: TextAlign.center,
                         initialValue: "",
                         onChanged: (value) {
+                          if (value.length >= 6)
+                            _formKey.currentState!.validate();
                           _otp = value;
                         },
                         validator: (otp) => otp.isEmpty || otp == ""
@@ -89,16 +98,15 @@ class _OTPFormState extends State<OTPForm> with TickerProviderStateMixin {
                 ),
                 SizedBox(height: SizeConfig.screenHeight * 0.02),
                 Text(
-                  "We sent your code to - $widget.phone",
+                  "We sent your code to - ${widget.phone}",
                   style: const TextStyle(color: Colors.green, fontSize: 16),
                 ),
                 GestureDetector(
                   onTap: () {
-                    animationController.reverse(
-                        from: animationController.value == 0
-                            ? 1.0
-                            : animationController.value);
-                    widget.cubit.verifyPhone(widget.phone);
+                    if (animationController.value == 0) {
+                      animationController.reverse(from: 1);
+                      widget.cubit.verifyPhone(widget.phone);
+                    }
                   },
                   child: const Text(
                     "Resend OTP Code",
