@@ -15,8 +15,11 @@ class LoadingState extends UserState {
 }
 
 class PhoneVerificationState extends UserState {
+  final String phone;
+
+  PhoneVerificationState(this.phone);
   @override
-  List<Object> get props => [];
+  List<Object> get props => [this.phone];
 }
 
 class OTPVerificationState extends UserState {
@@ -51,7 +54,6 @@ class LoginSuccessState extends UserState {
 }
 
 class SignOutSuccessState extends UserState {
-  
   @override
   List<Object> get props => [];
 }

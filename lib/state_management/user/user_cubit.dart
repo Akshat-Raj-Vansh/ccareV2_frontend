@@ -27,9 +27,9 @@ class UserCubit extends Cubit<UserState> {
     _setResultOfAuthStateNew(result);
   }
 
-  verifyPhone() async {
+  verifyPhone(String phone) async {
     _startLoading();
-    emit(PhoneVerificationState());
+    emit(PhoneVerificationState(phone));
   }
 
   verifyOTP() async {
