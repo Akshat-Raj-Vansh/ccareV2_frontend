@@ -6,6 +6,7 @@ import 'package:ccarev2_frontend/user/domain/profile.dart';
 import 'package:ccarev2_frontend/utils/size_config.dart';
 import 'package:flutter/material.dart';
 
+
 class PatientProfileScreen extends StatefulWidget {
   final ProfileCubit cubit;
   const PatientProfileScreen(this.cubit);
@@ -21,7 +22,7 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
   Widget build(BuildContext context) {
     String name;
     int age;
-    String gender;
+    String gender="MALE";
     return Form(
       key: _formKeyPatient,
       child: Column(
@@ -42,7 +43,7 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
           TextFormField(
             keyboardType: TextInputType.number,
             onSaved: (newValue) => age = int.parse(newValue),
-            validator: (value) => value.isEmpty ? "Age is required" : null,
+            validator: (value) => value.isEmpty ? "Age is required" : (int.parse(value)>120?"Enter valid age":null),
             decoration: const InputDecoration(
               labelText: "Age ",
               hintText: "Enter your Age",
@@ -50,16 +51,31 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
             ),
           ),
           SizedBox(height: getProportionateScreenHeight(10)),
-          TextFormField(
-            keyboardType: TextInputType.text,
-            onSaved: (newValue) => gender = newValue.toUpperCase(),
-            validator: (value) => value.isEmpty ? "Gender is required" : null,
-            decoration: const InputDecoration(
-              labelText: "Gender",
-              hintText: "Enter your Gender",
-              floatingLabelBehavior: FloatingLabelBehavior.always,
+          Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('ECG Type: '),
+                Container(
+                  width: SizeConfig.screenWidth * 0.4,
+                  child: DropdownButton<Gender>(
+                    isDense: false,
+                    value:Gender.MALE,
+                    onChanged: (Gender newValue) {
+                      setState(() {
+                        gender=newValue.toString().split(".")[1];
+                        print(gender);
+                      });
+                    },
+                    items: Gender.values.map((Gender value) {
+                      return DropdownMenuItem<Gender>(
+                        value: value,
+                        child: Text(value.toString().split('.')[1]),
+                      );
+                    }).toList(),
+                  ),
+                ),
+              ],
             ),
-          ),
           //SizedBox(height: getProportionateScreenHeight(10)),
           const Spacer(
             flex: 1,

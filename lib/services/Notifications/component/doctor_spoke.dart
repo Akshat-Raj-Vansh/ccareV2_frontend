@@ -47,8 +47,7 @@ class SpokeNotificationHandler {
         //   ),
         // ));
         mainCubit.driverAccepted(Location.fromJson(message.data["location"]));
-        await mainCubit.fetchEmergencyDetails(
-            patientID: message.data["patientID"]);
+        await mainCubit.fetchEmergencyDetails(patientID:message.data["patientID"]);
       }
     }
   }

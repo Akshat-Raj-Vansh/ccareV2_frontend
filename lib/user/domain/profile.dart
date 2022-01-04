@@ -230,3 +230,5 @@ class DriverProfile {
         location.hashCode;
   }
 }
+
+enum Gender {MALE,FEMALE,OTHERS}
