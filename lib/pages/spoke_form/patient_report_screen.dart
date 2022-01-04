@@ -602,7 +602,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
                               MaterialPageRoute(builder: (_) {
                             return FullScreenImage(
                               imageUrl:
-                                  "http://192.168.0.139:3000/treatment/fetchECG?fileID=${treatmentReport.ecg.ecg_file_id}",
+                                  "http://192.168.108.55:3000/treatment/fetchECG?fileID=${treatmentReport.ecg.ecg_file_id}",
                               tag: "generate_a_unique_tag",
                             );
                           }));
@@ -610,10 +610,10 @@ class _PatientReportScreenState extends State<PatientReportScreen>
                         child: Hero(
                           child: Image(
                               image: NetworkImage(
-                                  "http://192.168.0.139:3000/treatment/fetchECG?fileID=${treatmentReport.ecg.ecg_file_id}",
+                                  "http://192.168.108.55:3000/treatment/fetchECG?fileID=${treatmentReport.ecg.ecg_file_id}",
                                   headers: {
                                     "Authorization":
-                                        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjFhMWU5ZGNiYWI4MjZkZTk4NjBmNzkzIiwiaWF0IjoxNjM4MjY1MzkxLCJleHAiOjE2Mzg4NzAxOTEsImlzcyI6ImNvbS5jY2FyZW5pdGgifQ.K-_DprXx2ipOwWt17DODlMDqQSgtWdv8aARjlPdEuzA"
+                                        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjFiOWNmNGNjNzUxNjMwZWFjOTI2MmY4IiwiaWF0IjoxNjM5NTY3MTgxLCJleHAiOjE2NDAxNzE5ODEsImlzcyI6ImNvbS5jY2FyZW5pdGgifQ.-LlsoqD5xKwUlm16-PBZzdO-kKBC9VK-otDoKwdWL00"
                                   }),
                               width: 100,
                               height: 100,

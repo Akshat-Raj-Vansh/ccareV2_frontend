@@ -11,6 +11,7 @@ class HubDoctorsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+        shrinkWrap: true,
         itemCount: hubDocs.length,
         itemBuilder: (BuildContext context, int index) {
           return InkWell(

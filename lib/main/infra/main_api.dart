@@ -9,6 +9,7 @@ import 'package:ccarev2_frontend/user/domain/doc_info.dart';
 import 'package:ccarev2_frontend/user/domain/emergency.dart';
 import 'package:ccarev2_frontend/user/domain/hub_doc_info.dart';
 import 'package:ccarev2_frontend/user/domain/location.dart';
+import 'package:ccarev2_frontend/user/domain/patient_list_info.dart';
 import 'package:ccarev2_frontend/utils/constants.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:http/http.dart' as http;
@@ -252,6 +253,9 @@ class MainAPI extends IMainAPI {
       print(transformError(map));
       return Result.error(transformError(map));
     }
+
+    if (jsonDecode(response.body)['history'] == null)
+      return Result.error("No history in records");
     List<treat.TreatmentReport> report =
         (jsonDecode(response.body)['history'] as List)
             .map((data) => treat.TreatmentReport.fromJson(jsonEncode(data)))
@@ -278,7 +282,9 @@ class MainAPI extends IMainAPI {
     dynamic report = jsonDecode(response.body)['treatment'];
     log('LOG > main_api.dart > fetchPatientExamReport > 277 > report: ${report}');
     var init = Examination.initialize();
-    if (report['normalTreatment'] == null) return Result.value(init);
+    print('NTR REPORT');
+    print(report);
+    if (report['normalTreatment']['lmwh'] == null) return Result.value(init);
     return Result.value(Examination.fromJson(jsonEncode(report)));
 
     // try {
@@ -402,7 +408,7 @@ class MainAPI extends IMainAPI {
   }
 
   @override
-  Future<Result<List<PatientDetails>>> getAllPatients(Token token) async {
+  Future<Result<List<PatientListInfo>>> getAllPatients(Token token) async {
     String endpoint = baseUrl + "/emergency/doctor/getAllPatient";
     var header = {
       "Content-Type": "application/json",
@@ -414,10 +420,11 @@ class MainAPI extends IMainAPI {
       print(transformError(map));
       return Result.error(transformError(map));
     }
-    dynamic json = jsonDecode(response.body);
+
+    dynamic json = jsonDecode(response.body)['patients'];
     return Result.value(json
-        .map<PatientDetails>(
-            (element) => PatientDetails.fromJson(jsonEncode(element)))
+        .map<PatientListInfo>(
+            (element) => PatientListInfo.fromJson(jsonEncode(element)))
         .toList());
   }
 
@@ -610,7 +617,8 @@ class MainAPI extends IMainAPI {
       print(transformError(map));
       return Result.error(transformError(map));
     }
-    if (jsonDecode(response.body)["messages"] == null)
+    if (jsonDecode(response.body)["messages"] == null ||
+        jsonDecode(response.body)["messages"].length == 0)
       return Result.error("error");
     dynamic json = jsonDecode(response.body)["messages"] as List;
     print(json.last);

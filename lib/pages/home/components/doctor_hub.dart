@@ -172,7 +172,7 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
           // } else
           log('LOG > doctor_hub.dart > 165 > state: ${state.toString()}');
           if (state is ErrorState) {
-            print("Error State Called");
+            print("Error State Called HUB DOCTORr");
             // _hideLoader();
           } else if (state is HubPatientsLoaded) {
             eDetails = state.details;
@@ -246,10 +246,20 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
             // _buildPatientLoadedUI(context),
             // _buildChatButton(),
             //  requestsLoaded ? _buildRequestUI(buildContext) : SizedBox(),
-            requestsLoaded ? RequestPatientList(patients:rDetails.map<PatientDetails>((e) => e.patientDetails).toList() , mainCubit: widget.mainCubit) :SizedBox(),
-            patientsLoaded? AcceptedPatientList(eDetails,widget.mainCubit):Text("No Patients"),
-            !patientsLoaded&&!requestsLoaded?Text("No Patients and Requests"):SizedBox(),
-           
+            requestsLoaded
+                ? RequestPatientList(
+                    patients: rDetails
+                        .map<PatientDetails>((e) => e.patientDetails)
+                        .toList(),
+                    mainCubit: widget.mainCubit)
+                : SizedBox(),
+            patientsLoaded
+                ? AcceptedPatientList(
+                    eDetails, CubitProvider.of<MainCubit>(context))
+                : Text("No Patients"),
+            !patientsLoaded && !requestsLoaded
+                ? Text("No Patients and Requests")
+                : SizedBox(),
           ]),
         ),
       ]);

@@ -94,7 +94,7 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
                     },
                     listener: (context, state) {
                       if (state is LoadingState) {
-                        print("Loading State Called");
+                        print("Loading State Called Auth");
                         _showLoader();
                       } else if (state is LoginSuccessState) {
                         print("Login Success State Called");

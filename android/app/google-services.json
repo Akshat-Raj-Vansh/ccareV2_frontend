@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "797374976435-g439fr1neko57orl533lbbv1504vonbc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ccarev2_frontend",
+            "certificate_hash": "8751fb8c96ccf2dda1904d449df845a5d352f867"
+          }
+        },
+        {
           "client_id": "797374976435-pl15ctcu1u53e3oh15ksu9puubgd27vu.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

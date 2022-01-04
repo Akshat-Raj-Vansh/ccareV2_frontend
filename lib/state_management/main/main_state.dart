@@ -8,6 +8,7 @@ import 'package:ccarev2_frontend/services/Notifications/component/patient.dart';
 import 'package:ccarev2_frontend/user/domain/doc_info.dart';
 import 'package:ccarev2_frontend/user/domain/hub_doc_info.dart';
 import 'package:ccarev2_frontend/user/domain/location.dart';
+import 'package:ccarev2_frontend/user/domain/patient_list_info.dart';
 import 'package:equatable/equatable.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../main/domain/question.dart';
@@ -207,7 +208,7 @@ class AllHubDoctorsState extends MainState {
 }
 
 class PatientsLoaded extends MainState {
-  final List<PatientDetails> patients;
+  final List<PatientListInfo> patients;
   PatientsLoaded(this.patients);
   @override
   List<Object> get props => [patients];

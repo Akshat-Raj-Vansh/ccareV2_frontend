@@ -28,7 +28,7 @@ class ChatModel extends Model {
     userChatID = patientID + "-" + token;
 
     socket = IO.io(
-        'http://192.168.0.139:3000',
+        'http://192.168.108.55:3000',
         IO.OptionBuilder()
             .setTransports(['websocket'])
             .disableAutoConnect()
@@ -42,8 +42,9 @@ class ChatModel extends Model {
       print(err);
     });
     socket.on("receive_message", (jsonData) {
-      print(jsonData);
-      Map<String, dynamic> data = json.decode(jsonData);
+      print(jsonEncode(jsonData));
+      print(jsonEncode(jsonData['content']));
+      Map<String, dynamic> data = jsonDecode(jsonEncode(jsonData));
       messages.add(Message(
           data['content'], data['senderChatID'], data['receiverChatID']));
       notifyListeners();

@@ -12,20 +12,21 @@ class RequestPatientList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+        shrinkWrap: true,
         itemCount: patients.length,
         itemBuilder: (BuildContext context, int index) {
-          return  ListTile(
-                leading: Icon(Icons.person),
-                subtitle: Text(
-                  patients[index].name,
-                  style: TextStyle(color: Colors.green, fontSize: 15),
-                ),
-                title: Text(patients[index].name),
-                trailing: TextButton(onPressed: (){
-                  mainCubit.acceptPatientByHub(patients[index].id);
-                }, child: Text('Accept'))
-                );
-        
+          return ListTile(
+              leading: Icon(Icons.person),
+              subtitle: Text(
+                patients[index].name,
+                style: TextStyle(color: Colors.green, fontSize: 15),
+              ),
+              title: Text(patients[index].name),
+              trailing: TextButton(
+                  onPressed: () {
+                    mainCubit.acceptPatientByHub(patients[index].id);
+                  },
+                  child: Text('Accept')));
         });
   }
 }

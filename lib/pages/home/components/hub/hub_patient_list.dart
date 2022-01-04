@@ -10,32 +10,29 @@ import 'package:flutter_cubit/flutter_cubit.dart';
 class AcceptedPatientList extends StatelessWidget {
   final List<EDetails> details;
   final MainCubit cubit;
-  const AcceptedPatientList(this.details,this.cubit);
+  const AcceptedPatientList(this.details, this.cubit);
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+        shrinkWrap: true,
         itemCount: details.length,
         itemBuilder: (BuildContext context, int index) {
           return InkWell(
-            onTap: () =>{
+            onTap: () => {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) =>
-                      CubitProvider(
-                        create:(_)=>cubit,
-                        child:HubPatientInfo(details:details[index]),
-                      )
-                     
-                ),
+                    builder: (context) => CubitProvider(
+                          create: (_) => cubit,
+                          child: HubPatientInfo(details: details[index]),
+                        )),
               ),
             },
-            
             child: ListTile(
                 leading: Icon(Icons.person),
                 trailing: Text(
-                  details[index].patientDetails.age as String,
+                  details[index].patientDetails.age.toString(),
                   style: TextStyle(color: Colors.green, fontSize: 15),
                 ),
                 title: Text(details[index].patientDetails.name)),

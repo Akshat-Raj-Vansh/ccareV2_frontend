@@ -7,6 +7,7 @@ import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
 import 'package:ccarev2_frontend/state_management/main/main_state.dart';
 import 'package:ccarev2_frontend/user/domain/credential.dart';
 import 'package:ccarev2_frontend/user/domain/hub_doc_info.dart';
+import 'package:ccarev2_frontend/user/domain/patient_list_info.dart';
 import 'package:ccarev2_frontend/utils/constants.dart';
 import 'package:ccarev2_frontend/utils/size_config.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +21,7 @@ class PatientList extends StatefulWidget {
 }
 
 class _PatientListState extends State<PatientList> {
-  List<PatientDetails> _patients = [];
+  static List<PatientListInfo> _patients = [];
   static bool loader = false;
   static dynamic currentState = null;
 
@@ -82,8 +83,10 @@ class _PatientListState extends State<PatientList> {
       body: CubitConsumer<MainCubit, MainState>(
         builder: (_, state) {
           if (state is PatientsLoaded) {
+            //  _hideLoader();
             currentState = PatientsLoaded;
             _patients = state.patients;
+            print(_patients);
           }
           if (state is NormalState) {
             //   _hideLoader();
@@ -95,9 +98,9 @@ class _PatientListState extends State<PatientList> {
         },
         listener: (context, state) async {
           if (state is LoadingState) {
-            print("Loading State Called");
+            print("Loading State Called Patient List");
             log('LOG > doctor_spoke.dart > 197 > state: ${state.toString()}');
-            _showLoader();
+//_showLoader();
           } else if (state is ErrorState) {
             _hideLoader();
             log('LOG > doctor_spoke.dart > 204 > state: ${state.toString()}');
@@ -108,6 +111,7 @@ class _PatientListState extends State<PatientList> {
   }
 
   _buildList(context) => ListView.builder(
+        shrinkWrap: true,
         itemCount: _patients.length,
         itemBuilder: (BuildContext context, int index) {
           return InkWell(
@@ -122,11 +126,11 @@ class _PatientListState extends State<PatientList> {
             ),
             child: ListTile(
                 leading: Icon(Icons.person),
-                trailing: Text(
+                title: Text(
                   _patients[index].name,
                   style: TextStyle(color: Colors.green, fontSize: 15),
                 ),
-                title: Text(_patients[index].name)),
+                trailing: Text(_patients[index].age.toString())),
           );
         },
       );

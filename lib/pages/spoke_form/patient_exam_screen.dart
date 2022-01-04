@@ -107,6 +107,16 @@ class _PatientExamScreenState extends State<PatientExamScreen>
     return CubitConsumer<MainCubit, MainState>(
       cubit: widget.mainCubit,
       builder: (_, state) {
+        if (state is PatientExamReportFetched) {
+          log('LOG > patient_exam_screen.dart > 112 > state: ${state.toString()}');
+          editedReport = state.ereport;
+          print('DATA > patient_exam_screen.dart > 113 > state: ${state}');
+          print(editedReport);
+          log('LOG > patient_exam_screen.dart > 116 > editedReport: ${editedReport}');
+          noReport = false;
+          print(widget.patientDetails.toString());
+          //  _hideLoader();
+        }
         return buildUI();
       },
       listener: (context, state) {
@@ -116,23 +126,23 @@ class _PatientExamScreenState extends State<PatientExamScreen>
           log('LOG > patient_exam_screen.dart > 116 > editedReport: ${editedReport}');
           noReport = false;
           print(widget.patientDetails.toString());
-          _hideLoader();
+          //  _hideLoader();
         }
         if (state is EditPatientExamReport) {
           log('LOG > patient_exam_screen.dart > 121 > state: ${state.toString()}');
-          _hideLoader();
+          //   _hideLoader();
           editReport = true;
         }
         if (state is ViewPatientExamReport) {
           log('LOG > patient_exam_screen.dart > 126 > state: ${state.toString()}');
-          _hideLoader();
+          //     _hideLoader();
           editReport = false;
           //  widget.mainCubit.fetchPatientReport();
         }
         if (state is PatientExamReportSaved) {
           log('LOG > patient_exam_screen.dart > 131 > state: ${state.toString()}');
           print(state.msg);
-          _hideLoader();
+          //     _hideLoader();
           _showMessage('Report Saved');
           editReport = false;
           //widget.mainCubit.fetchPatientExamReport();
@@ -140,7 +150,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
         if (state is NoReportState) {
           log('LOG > patient_exam_screen.dart > 140 > state: ${state.toString()}');
           print('No Report State Called');
-          _hideLoader();
+//_hideLoader();
           noReport = true;
         }
       },
@@ -373,7 +383,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
               ],
             ),
             SizedBox(height: getProportionateScreenHeight(10)),
-            // LMWH
+            //  LMWH
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

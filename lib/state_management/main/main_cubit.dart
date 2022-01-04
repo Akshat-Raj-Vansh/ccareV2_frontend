@@ -63,8 +63,11 @@ class MainCubit extends Cubit<MainState> {
     print("Inside Notify");
     _startLoading("notify");
     final token = await localStore.fetch();
-    final result = await api.notify(Token(token.value),
-        loc.Location(latitude: 32.82, longitude: 76.14), action, ambRequired,
+    final result = await api.notify(
+        Token(token.value),
+        loc.Location(latitude: 31.7091367, longitude: 76.5236728),
+        action,
+        ambRequired,
         assessment: assessment);
 
     if (result.isError) {
@@ -175,11 +178,12 @@ class MainCubit extends Cubit<MainState> {
     // _startLoading("PatientReportFetch");
     final token = await localStore.fetch();
     final result = await api.fetchPatientReport(Token(token.value));
-    log('LOG > main_cubit.dart > fetchPatientReport > 164 > result.asValue!.value["currentReport"]: ${result.asValue!.value["currentReport"]}');
+    print(result);
     if (result == null) {
       emit(NoReportState("No report exists"));
       return;
     }
+    log('LOG > main_cubit.dart > fetchPatientReport > 164 > result.asValue!.value["currentReport"]: ${result.asValue!.value["currentReport"]}');
     if (result.isError) {
       emit(ErrorState(result.asError!.error as String));
       return;

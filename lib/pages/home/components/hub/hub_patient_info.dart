@@ -16,10 +16,11 @@ import 'package:ccarev2_frontend/utils/size_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
+
 class HubPatientInfo extends StatefulWidget {
   final EDetails details;
   const HubPatientInfo({
-  this.details,
+    this.details,
   });
 
   @override
@@ -27,16 +28,18 @@ class HubPatientInfo extends StatefulWidget {
 }
 
 class _HubPatientInfoState extends State<HubPatientInfo> {
-   String token;
+  String token;
 
-   @override
+  @override
   void initState() {
     super.initState();
-    
+
     CubitProvider.of<MainCubit>(context).fetchToken();
-    NotificationController.configure( CubitProvider.of<MainCubit>(context), UserType.HUB, context);
+    NotificationController.configure(
+        CubitProvider.of<MainCubit>(context), UserType.HUB, context);
     NotificationController.fcmHandler();
   }
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -85,21 +88,18 @@ class _HubPatientInfoState extends State<HubPatientInfo> {
           //             ),
           //           ) ??
           //           false;
-              // },
-              // icon: Icon(Icons.logout),
-            // ),
+          // },
+          // icon: Icon(Icons.logout),
+          // ),
           // ],
         ),
         body: CubitConsumer<MainCubit, MainState>(builder: (_, state) {
-         
-         
           if (state is TokenLoadedState) {
             log('LOG > doctor_hub.dart > 153 > state: ${state.toString()}');
             token = state.token;
             print("Inside TokensLoaded State");
             print(token);
           }
-          
 
           return _buildPatientLoadedUI(context);
         }, listener: (context, state) async {
@@ -109,9 +109,9 @@ class _HubPatientInfoState extends State<HubPatientInfo> {
           // } else
           log('LOG > doctor_hub.dart > 165 > state: ${state.toString()}');
           if (state is ErrorState) {
-            print("Error State Called");
+            print("Error State Called HUB PATIENT");
             // _hideLoader();
-          }  else if (state is TokenLoadedState) {
+          } else if (state is TokenLoadedState) {
             token = state.token;
             print("Inside TokensLoaded State");
             print(token);
@@ -145,7 +145,8 @@ class _HubPatientInfoState extends State<HubPatientInfo> {
                       TextButton(
                         onPressed: () async {
                           // make api for accept patient by Hub
-                          CubitProvider.of<MainCubit>(context).acceptPatientByHub(state.patientID);
+                          CubitProvider.of<MainCubit>(context)
+                              .acceptPatientByHub(state.patientID);
                         },
                         child: const Text(
                           'Yes',
@@ -156,18 +157,16 @@ class _HubPatientInfoState extends State<HubPatientInfo> {
                 ) ??
                 false;
             //Create new state PatientAccepted by Hub
-          } 
+          }
         }));
   }
 
-
-
-   _buildChatButton() => InkWell(
+  _buildChatButton() => InkWell(
         onTap: () async {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => CubitProvider<MainCubit>(
+                  builder: (ctx) => CubitProvider<MainCubit>(
                       create: (_) => CubitProvider.of<MainCubit>(context),
                       child: ChatPage(
                           widget.details.doctorDetails.name,
@@ -196,7 +195,6 @@ class _HubPatientInfoState extends State<HubPatientInfo> {
           ),
         ),
       );
-
 
   _buildHeader() => Container(
       color: Colors.green[400],
@@ -310,10 +308,10 @@ class _HubPatientInfoState extends State<HubPatientInfo> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => PatientReportScreen(
-                  mainCubit:  CubitProvider.of<MainCubit>(context),
+                builder: (_) => PatientReportScreen(
+                  mainCubit: CubitProvider.of<MainCubit>(context),
                   user: UserType.DOCTOR,
-                  patientDetails:widget.details.patientDetails,
+                  patientDetails: widget.details.patientDetails,
                 ),
               ));
         },
@@ -331,8 +329,6 @@ class _HubPatientInfoState extends State<HubPatientInfo> {
           ),
         ),
       );
-
-
 
   _buildPatientLoadedUI(BuildContext context) =>
       Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -356,16 +352,16 @@ class _HubPatientInfoState extends State<HubPatientInfo> {
         //Needs to be conditional
         _buildPatientReportButton(),
         _buildPatientExamButton(),
+        _buildChatButton(),
         _buildPatientReportHistoryButton(),
       ]);
-
 
   _buildPatientExamButton() => InkWell(
         onTap: () async {
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => PatientExamScreen(
+                builder: (_) => PatientExamScreen(
                   mainCubit: CubitProvider.of<MainCubit>(context),
                   patientDetails: widget.details.patientDetails,
                 ),
@@ -391,8 +387,8 @@ class _HubPatientInfoState extends State<HubPatientInfo> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) =>
-                    PatientReportHistoryScreen(mainCubit: CubitProvider.of<MainCubit>(context)),
+                builder: (_) => PatientReportHistoryScreen(
+                    mainCubit: CubitProvider.of<MainCubit>(context)),
               ));
         },
         child: Container(
@@ -406,5 +402,4 @@ class _HubPatientInfoState extends State<HubPatientInfo> {
           ),
         ),
       );
-
 }

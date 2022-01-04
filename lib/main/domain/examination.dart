@@ -37,6 +37,8 @@ class Examination {
   }
 
   factory Examination.fromMap(Map<String, dynamic> map) {
+    print('NTR');
+    print(NTreatment.fromMap(map['normalTreatment']));
     return Examination(
       nTreatment: NTreatment.fromMap(map['normalTreatment']),
       thrombolysis: Thrombolysis.fromMap(map['thrombolysis']),

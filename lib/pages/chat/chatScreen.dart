@@ -49,7 +49,6 @@ class _ChatPageState extends State<ChatPage> {
   @override
   void initState() {
     super.initState();
-    CubitProvider.of<MainCubit>(context).loadMessages(widget.patientID);
     recieverChatID = widget.patientID + "-" + widget.recieverID;
     print(widget.token);
     chatModel.init(widget.patientID, widget.token);
@@ -79,8 +78,7 @@ class _ChatPageState extends State<ChatPage> {
       child: ScopedModelDescendant<ChatModel>(
         builder: (context, child, model) {
           List<Message> messages = model.getMessagesForChatID(recieverChatID);
-          print("11111111111111111111111");
-          print(messages.last);
+
           return Container(
             height: MediaQuery.of(context).size.height * 0.75,
             child: ListView.builder(
@@ -153,7 +151,7 @@ class _ChatPageState extends State<ChatPage> {
         },
         listener: (context, state) {
           if (state is ErrorState) {
-            print("Error State Called");
+            print("Error State Called CHAT SCREEN");
             // _hideLoader();
           }
         },

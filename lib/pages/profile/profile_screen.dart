@@ -62,7 +62,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       listener: (context, state) {
         print(state);
         if (state is LoadingState) {
-          print("Loading State Called");
+          print("Loading State Called Profile Screen");
           _showLoader();
         } else if (state is AddProfileState) {
           print("Add Profile State Called");
@@ -70,7 +70,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           // _showMessage(state.message);
           widget.pageAdapter.onProfileCompletion(context, widget.userType);
         } else if (state is ErrorState) {
-          print('Error State Called');
+          print('Error State Called PROFILE SCREEN');
           _hideLoader();
           _showMessage(state.error);
         }

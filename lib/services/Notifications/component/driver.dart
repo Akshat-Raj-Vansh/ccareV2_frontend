@@ -46,9 +46,10 @@ class DriverNotificationHandler {
       //         .copyWith(color: Colors.white, fontSize: 16),
       //   ),
       // ));
-    
+
       mainCubit.doctorAccepted(Location.fromJson(message.data["location"]));
-      await mainCubit.fetchEmergencyDetails(message.data["patientID"]);
+      await mainCubit.fetchEmergencyDetails(
+          patientID: message.data["patientID"]);
     }
   }
 

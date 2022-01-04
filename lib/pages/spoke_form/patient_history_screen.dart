@@ -72,6 +72,18 @@ class _PatientReportHistoryScreenState
     return CubitConsumer<MainCubit, MainState>(
       cubit: widget.mainCubit,
       builder: (_, state) {
+        if (state is ErrorState)
+          return Scaffold(
+            body: Container(
+              color: Colors.white,
+              child: Center(
+                child: Text(
+                  state.error,
+                  style: TextStyle(fontSize: 18, color: Colors.black),
+                ),
+              ),
+            ),
+          );
         return buildBody();
       },
       listener: (context, state) {
@@ -82,7 +94,7 @@ class _PatientReportHistoryScreenState
         }
 
         if (state is NoReportState) {
-          print('No TreatmentReport State Called');
+          print('No Treatment Report State Called');
           _hideLoader();
         }
       },

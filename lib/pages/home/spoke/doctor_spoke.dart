@@ -15,6 +15,7 @@ import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
 import 'package:ccarev2_frontend/state_management/main/main_state.dart';
 import 'package:ccarev2_frontend/state_management/user/user_cubit.dart';
 import 'package:ccarev2_frontend/user/domain/credential.dart';
+import 'package:ccarev2_frontend/user/domain/patient_list_info.dart';
 import 'package:ccarev2_frontend/utils/constants.dart';
 import 'package:ccarev2_frontend/utils/size_config.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
@@ -44,12 +45,13 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
   // static String _currentStatus = "UNKNOWN";
   dynamic currentState = NormalState;
   String token;
+  List<PatientListInfo> _patients = [];
   bool loader = false;
 
   @override
   void initState() {
     super.initState();
-    // CubitProvider.of<MainCubit>(context).fetchEmergencyDetails();
+    CubitProvider.of<MainCubit>(context).getAllPatients();
     NotificationController.configure(widget.mainCubit, UserType.SPOKE, context);
     NotificationController.fcmHandler();
     CubitProvider.of<MainCubit>(context).fetchToken();
@@ -107,6 +109,12 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
       ),
       body: CubitConsumer<MainCubit, MainState>(
         builder: (_, state) {
+          if (state is PatientsLoaded) {
+            //  _hideLoader();
+            currentState = PatientsLoaded;
+            _patients = state.patients;
+            print(_patients);
+          }
           // if (state is TokenLoadedState) {
           //   token = state.token;
           // }
@@ -141,9 +149,9 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
         },
         listener: (context, state) async {
           if (state is LoadingState) {
-            print("Loading State Called");
+            print("Loading State Called Doctor Spoke");
             log('LOG > doctor_spoke.dart > 197 > state: ${state.toString()}');
-            _showLoader();
+            //      _showLoader();
           } else if (state is ErrorState) {
             _hideLoader();
             log('LOG > doctor_spoke.dart > 204 > state: ${state.toString()}');
@@ -267,6 +275,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
                 style: TextStyle(color: Colors.black54),
               ),
               onTap: () {
+                //_hideLoader();
                 Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -349,8 +358,20 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
     );
   }
 
-  _buildUI(BuildContext buildContext) => Center(
-        child: Text('Hello World!'),
+  _buildUI(BuildContext buildContext) => ListView.builder(
+        itemCount: _patients.length,
+        itemBuilder: (BuildContext context, int index) {
+          return InkWell(
+            onTap: () => _showMessage(_patients[index].name),
+            child: ListTile(
+                leading: Icon(Icons.person),
+                title: Text(
+                  _patients[index].name,
+                  style: TextStyle(color: Colors.green, fontSize: 15),
+                ),
+                trailing: Text(_patients[index].age.toString())),
+          );
+        },
       );
   // SingleChildScrollView(
   //   child:

@@ -7,6 +7,7 @@ import 'package:ccarev2_frontend/user/domain/doc_info.dart';
 import 'package:ccarev2_frontend/user/domain/emergency.dart';
 import 'package:ccarev2_frontend/user/domain/hub_doc_info.dart';
 import 'package:ccarev2_frontend/user/domain/location.dart' as loc;
+import 'package:ccarev2_frontend/user/domain/patient_list_info.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../user/domain/token.dart';
 import 'question.dart';
@@ -33,7 +34,7 @@ abstract class IMainAPI {
 
   // Spoke Side APIs
   Future<Result<loc.Location>> acceptPatientbySpoke(Token token, Token patient);
-  Future<Result<List<PatientDetails>>> getAllPatients(Token token);
+  Future<Result<List<PatientListInfo>>> getAllPatients(Token token);
   Future<Result<List<HubInfo>>> getAllHubDoctors(Token token);
   Future<Result<String>> savePatientReport(Token token, TreatmentReport report);
   Future<Result<String>> savePatientExamReport(

@@ -141,7 +141,7 @@ class _PatientInfoState extends State<PatientInfo> {
         },
         listener: (context, state) async {
           if (state is LoadingState) {
-            print("Loading State Called");
+            print("Loading State Called Patient Info");
             log('LOG > doctor_spoke.dart > 197 > state: ${state.toString()}');
             _showLoader();
           } else if (state is ErrorState) {

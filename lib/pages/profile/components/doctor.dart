@@ -53,10 +53,10 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
             docInfo = state.docInfo;
             return _buildOldForm();
           }
-        
+
           // if(state is DocNotFoundState)
           // {
-            return _buildNewForm();
+          return _buildNewForm();
           // }
           // return Center(
           //   child: CircularProgressIndicator(
