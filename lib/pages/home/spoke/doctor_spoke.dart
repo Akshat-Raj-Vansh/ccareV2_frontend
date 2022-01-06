@@ -36,13 +36,6 @@ class HomeScreenSpoke extends StatefulWidget {
 }
 
 class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
-  // EDetails eDetails;
-  // static bool _emergency = false;
-  // static bool _patientAccepted = false;
-  // static bool _driverAccepted = false;
-  // static bool _hubAccepted = false;
-  // static bool _ugt = false;
-  // static String _currentStatus = "UNKNOWN";
   dynamic currentState = NormalState;
   String token;
   List<PatientListInfo> _patients = [];
@@ -258,16 +251,16 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
                 style: TextStyle(color: Colors.white, fontSize: 43),
               ),
             ),
-            ListTile(
-              leading: Icon(Icons.person),
-              title: const Text(
-                'My Profile',
-                style: TextStyle(color: Colors.black54),
-              ),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
+            // ListTile(
+            //   leading: Icon(Icons.person),
+            //   title: const Text(
+            //     'My Profile',
+            //     style: TextStyle(color: Colors.black54),
+            //   ),
+            //   onTap: () {
+            //     Navigator.pop(context);
+            //   },
+            // ),
             ListTile(
               leading: Icon(Icons.group),
               title: const Text(
@@ -358,21 +351,86 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
     );
   }
 
-  _buildUI(BuildContext buildContext) => ListView.builder(
-        itemCount: _patients.length,
-        itemBuilder: (BuildContext context, int index) {
-          return InkWell(
-            onTap: () => _showMessage(_patients[index].name),
-            child: ListTile(
-                leading: Icon(Icons.person),
-                title: Text(
-                  _patients[index].name,
-                  style: TextStyle(color: Colors.green, fontSize: 15),
-                ),
-                trailing: Text(_patients[index].age.toString())),
-          );
-        },
+  _buildUI(BuildContext context) => Column(
+        children: [_buildRequestsUI(), _buildPatientssUI()],
       );
+
+  _buildPatientssUI() => Column(
+        children: [
+          Container(
+            width: SizeConfig.screenWidth,
+            margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+            child: Text(
+              "Current Patients",
+              textAlign: TextAlign.left,
+              style: TextStyle(fontSize: 18),
+            ),
+          ),
+          Container(
+            decoration: BoxDecoration(
+                color: Colors.red[100],
+                borderRadius: BorderRadius.circular(20)),
+            width: SizeConfig.screenWidth,
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            child: ListView.builder(
+              itemCount: _patients.length,
+              itemBuilder: (BuildContext context, int index) {
+                return InkWell(
+                  onTap: () => _showMessage(_patients[index].name),
+                  child: ListTile(
+                      leading: Icon(Icons.person),
+                      title: Text(
+                        _patients[index].name,
+                        style: TextStyle(color: Colors.green, fontSize: 15),
+                      ),
+                      trailing: Text(_patients[index].age.toString())),
+                );
+              },
+            ),
+          )
+        ],
+      );
+
+  _buildRequestsUI() => Column(
+        children: [
+          Container(
+            width: SizeConfig.screenWidth,
+            margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+            child: Text(
+              "Current Requests",
+              textAlign: TextAlign.left,
+              style: TextStyle(fontSize: 18),
+            ),
+          ),
+          Container(
+            decoration: BoxDecoration(
+                color: Colors.red[100],
+                borderRadius: BorderRadius.circular(20)),
+            width: SizeConfig.screenWidth,
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            child: ListView.builder(
+              itemCount: _patients.length,
+              itemBuilder: (BuildContext context, int index) {
+                return InkWell(
+                  onTap: () => _showMessage(_patients[index].name),
+                  child: ListTile(
+                      leading: Icon(Icons.person),
+                      title: Text(
+                        _patients[index].name,
+                        style: TextStyle(color: Colors.green, fontSize: 15),
+                      ),
+                      trailing: Text(_patients[index].age.toString())),
+                );
+              },
+            ),
+          )
+        ],
+      );
+
   // SingleChildScrollView(
   //   child:
   //       Column(crossAxisAlignment: CrossAxisAlignment.start, children: [

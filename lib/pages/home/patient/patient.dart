@@ -80,11 +80,12 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
   @override
   void initState() {
     super.initState();
+
     CubitProvider.of<MainCubit>(context).fetchEmergencyDetails();
     CubitProvider.of<MainCubit>(context).getQuestions();
     CubitProvider.of<MainCubit>(context).recentHistory();
     NotificationController.configure(
-        widget.mainCubit, UserType.PATIENT, context);
+        CubitProvider.of<MainCubit>(context), UserType.PATIENT, context);
     NotificationController.fcmHandler();
   }
 
@@ -197,6 +198,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
       body: CubitConsumer<MainCubit, MainState>(
         builder: (_, state) {
           if (state is DetailsLoaded) {
+            print('details loaded 1');
             currentState = DetailsLoaded;
             // _hideLoader();
             _notificationSent = true;
@@ -211,11 +213,11 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
               _driverAccepted = true;
               //   _emergency = true;
             }
+            //  setState(() {});
           }
           if (state is QuestionnaireState) {
-            print("Questionnaire State Called");
+            print("Questionnaire State Called X");
             _questions = state.questions;
-
             display.add(
                 _questions.firstWhere((element) => element.parent == "root"));
             _questionnaire = true;
@@ -250,6 +252,8 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
             _showMessage("Notifications sent to the Doctor and the Ambulance.");
           } else if (state is DetailsLoaded) {
             _hideLoader();
+            print('details loaded');
+            setState(() {});
             //  _currentStatus = EDetails.patientDetails.status;
           } else if (state is NormalState) {
             _hideLoader();
@@ -285,7 +289,10 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // if (!_notificationSent) _buildHeader(),
-              if (_questionnaire && !_notificationSent) _buildQuestionnaire(),
+              if ((_questionnaire || _historyFetched) && !_notificationSent)
+                _buildPatienEmergencyButton(),
+              if (!_historyFetched && _questionnaire && !_notificationSent)
+                _buildQuestionnaire(),
               if (_historyFetched && !_notificationSent) _buildReportOverview(),
               if (_notificationSent && (!_doctorAccepted && !_driverAccepted))
                 _buildNotificationSend(),
@@ -322,14 +329,35 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
               if (_doctorAccepted) _buildDoctorDetails(),
               if (_driverAccepted) _buildDriverDetails(),
               if (_emergency) _buildPatientReportButton(),
-              if (!_questionnaire && _notificationSent)
+              if (!_questionnaire || _notificationSent)
                 _buildPatientReportHistoryButton(),
             ],
           ),
         ),
-        if (_notificationSent && !(_doctorAccepted || _driverAccepted))
+        if (_notificationSent || _doctorAccepted || _driverAccepted)
           _buildBottomUI(context)
       ]);
+
+  _buildPatienEmergencyButton() => InkWell(
+        onTap: () async {
+          _showAmbRequired();
+          setState(() {});
+        },
+        child: Container(
+          width: SizeConfig.screenWidth,
+          margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(5),
+              border: Border.all(color: Colors.red)),
+          child: Text(
+            "Press here if you require Emergency AID",
+            style: TextStyle(color: Colors.red, fontSize: 14),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      );
 
   _buildReportOverview() => SingleChildScrollView(
         child: Column(
@@ -759,6 +787,16 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
         child: Column(
           children: [
             Container(
+              padding: const EdgeInsets.all(10),
+              child: Text(
+                'Self Analysis',
+                style: TextStyle(
+                  color: kPrimaryColor,
+                  fontSize: 20,
+                ),
+              ),
+            ),
+            Container(
               margin: const EdgeInsets.symmetric(vertical: 10),
               padding: pad,
               decoration: decA,
@@ -1074,7 +1112,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
         width: SizeConfig.screenWidth,
         padding: const EdgeInsets.all(5.0),
         child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-          if (_currentStatus != "ATH")
+          if (_currentStatus != "ATH" && _doctorAccepted)
             RaisedButton.icon(
                 color: Theme.of(context).primaryColor,
                 shape: RoundedRectangleBorder(

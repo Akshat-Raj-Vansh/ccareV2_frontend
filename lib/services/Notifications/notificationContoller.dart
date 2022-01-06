@@ -95,9 +95,9 @@ class NotificationController {
   static onMessageOpenedHandler() {
     Future<void> Function(RemoteMessage) selected;
     switch (userType) {
-      // case UserType.PATIENT:
-      //   selected = PatientNotificationHandler.foregroundMessageHandler;
-      //   break;
+      case UserType.PATIENT:
+        selected = PatientNotificationHandler.foregroundMessageHandler;
+        break;
       case UserType.SPOKE:
         selected = SpokeNotificationHandler.onMessageOpenedHandler;
         break;

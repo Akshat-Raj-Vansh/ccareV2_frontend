@@ -11,6 +11,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
 import '../../utils/size_config.dart';
+import 'package:timelines/timelines.dart';
 
 class PatientReportHistoryScreen extends StatefulWidget {
   final MainCubit mainCubit;
@@ -126,31 +127,63 @@ class _PatientReportHistoryScreenState
           child: Column(
             children: [
               SizedBox(height: SizeConfig.screenHeight * 0.02),
-              //FIXME: Build a list of reports
+
               Expanded(
-                child: ListView.builder(
-                  itemCount: reports.length,
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: () {
-                        //FIXME: Navigate to the current report page
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ReportOverview(
-                                reports[index],
-                              ),
-                            ));
-                      },
-                      child: Text(
-                        DateTime.fromMillisecondsSinceEpoch(
+                  child: FixedTimeline.tileBuilder(
+                builder: TimelineTileBuilder.connectedFromStyle(
+                  contentsAlign: ContentsAlign.basic,
+                  oppositeContentsBuilder: (context, index) => Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text('Medical History'),
+                  ),
+                  contentsBuilder: (context, index) => InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ReportOverview(
+                              reports[index],
+                            ),
+                          ));
+                    },
+                    child: Card(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(DateTime.fromMillisecondsSinceEpoch(
                                 int.parse(reports[index].report_time))
-                            .toString(),
+                            .toString()),
                       ),
-                    );
-                  },
+                    ),
+                  ),
+                  connectorStyleBuilder: (context, index) =>
+                      ConnectorStyle.solidLine,
+                  indicatorStyleBuilder: (context, index) => IndicatorStyle.dot,
+                  itemCount: reports.length,
                 ),
-              ),
+              )
+                  // ListView.builder(
+                  //   itemCount: reports.length,
+                  //   itemBuilder: (context, index) {
+                  //     return GestureDetector(
+                  //       onTap: () {
+                  //         //FIXME: Navigate to the current report page
+                  //         Navigator.push(
+                  //             context,
+                  //             MaterialPageRoute(
+                  //               builder: (context) => ReportOverview(
+                  //                 reports[index],
+                  //               ),
+                  //             ));
+                  //       },
+                  //       child: Text(
+                  //         DateTime.fromMillisecondsSinceEpoch(
+                  //                 int.parse(reports[index].report_time))
+                  //             .toString(),
+                  //       ),
+                  //     );
+                  //   },
+                  // ),
+                  ),
               // _buildReportDetails(),
               // _buildReport(),
               SizedBox(height: SizeConfig.screenHeight * 0.02),
