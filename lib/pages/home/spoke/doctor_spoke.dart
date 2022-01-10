@@ -5,6 +5,7 @@ import 'package:ccarev2_frontend/main/domain/edetails.dart';
 import 'package:ccarev2_frontend/pages/chat/chatScreen.dart';
 import 'package:ccarev2_frontend/pages/chat/components/chatModel.dart';
 import 'package:ccarev2_frontend/pages/home/spoke/components/hub_list.dart';
+import 'package:ccarev2_frontend/pages/home/spoke/components/patient_info.dart';
 import 'package:ccarev2_frontend/pages/home/spoke/components/patient_list.dart';
 import 'package:ccarev2_frontend/pages/home/home_page_adapter.dart';
 import 'package:ccarev2_frontend/pages/spoke_form/patient_exam_screen.dart';
@@ -153,7 +154,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
             log('LOG > doctor_spoke.dart > 197 > state: ${state.toString()}');
             //      _showLoader();
           } else if (state is ErrorState) {
-            _hideLoader();
+            // _hideLoader();
             log('LOG > doctor_spoke.dart > 204 > state: ${state.toString()}');
           } else if (state is TokenLoadedState) {
             token = state.token;
@@ -186,7 +187,8 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
           //       time: DateTime.now());
           //}
           else if (state is AcceptState) {
-            _hideLoader();
+            // _hideLoader();
+            print("Accept State by Spoke"); 
             log('LOG > doctor_spoke.dart > 237 > state: ${state.toString()}',
                 time: DateTime.now());
             await showDialog(
@@ -228,10 +230,15 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
                 ) ??
                 false;
           } else if (state is PatientAccepted) {
-            _hideLoader();
+            // _hideLoader();
+            print("PatientAccepted State by Spoke");
+            CubitProvider.of<MainCubit>(context).getAllPatients();
             // _emergency = true;
             log('LOG > doctor_spoke.dart > 280 > state: ${state.toString()}',
                 time: DateTime.now());
+              setState(() {
+                
+              });
             //   CubitProvider.of<MainCubit>(context).fetchEmergencyDetails();
           }
           // else if (state is AllPatientsState) {
@@ -239,6 +246,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
           //       time: DateTime.now());
           //   _hideLoader();
           // }
+
         },
       ),
       drawer: Drawer(
@@ -362,7 +370,15 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
         itemCount: _patients.length,
         itemBuilder: (BuildContext context, int index) {
           return InkWell(
-            onTap: () => _showMessage(_patients[index].name),
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (ctx) => CubitProvider<MainCubit>(
+                  create: (ctx) => CubitProvider.of<MainCubit>(context),
+                  child: PatientInfo(_patients[index].id),
+                ),
+              ),
+            ),
             child: ListTile(
                 leading: Icon(Icons.person),
                 title: Text(

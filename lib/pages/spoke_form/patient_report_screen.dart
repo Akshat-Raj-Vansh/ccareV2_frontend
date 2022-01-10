@@ -995,7 +995,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
                   style: TextStyle(color: Colors.white, fontSize: 14),
                   textAlign: TextAlign.center,
                 ),
-              ),
+              )
             ),
 
             SizedBox(height: getProportionateScreenHeight(50)),

@@ -17,12 +17,13 @@ class PatientProfileScreen extends StatefulWidget {
 
 class _PatientProfileScreenState extends State<PatientProfileScreen> {
   final _formKeyPatient = GlobalKey<FormState>();
-
+String name;
+    int age;
+    Gender gender=Gender.MALE;
   @override
   Widget build(BuildContext context) {
-    String name;
-    int age;
-    Gender gender =Gender.MALE;
+    
+    
     return Form(
       key: _formKeyPatient,
       child: Column(
