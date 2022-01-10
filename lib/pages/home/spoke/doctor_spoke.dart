@@ -39,12 +39,14 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
   dynamic currentState = NormalState;
   String token;
   List<PatientListInfo> _patients = [];
+  List<PatientListInfo> _requests = [];
   bool loader = false;
 
   @override
   void initState() {
     super.initState();
     CubitProvider.of<MainCubit>(context).getAllPatients();
+    CubitProvider.of<MainCubit>(context).getAllPatientRequests();
     NotificationController.configure(widget.mainCubit, UserType.SPOKE, context);
     NotificationController.fcmHandler();
     CubitProvider.of<MainCubit>(context).fetchToken();
@@ -108,6 +110,12 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
             _patients = state.patients;
             print(_patients);
           }
+          if (state is RequestsLoaded) {
+            //  _hideLoader();
+            currentState = RequestsLoaded;
+            _requests = state.req;
+            print(_requests);
+          }
           // if (state is TokenLoadedState) {
           //   token = state.token;
           // }
@@ -145,9 +153,6 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
             print("Loading State Called Doctor Spoke");
             log('LOG > doctor_spoke.dart > 197 > state: ${state.toString()}');
             //      _showLoader();
-          } else if (state is ErrorState) {
-            _hideLoader();
-            log('LOG > doctor_spoke.dart > 204 > state: ${state.toString()}');
           } else if (state is TokenLoadedState) {
             token = state.token;
           }
@@ -226,6 +231,10 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
             log('LOG > doctor_spoke.dart > 280 > state: ${state.toString()}',
                 time: DateTime.now());
             //   CubitProvider.of<MainCubit>(context).fetchEmergencyDetails();
+          } else if (state is ErrorState) {
+            //   _hideLoader();
+            // _emergency = true;
+            print(state.error);
           }
           // else if (state is AllPatientsState) {
           //   log('LOG > doctor_spoke.dart > 284 > state: ${state.toString()}',
@@ -364,32 +373,43 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
             child: Text(
               "Current Patients",
               textAlign: TextAlign.left,
-              style: TextStyle(fontSize: 18),
+              style: TextStyle(fontSize: 18, color: kPrimaryColor),
             ),
           ),
-          Container(
-            decoration: BoxDecoration(
-                color: Colors.red[100],
-                borderRadius: BorderRadius.circular(20)),
-            width: SizeConfig.screenWidth,
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            child: ListView.builder(
-              itemCount: _patients.length,
-              itemBuilder: (BuildContext context, int index) {
-                return InkWell(
-                  onTap: () => _showMessage(_patients[index].name),
-                  child: ListTile(
-                      leading: Icon(Icons.person),
-                      title: Text(
-                        _patients[index].name,
-                        style: TextStyle(color: Colors.green, fontSize: 15),
-                      ),
-                      trailing: Text(_patients[index].age.toString())),
-                );
-              },
-            ),
-          )
+          _patients.length != 0
+              ? Container(
+                  decoration: BoxDecoration(
+                      color: Colors.green[100],
+                      borderRadius: BorderRadius.circular(20)),
+                  width: SizeConfig.screenWidth,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                  child: ListView.builder(
+                    itemCount: _patients.length,
+                    shrinkWrap: true,
+                    itemBuilder: (BuildContext context, int index) {
+                      return InkWell(
+                        onTap: () => _showMessage(_patients[index].name),
+                        child: ListTile(
+                            leading: Icon(Icons.person),
+                            title: Text(
+                              _patients[index].name,
+                              style:
+                                  TextStyle(color: Colors.green, fontSize: 15),
+                            ),
+                            trailing: Text(_patients[index].gender.toString() +
+                                '   ' +
+                                _patients[index].age.toString())),
+                      );
+                    },
+                  ),
+                )
+              : Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Text('Currently there are no patients'),
+                )
         ],
       );
 
@@ -402,32 +422,42 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
             child: Text(
               "Current Requests",
               textAlign: TextAlign.left,
-              style: TextStyle(fontSize: 18),
+              style: TextStyle(fontSize: 18, color: kPrimaryColor),
             ),
           ),
-          Container(
-            decoration: BoxDecoration(
-                color: Colors.red[100],
-                borderRadius: BorderRadius.circular(20)),
-            width: SizeConfig.screenWidth,
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            child: ListView.builder(
-              itemCount: _patients.length,
-              itemBuilder: (BuildContext context, int index) {
-                return InkWell(
-                  onTap: () => _showMessage(_patients[index].name),
-                  child: ListTile(
-                      leading: Icon(Icons.person),
-                      title: Text(
-                        _patients[index].name,
-                        style: TextStyle(color: Colors.green, fontSize: 15),
-                      ),
-                      trailing: Text(_patients[index].age.toString())),
-                );
-              },
-            ),
-          )
+          _requests.length != 0
+              ? Container(
+                  decoration: BoxDecoration(
+                      color: Colors.red[100],
+                      borderRadius: BorderRadius.circular(20)),
+                  width: SizeConfig.screenWidth,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: _requests.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return InkWell(
+                        onTap: () => CubitProvider.of<MainCubit>(context)
+                            .acceptPatientBySpoke(_requests[index].id),
+                        child: ListTile(
+                            leading: Icon(Icons.person),
+                            title: Text(
+                              _requests[index].name,
+                              style:
+                                  TextStyle(color: Colors.green, fontSize: 15),
+                            ),
+                            trailing: Text(_requests[index].age.toString())),
+                      );
+                    },
+                  ),
+                )
+              : Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Text('Currently there are no requests'),
+                )
         ],
       );
 

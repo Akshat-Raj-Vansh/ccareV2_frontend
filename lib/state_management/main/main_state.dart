@@ -221,6 +221,13 @@ class PatientsLoaded extends MainState {
   List<Object> get props => [patients];
 }
 
+class RequestsLoaded extends MainState {
+  final List<PatientListInfo> req;
+  RequestsLoaded(this.req);
+  @override
+  List<Object> get props => [req];
+}
+
 class ConsultHub extends MainState {
   final String name;
   ConsultHub(this.name);

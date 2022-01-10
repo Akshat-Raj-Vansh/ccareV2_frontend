@@ -447,6 +447,31 @@ class MainAPI extends IMainAPI {
   }
 
   @override
+  Future<Result<List<PatientListInfo>>> getAllPatientRequests(
+      Token token) async {
+    String endpoint = baseUrl + "/emergency/spoke/getAllRequests";
+    var header = {
+      "Content-Type": "application/json",
+      "Authorization": token.value
+    };
+    var response = await _client.get(Uri.parse(endpoint), headers: header);
+    print(response.body);
+    print(response.statusCode);
+    if (response.statusCode != 200) {
+      Map map = jsonDecode(response.body);
+      print(transformError(map));
+      return Result.error(transformError(map));
+    }
+    dynamic json = jsonDecode(response.body)['patients'];
+    print(json.toString());
+    if (json == null) return Result.error('No requests');
+    return Result.value(json
+        .map<PatientListInfo>(
+            (element) => PatientListInfo.fromJson(jsonEncode(element)))
+        .toList());
+  }
+
+  @override
   Future<Result<List<HubInfo>>> getAllHubDoctors(Token token) async {
     String endpoint = baseUrl + "/user/fetchHubDoctors";
     var header = {

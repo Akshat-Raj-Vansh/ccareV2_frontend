@@ -175,6 +175,17 @@ class MainCubit extends Cubit<MainState> {
     emit(PatientsLoaded(result.asValue!.value));
   }
 
+  getAllPatientRequests() async {
+    _startLoading("Get All Patient Requests");
+    final token = await localStore.fetch();
+    final result = await api.getAllPatientRequests(Token(token.value));
+    if (result.isError) {
+      emit(ErrorState(result.asError!.error as String));
+      return;
+    }
+    emit(RequestsLoaded(result.asValue!.value));
+  }
+
   fetchPatientReportHistory() async {
     _startLoading("PatientReportHistoryFetch");
     final token = await localStore.fetch();
