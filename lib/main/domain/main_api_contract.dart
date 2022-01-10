@@ -19,6 +19,7 @@ abstract class IMainAPI {
 
   // Patient Side APIs
   Future<Result<List<QuestionTree>>> getAll(Token token);
+  Future<Result<TreatmentReport>> fetchLastReport(Token token);
   Future<Result<String>> emergencyRequest(Token token, Emergency emergency);
   Future<Result<String>> notify(
       Token token, loc.Location location, String action, bool ambRequired,
@@ -34,6 +35,7 @@ abstract class IMainAPI {
 
   // Spoke Side APIs
   Future<Result<loc.Location>> acceptPatientbySpoke(Token token, Token patient);
+  Future<Result<List<PatientListInfo>>> getAllPatientRequests(Token token);
   Future<Result<List<PatientListInfo>>> getAllPatients(Token token);
   Future<Result<List<HubInfo>>> getAllHubDoctors(Token token);
   Future<Result<String>> savePatientReport(Token token, TreatmentReport report);

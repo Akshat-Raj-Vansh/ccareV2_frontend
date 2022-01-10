@@ -60,6 +60,13 @@ class DetailsLoaded extends MainState {
   List<Object> get props => [this.eDetails];
 }
 
+class PreviousHistory extends MainState {
+  final treat.TreatmentReport treatmentReport;
+  PreviousHistory(this.treatmentReport);
+  @override
+  List<Object> get props => [this.treatmentReport];
+}
+
 class QuestionnaireState extends MainState {
   final List<QuestionTree> questions;
   QuestionnaireState(this.questions);
@@ -212,6 +219,13 @@ class PatientsLoaded extends MainState {
   PatientsLoaded(this.patients);
   @override
   List<Object> get props => [patients];
+}
+
+class RequestsLoaded extends MainState {
+  final List<PatientListInfo> req;
+  RequestsLoaded(this.req);
+  @override
+  List<Object> get props => [req];
 }
 
 class ConsultHub extends MainState {

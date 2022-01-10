@@ -49,21 +49,7 @@ packages:
       name: camera
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.9.4+3"
-  camera_platform_interface:
-    dependency: transitive
-    description:
-      name: camera_platform_interface
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.1.1"
-  camera_web:
-    dependency: transitive
-    description:
-      name: camera_web
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.2.1+1"
+    version: "0.5.8+17"
   characters:
     dependency: transitive
     description:
@@ -127,6 +113,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.3"
+  dependencies:
+    dependency: "direct dev"
+    description:
+      name: dependencies
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.5"
+  disposables:
+    dependency: transitive
+    description:
+      name: disposables
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.2"
   equatable:
     dependency: "direct dev"
     description:
@@ -337,21 +337,21 @@ packages:
       name: google_sign_in
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "5.2.1"
+    version: "4.5.9"
   google_sign_in_platform_interface:
     dependency: transitive
     description:
       name: google_sign_in_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.0"
+    version: "1.1.2"
   google_sign_in_web:
     dependency: transitive
     description:
       name: google_sign_in_web
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.10.0+3"
+    version: "0.9.2"
   http:
     dependency: "direct dev"
     description:
@@ -568,7 +568,7 @@ packages:
       name: quiver
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.1+1"
+    version: "2.1.5"
   rxdart:
     dependency: transitive
     description:
@@ -714,6 +714,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.4.3"
+  timelines:
+    dependency: "direct dev"
+    description:
+      name: timelines
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.0"
   timezone:
     dependency: transitive
     description:

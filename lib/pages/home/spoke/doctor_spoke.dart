@@ -37,22 +37,17 @@ class HomeScreenSpoke extends StatefulWidget {
 }
 
 class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
-  // EDetails eDetails;
-  // static bool _emergency = false;
-  // static bool _patientAccepted = false;
-  // static bool _driverAccepted = false;
-  // static bool _hubAccepted = false;
-  // static bool _ugt = false;
-  // static String _currentStatus = "UNKNOWN";
   dynamic currentState = NormalState;
   String token;
   List<PatientListInfo> _patients = [];
+  List<PatientListInfo> _requests = [];
   bool loader = false;
 
   @override
   void initState() {
     super.initState();
     CubitProvider.of<MainCubit>(context).getAllPatients();
+    CubitProvider.of<MainCubit>(context).getAllPatientRequests();
     NotificationController.configure(widget.mainCubit, UserType.SPOKE, context);
     NotificationController.fcmHandler();
     CubitProvider.of<MainCubit>(context).fetchToken();
@@ -116,6 +111,12 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
             _patients = state.patients;
             print(_patients);
           }
+          if (state is RequestsLoaded) {
+            //  _hideLoader();
+            currentState = RequestsLoaded;
+            _requests = state.req;
+            print(_requests);
+          }
           // if (state is TokenLoadedState) {
           //   token = state.token;
           // }
@@ -153,9 +154,6 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
             print("Loading State Called Doctor Spoke");
             log('LOG > doctor_spoke.dart > 197 > state: ${state.toString()}');
             //      _showLoader();
-          } else if (state is ErrorState) {
-            // _hideLoader();
-            log('LOG > doctor_spoke.dart > 204 > state: ${state.toString()}');
           } else if (state is TokenLoadedState) {
             token = state.token;
           }
@@ -240,6 +238,10 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
                 
               });
             //   CubitProvider.of<MainCubit>(context).fetchEmergencyDetails();
+          } else if (state is ErrorState) {
+            //   _hideLoader();
+            // _emergency = true;
+            print(state.error);
           }
           // else if (state is AllPatientsState) {
           //   log('LOG > doctor_spoke.dart > 284 > state: ${state.toString()}',
@@ -266,16 +268,16 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
                 style: TextStyle(color: Colors.white, fontSize: 43),
               ),
             ),
-            ListTile(
-              leading: Icon(Icons.person),
-              title: const Text(
-                'My Profile',
-                style: TextStyle(color: Colors.black54),
-              ),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
+            // ListTile(
+            //   leading: Icon(Icons.person),
+            //   title: const Text(
+            //     'My Profile',
+            //     style: TextStyle(color: Colors.black54),
+            //   ),
+            //   onTap: () {
+            //     Navigator.pop(context);
+            //   },
+            // ),
             ListTile(
               leading: Icon(Icons.group),
               title: const Text(
@@ -366,29 +368,107 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
     );
   }
 
-  _buildUI(BuildContext buildContext) => ListView.builder(
-        itemCount: _patients.length,
-        itemBuilder: (BuildContext context, int index) {
-          return InkWell(
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (ctx) => CubitProvider<MainCubit>(
-                  create: (ctx) => CubitProvider.of<MainCubit>(context),
-                  child: PatientInfo(_patients[index].id),
-                ),
-              ),
-            ),
-            child: ListTile(
-                leading: Icon(Icons.person),
-                title: Text(
-                  _patients[index].name,
-                  style: TextStyle(color: Colors.green, fontSize: 15),
-                ),
-                trailing: Text(_patients[index].age.toString())),
-          );
-        },
+  _buildUI(BuildContext context) => Column(
+        children: [_buildRequestsUI(), _buildPatientssUI()],
       );
+
+  _buildPatientssUI() => Column(
+        children: [
+          Container(
+            width: SizeConfig.screenWidth,
+            margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+            child: Text(
+              "Current Patients",
+              textAlign: TextAlign.left,
+              style: TextStyle(fontSize: 18, color: kPrimaryColor),
+            ),
+          ),
+          _patients.length != 0
+              ? Container(
+                  decoration: BoxDecoration(
+                      color: Colors.green[100],
+                      borderRadius: BorderRadius.circular(20)),
+                  width: SizeConfig.screenWidth,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                  child: ListView.builder(
+                    itemCount: _patients.length,
+                    shrinkWrap: true,
+                    itemBuilder: (BuildContext context, int index) {
+                      return InkWell(
+                        onTap: () => _showMessage(_patients[index].name),
+                        child: ListTile(
+                            leading: Icon(Icons.person),
+                            title: Text(
+                              _patients[index].name,
+                              style:
+                                  TextStyle(color: Colors.green, fontSize: 15),
+                            ),
+                            trailing: Text(_patients[index].gender.toString() +
+                                '   ' +
+                                _patients[index].age.toString())),
+                      );
+                    },
+                  ),
+                )
+              : Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Text('Currently there are no patients'),
+                )
+        ],
+      );
+
+  _buildRequestsUI() => Column(
+        children: [
+          Container(
+            width: SizeConfig.screenWidth,
+            margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+            child: Text(
+              "Current Requests",
+              textAlign: TextAlign.left,
+              style: TextStyle(fontSize: 18, color: kPrimaryColor),
+            ),
+          ),
+          _requests.length != 0
+              ? Container(
+                  decoration: BoxDecoration(
+                      color: Colors.red[100],
+                      borderRadius: BorderRadius.circular(20)),
+                  width: SizeConfig.screenWidth,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: _requests.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return InkWell(
+                        onTap: () => CubitProvider.of<MainCubit>(context)
+                            .acceptPatientBySpoke(_requests[index].id),
+                        child: ListTile(
+                            leading: Icon(Icons.person),
+                            title: Text(
+                              _requests[index].name,
+                              style:
+                                  TextStyle(color: Colors.green, fontSize: 15),
+                            ),
+                            trailing: Text(_requests[index].age.toString())),
+                      );
+                    },
+                  ),
+                )
+              : Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Text('Currently there are no requests'),
+                )
+        ],
+      );
+
   // SingleChildScrollView(
   //   child:
   //       Column(crossAxisAlignment: CrossAxisAlignment.start, children: [

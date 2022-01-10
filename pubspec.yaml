@@ -61,6 +61,8 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^1.0.0
   flutter_rating_bar: ^4.0.0
+  dependencies:
+  timelines: ^0.1.0
   flutter_svg: null
   flutter_test:
     sdk: flutter

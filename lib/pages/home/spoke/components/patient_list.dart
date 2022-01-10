@@ -130,7 +130,9 @@ class _PatientListState extends State<PatientList> {
                   _patients[index].name,
                   style: TextStyle(color: Colors.green, fontSize: 15),
                 ),
-                trailing: Text(_patients[index].age.toString())),
+                trailing: Text(_patients[index].gender.toString() +
+                    '   ' +
+                    _patients[index].age.toString())),
           );
         },
       );

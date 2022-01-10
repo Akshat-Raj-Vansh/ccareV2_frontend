@@ -42,6 +42,20 @@ class MainCubit extends Cubit<MainState> {
     emit(MessagesLoadedState(result.asValue!.value));
   }
 
+  recentHistory() async {
+    final token = await localStore.fetch();
+    print("fetchToken ${token.value}");
+    final result = await api.fetchLastReport(
+      Token(token.value),
+    );
+
+    if (result.isError) {
+      emit(ErrorState(result.asError!.error as String));
+      return;
+    }
+    emit(PreviousHistory(result.asValue!.value));
+  }
+
   fetchToken() async {
     // _startLoading("loadMessages");
     final token = await localStore.fetch();
@@ -159,6 +173,17 @@ class MainCubit extends Cubit<MainState> {
       return;
     }
     emit(PatientsLoaded(result.asValue!.value));
+  }
+
+  getAllPatientRequests() async {
+    _startLoading("Get All Patient Requests");
+    final token = await localStore.fetch();
+    final result = await api.getAllPatientRequests(Token(token.value));
+    if (result.isError) {
+      emit(ErrorState(result.asError!.error as String));
+      return;
+    }
+    emit(RequestsLoaded(result.asValue!.value));
   }
 
   fetchPatientReportHistory() async {
