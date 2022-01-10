@@ -20,6 +20,9 @@ class SpokeNotificationHandler {
 
   static Future<void> foregroundMessageHandler(RemoteMessage message) async {
     print("Handling a foreground message for doctor: ${message.data}");
+    if(message.data['type']=='EmergencyStatus'){
+      await mainCubit.getStatus();
+    }
     if (message.data['type'] == 'Emergency') {
       if (message.data["user"] == "PATIENT") {
         // print("inside");
@@ -56,6 +59,9 @@ class SpokeNotificationHandler {
     if (message.data['type'] == 'Emergency') {
       print("Not supposed to be here");
       await mainCubit.acceptRequest(message.data["_patientID"]);
+    }
+    if(message.data['type']=='EmergencyStatus'){
+      await mainCubit.getStatus();
     }
   }
 }
