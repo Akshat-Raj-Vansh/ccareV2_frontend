@@ -210,9 +210,9 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
         }, listener: (context, state) async {
           if (state is LoadingState) {
             print("Loading State Called Driver");
-            _showLoader();
+            //    _showLoader();
           } else if (state is AcceptState) {
-            _hideLoader();
+            // _hideLoader();
             print("Accept State Called");
             await showDialog(
                   context: context,
@@ -240,7 +240,7 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
                       ),
                       TextButton(
                         onPressed: () {
-                          // _hideLoader();
+                          // // _hideLoader();
                           // print("inside");
                           CubitProvider.of<MainCubit>(
                                   scaffoldKey.currentContext)
@@ -256,24 +256,24 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
                 ) ??
                 false;
           } else if (state is PatientAccepted) {
-            _hideLoader();
+            // _hideLoader();
             // print("patient arrived state");
             // print(state.location);
             _patientLocation =
                 LatLng(state.location.latitude, state.location.longitude);
             print(_patientLocation);
             _addPatientMarker();
-            // _hideLoader();
+            // // _hideLoader();
             CubitProvider.of<MainCubit>(context).fetchEmergencyDetails();
           } else if (state is DetailsLoaded) {
-            _hideLoader();
+            // _hideLoader();
           } else if (state is DoctorAccepted) {
-            _hideLoader();
+            // _hideLoader();
             print("doctor accepted state");
             _doctorLocation =
                 LatLng(state.location.latitude, state.location.longitude);
             _addDoctorMarker();
-            // _hideLoader();
+            // // _hideLoader();
             _showMessage("Doctor Accepted");
 
             CubitProvider.of<MainCubit>(context).fetchEmergencyDetails();

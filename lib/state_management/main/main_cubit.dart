@@ -191,7 +191,7 @@ class MainCubit extends Cubit<MainState> {
     final token = await localStore.fetch();
     final result = await api.fetchPatientReportHistory(Token(token.value));
     if (result.isError) {
-      emit(ErrorState(result.asError!.error as String));
+      emit(NoHistoryState(result.asError!.error as String));
       return;
     }
     List<treat.TreatmentReport> reports = result.asValue!.value;

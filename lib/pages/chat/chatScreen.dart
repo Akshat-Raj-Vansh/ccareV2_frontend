@@ -152,7 +152,7 @@ class _ChatPageState extends State<ChatPage> {
         listener: (context, state) {
           if (state is ErrorState) {
             print("Error State Called CHAT SCREEN");
-            // _hideLoader();
+            // // _hideLoader();
           }
         },
       ),

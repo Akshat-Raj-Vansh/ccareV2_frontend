@@ -6,6 +6,7 @@ import 'package:ccarev2_frontend/services/Notifications/notificationContoller.da
 import 'package:ccarev2_frontend/user/domain/details.dart';
 import 'package:ccarev2_frontend/user/domain/location.dart';
 import 'package:ccarev2_frontend/user/domain/profile.dart';
+import 'package:ccarev2_frontend/utils/constants.dart';
 import 'package:common/infra/MHttpClient.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
@@ -51,12 +52,7 @@ class CompositionRoot {
     sharedPreferences = await SharedPreferences.getInstance();
     localStore = LocalStore(sharedPreferences);
     client = Client();
-    // secureClient = SecureClient(MHttpClient(client), localStore);
-    // baseUrl = "http://192.168.252.151:3000";
-    // baseUrl = "https://cardiocarenith.herokuapp.com";
-    //baseUrl = "http://192.168.0.139:3000";
-    // baseUrl = "http://192.168.108.55:3000";
-    baseUrl = "http://192.168.1.145:3000";
+    baseUrl = BASEURL;
 
     // baseUrl = "http://192.168.95.55:3000";
     userAPI = UserAPI(client, baseUrl);

@@ -165,6 +165,13 @@ class NoReportState extends MainState {
   List<Object> get props => [this.msg];
 }
 
+class NoHistoryState extends MainState {
+  final String error;
+  NoHistoryState(this.error);
+  @override
+  List<Object> get props => [this.error];
+}
+
 class EmergencyState extends MainState {
   final String msg;
   EmergencyState(this.msg);

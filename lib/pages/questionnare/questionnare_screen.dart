@@ -85,65 +85,61 @@ class _SelfAssessmentState extends State<SelfAssessment> {
         body: buildbody(context));
   }
 
-
-    _showAmbRequired() async {
-      var alert = AlertDialog(
-                    title: Center(
-                      child: const Text(
-                        'Emergency',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 20,
-                        ),
-                      ),
-                    ),
-                    content: const Text(
-                      'Do you need an ambulance?',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w300,
-                        fontSize: 15,
-                      ),
-                    ),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.of(context).pop(false),
-                        child: const Text(
-                          'Cancel',
-                        ),
-                      ),
-                      TextButton(
-                        onPressed: () async {
-                          _hideLoader();
-                                 await widget.cubit.notify("QUESTIONNAIRE",true,assessment:display);
-                          // await widget.mainCubit.fetchEmergencyDetails();
-                        },
-                        child: const Text(
-                          'Yes',
-                        ),
-                      ),
-                       TextButton(
-                        onPressed: () async {
-                          _hideLoader();
-                                 await widget.cubit.notify("QUESTIONNAIRE",false,assessment:display);
-                          // await widget.mainCubit.fetchEmergencyDetails();
-                        },
-                        child: const Text(
-                          'No',
-                        ),
-                      ),
-                    ],
-                  );
-      showDialog(
-                  context: context,
-                  builder: (context) =>alert );
-    }
-
-    _hideLoader() {
-   
-      Navigator.of(context, rootNavigator: true).pop();
-    
+  _showAmbRequired() async {
+    var alert = AlertDialog(
+      title: Center(
+        child: const Text(
+          'Emergency',
+          style: TextStyle(
+            fontWeight: FontWeight.w600,
+            fontSize: 20,
+          ),
+        ),
+      ),
+      content: const Text(
+        'Do you need an ambulance?',
+        style: TextStyle(
+          fontWeight: FontWeight.w300,
+          fontSize: 15,
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(false),
+          child: const Text(
+            'Cancel',
+          ),
+        ),
+        TextButton(
+          onPressed: () async {
+            // _hideLoader();
+            await widget.cubit
+                .notify("QUESTIONNAIRE", true, assessment: display);
+            // await widget.mainCubit.fetchEmergencyDetails();
+          },
+          child: const Text(
+            'Yes',
+          ),
+        ),
+        TextButton(
+          onPressed: () async {
+            // _hideLoader();
+            await widget.cubit
+                .notify("QUESTIONNAIRE", false, assessment: display);
+            // await widget.mainCubit.fetchEmergencyDetails();
+          },
+          child: const Text(
+            'No',
+          ),
+        ),
+      ],
+    );
+    showDialog(context: context, builder: (context) => alert);
   }
 
+  _hideLoader() {
+    Navigator.of(context, rootNavigator: true).pop();
+  }
 
   buildbody(BuildContext context) {
     return Container(
@@ -247,7 +243,7 @@ class _SelfAssessmentState extends State<SelfAssessment> {
 
                                 if (display.last.node_type == "RESULT") {
                                   if (display.last.options[0] == "EMERGENCY") {
-                                      _showAmbRequired();
+                                    _showAmbRequired();
                                     ScaffoldMessenger.of(context)
                                         .showSnackBar(SnackBar(
                                       backgroundColor:
@@ -284,7 +280,7 @@ class _SelfAssessmentState extends State<SelfAssessment> {
                                     if (display.last.options[0] ==
                                         "EMERGENCY") {
                                       print("Inside");
-                                        _showAmbRequired();
+                                      _showAmbRequired();
                                     }
                                   }
                                 } catch (e) {
@@ -341,7 +337,5 @@ class _SelfAssessmentState extends State<SelfAssessment> {
             ),
           ],
         ));
-
-
   }
 }

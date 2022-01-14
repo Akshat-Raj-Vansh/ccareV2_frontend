@@ -83,13 +83,13 @@ class _PatientListState extends State<PatientList> {
       body: CubitConsumer<MainCubit, MainState>(
         builder: (_, state) {
           if (state is PatientsLoaded) {
-            //  _hideLoader();
+            //  // _hideLoader();
             currentState = PatientsLoaded;
             _patients = state.patients;
             print(_patients);
           }
           if (state is NormalState) {
-            //   _hideLoader();
+            //   // _hideLoader();
             currentState = NormalState;
           }
           if (currentState == null)
@@ -102,7 +102,7 @@ class _PatientListState extends State<PatientList> {
             log('LOG > doctor_spoke.dart > 197 > state: ${state.toString()}');
 //_showLoader();
           } else if (state is ErrorState) {
-            _hideLoader();
+            // _hideLoader();
             log('LOG > doctor_spoke.dart > 204 > state: ${state.toString()}');
           }
         },
@@ -110,30 +110,64 @@ class _PatientListState extends State<PatientList> {
     );
   }
 
-  _buildList(context) => ListView.builder(
-        shrinkWrap: true,
-        itemCount: _patients.length,
-        itemBuilder: (BuildContext context, int index) {
-          return InkWell(
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (ctx) => CubitProvider<MainCubit>(
-                  create: (ctx) => CubitProvider.of<MainCubit>(context),
-                  child: PatientInfo(_patients[index].id),
+  _buildList(context) => Container(
+        decoration: BoxDecoration(
+            color: Colors.green[100], borderRadius: BorderRadius.circular(20)),
+        width: SizeConfig.screenWidth,
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+        margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+        child: ListView.builder(
+          itemCount: _patients.length,
+          shrinkWrap: true,
+          itemBuilder: (BuildContext context, int index) {
+            return InkWell(
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (ctx) => CubitProvider<MainCubit>(
+                    create: (ctx) => CubitProvider.of<MainCubit>(context),
+                    child: PatientInfo(_patients[index].id),
+                  ),
                 ),
               ),
-            ),
-            child: ListTile(
-                leading: Icon(Icons.person),
-                title: Text(
-                  _patients[index].name,
-                  style: TextStyle(color: Colors.green, fontSize: 15),
-                ),
-                trailing: Text(_patients[index].gender.toString() +
-                    '   ' +
-                    _patients[index].age.toString())),
-          );
-        },
+              child: ListTile(
+                  leading: Icon(Icons.person),
+                  title: Text(
+                    _patients[index].name,
+                    style: TextStyle(color: Colors.green, fontSize: 15),
+                  ),
+                  trailing: Text(_patients[index].gender.toString() +
+                      '   ' +
+                      _patients[index].age.toString())),
+            );
+          },
+        ),
       );
+
+  //  ListView.builder(
+  //       shrinkWrap: true,
+  //       itemCount: _patients.length,
+  //       itemBuilder: (BuildContext context, int index) {
+  //         return InkWell(
+  //           onTap: () => Navigator.push(
+  //             context,
+  //             MaterialPageRoute(
+  //               builder: (ctx) => CubitProvider<MainCubit>(
+  //                 create: (ctx) => CubitProvider.of<MainCubit>(context),
+  //                 child: PatientInfo(_patients[index].id),
+  //               ),
+  //             ),
+  //           ),
+  //           child: ListTile(
+  //               leading: Icon(Icons.person),
+  //               title: Text(
+  //                 _patients[index].name,
+  //                 style: TextStyle(color: Colors.green, fontSize: 15),
+  //               ),
+  //               trailing: Text(_patients[index].gender.toString() +
+  //                   '   ' +
+  //                   _patients[index].age.toString())),
+  //         );
+  //       },
+  //     );
 }

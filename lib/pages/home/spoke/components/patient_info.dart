@@ -132,7 +132,7 @@ class _PatientInfoState extends State<PatientInfo> {
           }
 
           if (state is NormalState) {
-            //   _hideLoader();
+            //   // _hideLoader();
             currentState = NormalState;
           }
           if (currentState == null)
@@ -143,15 +143,15 @@ class _PatientInfoState extends State<PatientInfo> {
           if (state is LoadingState) {
             print("Loading State Called Patient Info");
             log('LOG > doctor_spoke.dart > 197 > state: ${state.toString()}');
-            _showLoader();
+            //  _showLoader();
           } else if (state is ErrorState) {
-            _hideLoader();
+            // _hideLoader();
             log('LOG > doctor_spoke.dart > 204 > state: ${state.toString()}');
           } else if (state is TokenLoadedState) {
             token = state.token;
           }
           if (state is NewReportGenerated) {
-            _hideLoader();
+            // _hideLoader();
             log('LOG > doctor_spoke.dart > 212 > state: ${state.toString()}');
             // Navigator.push(
             //     context,
@@ -164,7 +164,7 @@ class _PatientInfoState extends State<PatientInfo> {
             //     ));
             _showMessage(state.msg);
           } else if (state is AllHubDoctorsState) {
-            _hideLoader();
+            // _hideLoader();
             log('LOG > doctor_spoke.dart > 223 > state: ${state.toString()}',
                 time: DateTime.now());
             showModalBottomSheet(
@@ -173,11 +173,11 @@ class _PatientInfoState extends State<PatientInfo> {
                   return HubDoctorsList(state.docs, mainCubit);
                 });
           } else if (state is ConsultHub) {
-            _hideLoader();
+            // _hideLoader();
             log('LOG > doctor_spoke.dart > 231 > state: ${state.toString()}',
                 time: DateTime.now());
           } else if (state is AcceptState) {
-            _hideLoader();
+            // _hideLoader();
             log('LOG > doctor_spoke.dart > 237 > state: ${state.toString()}',
                 time: DateTime.now());
             await showDialog(
@@ -218,7 +218,7 @@ class _PatientInfoState extends State<PatientInfo> {
                 ) ??
                 false;
           } else if (state is PatientAccepted) {
-            _hideLoader();
+            // _hideLoader();
             _emergency = true;
             log('LOG > doctor_spoke.dart > 280 > state: ${state.toString()}',
                 time: DateTime.now());
@@ -227,7 +227,7 @@ class _PatientInfoState extends State<PatientInfo> {
           } else if (state is AllPatientsState) {
             log('LOG > doctor_spoke.dart > 284 > state: ${state.toString()}',
                 time: DateTime.now());
-            _hideLoader();
+            // _hideLoader();
           }
         },
       ),

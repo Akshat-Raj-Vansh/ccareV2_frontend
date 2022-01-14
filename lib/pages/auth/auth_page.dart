@@ -81,10 +81,10 @@ class _AuthPageState extends State<AuthPage> {
                     listener: (context, state) {
                       if (state is LoadingState) {
                         print("Loading State Called Auth");
-                        _showLoader();
+                        //    _showLoader();
                       } else if (state is LoginSuccessState) {
                         print("Login Success State Called");
-                        _hideLoader();
+                        //    // _hideLoader();
                         print(widget.userType);
                         state.details.newUser
                             ? widget.pageAdatper
@@ -93,20 +93,20 @@ class _AuthPageState extends State<AuthPage> {
                                 .onLoginSuccess(context, widget.userType);
                         print(state.details.toString());
                       } else if (state is PhoneVerificationState) {
-                        _hideLoader();
+                        //    // _hideLoader();
                         print("PhoneVerification State Called");
-                        _showLoader();
+                        //    _showLoader();
                         _phone = state.phone;
                         _verifyPhone(_phone);
                       } else if (state is OTPVerificationState) {
                         print("OTP State Called");
-                        _hideLoader();
+                        //  // _hideLoader();
 
                         _controller.nextPage(
                             duration: const Duration(microseconds: 1000),
                             curve: Curves.elasticIn);
                       } else {
-                        _hideLoader();
+                        //   // _hideLoader();
                         if (state is ErrorState) {
                           print("Error State Called");
                           print(state.error);
@@ -121,12 +121,12 @@ class _AuthPageState extends State<AuthPage> {
                   listener: (context, state) {
                     if (state is profileState.LoadingState) {
                       print("LoadingStateCalled");
-                      _showLoader();
+                      //  _showLoader();
                     } else if (state is profileState.AddProfileState) {
                       widget.pageAdatper
                           .onLoginSuccess(context, widget.userType);
                     } else {
-                      _hideLoader();
+                      //   // _hideLoader();
                       if (state is profileState.ErrorState) {
                         print("ErrorState");
                         print(state.error);
@@ -252,7 +252,7 @@ class _AuthPageState extends State<AuthPage> {
           },
           verificationFailed: (FirebaseAuthException e) {
             _msg = "VERIFICATION FAILED " + e.toString();
-            _hideLoader();
+            //    // _hideLoader();
             _showMessage(_msg);
           },
           codeSent: (String verificationID, int resendToken) {
@@ -266,13 +266,13 @@ class _AuthPageState extends State<AuthPage> {
           timeout: const Duration(seconds: 30));
     } catch (e) {
       _msg = "VERIFICATION FAILED " + e.toString();
-      _hideLoader();
+      //  // _hideLoader();
       _showMessage(_msg);
     }
   }
 
   _verifyOTP(String otp) async {
-    _showLoader();
+    // _showLoader();
     String _msg = "OTP VERIFICATION INCOMPLETE";
     print('INSIDE VERIFY OTP');
     print('USERTYPE:');
@@ -289,7 +289,7 @@ class _AuthPageState extends State<AuthPage> {
         } else {
           _msg = "VERIFICATION FAILED. INVALID OTP.";
           print('INVALID OTP');
-          _hideLoader();
+          // _hideLoader();
           _showMessage(_msg);
         }
       }).catchError((err) {
@@ -298,9 +298,9 @@ class _AuthPageState extends State<AuthPage> {
       });
     } catch (e) {
       _msg = "VERIFICATION FAILED " + e.toString();
-      _hideLoader();
+      // _hideLoader();
       _showMessage(_msg);
     }
-    _hideLoader();
+    // _hideLoader();
   }
 }
