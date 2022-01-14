@@ -1,4 +1,4 @@
-package com.example.ccarev2_frontend
+package com.cardiocare.darvs
 
 import io.flutter.embedding.android.FlutterActivity
 
