@@ -110,13 +110,13 @@ class _HubPatientInfoState extends State<HubPatientInfo> {
           log('LOG > doctor_hub.dart > 165 > state: ${state.toString()}');
           if (state is ErrorState) {
             print("Error State Called HUB PATIENT");
-            // _hideLoader();
+            // // _hideLoader();
           } else if (state is TokenLoadedState) {
             token = state.token;
             print("Inside TokensLoaded State");
             print(token);
           } else if (state is AcceptState) {
-            // _hideLoader();
+            // // _hideLoader();
             print("Accept State Called");
             await showDialog(
                   context: context,

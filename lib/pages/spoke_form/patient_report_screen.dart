@@ -201,6 +201,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
           print('No Report State Called');
           log('LOG > patient_report_screen.dart > 201 > state: ${state.toString()}');
           currentState = state;
+          noReport = true;
           editReport = true;
         }
         if (currentState == null) {
@@ -218,18 +219,18 @@ class _PatientReportScreenState extends State<PatientReportScreen>
       },
       listener: (context, state) {
         if (state is EditPatientReport) {
-          _hideLoader();
+          // _hideLoader();
           editReport = true;
           log('LOG > patient_report_screen.dart > 222 > state: ${state.toString()}');
         }
         if (state is ViewPatientReport) {
-          _hideLoader();
+          // _hideLoader();
           editReport = false;
           log('LOG > patient_report_screen.dart > 227 > state: ${state.toString()}');
           //  widget.mainCubit.fetchPatientReport();
         }
         if (state is ImageCaptured) {
-          _hideLoader();
+          // _hideLoader();
           clickImage = true;
           log('LOG > patient_report_screen.dart > 233 > state: ${state.toString()}');
           //  widget.mainCubit.fetchPatientReport();
@@ -238,7 +239,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
           print("Patient Report Saved state Called");
           print(state.msg);
           log('LOG > patient_report_screen.dart > 239 > state: ${state.toString()}');
-          _hideLoader();
+          // _hideLoader();
           _showMessage('Report Saved');
           editReport = false;
           widget.mainCubit.fetchPatientReport();
@@ -298,7 +299,8 @@ class _PatientReportScreenState extends State<PatientReportScreen>
         ),
       ),
       resizeToAvoidBottomInset: false,
-      body: _buildFormBody(),
+      body:
+          noReport ? Center(child: Text('No Report Found')) : _buildFormBody(),
       floatingActionButton: widget.user == UserType.DOCTOR
           ? SpeedDial(
               animatedIcon: AnimatedIcons.menu_close,

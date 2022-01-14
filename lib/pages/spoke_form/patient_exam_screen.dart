@@ -115,7 +115,11 @@ class _PatientExamScreenState extends State<PatientExamScreen>
           log('LOG > patient_exam_screen.dart > 116 > editedReport: ${editedReport}');
           noReport = false;
           print(widget.patientDetails.toString());
-          //  _hideLoader();
+          //  // _hideLoader();
+        }
+        if (state is NoReportState) {
+          noReport = true;
+          log('DATA > patient_exam_screen.dart > FUNCTION_NAME > 122 > state.msg: ${state.msg}');
         }
         return buildUI();
       },
@@ -126,23 +130,23 @@ class _PatientExamScreenState extends State<PatientExamScreen>
           log('LOG > patient_exam_screen.dart > 116 > editedReport: ${editedReport}');
           noReport = false;
           print(widget.patientDetails.toString());
-          //  _hideLoader();
+          //  // _hideLoader();
         }
         if (state is EditPatientExamReport) {
           log('LOG > patient_exam_screen.dart > 121 > state: ${state.toString()}');
-          //   _hideLoader();
+          //   // _hideLoader();
           editReport = true;
         }
         if (state is ViewPatientExamReport) {
           log('LOG > patient_exam_screen.dart > 126 > state: ${state.toString()}');
-          //     _hideLoader();
+          //     // _hideLoader();
           editReport = false;
           //  widget.mainCubit.fetchPatientReport();
         }
         if (state is PatientExamReportSaved) {
           log('LOG > patient_exam_screen.dart > 131 > state: ${state.toString()}');
           print(state.msg);
-          //     _hideLoader();
+          //     // _hideLoader();
           _showMessage('Report Saved');
           editReport = false;
           //widget.mainCubit.fetchPatientExamReport();
@@ -150,7 +154,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
         if (state is NoReportState) {
           log('LOG > patient_exam_screen.dart > 140 > state: ${state.toString()}');
           print('No Report State Called');
-//_hideLoader();
+//// _hideLoader();
           noReport = true;
         }
       },
@@ -164,7 +168,9 @@ class _PatientExamScreenState extends State<PatientExamScreen>
         title: Text('Examination Form'),
         backgroundColor: kPrimaryColor,
         actions: [
-          if (_currentIndex != 0)
+          if (_currentIndex != 0 &&
+              !noReport &&
+              widget.user != UserType.PATIENT)
             editReport
                 ? TextButton(
                     onPressed: () async {
@@ -208,7 +214,8 @@ class _PatientExamScreenState extends State<PatientExamScreen>
         ),
       ),
       resizeToAvoidBottomInset: false,
-      body: _buildFormBody(),
+      body:
+          noReport ? Center(child: Text('No Report Found')) : _buildFormBody(),
     );
   }
 
@@ -234,10 +241,10 @@ class _PatientExamScreenState extends State<PatientExamScreen>
         child: Column(
           children: [
             // Patient Arrival Detail and Personal Information
-            _buildPatientDetails(),
+            //  _buildPatientDetails(),
 
             // Report Edit details
-            _buildEditDetails(),
+            // _buildEditDetails(),
 
             SizedBox(height: getProportionateScreenHeight(20)),
 
@@ -270,6 +277,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
           ],
         ),
       );
+
   _buildPatientDetails() => Container(
         decoration: BoxDecoration(
           color: Colors.green[100],

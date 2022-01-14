@@ -1,9 +1,12 @@
 //@dart=2.9
+import 'dart:developer';
+
 import 'package:ccarev2_frontend/main/domain/edetails.dart';
 import 'package:ccarev2_frontend/main/domain/question.dart';
 import 'package:ccarev2_frontend/main/domain/treatment.dart';
 import 'package:ccarev2_frontend/pages/home/components/fullImage.dart';
 import 'package:ccarev2_frontend/pages/home/home_page_adapter.dart';
+import 'package:ccarev2_frontend/pages/spoke_form/patient_exam_screen.dart';
 import 'package:ccarev2_frontend/pages/spoke_form/patient_history_screen.dart';
 import 'package:ccarev2_frontend/pages/spoke_form/patient_report_screen.dart';
 import 'package:ccarev2_frontend/services/Notifications/notificationContoller.dart';
@@ -52,7 +55,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
   static bool _historyFetched = false;
   static TreatmentReport _treatmentReport;
   static List<QuestionTree> _questions;
-  static String _currentStatus = "UNKNOWN";
+  static String _currentStatus = "EMERGENCY";
   List<QuestionTree> display = [];
   List<String> answers = [];
   int length = 1;
@@ -81,6 +84,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
   void initState() {
     super.initState();
 
+    CubitProvider.of<MainCubit>(context).getStatus();
     CubitProvider.of<MainCubit>(context).fetchEmergencyDetails();
     CubitProvider.of<MainCubit>(context).getQuestions();
     CubitProvider.of<MainCubit>(context).recentHistory();
@@ -145,7 +149,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
           //   onPressed: () async {
           //     _showLoader();
           //     loc.Location location = await _getLocation();
-          //     _hideLoader();
+          //     // _hideLoader();
           //     return widget.homePageAdapter
           //         .loadEmergencyScreen(context, UserType.PATIENT, location);
           //   },
@@ -200,10 +204,10 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
           if (state is DetailsLoaded) {
             print('details loaded 1');
             currentState = DetailsLoaded;
-            // _hideLoader();
+            // // _hideLoader();
             _notificationSent = true;
             eDetails = state.eDetails;
-            _currentStatus = "EMERGENCY";
+            // _currentStatus = "EMERGENCY";
             _emergency = true;
             if (eDetails.doctorDetails != null) {
               _doctorAccepted = true;
@@ -231,7 +235,8 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
             if (state.msg == "NOT ASSIGNED") _notificationSent = true;
           }
           if (state is StatusFetched) {
-            _hideLoader();
+            // _hideLoader();
+            log('DATA > patient.dart > FUNCTION_NAME > 237 > state.msg: ${state.msg}');
             _currentStatus = state.msg;
           }
           if (currentState == null)
@@ -242,27 +247,31 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
         listener: (context, state) async {
           if (state is LoadingState) {
             print("Loading State Called Patient");
-            _showLoader();
+            //    _showLoader();
+          } else if (state is StatusFetched) {
+            // _hideLoader();
+            log('DATA > patient.dart > FUNCTION_NAME > 237 > state.msg: ${state.msg}');
+            _currentStatus = state.msg;
           } else if (state is EmergencyState) {
-            _hideLoader();
+            // _hideLoader();
             _notificationSent = true;
             _emergency = true;
             _currentStatus = "EMERGENCY";
             print("Emergency State Called");
             _showMessage("Notifications sent to the Doctor and the Ambulance.");
           } else if (state is DetailsLoaded) {
-            _hideLoader();
+            // _hideLoader();
             print('details loaded');
             setState(() {});
             //  _currentStatus = EDetails.patientDetails.status;
           } else if (state is NormalState) {
-            _hideLoader();
+            // _hideLoader();
             // _showMessage(state.msg);
           } else if (state is ErrorState) {
-            _hideLoader();
+            // _hideLoader();
           } else if (state is QuestionnaireState) {
             print("Questionnaire State Called");
-            _hideLoader();
+            // _hideLoader();
             _questions = state.questions;
 
             // display.add(
@@ -331,6 +340,8 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
               if (_emergency) _buildPatientReportButton(),
               if (!_questionnaire || _notificationSent)
                 _buildPatientReportHistoryButton(),
+              if (!_questionnaire || _notificationSent)
+                _buildPatientTreatmentReportButton(),
             ],
           ),
         ),
@@ -1050,7 +1061,32 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
           ),
         ),
       );
-
+  _buildPatientTreatmentReportButton() => InkWell(
+        onTap: () async {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => PatientExamScreen(
+                  mainCubit: widget.mainCubit,
+                  user: UserType.PATIENT,
+                ),
+              ));
+        },
+        child: Container(
+          width: SizeConfig.screenWidth,
+          margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(5),
+              border: Border.all(color: kPrimaryColor)),
+          child: Text(
+            "View your Treatment Report History",
+            style: TextStyle(color: kPrimaryColor, fontSize: 14),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      );
   _buildDoctorDetails() => Column(children: [
         Container(
           width: SizeConfig.screenWidth,
@@ -1124,7 +1160,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                   } else {
                     // _showLoader();
                     // loc.Location location = await _getLocation();
-                    // _hideLoader();
+                    // // _hideLoader();
                     // return widget.homePageAdapter
                     //     .loadEmergencyScreen(context, UserType.PATIENT, location);
                     _updateStatus();
@@ -1290,9 +1326,9 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
           if (!_emergency)
             await widget.mainCubit.notify("EBUTTON", true);
           else {
-            _showLoader();
+            //   _showLoader();
             loc.Location location = await _getLocation();
-            _hideLoader();
+            // _hideLoader();
             return widget.homePageAdapter
                 .loadEmergencyScreen(context, UserType.PATIENT, location);
           }

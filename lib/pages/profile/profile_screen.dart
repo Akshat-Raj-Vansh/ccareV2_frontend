@@ -63,15 +63,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
         print(state);
         if (state is LoadingState) {
           print("Loading State Called Profile Screen");
-          _showLoader();
+          // _showLoader();
         } else if (state is AddProfileState) {
           print("Add Profile State Called");
-          _hideLoader();
+          // _hideLoader();
           // _showMessage(state.message);
           widget.pageAdapter.onProfileCompletion(context, widget.userType);
         } else if (state is ErrorState) {
           print('Error State Called PROFILE SCREEN');
-          _hideLoader();
+          // _hideLoader();
           _showMessage(state.error);
         }
       });

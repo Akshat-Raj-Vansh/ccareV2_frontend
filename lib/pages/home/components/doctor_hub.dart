@@ -173,7 +173,7 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
           log('LOG > doctor_hub.dart > 165 > state: ${state.toString()}');
           if (state is ErrorState) {
             print("Error State Called HUB DOCTORr");
-            // _hideLoader();
+            // // _hideLoader();
           } else if (state is HubPatientsLoaded) {
             eDetails = state.details;
             patientsLoaded = true;
@@ -189,7 +189,7 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
             print("Inside TokensLoaded State");
             print(token);
           } else if (state is AcceptState) {
-            // _hideLoader();
+            // // _hideLoader();
             print("Accept State Called");
             await showDialog(
                   context: context,
@@ -230,7 +230,7 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
                 false;
             //Create new state PatientAccepted by Hub
           } else if (state is PatientAccepted) {
-            // _hideLoader();
+            // // _hideLoader();
             print("Inside patient accepted by Doctor state");
             widget.mainCubit.fetchHubPatientDetails();
           }

@@ -1,4 +1,6 @@
 //@dart=2.9
+import 'dart:developer';
+
 import 'package:ccarev2_frontend/components/default_button.dart';
 import 'package:ccarev2_frontend/main/domain/treatment.dart';
 import 'package:ccarev2_frontend/pages/spoke_form/components/history_details.dart';
@@ -24,7 +26,7 @@ class PatientReportHistoryScreen extends StatefulWidget {
 
 class _PatientReportHistoryScreenState
     extends State<PatientReportHistoryScreen> {
-  List<TreatmentReport> reports;
+  List<TreatmentReport> reports = [];
   @override
   void initState() {
     super.initState();
@@ -73,8 +75,13 @@ class _PatientReportHistoryScreenState
     return CubitConsumer<MainCubit, MainState>(
       cubit: widget.mainCubit,
       builder: (_, state) {
-        if (state is ErrorState)
+        if (state is NoHistoryState) {
+          log('DATA > patient_history_screen.dart > FUNCTION_NAME > 77 > state.error: ${state.error}');
           return Scaffold(
+            appBar: AppBar(
+              title: Text('Medical History'),
+              backgroundColor: kPrimaryColor,
+            ),
             body: Container(
               color: Colors.white,
               child: Center(
@@ -85,18 +92,19 @@ class _PatientReportHistoryScreenState
               ),
             ),
           );
+        }
         return buildBody();
       },
       listener: (context, state) {
         if (state is PatientReportHistoryFetched) {
           print("Patient TreatmentReport History Fetched state Called");
           reports = state.reports;
-          _hideLoader();
+          // _hideLoader();
         }
 
         if (state is NoReportState) {
           print('No Treatment Report State Called');
-          _hideLoader();
+          // _hideLoader();
         }
       },
     );
@@ -127,7 +135,6 @@ class _PatientReportHistoryScreenState
           child: Column(
             children: [
               SizedBox(height: SizeConfig.screenHeight * 0.02),
-
               Expanded(
                   child: FixedTimeline.tileBuilder(
                 builder: TimelineTileBuilder.connectedFromStyle(

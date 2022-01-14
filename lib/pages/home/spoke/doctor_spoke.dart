@@ -5,6 +5,7 @@ import 'package:ccarev2_frontend/main/domain/edetails.dart';
 import 'package:ccarev2_frontend/pages/chat/chatScreen.dart';
 import 'package:ccarev2_frontend/pages/chat/components/chatModel.dart';
 import 'package:ccarev2_frontend/pages/home/spoke/components/hub_list.dart';
+import 'package:ccarev2_frontend/pages/home/spoke/components/patient_info.dart';
 import 'package:ccarev2_frontend/pages/home/spoke/components/patient_list.dart';
 import 'package:ccarev2_frontend/pages/home/home_page_adapter.dart';
 import 'package:ccarev2_frontend/pages/spoke_form/patient_exam_screen.dart';
@@ -105,13 +106,13 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
       body: CubitConsumer<MainCubit, MainState>(
         builder: (_, state) {
           if (state is PatientsLoaded) {
-            //  _hideLoader();
+            //  // _hideLoader();
             currentState = PatientsLoaded;
             _patients = state.patients;
             print(_patients);
           }
           if (state is RequestsLoaded) {
-            //  _hideLoader();
+            //  // _hideLoader();
             currentState = RequestsLoaded;
             _requests = state.req;
             print(_requests);
@@ -141,7 +142,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
           // }
 
           if (state is NormalState) {
-            //   _hideLoader();
+            //   // _hideLoader();
             currentState = NormalState;
           }
           if (currentState == null)
@@ -157,7 +158,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
             token = state.token;
           }
           // if (state is NewReportGenerated) {
-          //   _hideLoader();
+          //   // _hideLoader();
           //   log('LOG > doctor_spoke.dart > 212 > state: ${state.toString()}');
           //   // Navigator.push(
           //   //     context,
@@ -170,7 +171,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
           //   //     ));
           //   _showMessage(state.msg);
           // } else if (state is AllHubDoctorsState) {
-          //   _hideLoader();
+          //   // _hideLoader();
           //   log('LOG > doctor_spoke.dart > 223 > state: ${state.toString()}',
           //       time: DateTime.now());
           //   showModalBottomSheet(
@@ -179,12 +180,12 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
           //         return HubDoctorsList(state.docs, widget.mainCubit);
           //       });
           // } else if (state is ConsultHub) {
-          //   _hideLoader();
+          //   // _hideLoader();
           //   log('LOG > doctor_spoke.dart > 231 > state: ${state.toString()}',
           //       time: DateTime.now());
           //}
           else if (state is AcceptState) {
-            _hideLoader();
+            // _hideLoader();
             log('LOG > doctor_spoke.dart > 237 > state: ${state.toString()}',
                 time: DateTime.now());
             await showDialog(
@@ -226,20 +227,20 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
                 ) ??
                 false;
           } else if (state is PatientAccepted) {
-            _hideLoader();
+            // _hideLoader();
             // _emergency = true;
             log('LOG > doctor_spoke.dart > 280 > state: ${state.toString()}',
                 time: DateTime.now());
             //   CubitProvider.of<MainCubit>(context).fetchEmergencyDetails();
           } else if (state is ErrorState) {
-            //   _hideLoader();
+            //   // _hideLoader();
             // _emergency = true;
             print(state.error);
           }
           // else if (state is AllPatientsState) {
           //   log('LOG > doctor_spoke.dart > 284 > state: ${state.toString()}',
           //       time: DateTime.now());
-          //   _hideLoader();
+          //   // _hideLoader();
           // }
         },
       ),
@@ -277,7 +278,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
                 style: TextStyle(color: Colors.black54),
               ),
               onTap: () {
-                //_hideLoader();
+                //// _hideLoader();
                 Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -391,7 +392,16 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
                     shrinkWrap: true,
                     itemBuilder: (BuildContext context, int index) {
                       return InkWell(
-                        onTap: () => _showMessage(_patients[index].name),
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (ctx) => CubitProvider<MainCubit>(
+                              create: (ctx) =>
+                                  CubitProvider.of<MainCubit>(context),
+                              child: PatientInfo(_patients[index].id),
+                            ),
+                          ),
+                        ),
                         child: ListTile(
                             leading: Icon(Icons.person),
                             title: Text(

@@ -152,7 +152,7 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
           _patientLocation =
               LatLng(state.location.latitude, state.location.longitude);
           _addPatientMarker();
-          _hideLoader();
+          // _hideLoader();
           _showMessage("Patient Accepted");
         }
         if (state is DoctorAccepted) {
@@ -160,7 +160,7 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
           _doctorLocation =
               LatLng(state.location.latitude, state.location.longitude);
           _addDoctorMarker();
-          // _hideLoader();
+          // // _hideLoader();
           // _showMessage("Doctor Accepted");
         }
         if (state is DriverAccepted) {
@@ -168,7 +168,7 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
           _driverLocation =
               LatLng(state.location.latitude, state.location.longitude);
           _addDriverMarker();
-          // _hideLoader();
+          // // _hideLoader();
           // _showMessage("Driver Accepted");
         }
       },

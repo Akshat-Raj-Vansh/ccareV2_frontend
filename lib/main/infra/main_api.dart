@@ -49,8 +49,8 @@ class MainAPI extends IMainAPI {
       "Authorization": token.value
     };
     var response = await _client.get(Uri.parse(endpoint), headers: header);
-    print('@main_api.dart/getStatus response status: ${response.statusCode}');
-    print('@main_api.dart/getStatus response body: ${response.body}');
+    log('DATA > main_api.dart > FUNCTION_NAME > 52 > response.statusCode: ${response.statusCode}');
+    log('DATA > main_api.dart > FUNCTION_NAME > 53 > response.body: ${response.body}');
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
       print(transformError(map));
@@ -58,7 +58,7 @@ class MainAPI extends IMainAPI {
     }
     dynamic json = jsonDecode(response.body);
     print('@main_api.dart/getStatus json: $json');
-    var result = json["msg"] as String;
+    var result = json["message"] as String;
     return Result.value(result);
   }
 
@@ -227,6 +227,8 @@ class MainAPI extends IMainAPI {
       print(transformError(map));
       return Result.error(transformError(map));
     }
+    if (response.body == null)
+      return Result.error('No report available currently!');
     dynamic currentReport = jsonDecode(response.body)['currentReport'];
     print("Report $currentReport");
     if (currentReport == null) return currentReport;
@@ -264,15 +266,15 @@ class MainAPI extends IMainAPI {
       "Authorization": token.value
     };
     var response = await _client.get(Uri.parse(endpoint), headers: header);
-    print(response.statusCode);
-    print(response.body);
+    log('DATA > main_api.dart > FUNCTION_NAME > 269 > response.statusCode: ${response.statusCode}');
+    log('DATA > main_api.dart > FUNCTION_NAME > 270 > response.body: ${response.body}');
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
       print(transformError(map));
       return Result.error(transformError(map));
     }
 
-    if (jsonDecode(response.body)['history'] == null)
+    if (jsonDecode(response.body)['history'].length == 0)
       return Result.error("No history in records");
     List<treat.TreatmentReport> report =
         (jsonDecode(response.body)['history'] as List)
