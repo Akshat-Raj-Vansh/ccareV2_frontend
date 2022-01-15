@@ -301,9 +301,12 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
               // if (!_notificationSent) _buildHeader(),
               if ((_questionnaire || _historyFetched) && !_notificationSent)
                 _buildPatienEmergencyButton(),
+              if (_historyFetched && !_notificationSent)
+                _buildSelfAnalysisButton(),
               if (!_historyFetched && _questionnaire && !_notificationSent)
                 _buildQuestionnaire(),
               if (_historyFetched && !_notificationSent) _buildReportOverview(),
+
               if (_notificationSent && (!_doctorAccepted && !_driverAccepted))
                 _buildNotificationSend(),
               if (_doctorAccepted || _driverAccepted)
@@ -366,6 +369,27 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
           child: Text(
             "Press here if you require Emergency AID",
             style: TextStyle(color: Colors.red, fontSize :12.sp),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      );
+
+  _buildSelfAnalysisButton() => InkWell(
+        onTap: () async {
+          _showAmbRequired();
+          setState(() {});
+        },
+        child: Container(
+          width: SizeConfig.screenWidth,
+          margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(5),
+              border: Border.all(color: Colors.green)),
+          child: Text(
+            "Press here to proceed to Questionnaire",
+            style: TextStyle(color: Colors.green, fontSize: 14),
             textAlign: TextAlign.center,
           ),
         ),
@@ -1235,9 +1259,10 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
         ),
         TextButton(
           onPressed: () async {
+            loc.Location location = await _getLocation();
             Navigator.of(context).pop(false);
             _notificationSent = true;
-            await widget.mainCubit.notify("EBUTTON", true);
+            await widget.mainCubit.notify("EBUTTON", true, location);
             // await widget.mainCubit.fetchEmergencyDetails();
           },
           child: Text(
@@ -1246,8 +1271,9 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
         ),
         TextButton(
           onPressed: () async {
+            loc.Location location = await _getLocation();
             Navigator.of(context).pop(false);
-            await widget.mainCubit.notify("QUESTIONNAIRE", false);
+            await widget.mainCubit.notify("QUESTIONNAIRE", false, location);
             // await widget.mainCubit.fetchEmergencyDetails();
           },
           child: Text(
@@ -1324,9 +1350,10 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
 
   _buildEmergencyButton() => InkWell(
         onTap: () async {
-          if (!_emergency)
-            await widget.mainCubit.notify("EBUTTON", true);
-          else {
+          if (!_emergency) {
+            loc.Location location = await _getLocation();
+            await widget.mainCubit.notify("EBUTTON", true, location);
+          } else {
             //   _showLoader();
             loc.Location location = await _getLocation();
             // _hideLoader();

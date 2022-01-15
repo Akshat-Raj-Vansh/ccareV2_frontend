@@ -72,14 +72,15 @@ class MainCubit extends Cubit<MainState> {
     });
   }
 
-  notify(String action, bool ambRequired,
+  notify(String action, bool ambRequired, loc.Location location,
       {List<QuestionTree>? assessment}) async {
     print("Inside Notify");
     _startLoading("notify");
     final token = await localStore.fetch();
     final result = await api.notify(
         Token(token.value),
-        loc.Location(latitude: 31.7091367, longitude: 76.5236728),
+        //  loc.Location(latitude: 31.7091367, longitude: 76.5236728),
+        location,
         action,
         ambRequired,
         assessment: assessment);
