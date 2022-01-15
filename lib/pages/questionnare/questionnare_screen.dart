@@ -1,6 +1,8 @@
 //@dart=2.9
 import 'package:ccarev2_frontend/main/domain/question.dart';
 import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
+import 'package:location/location.dart' as lloc;
+import 'package:ccarev2_frontend/user/domain/location.dart' as loc;
 import 'package:ccarev2_frontend/utils/constants.dart';
 import 'package:flutter/material.dart';
 
@@ -113,8 +115,9 @@ class _SelfAssessmentState extends State<SelfAssessment> {
         TextButton(
           onPressed: () async {
             // _hideLoader();
+            loc.Location location = await _getLocation();
             await widget.cubit
-                .notify("QUESTIONNAIRE", true, assessment: display);
+                .notify("QUESTIONNAIRE", true, location, assessment: display);
             // await widget.mainCubit.fetchEmergencyDetails();
           },
           child: const Text(
@@ -124,8 +127,9 @@ class _SelfAssessmentState extends State<SelfAssessment> {
         TextButton(
           onPressed: () async {
             // _hideLoader();
+            loc.Location location = await _getLocation();
             await widget.cubit
-                .notify("QUESTIONNAIRE", false, assessment: display);
+                .notify("QUESTIONNAIRE", false, location, assessment: display);
             // await widget.mainCubit.fetchEmergencyDetails();
           },
           child: const Text(
@@ -139,6 +143,16 @@ class _SelfAssessmentState extends State<SelfAssessment> {
 
   _hideLoader() {
     Navigator.of(context, rootNavigator: true).pop();
+  }
+
+  Future<loc.Location> _getLocation() async {
+    lloc.LocationData _locationData = await lloc.Location().getLocation();
+    print(_locationData.latitude.toString() +
+        "," +
+        _locationData.longitude.toString());
+    loc.Location _location = loc.Location(
+        latitude: _locationData.latitude, longitude: _locationData.longitude);
+    return _location;
   }
 
   buildbody(BuildContext context) {

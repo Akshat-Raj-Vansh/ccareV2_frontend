@@ -30,6 +30,14 @@
           }
         },
         {
+          "client_id": "797374976435-9001ld6dcnt1imcobgdsnt62ql7fhkh7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cardiocare.darvs",
+            "certificate_hash": "a7f58c084644e90bc96feb3c2bfa4ca2d5d69e2d"
+          }
+        },
+        {
           "client_id": "797374976435-ic37h2rqk78bo6084jobhfc6dl0qc23i.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -38,72 +46,19 @@
           }
         },
         {
+          "client_id": "797374976435-t9a5v95ke9rdjdfn54uohbq78ft3umph.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cardiocare.darvs",
+            "certificate_hash": "842982995e916ebba7b9fbb6030162b8f7c1da76"
+          }
+        },
+        {
           "client_id": "797374976435-u9tpk6jjlf5l1opnoht1t8tu0ueombm3.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.cardiocare.darvs",
             "certificate_hash": "93a3d1603261fc888ed391ce1a198613f03e3fa4"
-          }
-        },
-        {
-          "client_id": "797374976435-aj8rjaq0f870iv670nqhuui2s6pp91mb.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAETuHg9gqL7-feu3GdMmc4UEH3bjabZr4"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "797374976435-aj8rjaq0f870iv670nqhuui2s6pp91mb.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:797374976435:android:17bb411998c2bc9cd27bc6",
-        "android_client_info": {
-          "package_name": "com.cardiocare.darvs"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "797374976435-7i6a8mio62m57841qvmqsb1stelpjv8u.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.cardiocare.darvs",
-            "certificate_hash": "93a3d1603261fc888ed391ce1a198613f03e3fa4"
-          }
-        },
-        {
-          "client_id": "797374976435-g439fr1neko57orl533lbbv1504vonbc.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.cardiocare.darvs",
-            "certificate_hash": "8751fb8c96ccf2dda1904d449df845a5d352f867"
-          }
-        },
-        {
-          "client_id": "797374976435-pl15ctcu1u53e3oh15ksu9puubgd27vu.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.cardiocare.darvs",
-            "certificate_hash": "f0b282c8dab4facf8e1b50e62fb016aa69be2fd8"
-          }
-        },
-        {
-          "client_id": "797374976435-s93dig9m5p9f2qp99ugv6kt1l99bn2i8.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.cardiocare.darvs",
-            "certificate_hash": "b3ed295f1b31b71d5f22ce8b34e4d18f54e45601"
           }
         },
         {
