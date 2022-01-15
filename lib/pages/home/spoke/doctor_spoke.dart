@@ -5,6 +5,7 @@ import 'package:ccarev2_frontend/main/domain/edetails.dart';
 import 'package:ccarev2_frontend/pages/chat/chatScreen.dart';
 import 'package:ccarev2_frontend/pages/chat/components/chatModel.dart';
 import 'package:ccarev2_frontend/pages/home/spoke/components/hub_list.dart';
+import 'package:sizer/sizer.dart';
 import 'package:ccarev2_frontend/pages/home/spoke/components/patient_info.dart';
 import 'package:ccarev2_frontend/pages/home/spoke/components/patient_list.dart';
 import 'package:ccarev2_frontend/pages/home/home_page_adapter.dart';
@@ -89,7 +90,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
         style: Theme.of(context)
             .textTheme
             .caption
-            .copyWith(color: Colors.white, fontSize: 16),
+            .copyWith(color: Colors.white, fontSize :12.sp),
       ),
     ));
   }
@@ -191,24 +192,24 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
             await showDialog(
                   context: context,
                   builder: (context) => AlertDialog(
-                    title: const Text(
+                    title: Text(
                       'Are you sure?',
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
-                        fontSize: 20,
+                        fontSize :16.sp,
                       ),
                     ),
-                    content: const Text(
+                    content: Text(
                       'Do you want to accept the patient?',
                       style: TextStyle(
                         fontWeight: FontWeight.w300,
-                        fontSize: 15,
+                        fontSize :12.sp,
                       ),
                     ),
                     actions: [
                       TextButton(
                         onPressed: () => Navigator.of(context).pop(false),
-                        child: const Text(
+                        child: Text(
                           'Cancel',
                         ),
                       ),
@@ -218,7 +219,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
                               .acceptPatientBySpoke(state.patientID);
                           Navigator.of(context).pop(false);
                         },
-                        child: const Text(
+                        child: Text(
                           'Yes',
                         ),
                       ),
@@ -256,18 +257,18 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
           // Important: Remove any padding from the ListView.
           padding: EdgeInsets.zero,
           children: [
-            const DrawerHeader(
+            DrawerHeader(
               decoration: BoxDecoration(
                 color: kPrimaryColor,
               ),
               child: Text(
                 'CardioCare  Spoke',
-                style: TextStyle(color: Colors.white, fontSize: 43),
+                style: TextStyle(color: Colors.white, fontSize :32.sp),
               ),
             ),
             // ListTile(
             //   leading: Icon(Icons.person),
-            //   title: const Text(
+            //   title: Text(
             //     'My Profile',
             //     style: TextStyle(color: Colors.black54),
             //   ),
@@ -277,7 +278,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
             // ),
             ListTile(
               leading: Icon(Icons.group),
-              title: const Text(
+              title: Text(
                 'My Patients',
                 style: TextStyle(color: Colors.black54),
               ),
@@ -295,7 +296,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
             ),
             ListTile(
               leading: Icon(Icons.question_answer),
-              title: const Text(
+              title: Text(
                 'Consultation',
                 style: TextStyle(color: Colors.black54),
               ),
@@ -305,7 +306,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
             ),
             ListTile(
               leading: Icon(Icons.settings),
-              title: const Text(
+              title: Text(
                 'Settings',
                 style: TextStyle(color: Colors.black54),
               ),
@@ -315,7 +316,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
             ),
             ListTile(
               leading: Icon(Icons.logout),
-              title: const Text(
+              title: Text(
                 'Log out',
                 style: TextStyle(color: Colors.black54),
               ),
@@ -323,24 +324,24 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
                 await showDialog(
                       context: context,
                       builder: (context) => AlertDialog(
-                        title: const Text(
+                        title: Text(
                           'Are you sure?',
                           style: TextStyle(
                             fontWeight: FontWeight.w600,
-                            fontSize: 20,
+                            fontSize :16.sp,
                           ),
                         ),
-                        content: const Text(
+                        content: Text(
                           'Do you want to logout?',
                           style: TextStyle(
                             fontWeight: FontWeight.w300,
-                            fontSize: 15,
+                            fontSize :12.sp,
                           ),
                         ),
                         actions: [
                           TextButton(
                             onPressed: () => Navigator.of(context).pop(false),
-                            child: const Text(
+                            child: Text(
                               'Cancel',
                             ),
                           ),
@@ -349,7 +350,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
                               widget.homePageAdapter
                                   .onLogout(context, widget.userCubit);
                             },
-                            child: const Text(
+                            child: Text(
                               'Yes',
                             ),
                           ),
@@ -378,7 +379,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
             child: Text(
               "Current Patients",
               textAlign: TextAlign.left,
-              style: TextStyle(fontSize: 18, color: kPrimaryColor),
+              style: TextStyle(fontSize :14.sp, color: kPrimaryColor),
             ),
           ),
           _patients.length != 0
@@ -411,7 +412,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
                             title: Text(
                               _patients[index].name,
                               style:
-                                  TextStyle(color: Colors.green, fontSize: 15),
+                                  TextStyle(color: Colors.green, fontSize :12.sp),
                             ),
                             trailing: Text(_patients[index].gender.toString() +
                                 '   ' +
@@ -436,7 +437,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
             child: Text(
               "Current Requests",
               textAlign: TextAlign.left,
-              style: TextStyle(fontSize: 18, color: kPrimaryColor),
+              style: TextStyle(fontSize :14.sp, color: kPrimaryColor),
             ),
           ),
           _requests.length != 0
@@ -461,7 +462,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
                             title: Text(
                               _requests[index].name,
                               style:
-                                  TextStyle(color: Colors.green, fontSize: 15),
+                                  TextStyle(color: Colors.green, fontSize :12.sp),
                             ),
                             trailing: Text(_requests[index].age.toString())),
                       );
@@ -484,7 +485,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
   //             const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
   //         child: Text(
   //           "Emergency Information",
-  //           style: TextStyle(fontSize: 24),
+  //           style: TextStyle(fontSize :18.sp),
   //         ),
   //       ),
   //     if (_patientAccepted)
@@ -498,7 +499,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
   //             Text(
   //               "Status:",
   //               textAlign: TextAlign.left,
-  //               style: TextStyle(fontSize: 18),
+  //               style: TextStyle(fontSize :14.sp),
   //             ),
   //             Text(
   //               _currentStatus,
@@ -522,7 +523,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
   //   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
   //   child: Text(
   //     "Patients",
-  //     style: TextStyle(fontSize: 24),
+  //     style: TextStyle(fontSize :18.sp),
   //   ),
   // ),
   // _buildMedications(),
@@ -530,7 +531,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
   //   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
   //   child: Text(
   //     "Useful Resources",
-  //     style: TextStyle(fontSize: 24),
+  //     style: TextStyle(fontSize :18.sp),
   //   ),
   // ),
   // _buildResources(),
@@ -545,11 +546,11 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
   //       leading: Icon(CupertinoIcons.person, color: Colors.white),
   //       title: Text(
   //         "All Current Patients are recovering!!",
-  //         style: TextStyle(color: Colors.white, fontSize: 20),
+  //         style: TextStyle(color: Colors.white, fontSize :16.sp),
   //       ),
   //       subtitle: Text(
   //         "Medications and Ongoing treatment ->",
-  //         style: TextStyle(color: Colors.white, fontSize: 12),
+  //         style: TextStyle(color: Colors.white, fontSize :8.sp),
   //       ),
   //     ));
 
@@ -561,7 +562,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
   //         child: Text(
   //           "Patient's Information",
   //           textAlign: TextAlign.left,
-  //           style: TextStyle(fontSize: 18),
+  //           style: TextStyle(fontSize :14.sp),
   //         ),
   //       ),
   //       Container(
@@ -579,8 +580,8 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
   //                 Text(eDetails.patientDetails.name),
   //               ],
   //             ),
-  //             const SizedBox(
-  //               height: 5,
+  //             SizedBox(
+  //               height: 1.h,
   //             ),
   //             Row(
   //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -610,7 +611,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
   //             border: Border.all(color: kPrimaryColor)),
   //         child: Text(
   //           "Start treatment of the Patient",
-  //           style: TextStyle(color: kPrimaryColor, fontSize: 14),
+  //           style: TextStyle(color: kPrimaryColor, fontSize :12.sp),
   //           textAlign: TextAlign.center,
   //         ),
   //       ),
@@ -637,7 +638,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
   //             borderRadius: BorderRadius.circular(20)),
   //         child: Text(
   //           "View/Update Patient's Medical Report",
-  //           style: TextStyle(color: Colors.white, fontSize: 14),
+  //           style: TextStyle(color: Colors.white, fontSize :12.sp),
   //           textAlign: TextAlign.center,
   //         ),
   //       ),
@@ -663,7 +664,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
   //             borderRadius: BorderRadius.circular(20)),
   //         child: Text(
   //           "View/Update Patient's Exam Report",
-  //           style: TextStyle(color: Colors.white, fontSize: 14),
+  //           style: TextStyle(color: Colors.white, fontSize :12.sp),
   //           textAlign: TextAlign.center,
   //         ),
   //       ),
@@ -684,7 +685,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
   //         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
   //         child: Text(
   //           "View Patient's Medical Report History",
-  //           style: TextStyle(color: kPrimaryColor, fontSize: 14),
+  //           style: TextStyle(color: kPrimaryColor, fontSize :12.sp),
   //           textAlign: TextAlign.center,
   //         ),
   //       ),
@@ -709,7 +710,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
   //             borderRadius: BorderRadius.circular(20)),
   //         child: Text(
   //           "Consultations",
-  //           style: TextStyle(color: Colors.white, fontSize: 14),
+  //           style: TextStyle(color: Colors.white, fontSize :12.sp),
   //           textAlign: TextAlign.center,
   //         ),
   //       ),
@@ -743,7 +744,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
   //             borderRadius: BorderRadius.circular(20)),
   //         child: Text(
   //           eDetails.hubDetails.name,
-  //           style: TextStyle(color: Colors.white, fontSize: 14),
+  //           style: TextStyle(color: Colors.white, fontSize :12.sp),
   //           textAlign: TextAlign.center,
   //         ),
   //       ),
@@ -763,7 +764,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
   //             border: Border.all(color: kPrimaryColor)),
   //         child: Text(
   //           "Create New Report",
-  //           style: TextStyle(color: kPrimaryColor, fontSize: 14),
+  //           style: TextStyle(color: kPrimaryColor, fontSize :12.sp),
   //           textAlign: TextAlign.center,
   //         ),
   //       ),
@@ -777,7 +778,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
   //         child: Text(
   //           "Ambulance's Information",
   //           textAlign: TextAlign.left,
-  //           style: TextStyle(fontSize: 18),
+  //           style: TextStyle(fontSize :14.sp),
   //         ),
   //       ),
   //       Container(
@@ -795,8 +796,8 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
   //                 Text(eDetails.driverDetails.name),
   //               ],
   //             ),
-  //             const SizedBox(
-  //               height: 5,
+  //             SizedBox(
+  //               height: 1.h,
   //             ),
   //             Row(
   //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -805,8 +806,8 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
   //                 Text(eDetails.driverDetails.plateNumber),
   //               ],
   //             ),
-  //             const SizedBox(
-  //               height: 5,
+  //             SizedBox(
+  //               height: 1.h,
   //             ),
   //             Row(
   //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -815,8 +816,8 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
   //                 Text(eDetails.driverDetails.contactNumber),
   //               ],
   //             ),
-  //             const SizedBox(
-  //               height: 5,
+  //             SizedBox(
+  //               height: 1.h,
   //             ),
   //             RichText(
   //               text: TextSpan(
@@ -847,7 +848,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
   // //                 color: Colors.lightBlue[100],
   // //                 borderRadius: BorderRadius.circular(20)),
   // //             child: ListTile(
-  // //                 leading: Text(res[index], style: TextStyle(fontSize: 16))),
+  // //                 leading: Text(res[index], style: TextStyle(fontSize :12.sp))),
   // //           );
   // //         }));
 
@@ -866,9 +867,9 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
   // //                 color: Colors.lightBlue[100],
   // //                 borderRadius: BorderRadius.circular(20)),
   // //             child: ListTile(
-  // //               leading: Text(patients[index], style: TextStyle(fontSize: 16)),
+  // //               leading: Text(patients[index], style: TextStyle(fontSize :12.sp)),
   // //               trailing:
-  // //                   Text(time_patients[index], style: TextStyle(fontSize: 16)),
+  // //                   Text(time_patients[index], style: TextStyle(fontSize :12.sp)),
   // //             ),
   // //           );
   // //         }));

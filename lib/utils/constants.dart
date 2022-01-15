@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'size_config.dart';
 
+import 'package:sizer/sizer.dart';
 const BASEURL = 'http://3.145.118.52:3000';
 
 
@@ -19,7 +20,7 @@ const kButtonColor = Color(0XFFF17AD75);
 const kAnimationDuration = Duration(milliseconds: 200);
 
 final headingStyle = TextStyle(
-  fontSize: getProportionateScreenWidth(28),
+  fontSize: 28.sp,
   fontWeight: FontWeight.bold,
   color: Colors.blue,
   height: 1.5,
@@ -54,3 +55,13 @@ OutlineInputBorder outlineInputBorder() {
     borderSide: BorderSide(color: kTextColor),
   );
 }
+
+
+//getPropotionateScreenWidth(285) -> 80.w
+//getPropotionateScreenWidth(400) -> 45.h
+//getPropotionateScreenWidth(36) -> 32.sp 
+//padding horizontal 20 -> 5.w 
+// height 20 -> 3.h
+//fontSize reduce by 30%
+//getPropotionalScreenHeight(42) -> 5.h
+//getPropotionalScreenWidth(90) -> 3.h

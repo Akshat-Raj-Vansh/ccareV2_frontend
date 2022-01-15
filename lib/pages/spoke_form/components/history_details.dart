@@ -20,7 +20,7 @@
 //             crossAxisAlignment: CrossAxisAlignment.start,
 //             mainAxisAlignment: MainAxisAlignment.center,
 //             children: [
-//               SizedBox(height: getProportionateScreenHeight(20)),
+//               SizedBox(height : 2.h),
 //               Row(
 //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
 //                 children: [
@@ -29,7 +29,7 @@
 //                   Text('9th Sept, 2021'),
 //                 ],
 //               ),
-//               SizedBox(height: getProportionateScreenHeight(20)),
+//               SizedBox(height : 2.h),
 //               // ECG Time
 //               Row(
 //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -39,7 +39,7 @@
 //                   Text(report2.ecgTime == null ? "nill" : report2.ecgTime),
 //                 ],
 //               ),
-//               SizedBox(height: getProportionateScreenHeight(20)),
+//               SizedBox(height : 2.h),
 //               // ECG Type
 //               Row(
 //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -53,7 +53,7 @@
 //                       : report2.ecg_type.toString().split('.')[1]),
 //                 ],
 //               ),
-//               SizedBox(height: getProportionateScreenHeight(20)),
+//               SizedBox(height : 2.h),
 //               // Trop I
 //               Row(
 //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -63,7 +63,7 @@
 //                   Text(report2.trop_i == null ? "nill" : report2.trop_i),
 //                 ],
 //               ),
-//               SizedBox(height: getProportionateScreenHeight(20)),
+//               SizedBox(height : 2.h),
 //               // BP
 //               Row(
 //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -73,7 +73,7 @@
 //                   Text(report2.bp == null ? "nill" : report2.bp),
 //                 ],
 //               ),
-//               SizedBox(height: getProportionateScreenHeight(20)),
+//               SizedBox(height : 2.h),
 //               // CVS
 //               Row(
 //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -87,7 +87,7 @@
 //                       : report2.cvs.toString().split('.')[1]),
 //                 ],
 //               ),
-//               SizedBox(height: getProportionateScreenHeight(20)),
+//               SizedBox(height : 2.h),
 //               // Onset
 //               Row(
 //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -101,7 +101,7 @@
 //                       : report2.onset.toString().split('.')[1]),
 //                 ],
 //               ),
-//               SizedBox(height: getProportionateScreenHeight(20)),
+//               SizedBox(height : 2.h),
 //               // Severity
 //               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
 //                 Text('Severity: '),
@@ -112,7 +112,7 @@
 //                     ? "nill"
 //                     : report2.severity.toString().split('.')[1]),
 //               ]),
-//               SizedBox(height: getProportionateScreenHeight(20)),
+//               SizedBox(height : 2.h),
 //               // Pain Location
 //               Row(
 //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -126,7 +126,7 @@
 //                       : report2.pain_location.toString().split('.')[1]),
 //                 ],
 //               ),
-//               SizedBox(height: getProportionateScreenHeight(20)),
+//               SizedBox(height : 2.h),
 //               // Duration
 //               Row(
 //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -136,7 +136,7 @@
 //                   Text(report2.duration == null ? "nill" : report2.duration),
 //                 ],
 //               ),
-//               SizedBox(height: getProportionateScreenHeight(20)),
+//               SizedBox(height : 2.h),
 //               // Radiation
 //               Row(
 //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -150,7 +150,7 @@
 //                       : report2.radiation.toString().split('.')[1]),
 //                 ],
 //               ),
-//               SizedBox(height: getProportionateScreenHeight(20)),
+//               SizedBox(height : 2.h),
 //               // Smoker
 //               Row(
 //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -164,7 +164,7 @@
 //                       : report2.smoker.toString().split('.')[1]),
 //                 ],
 //               ),
-//               SizedBox(height: getProportionateScreenHeight(20)),
+//               SizedBox(height : 2.h),
 //               // Diabetic
 //               Row(
 //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -178,7 +178,7 @@
 //                       : report2.diabetic.toString().split('.')[1]),
 //                 ],
 //               ),
-//               SizedBox(height: getProportionateScreenHeight(20)),
+//               SizedBox(height : 2.h),
 //               // Hypertensive
 //               Row(
 //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -192,7 +192,7 @@
 //                       : report2.hypertensive.toString().split('.')[1]),
 //                 ],
 //               ),
-//               SizedBox(height: getProportionateScreenHeight(20)),
+//               SizedBox(height : 2.h),
 //               // Dyslipidaemia
 //               Row(
 //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -206,7 +206,7 @@
 //                       : report2.dyslipidaemia.toString().split('.')[1]),
 //                 ],
 //               ),
-//               SizedBox(height: getProportionateScreenHeight(20)),
+//               SizedBox(height : 2.h),
 //               // Old MI
 //               Row(
 //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -220,7 +220,7 @@
 //                       : report2.old_mi.toString().split('.')[1]),
 //                 ],
 //               ),
-//               SizedBox(height: getProportionateScreenHeight(20)),
+//               SizedBox(height : 2.h),
 //               // Chest Pain
 //               Row(
 //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -234,7 +234,7 @@
 //                       : report2.chest_pain.toString().split('.')[1]),
 //                 ],
 //               ),
-//               SizedBox(height: getProportionateScreenHeight(20)),
+//               SizedBox(height : 2.h),
 //               // Sweating
 //               Row(
 //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -248,7 +248,7 @@
 //                       : report2.sweating.toString().split('.')[1]),
 //                 ],
 //               ),
-//               SizedBox(height: getProportionateScreenHeight(20)),
+//               SizedBox(height : 2.h),
 //               // Nausea
 //               Row(
 //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -262,7 +262,7 @@
 //                       : report2.nausea.toString().split('.')[1]),
 //                 ],
 //               ),
-//               SizedBox(height: getProportionateScreenHeight(20)),
+//               SizedBox(height : 2.h),
 //               // Shortness of breath
 //               Row(
 //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -276,7 +276,7 @@
 //                       : report2.shortness_of_breath.toString().split('.')[1]),
 //                 ],
 //               ),
-//               SizedBox(height: getProportionateScreenHeight(20)),
+//               SizedBox(height : 2.h),
 //               // Loss of conciousness
 //               Row(
 //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -290,7 +290,7 @@
 //                       : report2.loss_of_consciousness.toString().split('.')[1]),
 //                 ],
 //               ),
-//               SizedBox(height: getProportionateScreenHeight(20)),
+//               SizedBox(height : 2.h),
 //               // Palpitations
 //               Row(
 //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -304,7 +304,7 @@
 //                       : report2.palpitations.toString().split('.')[1]),
 //                 ],
 //               ),
-//               SizedBox(height: getProportionateScreenHeight(20)),
+//               SizedBox(height : 2.h),
 //               // Concious
 //               Row(
 //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -318,7 +318,7 @@
 //                       : report2.conscious.toString().split('.')[1]),
 //                 ],
 //               ),
-//               SizedBox(height: getProportionateScreenHeight(20)),
+//               SizedBox(height : 2.h),
 //               // Chest crepts
 //               Row(
 //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -332,7 +332,7 @@
 //                       : report2.chest_crepts.toString().split('.')[1]),
 //                 ],
 //               ),
-//               SizedBox(height: getProportionateScreenHeight(20)),
+//               SizedBox(height : 2.h),
 //               // Pulse Rate
 //               Row(
 //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -346,7 +346,7 @@
 //                       : report2.pulse_rate.toString()),
 //                 ],
 //               ),
-//               const SizedBox(height: 30),
+//               SizedBox(height : 5.h),
 //               SizedBox(height: SizeConfig.bottomInsets),
 //             ],
 //           ),

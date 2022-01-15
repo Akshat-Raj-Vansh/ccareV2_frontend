@@ -27,7 +27,7 @@ class HubNotificationHandler {
         //     style: Theme.of(context)
         //         .textTheme
         //         .caption
-        //         .copyWith(color: Colors.white, fontSize: 16),
+        //         .copyWith(color: Colors.white, fontSize :6.sp),
         //   ),
         // ));
         await mainCubit.acceptPatientByHub(message.data["_patientID"]);

@@ -2,6 +2,7 @@
 import 'package:ccarev2_frontend/main/domain/question.dart';
 import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
 import 'package:ccarev2_frontend/utils/constants.dart';
+import 'package:sizer/sizer.dart';
 import 'package:flutter/material.dart';
 
 class SelfAssessment extends StatefulWidget {
@@ -18,7 +19,7 @@ class _SelfAssessmentState extends State<SelfAssessment> {
   List<QuestionTree> display = [];
   List<String> answers = [];
   int length = 1;
-  TextStyle styles = const TextStyle(color: Colors.white, fontSize: 18);
+  TextStyle styles = TextStyle(color: Colors.white, fontSize :14.sp);
   EdgeInsets pad = const EdgeInsets.symmetric(vertical: 5, horizontal: 15);
   BoxDecoration decA = const BoxDecoration(
       color: kPrimaryColor,
@@ -52,12 +53,12 @@ class _SelfAssessmentState extends State<SelfAssessment> {
         appBar: AppBar(
           backgroundColor: Colors.white,
           shadowColor: Colors.white,
-          title: const Text(
+          title: Text(
             "CardioCare - Self Analysis",
             textAlign: TextAlign.left,
             style: TextStyle(
               color: kPrimaryColor,
-              fontSize: 20,
+              fontSize :16.sp,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -88,25 +89,25 @@ class _SelfAssessmentState extends State<SelfAssessment> {
   _showAmbRequired() async {
     var alert = AlertDialog(
       title: Center(
-        child: const Text(
+        child: Text(
           'Emergency',
           style: TextStyle(
             fontWeight: FontWeight.w600,
-            fontSize: 20,
+            fontSize :16.sp,
           ),
         ),
       ),
-      content: const Text(
+      content: Text(
         'Do you need an ambulance?',
         style: TextStyle(
           fontWeight: FontWeight.w300,
-          fontSize: 15,
+          fontSize :12.sp,
         ),
       ),
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(false),
-          child: const Text(
+          child: Text(
             'Cancel',
           ),
         ),
@@ -117,7 +118,7 @@ class _SelfAssessmentState extends State<SelfAssessment> {
                 .notify("QUESTIONNAIRE", true, assessment: display);
             // await widget.mainCubit.fetchEmergencyDetails();
           },
-          child: const Text(
+          child: Text(
             'Yes',
           ),
         ),
@@ -128,7 +129,7 @@ class _SelfAssessmentState extends State<SelfAssessment> {
                 .notify("QUESTIONNAIRE", false, assessment: display);
             // await widget.mainCubit.fetchEmergencyDetails();
           },
-          child: const Text(
+          child: Text(
             'No',
           ),
         ),
@@ -255,7 +256,7 @@ class _SelfAssessmentState extends State<SelfAssessment> {
                                             .caption
                                             .copyWith(
                                                 color: Colors.white,
-                                                fontSize: 16),
+                                                fontSize :12.sp),
                                       ),
                                     ));
                                   }

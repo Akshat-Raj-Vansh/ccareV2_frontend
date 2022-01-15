@@ -1,6 +1,6 @@
 // @dart=2.9
 import 'package:flutter/material.dart';
-
+import 'package:sizer/sizer.dart';
 class CustomTextFormField extends StatelessWidget {
   final String hint;
   final Color color;
@@ -53,20 +53,20 @@ class CustomTextFormField extends StatelessWidget {
         style: Theme.of(context)
             .textTheme
             .overline
-            .copyWith(color: color, fontSize: 16),
+            .copyWith(color: color, fontSize :12.sp),
         decoration: InputDecoration(
           labelText: hint,
           errorStyle: Theme.of(context)
               .textTheme
               .overline
-              .copyWith(color: color, fontSize: 12),
+              .copyWith(color: color, fontSize :8.sp),
           icon: icon,
           // hintText: hint,
-          // hintStyle: TextStyle(color: color, fontSize: 16),
+          // hintStyle: TextStyle(color: color, fontSize :12.sp),
           labelStyle: Theme.of(context)
               .textTheme
               .overline
-              .copyWith(color: color, fontSize: 16),
+              .copyWith(color: color, fontSize :12.sp),
           enabledBorder: const OutlineInputBorder(
             borderSide: BorderSide(color: Colors.blue),
           ),

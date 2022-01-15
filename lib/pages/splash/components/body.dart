@@ -5,7 +5,7 @@ import 'package:ccarev2_frontend/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:location/location.dart';
-
+import 'package:sizer/sizer.dart';
 // This is the best practice
 import '../components/splash_content.dart';
 import '../../../components/default_button.dart';
@@ -75,18 +75,18 @@ class _BodyState extends State<Body> {
               flex: 2,
               child: Padding(
                 padding: EdgeInsets.symmetric(
-                    horizontal: getProportionateScreenWidth(20)),
+                    horizontal:5.w),
                 child: Column(
                   children: <Widget>[
                     const Spacer(flex: 1),
-                    const Text(
+                    Text(
                       "I'm a",
                       style: TextStyle(
-                          fontSize: 24,
+                          fontSize :18.sp,
                           fontWeight: FontWeight.w700,
                           color: kPrimaryColor),
                     ),
-                    const SizedBox(height: 20),
+                    SizedBox(height: 3.h),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
@@ -102,18 +102,18 @@ class _BodyState extends State<Body> {
                               await showDialog(
                                     context: context,
                                     builder: (context) => AlertDialog(
-                                      title: const Text(
+                                      title: Text(
                                         'Doctor Type',
                                         style: TextStyle(
                                           fontWeight: FontWeight.w600,
-                                          fontSize: 20,
+                                          fontSize :16.sp,
                                         ),
                                       ),
-                                      content: const Text(
+                                      content:  Text(
                                         'Choose the type of doctor-',
                                         style: TextStyle(
                                           fontWeight: FontWeight.w300,
-                                          fontSize: 15,
+                                          fontSize :12.sp,
                                         ),
                                       ),
                                       actions: [
@@ -121,7 +121,7 @@ class _BodyState extends State<Body> {
                                           onPressed: () => widget.pageAdapter
                                               .onSplashScreenComplete(
                                                   context, UserType.SPOKE),
-                                          child: const Text(
+                                          child: Text(
                                             'SPOKE',
                                           ),
                                         ),
@@ -129,7 +129,7 @@ class _BodyState extends State<Body> {
                                           onPressed: () => widget.pageAdapter
                                               .onSplashScreenComplete(
                                                   context, UserType.HUB),
-                                          child: const Text(
+                                          child: Text(
                                             'HUB',
                                           ),
                                         ),
@@ -159,8 +159,8 @@ class _BodyState extends State<Body> {
   }
 
   _button({String text, Function press}) => SizedBox(
-        width: getProportionateScreenWidth(90),
-        height: getProportionateScreenHeight(42),
+        width: 25.w,
+        height:5.h,
         child: FlatButton(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
@@ -169,7 +169,7 @@ class _BodyState extends State<Body> {
           child: Text(
             text,
             style: TextStyle(
-              fontSize: getProportionateScreenWidth(16),
+              fontSize :12.sp,
               color: Colors.white,
             ),
           ),

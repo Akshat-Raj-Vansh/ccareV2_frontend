@@ -7,6 +7,7 @@ import 'package:ccarev2_frontend/user/domain/doc_info.dart';
 import 'package:ccarev2_frontend/user/domain/profile.dart';
 import 'package:ccarev2_frontend/utils/size_config.dart';
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
 import 'package:location/location.dart' as lloc;
 import '../../../user/domain/location.dart' as loc;
@@ -79,7 +80,7 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: getProportionateScreenHeight(20)),
+            SizedBox(height : 2.h),
             TextFormField(
               keyboardType: TextInputType.text,
               onSaved: (newValue) => name = newValue,
@@ -90,7 +91,7 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
                 floatingLabelBehavior: FloatingLabelBehavior.always,
               ),
             ),
-            SizedBox(height: getProportionateScreenHeight(10)),
+            SizedBox(height : 1.h),
             TextFormField(
               keyboardType: TextInputType.text,
               onSaved: (newValue) => hospital = newValue,
@@ -112,7 +113,7 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
                 floatingLabelBehavior: FloatingLabelBehavior.always,
               ),
             ),
-            SizedBox(height: getProportionateScreenHeight(10)),
+            SizedBox(height : 1.h),
             Container(
               padding: EdgeInsets.only(left: 15, right: 15, top: 5),
               color: Colors.white,
@@ -124,8 +125,8 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
                 ],
               ),
             ),
-            SizedBox(height: getProportionateScreenHeight(10)),
-            SizedBox(height: getProportionateScreenHeight(10)),
+            SizedBox(height : 1.h),
+            SizedBox(height : 1.h),
             Center(
               child: DefaultButton(
                 text: "Save",
@@ -153,7 +154,7 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
                 },
               ),
             ),
-            SizedBox(height: 30),
+            SizedBox(height : 5.h),
           ],
         ),
       );
@@ -163,29 +164,29 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: getProportionateScreenHeight(10)),
+            SizedBox(height : 1.h),
             Container(
               padding: EdgeInsets.only(left: 15, right: 15, top: 5),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Name: ', style: TextStyle(fontSize: 16)),
-                  Text(docInfo.name, style: TextStyle(fontSize: 16)),
+                  Text('Name: ', style: TextStyle(fontSize :12.sp)),
+                  Text(docInfo.name, style: TextStyle(fontSize :12.sp)),
                 ],
               ),
             ),
-            SizedBox(height: getProportionateScreenHeight(10)),
+            SizedBox(height : 1.h),
             Container(
               padding: EdgeInsets.only(left: 15, right: 15, top: 5),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Hospital: ', style: TextStyle(fontSize: 16)),
-                  Text(docInfo.hospital, style: TextStyle(fontSize: 16)),
+                  Text('Hospital: ', style: TextStyle(fontSize :12.sp)),
+                  Text(docInfo.hospital, style: TextStyle(fontSize :12.sp)),
                 ],
               ),
             ),
-            SizedBox(height: getProportionateScreenHeight(10)),
+            SizedBox(height : 1.h),
             Container(
               padding: EdgeInsets.only(left: 15, right: 15, top: 5),
               child: Row(
@@ -196,7 +197,7 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
                 ],
               ),
             ),
-            SizedBox(height: getProportionateScreenHeight(10)),
+            SizedBox(height : 1.h),
             Container(
               padding: EdgeInsets.only(left: 15, right: 15, top: 5),
               child: Row(
@@ -207,23 +208,23 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
                 ],
               ),
             ),
-            SizedBox(height: getProportionateScreenHeight(10)),
+            SizedBox(height : 1.h),
             Container(
               padding: EdgeInsets.only(left: 15, right: 15, top: 5),
               child: TextButton(
                 child:
-                    Text('Pick your location', style: TextStyle(fontSize: 16)),
+                    Text('Pick your location', style: TextStyle(fontSize :12.sp)),
                 onPressed: () {},
               ),
             ),
-            SizedBox(height: getProportionateScreenHeight(10)),
+            SizedBox(height : 1.h),
             //Email
             Container(
               padding: EdgeInsets.only(left: 15, right: 15, top: 5),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Email ID: ', style: TextStyle(fontSize: 16)),
+                  Text('Email ID: ', style: TextStyle(fontSize :12.sp)),
                   Container(
                     width: SizeConfig.screenWidth * 0.4,
                     child: TextFormField(
@@ -240,7 +241,7 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
                 ],
               ),
             ),
-            // SizedBox(height: getProportionateScreenHeight(10)),
+            // SizedBox(height : 1.h),
             // Container(
             //   padding: EdgeInsets.only(left: 15, right: 15, top: 5),
             //
@@ -258,7 +259,7 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
             //               icon: (null),
             //               style: TextStyle(
             //                 color: Colors.black54,
-            //                 fontSize: 16,
+            //                 fontSize :12.sp,
             //               ),
             //               hint: Text('Select Doctor Type'),
             //               onChanged: (DoctorType newValue) {
@@ -308,7 +309,7 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
                 },
               ),
             ),
-            SizedBox(height: 30),
+            SizedBox(height : 5.h),
           ],
         ),
       );
@@ -336,7 +337,7 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
       backgroundColor: Theme.of(context).accentColor,
       content: Text(
         msg,
-        style: Theme.of(context).textTheme.caption.copyWith(fontSize: 16),
+        style: Theme.of(context).textTheme.caption.copyWith(fontSize :12.sp),
       ),
     ));
   }

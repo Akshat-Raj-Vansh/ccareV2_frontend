@@ -8,6 +8,7 @@ import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
 import 'package:ccarev2_frontend/state_management/main/main_state.dart';
 import 'package:ccarev2_frontend/state_management/user/user_cubit.dart';
 import 'package:ccarev2_frontend/user/domain/credential.dart';
+import 'package:sizer/sizer.dart';
 import 'package:ccarev2_frontend/utils/size_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -133,29 +134,29 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
                 child: Text('Danish Sheikh'),
               ),
               ListTile(
-                title: const Text('Logout'),
+                title: Text('Logout'),
                 onTap: () async {
                   await showDialog(
                         context: context,
                         builder: (context) => AlertDialog(
-                          title: const Text(
+                          title: Text(
                             'Are you sure?',
                             style: TextStyle(
                               fontWeight: FontWeight.w600,
-                              fontSize: 20,
+                              fontSize :16.sp,
                             ),
                           ),
-                          content: const Text(
+                          content: Text(
                             'Do you want to logout?',
                             style: TextStyle(
                               fontWeight: FontWeight.w300,
-                              fontSize: 15,
+                              fontSize :12.sp,
                             ),
                           ),
                           actions: [
                             TextButton(
                               onPressed: () => Navigator.of(context).pop(false),
-                              child: const Text(
+                              child: Text(
                                 'Cancel',
                               ),
                             ),
@@ -164,7 +165,7 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
                                 widget.homePageAdapter.onLogout(context,
                                     CubitProvider.of<UserCubit>(context));
                               },
-                              child: const Text(
+                              child: Text(
                                 'Yes',
                               ),
                             ),
@@ -217,24 +218,24 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
             await showDialog(
                   context: context,
                   builder: (context) => AlertDialog(
-                    title: const Text(
+                    title: Text(
                       'Are you sure!!',
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
-                        fontSize: 20,
+                        fontSize :16.sp,
                       ),
                     ),
-                    content: const Text(
+                    content: Text(
                       'Do you want to accept the patient?',
                       style: TextStyle(
                         fontWeight: FontWeight.w300,
-                        fontSize: 15,
+                        fontSize :12.sp,
                       ),
                     ),
                     actions: [
                       TextButton(
                         onPressed: () => Navigator.of(context).pop(false),
-                        child: const Text(
+                        child: Text(
                           'Cancel',
                         ),
                       ),
@@ -247,7 +248,7 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
                               .acceptPatientByDriver(state.patientID);
                           Navigator.of(context).pop(false);
                         },
-                        child: const Text(
+                        child: Text(
                           'Yes',
                         ),
                       ),
@@ -263,7 +264,7 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
                 LatLng(state.location.latitude, state.location.longitude);
             print(_patientLocation);
             _addPatientMarker();
-            // // _hideLoader();
+            // // _hideLoader()zz;
             CubitProvider.of<MainCubit>(context).fetchEmergencyDetails();
           } else if (state is DetailsLoaded) {
             // _hideLoader();
@@ -310,7 +311,7 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
         style: Theme.of(context)
             .textTheme
             .caption
-            .copyWith(color: Colors.white, fontSize: 16),
+            .copyWith(color: Colors.white, fontSize :12.sp),
       ),
     ));
   }
@@ -370,7 +371,7 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
           child: Text(
             "Patients Information",
             textAlign: TextAlign.left,
-            style: TextStyle(fontSize: 18),
+            style: TextStyle(fontSize :14.sp),
           ),
         ),
         Container(
@@ -387,11 +388,11 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
                     radius: 25,
                     backgroundImage: AssetImage("/assets/images/dummy.jpeg"),
                   ),
-                  SizedBox(width: 10),
+                  SizedBox(width : 3.w),
                   Text(
                     eDetails.patientDetails.name,
                     style: TextStyle(
-                        fontSize: 18,
+                        fontSize :14.sp,
                         color: Colors.blue,
                         fontWeight: FontWeight.bold),
                   ),
@@ -455,11 +456,11 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
                     radius: 25,
                     backgroundImage: AssetImage("/assets/images/dummy.jpeg"),
                   ),
-                  SizedBox(width: 10),
+                  SizedBox(width : 3.w),
                   Text(
                     eDetails.patientDetails.name,
                     style: TextStyle(
-                        fontSize: 18,
+                        fontSize :14.sp,
                         color: Colors.blue,
                         fontWeight: FontWeight.bold),
                   ),

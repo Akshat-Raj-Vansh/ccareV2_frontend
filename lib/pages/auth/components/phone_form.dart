@@ -3,7 +3,7 @@ import 'package:ccarev2_frontend/state_management/user/user_cubit.dart';
 import 'package:ccarev2_frontend/utils/constants.dart';
 import 'package:ccarev2_frontend/utils/size_config.dart';
 import 'package:flutter/material.dart';
-
+import 'package:sizer/sizer.dart';
 class PhoneForm extends StatefulWidget {
   final UserCubit cubit;
   final Function verifyPhone;
@@ -20,7 +20,7 @@ class _PhoneFormState extends State<PhoneForm> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 300,
+      height : 20.h,
       color: Colors.white,
       width: double.infinity,
       child: Padding(
@@ -41,23 +41,23 @@ class _PhoneFormState extends State<PhoneForm> {
                         color: Colors.black,
                       ),
                     ),
-                    const Text(
+                    Text(
                       'Enter Mobile Number',
                       textAlign: TextAlign.center,
                       style:
-                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                          TextStyle(fontSize :18.sp, fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
-                const SizedBox(height: 30),
+                SizedBox(height : 5.h),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    const Text(
+                    Text(
                       '+91',
                       style: TextStyle(
                         color: kPrimaryColor,
-                        fontSize: 18,
+                        fontSize :14.sp,
                       ),
                     ),
                     CustomTextFormField(
@@ -100,9 +100,9 @@ class _PhoneFormState extends State<PhoneForm> {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30)),
                     ),
-                    child: const Text(
+                    child: Text(
                       "Login",
-                      style: TextStyle(color: Colors.white, fontSize: 20),
+                      style: TextStyle(color: Colors.white, fontSize :16.sp),
                     ),
                   ),
                 ),

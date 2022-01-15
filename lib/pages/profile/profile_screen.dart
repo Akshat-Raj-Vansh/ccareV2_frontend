@@ -4,8 +4,10 @@ import 'package:ccarev2_frontend/state_management/profile/profile_cubit.dart';
 import 'package:ccarev2_frontend/state_management/profile/profile_state.dart';
 import 'package:ccarev2_frontend/user/domain/credential.dart';
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
 import '../../utils/size_config.dart';
+
 
 class ProfileScreen extends StatefulWidget {
   final ProfileCubit cubit;
@@ -102,7 +104,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         style: Theme.of(context)
             .textTheme
             .caption
-            .copyWith(color: Colors.white, fontSize: 16),
+            .copyWith(color: Colors.white, fontSize :12.sp),
       ),
     ));
   }
@@ -111,18 +113,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
         alignment: Alignment.center,
         child: Column(
           children: [
-            const Image(
+            Image(
                 image: AssetImage("assets/logo.png"),
-                width: 192,
+                width : 55.w,
                 height: 180,
                 fit: BoxFit.fill),
-            const SizedBox(height: 10),
+            SizedBox(height: 10),
             RichText(
               text: TextSpan(
                   text: "Personal",
                   style: Theme.of(context).textTheme.caption.copyWith(
                       color: Colors.lightGreen[500],
-                      fontSize: 32.0,
+                      fontSize :24.sp,
                       fontWeight: FontWeight.bold),
                   children: [
                     TextSpan(
@@ -131,7 +133,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     )
                   ]),
             ),
-            SizedBox(height: 30)
+            SizedBox(height : 5.h)
           ],
         ),
       );

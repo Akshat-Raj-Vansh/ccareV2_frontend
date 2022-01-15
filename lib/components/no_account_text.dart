@@ -3,6 +3,7 @@ import '../utils/constants.dart';
 import '../utils/size_config.dart';
 import 'package:flutter/material.dart';
 
+import 'package:sizer/sizer.dart';
 class NoAccountText extends StatelessWidget {
   const NoAccountText({
     Key key,
@@ -15,14 +16,14 @@ class NoAccountText extends StatelessWidget {
       children: [
         Text(
           "Don’t have an account? ",
-          style: TextStyle(fontSize: getProportionateScreenWidth(16)),
+          style: TextStyle(fontSize: 12.sp),
         ),
         GestureDetector(
           onTap: () => {},
           child: Text(
             "Sign Up",
             style: TextStyle(
-                fontSize: getProportionateScreenWidth(16),
+                fontSize: 12.sp,
                 color: kPrimaryColor),
           ),
         ),

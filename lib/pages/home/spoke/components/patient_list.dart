@@ -5,6 +5,7 @@ import 'package:ccarev2_frontend/pages/home/spoke/components/patient_info.dart';
 import 'package:ccarev2_frontend/services/Notifications/notificationContoller.dart';
 import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
 import 'package:ccarev2_frontend/state_management/main/main_state.dart';
+import 'package:sizer/sizer.dart';
 import 'package:ccarev2_frontend/user/domain/credential.dart';
 import 'package:ccarev2_frontend/user/domain/hub_doc_info.dart';
 import 'package:ccarev2_frontend/user/domain/patient_list_info.dart';
@@ -61,7 +62,7 @@ class _PatientListState extends State<PatientList> {
         style: Theme.of(context)
             .textTheme
             .caption
-            ?.copyWith(color: Colors.white, fontSize: 16),
+            ?.copyWith(color: Colors.white, fontSize :12.sp),
       ),
     ));
   }
@@ -134,7 +135,7 @@ class _PatientListState extends State<PatientList> {
                   leading: Icon(Icons.person),
                   title: Text(
                     _patients[index].name,
-                    style: TextStyle(color: Colors.green, fontSize: 15),
+                    style: TextStyle(color: Colors.green, fontSize :12.sp),
                   ),
                   trailing: Text(_patients[index].gender.toString() +
                       '   ' +
@@ -162,7 +163,7 @@ class _PatientListState extends State<PatientList> {
   //               leading: Icon(Icons.person),
   //               title: Text(
   //                 _patients[index].name,
-  //                 style: TextStyle(color: Colors.green, fontSize: 15),
+  //                 style: TextStyle(color: Colors.green, fontSize :12.sp),
   //               ),
   //               trailing: Text(_patients[index].gender.toString() +
   //                   '   ' +

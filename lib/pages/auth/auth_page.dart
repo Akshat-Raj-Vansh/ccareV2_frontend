@@ -4,6 +4,8 @@ import 'package:ccarev2_frontend/pages/auth/components/phone_form.dart';
 import 'package:ccarev2_frontend/pages/splash/splash_screen.dart';
 import 'package:ccarev2_frontend/utils/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
+import 'package:sizer/sizer.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import '../../customBuilds/customtextformfield.dart';
 import '../../state_management/profile/profile_cubit.dart';
@@ -137,7 +139,7 @@ class _AuthPageState extends State<AuthPage> {
                             style: Theme.of(context)
                                 .textTheme
                                 .caption
-                                .copyWith(color: Colors.white, fontSize: 16),
+                                .copyWith(color: Colors.white, fontSize :6.sp.sp),
                           ),
                         ));
                       }
@@ -181,7 +183,7 @@ class _AuthPageState extends State<AuthPage> {
         style: Theme.of(context)
             .textTheme
             .caption
-            .copyWith(color: Colors.white, fontSize: 16),
+            .copyWith(color: Colors.white, fontSize :6.sp.sp),
       ),
     ));
   }
@@ -193,28 +195,28 @@ class _AuthPageState extends State<AuthPage> {
             Text(
               "CardioCare",
               style: TextStyle(
-                fontSize: getProportionateScreenWidth(36),
+                fontSize: 32.sp,
                 color: kPrimaryColor,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 38),
-            const Text(
+            SizedBox(height : 4.h),
+            Text(
               "Welcome to CardioCare,\n Let’s take care of your heart!",
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 38),
+            SizedBox(height : 4.h),
             Image.asset(
               "assets/images/sp1e.png",
-              height: getProportionateScreenHeight(400),
-              width: getProportionateScreenWidth(285),
+              height: getProportionateScreenHeight(45.h),
+              width: getProportionateScreenWidth(80.w),
             ),
           ],
         ),
       );
 
   _buildUI(BuildContext context, UserCubit cubit) => Container(
-        height: 300 + SizeConfig.bottomInsets,
+        height : 40.h + SizeConfig.bottomInsets,
         margin:
             EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
         width: MediaQuery.of(context).size.width,

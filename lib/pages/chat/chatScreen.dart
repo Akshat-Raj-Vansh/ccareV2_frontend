@@ -4,11 +4,12 @@ import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
 import 'package:ccarev2_frontend/state_management/main/main_state.dart';
 import 'package:ccarev2_frontend/user/domain/details.dart';
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:scoped_model/scoped_model.dart';
 import 'package:ccarev2_frontend/utils/constants.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
-
+import 'package:sizer/sizer.dart';
 import 'components/message.dart';
 
 class ChatPage extends StatefulWidget {
@@ -45,7 +46,7 @@ class _ChatPageState extends State<ChatPage> {
           topRight: Radius.circular(30),
           bottomLeft: Radius.circular(30)));
 
-  TextStyle styles = const TextStyle(color: Colors.white, fontSize: 18);
+  TextStyle styles = TextStyle(color: Colors.white, fontSize :14.sp);
   @override
   void initState() {
     super.initState();
@@ -107,7 +108,7 @@ class _ChatPageState extends State<ChatPage> {
                     controller: textEditingController,
                   ),
                 ),
-                SizedBox(width: 10.0),
+                SizedBox(width : 3.w),
                 FloatingActionButton(
                   onPressed: () {
                     model.sendMessage(

@@ -3,6 +3,7 @@ import 'package:ccarev2_frontend/state_management/user/user_cubit.dart';
 import 'package:ccarev2_frontend/utils/constants.dart';
 import 'package:ccarev2_frontend/utils/size_config.dart';
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
 
 class OTPForm extends StatefulWidget {
   final PageController controller;
@@ -39,7 +40,7 @@ class _OTPFormState extends State<OTPForm> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 300,
+      height : 45.h,
       color: Colors.white,
       width: double.infinity,
       child: Padding(
@@ -62,15 +63,15 @@ class _OTPFormState extends State<OTPForm> with TickerProviderStateMixin {
                         color: Colors.black,
                       ),
                     ),
-                    const Text(
+                    Text(
                       'Enter OTP',
                       textAlign: TextAlign.center,
                       style:
-                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                          TextStyle(fontSize :18.sp, fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
-                const SizedBox(height: 30),
+                SizedBox(height : 5.h),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -99,7 +100,7 @@ class _OTPFormState extends State<OTPForm> with TickerProviderStateMixin {
                 SizedBox(height: SizeConfig.screenHeight * 0.02),
                 Text(
                   "We sent your code to - ${widget.phone}",
-                  style: const TextStyle(color: Colors.green, fontSize: 16),
+                  style: TextStyle(color: Colors.green, fontSize :12.sp),
                 ),
                 GestureDetector(
                   onTap: () {
@@ -108,7 +109,7 @@ class _OTPFormState extends State<OTPForm> with TickerProviderStateMixin {
                       widget.cubit.verifyPhone(widget.phone);
                     }
                   },
-                  child: const Text(
+                  child: Text(
                     "Resend OTP Code",
                     style: TextStyle(
                         color: Colors.green,
@@ -135,9 +136,9 @@ class _OTPFormState extends State<OTPForm> with TickerProviderStateMixin {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30)),
                     ),
-                    child: const Text(
+                    child: Text(
                       "Verify",
-                      style: TextStyle(color: Colors.white, fontSize: 20),
+                      style: TextStyle(color: Colors.white, fontSize :16.sp),
                     ),
                   ),
                 ),
@@ -159,14 +160,14 @@ class _OTPFormState extends State<OTPForm> with TickerProviderStateMixin {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Text("Resend OTP in ",
-            style: TextStyle(fontSize: 16, color: kPrimaryColor)),
+        Text("Resend OTP in ",
+            style: TextStyle(fontSize :12.sp, color: kPrimaryColor)),
         AnimatedBuilder(
           animation: animationController,
           builder: (_, child) {
             return Text(timeString,
-                style: const TextStyle(
-                    fontSize: 16,
+                style: TextStyle(
+                    fontSize :12.sp,
                     color: kPrimaryColor,
                     fontWeight: FontWeight.bold));
           },

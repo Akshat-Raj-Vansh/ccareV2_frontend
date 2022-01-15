@@ -2,6 +2,7 @@ import 'package:ccarev2_frontend/main/domain/treatment.dart';
 import 'package:ccarev2_frontend/pages/home/components/fullImage.dart';
 import 'package:ccarev2_frontend/utils/constants.dart';
 import 'package:ccarev2_frontend/utils/size_config.dart';
+import 'package:sizer/sizer.dart';
 import 'package:flutter/material.dart';
 
 class ReportOverview extends StatefulWidget {
@@ -25,7 +26,7 @@ class _ReportOverviewState extends State<ReportOverview> {
   _buildReportOverview() => SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(height: getProportionateScreenHeight(20)),
+            SizedBox(height : 2.h),
 
             // Patient Medical Report
             // ECG Report
@@ -36,7 +37,7 @@ class _ReportOverviewState extends State<ReportOverview> {
               child: Text(
                 "ECG Report",
                 textAlign: TextAlign.left,
-                style: TextStyle(fontSize: 18, color: kPrimaryColor),
+                style: TextStyle(fontSize :14.sp, color: kPrimaryColor),
               ),
             ),
             _buildECGDetails(),
@@ -49,7 +50,7 @@ class _ReportOverviewState extends State<ReportOverview> {
               child: Text(
                 "Medical History",
                 textAlign: TextAlign.left,
-                style: TextStyle(fontSize: 18, color: kPrimaryColor),
+                style: TextStyle(fontSize :14.sp, color: kPrimaryColor),
               ),
             ),
             _buildMedHistDetails(),
@@ -62,7 +63,7 @@ class _ReportOverviewState extends State<ReportOverview> {
               child: Text(
                 "Chest Report",
                 textAlign: TextAlign.left,
-                style: TextStyle(fontSize: 18, color: kPrimaryColor),
+                style: TextStyle(fontSize :14.sp, color: kPrimaryColor),
               ),
             ),
             _buildChestDetails(),
@@ -75,7 +76,7 @@ class _ReportOverviewState extends State<ReportOverview> {
               child: Text(
                 "Symptoms",
                 textAlign: TextAlign.left,
-                style: TextStyle(fontSize: 18, color: kPrimaryColor),
+                style: TextStyle(fontSize :14.sp, color: kPrimaryColor),
               ),
             ),
             _buildSymptomsDetails(),
@@ -88,7 +89,7 @@ class _ReportOverviewState extends State<ReportOverview> {
               child: Text(
                 "Examination",
                 textAlign: TextAlign.left,
-                style: TextStyle(fontSize: 18, color: kPrimaryColor),
+                style: TextStyle(fontSize :14.sp, color: kPrimaryColor),
               ),
             ),
             _buildExaminationDetails(),
@@ -103,7 +104,7 @@ class _ReportOverviewState extends State<ReportOverview> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: getProportionateScreenHeight(15)),
+            SizedBox(height : 2.h),
             // ECG Time
             Text('Current Report'),
             Row(
@@ -117,7 +118,7 @@ class _ReportOverviewState extends State<ReportOverview> {
                         .toString()),
               ],
             ),
-            SizedBox(height: getProportionateScreenHeight(10)),
+            SizedBox(height : 1.h),
             // ECG Scan
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -143,8 +144,8 @@ class _ReportOverviewState extends State<ReportOverview> {
                                     "Authorization":
                                         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjFhMWU5ZGNiYWI4MjZkZTk4NjBmNzkzIiwiaWF0IjoxNjM4MjY1MzkxLCJleHAiOjE2Mzg4NzAxOTEsImlzcyI6ImNvbS5jY2FyZW5pdGgifQ.K-_DprXx2ipOwWt17DODlMDqQSgtWdv8aARjlPdEuzA"
                                   }),
-                              width: 100,
-                              height: 100,
+                              width : 30.w,
+                              height : 15.h,
                               fit: BoxFit.cover),
                           tag: "generate_a_unique_tag",
                         ),
@@ -152,7 +153,7 @@ class _ReportOverviewState extends State<ReportOverview> {
                     : Text('No ECG Uploaded'),
               ],
             ),
-            SizedBox(height: getProportionateScreenHeight(10)),
+            SizedBox(height : 1.h),
             // ECG Type
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -162,7 +163,7 @@ class _ReportOverviewState extends State<ReportOverview> {
               ],
             ),
 
-            SizedBox(height: getProportionateScreenHeight(30)),
+            SizedBox(height : 3.h),
           ],
         ),
       );
@@ -174,7 +175,7 @@ class _ReportOverviewState extends State<ReportOverview> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: getProportionateScreenHeight(15)),
+            SizedBox(height : 2.h),
             // Smoker
             Text('Current Report'),
             Row(
@@ -184,7 +185,7 @@ class _ReportOverviewState extends State<ReportOverview> {
                 Text(widget.report.medicalHist.smoker.toString().split('.')[1]),
               ],
             ),
-            SizedBox(height: getProportionateScreenHeight(10)),
+            SizedBox(height : 1.h),
             // Diabetic
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -195,7 +196,7 @@ class _ReportOverviewState extends State<ReportOverview> {
                     .split('.')[1]),
               ],
             ),
-            SizedBox(height: getProportionateScreenHeight(10)),
+            SizedBox(height : 1.h),
             // Hypertensive
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -206,7 +207,7 @@ class _ReportOverviewState extends State<ReportOverview> {
                     .split('.')[1]),
               ],
             ),
-            SizedBox(height: getProportionateScreenHeight(10)),
+            SizedBox(height : 1.h),
             // Dyslipidaemia
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -217,7 +218,7 @@ class _ReportOverviewState extends State<ReportOverview> {
                     .split('.')[1]),
               ],
             ),
-            SizedBox(height: getProportionateScreenHeight(10)),
+            SizedBox(height : 1.h),
             // Old MI
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -226,7 +227,7 @@ class _ReportOverviewState extends State<ReportOverview> {
                 Text(widget.report.medicalHist.old_mi.toString().split('.')[1]),
               ],
             ),
-            SizedBox(height: getProportionateScreenHeight(10)),
+            SizedBox(height : 1.h),
             // Trop I
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -235,7 +236,7 @@ class _ReportOverviewState extends State<ReportOverview> {
                 Text(widget.report.medicalHist.trop_i),
               ],
             ),
-            SizedBox(height: getProportionateScreenHeight(30)),
+            SizedBox(height : 3.h),
           ],
         ),
       );
@@ -247,7 +248,7 @@ class _ReportOverviewState extends State<ReportOverview> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: getProportionateScreenHeight(15)),
+            SizedBox(height : 2.h),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -257,7 +258,7 @@ class _ReportOverviewState extends State<ReportOverview> {
                     .split('.')[1]),
               ],
             ),
-            SizedBox(height: getProportionateScreenHeight(10)),
+            SizedBox(height : 1.h),
             // Onset
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -266,7 +267,7 @@ class _ReportOverviewState extends State<ReportOverview> {
                 Text(widget.report.chestReport.site.toString().split('.')[1]),
               ],
             ),
-            SizedBox(height: getProportionateScreenHeight(10)),
+            SizedBox(height : 1.h),
             // Pain Location
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -277,20 +278,20 @@ class _ReportOverviewState extends State<ReportOverview> {
                     .split('.')[1]),
               ],
             ),
-            SizedBox(height: getProportionateScreenHeight(10)),
+            SizedBox(height : 1.h),
             // Intensity
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
               Text('Intensity: '),
               Text(
                   widget.report.chestReport.intensity.toString().split('.')[1]),
             ]),
-            SizedBox(height: getProportionateScreenHeight(10)),
+            SizedBox(height : 1.h),
             // Severity
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
               Text('Severity: '),
               Text(widget.report.chestReport.severity.toString().split('.')[1]),
             ]),
-            SizedBox(height: getProportionateScreenHeight(10)),
+            SizedBox(height : 1.h),
             // Radiation
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -301,7 +302,7 @@ class _ReportOverviewState extends State<ReportOverview> {
                     .split('.')[1]),
               ],
             ),
-            SizedBox(height: getProportionateScreenHeight(10)),
+            SizedBox(height : 1.h),
             // Duration
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -310,7 +311,7 @@ class _ReportOverviewState extends State<ReportOverview> {
                 Text(widget.report.chestReport.duration),
               ],
             ),
-            SizedBox(height: getProportionateScreenHeight(30)),
+            SizedBox(height : 3.h),
           ],
         ),
       );
@@ -322,7 +323,7 @@ class _ReportOverviewState extends State<ReportOverview> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: getProportionateScreenHeight(15)),
+            SizedBox(height : 2.h),
 
             // Blackouts
             Row(
@@ -334,7 +335,7 @@ class _ReportOverviewState extends State<ReportOverview> {
                     .split('.')[1]),
               ],
             ),
-            SizedBox(height: getProportionateScreenHeight(10)),
+            SizedBox(height : 1.h),
             // Palpitations
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -345,7 +346,7 @@ class _ReportOverviewState extends State<ReportOverview> {
                     .split('.')[1]),
               ],
             ),
-            SizedBox(height: getProportionateScreenHeight(10)),
+            SizedBox(height : 1.h),
             //Sweating
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -354,7 +355,7 @@ class _ReportOverviewState extends State<ReportOverview> {
                 Text(widget.report.symptoms.sweating.toString().split('.')[1]),
               ],
             ),
-            SizedBox(height: getProportionateScreenHeight(10)),
+            SizedBox(height : 1.h),
             // Nausea
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -363,7 +364,7 @@ class _ReportOverviewState extends State<ReportOverview> {
                 Text(widget.report.symptoms.nausea.toString().split('.')[1]),
               ],
             ),
-            SizedBox(height: getProportionateScreenHeight(10)),
+            SizedBox(height : 1.h),
             // Shortness of breath
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -374,7 +375,7 @@ class _ReportOverviewState extends State<ReportOverview> {
                     .split('.')[1]),
               ],
             ),
-            SizedBox(height: getProportionateScreenHeight(10)),
+            SizedBox(height : 1.h),
             // Loss of conciousness
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -386,7 +387,7 @@ class _ReportOverviewState extends State<ReportOverview> {
               ],
             ),
 
-            SizedBox(height: getProportionateScreenHeight(30)),
+            SizedBox(height : 3.h),
           ],
         ),
       );
@@ -398,7 +399,7 @@ class _ReportOverviewState extends State<ReportOverview> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: getProportionateScreenHeight(15)),
+            SizedBox(height : 2.h),
             // Pulse Rate
 
             Row(
@@ -408,7 +409,7 @@ class _ReportOverviewState extends State<ReportOverview> {
                 Text(widget.report.examination.pulse_rate),
               ],
             ),
-            SizedBox(height: getProportionateScreenHeight(10)),
+            SizedBox(height : 1.h),
             // BP
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -417,7 +418,7 @@ class _ReportOverviewState extends State<ReportOverview> {
                 Text(widget.report.examination.bp),
               ],
             ),
-            SizedBox(height: getProportionateScreenHeight(10)),
+            SizedBox(height : 1.h),
             // Local Tenderness
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

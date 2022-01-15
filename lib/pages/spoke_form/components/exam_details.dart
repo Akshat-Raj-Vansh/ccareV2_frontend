@@ -17,7 +17,7 @@
 //           crossAxisAlignment: CrossAxisAlignment.start,
 //           mainAxisAlignment: MainAxisAlignment.center,
 //           children: [
-//             SizedBox(height: getProportionateScreenHeight(20)),
+//             SizedBox(height : 2.h),
 //             // Aspirin Loading
 //             Row(
 //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -28,7 +28,7 @@
 //                     : report.aspirin_loading.toString().split('.')[1]),
 //               ],
 //             ),
-//             SizedBox(height: getProportionateScreenHeight(20)),
+//             SizedBox(height : 2.h),
 //             // CPT Loading
 //             Row(
 //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -39,7 +39,7 @@
 //                     : report.c_p_t_loading.toString().split('.')[1]),
 //               ],
 //             ),
-//             SizedBox(height: getProportionateScreenHeight(20)),
+//             SizedBox(height : 2.h),
 //             // LMWH
 //             Row(
 //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -48,7 +48,7 @@
 //                 Text(report.lmwh == null ? "nill" : report.lmwh),
 //               ],
 //             ),
-//             SizedBox(height: getProportionateScreenHeight(20)),
+//             SizedBox(height : 2.h),
 //             // Statins
 //             Row(
 //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -57,7 +57,7 @@
 //                 Text(report.statins == null ? "nill" : report.statins),
 //               ],
 //             ),
-//             SizedBox(height: getProportionateScreenHeight(20)),
+//             SizedBox(height : 2.h),
 //             // Beta-Blockers
 //             Row(
 //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -68,7 +68,7 @@
 //                     : report.beta_blockers),
 //               ],
 //             ),
-//             SizedBox(height: getProportionateScreenHeight(20)),
+//             SizedBox(height : 2.h),
 //             // Nitrates
 //             Row(
 //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -77,7 +77,7 @@
 //                 Text(report.nitrates == null ? "nill" : report.nitrates),
 //               ],
 //             ),
-//             SizedBox(height: getProportionateScreenHeight(20)),
+//             SizedBox(height : 2.h),
 //             // Diuretics
 //             Row(
 //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -86,7 +86,7 @@
 //                 Text(report.diuretics == null ? "nill" : report.diuretics),
 //               ],
 //             ),
-//             SizedBox(height: getProportionateScreenHeight(20)),
+//             SizedBox(height : 2.h),
 //             // ACEI ARB
 //             Row(
 //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -95,7 +95,7 @@
 //                 Text(report.acei_arb == null ? "nill" : report.acei_arb),
 //               ],
 //             ),
-//             SizedBox(height: getProportionateScreenHeight(20)),
+//             SizedBox(height : 2.h),
 //             // TNK ALU STK
 //             Row(
 //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -106,7 +106,7 @@
 //                     : report.tnk_alu_stk_successfull.toString().split('.')[1]),
 //               ],
 //             ),
-//             SizedBox(height: getProportionateScreenHeight(20)),
+//             SizedBox(height : 2.h),
 //             // Death
 //             Row(
 //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -117,7 +117,7 @@
 //                     : report.death.toString().split('.')[1]),
 //               ],
 //             ),
-//             SizedBox(height: getProportionateScreenHeight(20)),
+//             SizedBox(height : 2.h),
 //             // Referral
 //             Row(
 //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -128,7 +128,7 @@
 //                     : report.referral.toString().split('.')[1]),
 //               ],
 //             ),
-//             SizedBox(height: getProportionateScreenHeight(20)),
+//             SizedBox(height : 2.h),
 //             // Reason for Referral
 //             Row(
 //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -140,7 +140,7 @@
 //               ],
 //             ),
 
-//             const SizedBox(height: 30),
+//             SizedBox(height : 5.h),
 //             SizedBox(height: SizeConfig.bottomInsets),
 //           ],
 //         ),

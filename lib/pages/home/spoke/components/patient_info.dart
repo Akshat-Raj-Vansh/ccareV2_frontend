@@ -17,6 +17,7 @@ import 'package:ccarev2_frontend/utils/constants.dart';
 import 'package:ccarev2_frontend/utils/size_config.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sizer/sizer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -86,7 +87,7 @@ class _PatientInfoState extends State<PatientInfo> {
         style: Theme.of(context)
             .textTheme
             .caption
-            .copyWith(color: Colors.white, fontSize: 16),
+            .copyWith(color: Colors.white, fontSize :12.sp),
       ),
     ));
   }
@@ -183,24 +184,24 @@ class _PatientInfoState extends State<PatientInfo> {
             await showDialog(
                   context: context,
                   builder: (context) => AlertDialog(
-                    title: const Text(
+                    title: Text(
                       'Are you sure?',
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
-                        fontSize: 20,
+                        fontSize :16.sp,
                       ),
                     ),
-                    content: const Text(
+                    content: Text(
                       'Do you want to accept the patient?',
                       style: TextStyle(
                         fontWeight: FontWeight.w300,
-                        fontSize: 15,
+                        fontSize :12.sp,
                       ),
                     ),
                     actions: [
                       TextButton(
                         onPressed: () => Navigator.of(context).pop(false),
-                        child: const Text(
+                        child: Text(
                           'Cancel',
                         ),
                       ),
@@ -209,7 +210,7 @@ class _PatientInfoState extends State<PatientInfo> {
                           mainCubit.acceptPatientBySpoke(state.patientID);
                           Navigator.of(context).pop(false);
                         },
-                        child: const Text(
+                        child: Text(
                           'Yes',
                         ),
                       ),
@@ -246,25 +247,25 @@ class _PatientInfoState extends State<PatientInfo> {
               child: Text('CardioCare - Spoke'),
             ),
             ListTile(
-              title: const Text('My Profile'),
+              title: Text('My Profile'),
               onTap: () {
                 Navigator.pop(context);
               },
             ),
             ListTile(
-              title: const Text('My Patients'),
+              title: Text('My Patients'),
               onTap: () {
                 Navigator.pop(context);
               },
             ),
             ListTile(
-              title: const Text('Consultation'),
+              title: Text('Consultation'),
               onTap: () {
                 Navigator.pop(context);
               },
             ),
             ListTile(
-              title: const Text('Settings'),
+              title: Text('Settings'),
               onTap: () {
                 Navigator.pop(context);
               },
@@ -285,7 +286,7 @@ class _PatientInfoState extends State<PatientInfo> {
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 child: Text(
                   "Emergency Information",
-                  style: TextStyle(fontSize: 24),
+                  style: TextStyle(fontSize :18.sp),
                 ),
               ),
             if (_patientAccepted)
@@ -299,7 +300,7 @@ class _PatientInfoState extends State<PatientInfo> {
                     Text(
                       "Status:",
                       textAlign: TextAlign.left,
-                      style: TextStyle(fontSize: 18),
+                      style: TextStyle(fontSize :14.sp),
                     ),
                     Text(
                       _currentStatus,
@@ -323,7 +324,7 @@ class _PatientInfoState extends State<PatientInfo> {
             //   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             //   child: Text(
             //     "Patients",
-            //     style: TextStyle(fontSize: 24),
+            //     style: TextStyle(fontSize :18.sp),
             //   ),
             // ),
             // _buildMedications(),
@@ -331,7 +332,7 @@ class _PatientInfoState extends State<PatientInfo> {
             //   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             //   child: Text(
             //     "Useful Resources",
-            //     style: TextStyle(fontSize: 24),
+            //     style: TextStyle(fontSize :18.sp),
             //   ),
             // ),
             // _buildResources(),
@@ -346,11 +347,11 @@ class _PatientInfoState extends State<PatientInfo> {
         leading: Icon(CupertinoIcons.person, color: Colors.white),
         title: Text(
           "All Current Patients are recovering!!",
-          style: TextStyle(color: Colors.white, fontSize: 20),
+          style: TextStyle(color: Colors.white, fontSize :16.sp),
         ),
         subtitle: Text(
           "Medications and Ongoing treatment ->",
-          style: TextStyle(color: Colors.white, fontSize: 12),
+          style: TextStyle(color: Colors.white, fontSize :8.sp),
         ),
       ));
 
@@ -362,7 +363,7 @@ class _PatientInfoState extends State<PatientInfo> {
           child: Text(
             "Patient's Information",
             textAlign: TextAlign.left,
-            style: TextStyle(fontSize: 18),
+            style: TextStyle(fontSize :14.sp),
           ),
         ),
         Container(
@@ -380,8 +381,8 @@ class _PatientInfoState extends State<PatientInfo> {
                   Text(eDetails.patientDetails.name),
                 ],
               ),
-              const SizedBox(
-                height: 5,
+              SizedBox(
+                height: 1.h,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -411,7 +412,7 @@ class _PatientInfoState extends State<PatientInfo> {
               border: Border.all(color: kPrimaryColor)),
           child: Text(
             "Start treatment of the Patient",
-            style: TextStyle(color: kPrimaryColor, fontSize: 14),
+            style: TextStyle(color: kPrimaryColor, fontSize :12.sp),
             textAlign: TextAlign.center,
           ),
         ),
@@ -438,7 +439,7 @@ class _PatientInfoState extends State<PatientInfo> {
               borderRadius: BorderRadius.circular(20)),
           child: Text(
             "View/Update Patient's Medical Report",
-            style: TextStyle(color: Colors.white, fontSize: 14),
+            style: TextStyle(color: Colors.white, fontSize :12.sp),
             textAlign: TextAlign.center,
           ),
         ),
@@ -464,7 +465,7 @@ class _PatientInfoState extends State<PatientInfo> {
               borderRadius: BorderRadius.circular(20)),
           child: Text(
             "View/Update Patient's Exam Report",
-            style: TextStyle(color: Colors.white, fontSize: 14),
+            style: TextStyle(color: Colors.white, fontSize :12.sp),
             textAlign: TextAlign.center,
           ),
         ),
@@ -485,7 +486,7 @@ class _PatientInfoState extends State<PatientInfo> {
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           child: Text(
             "View Patient's Medical Report History",
-            style: TextStyle(color: kPrimaryColor, fontSize: 14),
+            style: TextStyle(color: kPrimaryColor, fontSize :12.sp),
             textAlign: TextAlign.center,
           ),
         ),
@@ -510,7 +511,7 @@ class _PatientInfoState extends State<PatientInfo> {
               borderRadius: BorderRadius.circular(20)),
           child: Text(
             "Consultations",
-            style: TextStyle(color: Colors.white, fontSize: 14),
+            style: TextStyle(color: Colors.white, fontSize :12.sp),
             textAlign: TextAlign.center,
           ),
         ),
@@ -544,7 +545,7 @@ class _PatientInfoState extends State<PatientInfo> {
               borderRadius: BorderRadius.circular(20)),
           child: Text(
             eDetails.hubDetails.name,
-            style: TextStyle(color: Colors.white, fontSize: 14),
+            style: TextStyle(color: Colors.white, fontSize :12.sp),
             textAlign: TextAlign.center,
           ),
         ),
@@ -564,7 +565,7 @@ class _PatientInfoState extends State<PatientInfo> {
               border: Border.all(color: kPrimaryColor)),
           child: Text(
             "Create New Report",
-            style: TextStyle(color: kPrimaryColor, fontSize: 14),
+            style: TextStyle(color: kPrimaryColor, fontSize :12.sp),
             textAlign: TextAlign.center,
           ),
         ),
@@ -578,7 +579,7 @@ class _PatientInfoState extends State<PatientInfo> {
           child: Text(
             "Ambulance's Information",
             textAlign: TextAlign.left,
-            style: TextStyle(fontSize: 18),
+            style: TextStyle(fontSize :14.sp),
           ),
         ),
         Container(
@@ -596,8 +597,8 @@ class _PatientInfoState extends State<PatientInfo> {
                   Text(eDetails.driverDetails.name),
                 ],
               ),
-              const SizedBox(
-                height: 5,
+              SizedBox(
+                height: 1.h,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -606,8 +607,8 @@ class _PatientInfoState extends State<PatientInfo> {
                   Text(eDetails.driverDetails.plateNumber),
                 ],
               ),
-              const SizedBox(
-                height: 5,
+              SizedBox(
+                height: 1.h,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -616,8 +617,8 @@ class _PatientInfoState extends State<PatientInfo> {
                   Text(eDetails.driverDetails.contactNumber),
                 ],
               ),
-              const SizedBox(
-                height: 5,
+              SizedBox(
+                height: 1.h,
               ),
               RichText(
                 text: TextSpan(
@@ -648,7 +649,7 @@ class _PatientInfoState extends State<PatientInfo> {
   //                 color: Colors.lightBlue[100],
   //                 borderRadius: BorderRadius.circular(20)),
   //             child: ListTile(
-  //                 leading: Text(res[index], style: TextStyle(fontSize: 16))),
+  //                 leading: Text(res[index], style: TextStyle(fontSize :12.sp))),
   //           );
   //         }));
 
@@ -667,9 +668,9 @@ class _PatientInfoState extends State<PatientInfo> {
   //                 color: Colors.lightBlue[100],
   //                 borderRadius: BorderRadius.circular(20)),
   //             child: ListTile(
-  //               leading: Text(patients[index], style: TextStyle(fontSize: 16)),
+  //               leading: Text(patients[index], style: TextStyle(fontSize :12.sp)),
   //               trailing:
-  //                   Text(time_patients[index], style: TextStyle(fontSize: 16)),
+  //                   Text(time_patients[index], style: TextStyle(fontSize :12.sp)),
   //             ),
   //           );
   //         }));

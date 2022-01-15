@@ -1,5 +1,6 @@
 import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
 import 'package:ccarev2_frontend/user/domain/hub_doc_info.dart';
+import 'package:sizer/sizer.dart';
 import 'package:flutter/material.dart';
 
 class HubDoctorsList extends StatelessWidget {
@@ -20,7 +21,7 @@ class HubDoctorsList extends StatelessWidget {
                 leading: Icon(Icons.person),
                 trailing: Text(
                   hubDocs[index].hospitalName,
-                  style: TextStyle(color: Colors.green, fontSize: 15),
+                  style: TextStyle(color: Colors.green, fontSize :12.sp),
                 ),
                 title: Text(hubDocs[index].name)),
           );

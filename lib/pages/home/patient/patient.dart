@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:ccarev2_frontend/main/domain/edetails.dart';
 import 'package:ccarev2_frontend/main/domain/question.dart';
+import 'package:sizer/sizer.dart';
 import 'package:ccarev2_frontend/main/domain/treatment.dart';
 import 'package:ccarev2_frontend/pages/home/components/fullImage.dart';
 import 'package:ccarev2_frontend/pages/home/home_page_adapter.dart';
@@ -59,7 +60,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
   List<QuestionTree> display = [];
   List<String> answers = [];
   int length = 1;
-  TextStyle styles = const TextStyle(color: Colors.white, fontSize: 18);
+  TextStyle styles = TextStyle(color: Colors.white, fontSize :14.sp);
   EdgeInsets pad = const EdgeInsets.symmetric(vertical: 5, horizontal: 15);
   BoxDecoration decA = const BoxDecoration(
       color: kPrimaryColor,
@@ -111,7 +112,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
         style: Theme.of(context)
             .textTheme
             .caption
-            .copyWith(color: Colors.white, fontSize: 16),
+            .copyWith(color: Colors.white, fontSize :12.sp),
       ),
     ));
   }
@@ -160,24 +161,24 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
               await showDialog(
                     context: context,
                     builder: (context) => AlertDialog(
-                      title: const Text(
+                      title: Text(
                         'Are you sure?',
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
-                          fontSize: 20,
+                          fontSize :16.sp,
                         ),
                       ),
-                      content: const Text(
+                      content: Text(
                         'Do you want to logout?',
                         style: TextStyle(
                           fontWeight: FontWeight.w300,
-                          fontSize: 15,
+                          fontSize :12.sp,
                         ),
                       ),
                       actions: [
                         TextButton(
                           onPressed: () => Navigator.of(context).pop(false),
-                          child: const Text(
+                          child: Text(
                             'Cancel',
                           ),
                         ),
@@ -186,7 +187,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                             widget.homePageAdapter
                                 .onLogout(context, widget.userCubit);
                           },
-                          child: const Text(
+                          child: Text(
                             'Yes',
                           ),
                         ),
@@ -311,7 +312,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   child: Text(
                     "Emergency Information",
-                    style: TextStyle(fontSize: 24),
+                    style: TextStyle(fontSize :18.sp),
                   ),
                 ),
               if (_doctorAccepted || _driverAccepted)
@@ -326,7 +327,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                       Text(
                         "Status:",
                         textAlign: TextAlign.left,
-                        style: TextStyle(fontSize: 18),
+                        style: TextStyle(fontSize :14.sp),
                       ),
                       Text(
                         _currentStatus,
@@ -364,7 +365,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
               border: Border.all(color: Colors.red)),
           child: Text(
             "Press here if you require Emergency AID",
-            style: TextStyle(color: Colors.red, fontSize: 14),
+            style: TextStyle(color: Colors.red, fontSize :12.sp),
             textAlign: TextAlign.center,
           ),
         ),
@@ -373,7 +374,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
   _buildReportOverview() => SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(height: getProportionateScreenHeight(20)),
+            SizedBox(height : 2.h),
 
             // Patient Medical Report
             // ECG Report
@@ -384,7 +385,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
               child: Text(
                 "ECG Report",
                 textAlign: TextAlign.left,
-                style: TextStyle(fontSize: 18, color: kPrimaryColor),
+                style: TextStyle(fontSize :14.sp, color: kPrimaryColor),
               ),
             ),
             _buildECGDetails(),
@@ -397,7 +398,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
               child: Text(
                 "Medical History",
                 textAlign: TextAlign.left,
-                style: TextStyle(fontSize: 18, color: kPrimaryColor),
+                style: TextStyle(fontSize :14.sp, color: kPrimaryColor),
               ),
             ),
             _buildMedHistDetails(),
@@ -410,7 +411,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
               child: Text(
                 "Chest Report",
                 textAlign: TextAlign.left,
-                style: TextStyle(fontSize: 18, color: kPrimaryColor),
+                style: TextStyle(fontSize :14.sp, color: kPrimaryColor),
               ),
             ),
             _buildChestDetails(),
@@ -423,7 +424,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
               child: Text(
                 "Symptoms",
                 textAlign: TextAlign.left,
-                style: TextStyle(fontSize: 18, color: kPrimaryColor),
+                style: TextStyle(fontSize :14.sp, color: kPrimaryColor),
               ),
             ),
             _buildSymptomsDetails(),
@@ -436,7 +437,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
               child: Text(
                 "Examination",
                 textAlign: TextAlign.left,
-                style: TextStyle(fontSize: 18, color: kPrimaryColor),
+                style: TextStyle(fontSize :14.sp, color: kPrimaryColor),
               ),
             ),
             _buildExaminationDetails(),
@@ -451,7 +452,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: getProportionateScreenHeight(15)),
+            SizedBox(height : 2.h),
             // ECG Time
             Text('Current Report'),
             Row(
@@ -465,7 +466,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                         .toString()),
               ],
             ),
-            SizedBox(height: getProportionateScreenHeight(10)),
+            SizedBox(height : 1.h),
             // ECG Scan
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -491,8 +492,8 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                                     "Authorization":
                                         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjFhMWU5ZGNiYWI4MjZkZTk4NjBmNzkzIiwiaWF0IjoxNjM4MjY1MzkxLCJleHAiOjE2Mzg4NzAxOTEsImlzcyI6ImNvbS5jY2FyZW5pdGgifQ.K-_DprXx2ipOwWt17DODlMDqQSgtWdv8aARjlPdEuzA"
                                   }),
-                              width: 100,
-                              height: 100,
+                              width : 30.w,
+                              height : 15.h,
                               fit: BoxFit.cover),
                           tag: "generate_a_unique_tag",
                         ),
@@ -500,7 +501,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                     : Text('No ECG Uploaded'),
               ],
             ),
-            SizedBox(height: getProportionateScreenHeight(10)),
+            SizedBox(height : 1.h),
             // ECG Type
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -510,7 +511,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
               ],
             ),
 
-            SizedBox(height: getProportionateScreenHeight(30)),
+            SizedBox(height : 3.h),
           ],
         ),
       );
@@ -522,7 +523,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: getProportionateScreenHeight(15)),
+            SizedBox(height : 2.h),
             // Smoker
             Text('Current Report'),
             Row(
@@ -534,7 +535,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                     .split('.')[1]),
               ],
             ),
-            SizedBox(height: getProportionateScreenHeight(10)),
+            SizedBox(height : 1.h),
             // Diabetic
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -545,7 +546,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                     .split('.')[1]),
               ],
             ),
-            SizedBox(height: getProportionateScreenHeight(10)),
+            SizedBox(height : 1.h),
             // Hypertensive
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -556,7 +557,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                     .split('.')[1]),
               ],
             ),
-            SizedBox(height: getProportionateScreenHeight(10)),
+            SizedBox(height : 1.h),
             // Dyslipidaemia
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -567,7 +568,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                     .split('.')[1]),
               ],
             ),
-            SizedBox(height: getProportionateScreenHeight(10)),
+            SizedBox(height : 1.h),
             // Old MI
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -578,7 +579,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                     .split('.')[1]),
               ],
             ),
-            SizedBox(height: getProportionateScreenHeight(10)),
+            SizedBox(height : 1.h),
             // Trop I
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -587,7 +588,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                 Text(_treatmentReport.medicalHist.trop_i),
               ],
             ),
-            SizedBox(height: getProportionateScreenHeight(30)),
+            SizedBox(height : 3.h),
           ],
         ),
       );
@@ -599,7 +600,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: getProportionateScreenHeight(15)),
+            SizedBox(height : 2.h),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -609,7 +610,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                     .split('.')[1]),
               ],
             ),
-            SizedBox(height: getProportionateScreenHeight(10)),
+            SizedBox(height : 1.h),
             // Onset
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -619,7 +620,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                     _treatmentReport.chestReport.site.toString().split('.')[1]),
               ],
             ),
-            SizedBox(height: getProportionateScreenHeight(10)),
+            SizedBox(height : 1.h),
             // Pain Location
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -630,7 +631,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                     .split('.')[1]),
               ],
             ),
-            SizedBox(height: getProportionateScreenHeight(10)),
+            SizedBox(height : 1.h),
             // Intensity
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
               Text('Intensity: '),
@@ -638,7 +639,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                   .toString()
                   .split('.')[1]),
             ]),
-            SizedBox(height: getProportionateScreenHeight(10)),
+            SizedBox(height : 1.h),
             // Severity
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
               Text('Severity: '),
@@ -646,7 +647,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                   .toString()
                   .split('.')[1]),
             ]),
-            SizedBox(height: getProportionateScreenHeight(10)),
+            SizedBox(height : 1.h),
             // Radiation
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -657,7 +658,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                     .split('.')[1]),
               ],
             ),
-            SizedBox(height: getProportionateScreenHeight(10)),
+            SizedBox(height : 1.h),
             // Duration
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -666,7 +667,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                 Text(_treatmentReport.chestReport.duration),
               ],
             ),
-            SizedBox(height: getProportionateScreenHeight(30)),
+            SizedBox(height : 3.h),
           ],
         ),
       );
@@ -678,7 +679,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: getProportionateScreenHeight(15)),
+            SizedBox(height : 2.h),
 
             // Blackouts
             Row(
@@ -690,7 +691,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                     .split('.')[1]),
               ],
             ),
-            SizedBox(height: getProportionateScreenHeight(10)),
+            SizedBox(height : 1.h),
             // Palpitations
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -701,7 +702,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                     .split('.')[1]),
               ],
             ),
-            SizedBox(height: getProportionateScreenHeight(10)),
+            SizedBox(height : 1.h),
             //Sweating
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -712,7 +713,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                     .split('.')[1]),
               ],
             ),
-            SizedBox(height: getProportionateScreenHeight(10)),
+            SizedBox(height : 1.h),
             // Nausea
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -721,7 +722,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                 Text(_treatmentReport.symptoms.nausea.toString().split('.')[1]),
               ],
             ),
-            SizedBox(height: getProportionateScreenHeight(10)),
+            SizedBox(height : 1.h),
             // Shortness of breath
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -732,7 +733,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                     .split('.')[1]),
               ],
             ),
-            SizedBox(height: getProportionateScreenHeight(10)),
+            SizedBox(height : 1.h),
             // Loss of conciousness
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -744,7 +745,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
               ],
             ),
 
-            SizedBox(height: getProportionateScreenHeight(30)),
+            SizedBox(height : 3.h),
           ],
         ),
       );
@@ -756,7 +757,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: getProportionateScreenHeight(15)),
+            SizedBox(height : 2.h),
             // Pulse Rate
 
             Row(
@@ -766,7 +767,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                 Text(_treatmentReport.examination.pulse_rate),
               ],
             ),
-            SizedBox(height: getProportionateScreenHeight(10)),
+            SizedBox(height : 1.h),
             // BP
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -775,7 +776,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                 Text(_treatmentReport.examination.bp),
               ],
             ),
-            SizedBox(height: getProportionateScreenHeight(10)),
+            SizedBox(height : 1.h),
             // Local Tenderness
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -803,7 +804,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                 'Self Analysis',
                 style: TextStyle(
                   color: kPrimaryColor,
-                  fontSize: 20,
+                  fontSize :16.sp,
                 ),
               ),
             ),
@@ -914,7 +915,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                                             .caption
                                             .copyWith(
                                                 color: Colors.white,
-                                                fontSize: 16),
+                                                fontSize :12.sp),
                                       ),
                                     ));
                                   }
@@ -1005,11 +1006,11 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
             color: Colors.white, size: 40),
         title: Text(
           "Emergency Notification Sent!!",
-          style: TextStyle(color: Colors.white, fontSize: 20),
+          style: TextStyle(color: Colors.white, fontSize :16.sp),
         ),
         subtitle: Text(
           "Waiting for the confimation from Doctor's and Ambulance's side ->",
-          style: TextStyle(color: Colors.white, fontSize: 12),
+          style: TextStyle(color: Colors.white, fontSize :8.sp),
         ),
       ));
 
@@ -1031,7 +1032,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
               borderRadius: BorderRadius.circular(5)),
           child: Text(
             "View your current Medical Report",
-            style: TextStyle(color: Colors.white, fontSize: 14),
+            style: TextStyle(color: Colors.white, fontSize :12.sp),
             textAlign: TextAlign.center,
           ),
         ),
@@ -1056,7 +1057,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
               border: Border.all(color: kPrimaryColor)),
           child: Text(
             "View your Medical Report History",
-            style: TextStyle(color: kPrimaryColor, fontSize: 14),
+            style: TextStyle(color: kPrimaryColor, fontSize :12.sp),
             textAlign: TextAlign.center,
           ),
         ),
@@ -1082,7 +1083,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
               border: Border.all(color: kPrimaryColor)),
           child: Text(
             "View your Treatment Report History",
-            style: TextStyle(color: kPrimaryColor, fontSize: 14),
+            style: TextStyle(color: kPrimaryColor, fontSize :12.sp),
             textAlign: TextAlign.center,
           ),
         ),
@@ -1095,7 +1096,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
           child: Text(
             "Doctor's Information",
             textAlign: TextAlign.left,
-            style: TextStyle(fontSize: 18),
+            style: TextStyle(fontSize :14.sp),
           ),
         ),
         Container(
@@ -1113,8 +1114,8 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                   Text(eDetails.doctorDetails.name),
                 ],
               ),
-              const SizedBox(
-                height: 5,
+              SizedBox(
+                height: 1.h,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1123,8 +1124,8 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                   Text(eDetails.doctorDetails.hospital),
                 ],
               ),
-              const SizedBox(
-                height: 5,
+              SizedBox(
+                height: 1.h,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1144,7 +1145,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
   _buildBottomUI(BuildContext context) => Align(
       alignment: Alignment.bottomCenter,
       child: Container(
-        height: 80,
+        height : 10.h,
         width: SizeConfig.screenWidth,
         padding: const EdgeInsets.all(5.0),
         child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
@@ -1172,7 +1173,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                 ),
                 label: Text(
                   !_emergency ? "Emergency" : "Change Status",
-                  style: TextStyle(color: Colors.white, fontSize: 16),
+                  style: TextStyle(color: Colors.white, fontSize :12.sp),
                 )),
           RaisedButton.icon(
               color: Theme.of(context).primaryColor,
@@ -1187,7 +1188,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                 color: Colors.white,
               ),
               label: Text("Assess Again",
-                  style: TextStyle(color: Colors.white, fontSize: 16)))
+                  style: TextStyle(color: Colors.white, fontSize :12.sp)))
         ]),
       ));
 
@@ -1210,25 +1211,25 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
   _showAmbRequired() async {
     var alert = AlertDialog(
       title: Center(
-        child: const Text(
+        child: Text(
           'Emergency',
           style: TextStyle(
             fontWeight: FontWeight.w600,
-            fontSize: 20,
+            fontSize :16.sp,
           ),
         ),
       ),
-      content: const Text(
+      content: Text(
         'Do you need an ambulance?',
         style: TextStyle(
           fontWeight: FontWeight.w300,
-          fontSize: 15,
+          fontSize :12.sp,
         ),
       ),
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(false),
-          child: const Text(
+          child: Text(
             'Cancel',
           ),
         ),
@@ -1239,7 +1240,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
             await widget.mainCubit.notify("EBUTTON", true);
             // await widget.mainCubit.fetchEmergencyDetails();
           },
-          child: const Text(
+          child: Text(
             'Yes',
           ),
         ),
@@ -1249,7 +1250,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
             await widget.mainCubit.notify("QUESTIONNAIRE", false);
             // await widget.mainCubit.fetchEmergencyDetails();
           },
-          child: const Text(
+          child: Text(
             'No',
           ),
         ),
@@ -1266,7 +1267,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
           child: Text(
             "Ambulance's Information",
             textAlign: TextAlign.left,
-            style: TextStyle(fontSize: 18),
+            style: TextStyle(fontSize :14.sp),
           ),
         ),
         Container(
@@ -1284,8 +1285,8 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                   Text(eDetails.driverDetails.name),
                 ],
               ),
-              const SizedBox(
-                height: 5,
+              SizedBox(
+                height: 1.h,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1294,8 +1295,8 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                   Text(eDetails.driverDetails.plateNumber),
                 ],
               ),
-              const SizedBox(
-                height: 5,
+              SizedBox(
+                height: 1.h,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1304,8 +1305,8 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                   Text(eDetails.driverDetails.contactNumber),
                 ],
               ),
-              const SizedBox(
-                height: 5,
+              SizedBox(
+                height: 1.h,
               ),
               RichText(
                 text: TextSpan(
@@ -1341,11 +1342,11 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                   color: Colors.white),
               title: Text(
                 "Press here for Emergency Service!",
-                style: TextStyle(color: Colors.white, fontSize: 20),
+                style: TextStyle(color: Colors.white, fontSize :16.sp),
               ),
               subtitle: Text(
                 "Emergency Situation ->",
-                style: TextStyle(color: Colors.white, fontSize: 12),
+                style: TextStyle(color: Colors.white, fontSize :8.sp),
               ),
             )),
       );
@@ -1357,11 +1358,11 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
   //       leading: Icon(CupertinoIcons.person, color: Colors.white),
   //       title: Text(
   //         "You are healthy!!",
-  //         style: TextStyle(color: Colors.white, fontSize: 20),
+  //         style: TextStyle(color: Colors.white, fontSize :16.sp),
   //       ),
   //       subtitle: Text(
   //         "Medications and Ongoing treatment ->",
-  //         style: TextStyle(color: Colors.white, fontSize: 12),
+  //         style: TextStyle(color: Colors.white, fontSize :8.sp),
   //       ),
   //     ));
 }

@@ -6,7 +6,7 @@ import 'package:ccarev2_frontend/utils/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:location/location.dart' as lloc;
 import '../../../user/domain/location.dart' as loc;
-
+import 'package:sizer/sizer.dart';
 class DriverProfileScreen extends StatefulWidget {
   final ProfileCubit cubit;
   const DriverProfileScreen(this.cubit);
@@ -27,7 +27,7 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(height: getProportionateScreenHeight(20)),
+          SizedBox(height : 2.h),
           TextFormField(
             keyboardType: TextInputType.text,
             onSaved: (newValue) => name = newValue,
@@ -38,7 +38,7 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
               floatingLabelBehavior: FloatingLabelBehavior.always,
             ),
           ),
-          SizedBox(height: getProportionateScreenHeight(10)),
+          SizedBox(height : 1.h),
           TextFormField(
             keyboardType: TextInputType.text,
             onSaved: (newValue) => uniqueCode = newValue.toUpperCase(),
@@ -50,7 +50,7 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
               floatingLabelBehavior: FloatingLabelBehavior.always,
             ),
           ),
-          SizedBox(height: getProportionateScreenHeight(10)),
+          SizedBox(height : 1.h),
           TextFormField(
             keyboardType: TextInputType.text,
             onSaved: (newValue) => plateNumber = newValue.toUpperCase(),
@@ -87,7 +87,7 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
               },
             ),
           ),
-          const SizedBox(height: 30),
+          SizedBox(height : 5.h),
         ],
       ),
     );

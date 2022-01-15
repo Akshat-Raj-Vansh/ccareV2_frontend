@@ -7,6 +7,7 @@ import 'package:ccarev2_frontend/user/domain/credential.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
+import 'package:sizer/sizer.dart';
 import 'package:ccarev2_frontend/user/domain/location.dart' as loc;
 import 'package:ccarev2_frontend/services/Notifications/notificationContoller.dart';
 
@@ -137,7 +138,7 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
         style: Theme.of(context)
             .textTheme
             .caption
-            .copyWith(color: Colors.white, fontSize: 16),
+            .copyWith(color: Colors.white, fontSize :12.sp),
       ),
     ));
   }
@@ -199,11 +200,11 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
           appBar: AppBar(
             backgroundColor: Colors.red,
             shadowColor: Colors.red,
-            title: const Text(
+            title: Text(
               "Emergency Screen",
               style: TextStyle(
                   color: Colors.white,
-                  fontSize: 24,
+                  fontSize :18.sp,
                   fontWeight: FontWeight.bold),
             ),
             leading: IconButton(

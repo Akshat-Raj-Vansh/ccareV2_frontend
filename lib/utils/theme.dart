@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'constants.dart';
+import 'package:sizer/sizer.dart';
 
 ThemeData theme() {
   return ThemeData(
@@ -45,7 +46,7 @@ AppBarTheme appBarTheme() {
     brightness: Brightness.light,
     iconTheme: IconThemeData(color: Colors.black),
     textTheme: TextTheme(
-      headline6: TextStyle(color: Color(0XFF8B8B8B), fontSize: 18),
+      headline6: TextStyle(color: Color(0XFF8B8B8B), fontSize :14.sp),
     ),
   );
 }

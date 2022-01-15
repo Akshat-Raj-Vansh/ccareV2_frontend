@@ -10,6 +10,7 @@ import 'package:ccarev2_frontend/state_management/main/main_state.dart';
 import 'package:ccarev2_frontend/user/domain/credential.dart';
 import 'package:ccarev2_frontend/utils/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
 import '../../utils/size_config.dart';
@@ -91,7 +92,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
         style: Theme.of(context)
             .textTheme
             .caption
-            .copyWith(color: Colors.white, fontSize: 16),
+            .copyWith(color: Colors.white, fontSize :12.sp),
       ),
     ));
   }
@@ -246,7 +247,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
             // Report Edit details
             // _buildEditDetails(),
 
-            SizedBox(height: getProportionateScreenHeight(20)),
+            SizedBox(height : 2.h),
 
             // Patient Medical Report
             // Normal Treatment
@@ -257,7 +258,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
               child: Text(
                 "Normal Treatment Report",
                 textAlign: TextAlign.left,
-                style: TextStyle(fontSize: 18, color: kPrimaryColor),
+                style: TextStyle(fontSize :14.sp, color: kPrimaryColor),
               ),
             ),
             _buildNTreatmentDetails(),
@@ -270,7 +271,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
               child: Text(
                 "Thrombolysis",
                 textAlign: TextAlign.left,
-                style: TextStyle(fontSize: 18, color: kPrimaryColor),
+                style: TextStyle(fontSize :14.sp, color: kPrimaryColor),
               ),
             ),
             _buildThrombolysisDetails(),
@@ -295,8 +296,8 @@ class _PatientExamScreenState extends State<PatientExamScreen>
                 Text(widget.patientDetails.name),
               ],
             ),
-            const SizedBox(
-              height: 5,
+            SizedBox(
+              height: 1.h,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -306,8 +307,8 @@ class _PatientExamScreenState extends State<PatientExamScreen>
                     textAlign: TextAlign.right),
               ],
             ),
-            // const SizedBox(
-            //   height: 5,
+            // SizedBox(
+            //   height: 1.h,
             // ),
             // Row(
             //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -316,8 +317,8 @@ class _PatientExamScreenState extends State<PatientExamScreen>
             //     Text(widget.patientDetails.address, textAlign: TextAlign.right),
             //   ],
             // ),
-            const SizedBox(
-              height: 5,
+            SizedBox(
+              height: 1.h,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -346,8 +347,8 @@ class _PatientExamScreenState extends State<PatientExamScreen>
                 Text(DateTime.now().toString()),
               ],
             ),
-            const SizedBox(
-              height: 5,
+            SizedBox(
+              height: 1.h,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -368,7 +369,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: getProportionateScreenHeight(15)),
+            SizedBox(height : 2.h),
             // Aspirin Loading
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -379,7 +380,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
                     .split('.')[1]),
               ],
             ),
-            SizedBox(height: getProportionateScreenHeight(10)),
+            SizedBox(height : 1.h),
             // SPT Loading
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -390,7 +391,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
                     .split('.')[1]),
               ],
             ),
-            SizedBox(height: getProportionateScreenHeight(10)),
+            SizedBox(height : 1.h),
             //  LMWH
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -399,7 +400,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
                 Text(editedReport.nTreatment.lmwh),
               ],
             ),
-            SizedBox(height: getProportionateScreenHeight(10)),
+            SizedBox(height : 1.h),
             // Statins
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -408,7 +409,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
                 Text(editedReport.nTreatment.statins),
               ],
             ),
-            SizedBox(height: getProportionateScreenHeight(10)),
+            SizedBox(height : 1.h),
             // Beta_Blockers
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -417,7 +418,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
                 Text(editedReport.nTreatment.beta_blockers),
               ],
             ),
-            SizedBox(height: getProportionateScreenHeight(10)),
+            SizedBox(height : 1.h),
             // Nitrates
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -426,7 +427,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
                 Text(editedReport.nTreatment.nitrates),
               ],
             ),
-            SizedBox(height: getProportionateScreenHeight(10)),
+            SizedBox(height : 1.h),
             // Deuretics
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -435,7 +436,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
                 Text(editedReport.nTreatment.diuretics),
               ],
             ),
-            SizedBox(height: getProportionateScreenHeight(10)),
+            SizedBox(height : 1.h),
             // ACEI ARD
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -445,7 +446,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
               ],
             ),
 
-            SizedBox(height: getProportionateScreenHeight(30)),
+            SizedBox(height : 3.h),
           ],
         ),
       );
@@ -456,7 +457,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: getProportionateScreenHeight(15)),
+            SizedBox(height : 2.h),
             // TNK ALU STK Successful
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -467,7 +468,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
                     .split('.')[1]),
               ],
             ),
-            SizedBox(height: getProportionateScreenHeight(10)),
+            SizedBox(height : 1.h),
             // Death
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -476,7 +477,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
                 Text(editedReport.thrombolysis.death.toString().split('.')[1]),
               ],
             ),
-            SizedBox(height: getProportionateScreenHeight(10)),
+            SizedBox(height : 1.h),
             // Referral
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -487,7 +488,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
                     .split('.')[1]),
               ],
             ),
-            SizedBox(height: getProportionateScreenHeight(10)),
+            SizedBox(height : 1.h),
             // Reason for Referral
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -497,7 +498,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
               ],
             ),
 
-            SizedBox(height: getProportionateScreenHeight(30)),
+            SizedBox(height : 3.h),
           ],
         ),
       );
@@ -509,7 +510,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: getProportionateScreenHeight(20)),
+            SizedBox(height : 2.h),
             // Aspirin Loading
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -535,7 +536,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
                 ),
               ],
             ),
-            SizedBox(height: getProportionateScreenHeight(10)),
+            SizedBox(height : 1.h),
             // CPT loading
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -561,7 +562,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
                 ),
               ],
             ),
-            SizedBox(height: getProportionateScreenHeight(10)),
+            SizedBox(height : 1.h),
             // LMWH
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -583,7 +584,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
                 ),
               ],
             ),
-            SizedBox(height: getProportionateScreenHeight(10)),
+            SizedBox(height : 1.h),
             // Statins
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -605,7 +606,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
                 ),
               ],
             ),
-            SizedBox(height: getProportionateScreenHeight(10)),
+            SizedBox(height : 1.h),
             // Beta Blockers
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -627,7 +628,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
                 ),
               ],
             ),
-            SizedBox(height: getProportionateScreenHeight(10)),
+            SizedBox(height : 1.h),
             // Nitrates
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -649,7 +650,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
                 ),
               ],
             ),
-            SizedBox(height: getProportionateScreenHeight(10)),
+            SizedBox(height : 1.h),
             // Deuretics
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -671,7 +672,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
                 ),
               ],
             ),
-            SizedBox(height: getProportionateScreenHeight(10)),
+            SizedBox(height : 1.h),
             // ACEI ARB
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -704,7 +705,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: getProportionateScreenHeight(20)),
+            SizedBox(height : 2.h),
             // TNK ALU STK Successful
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -731,7 +732,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
                 ),
               ],
             ),
-            SizedBox(height: getProportionateScreenHeight(10)),
+            SizedBox(height : 1.h),
             // Death
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -757,7 +758,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
                 ),
               ],
             ),
-            SizedBox(height: getProportionateScreenHeight(10)),
+            SizedBox(height : 1.h),
             // Referral
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -783,7 +784,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
                 ),
               ],
             ),
-            SizedBox(height: getProportionateScreenHeight(10)),
+            SizedBox(height : 1.h),
             // Reason for Referral
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

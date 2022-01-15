@@ -1,6 +1,6 @@
 //@dart=2.9
 import 'dart:convert';
-
+import 'package:sizer/sizer.dart';
 import 'package:ccarev2_frontend/main/domain/edetails.dart';
 import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
 import 'package:ccarev2_frontend/user/domain/location.dart';
@@ -30,7 +30,7 @@ class PatientNotificationHandler {
             style: Theme.of(context)
                 .textTheme
                 .caption
-                .copyWith(color: Colors.white, fontSize: 16),
+                .copyWith(color: Colors.white, fontSize :12.sp),
           ),
         ));
         print("LOCATION DOCTOR");
@@ -46,7 +46,7 @@ class PatientNotificationHandler {
             style: Theme.of(context)
                 .textTheme
                 .caption
-                .copyWith(color: Colors.white, fontSize: 16),
+                .copyWith(color: Colors.white, fontSize :12.sp),
           ),
         ));
         print("LOCATION DRIVER");

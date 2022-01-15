@@ -43,7 +43,7 @@ class SplashScreen extends StatelessWidget {
                 child: Text("NO"),
               ),
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16),
             GestureDetector(
               onTap: () => Navigator.of(context).pop(true),
               child: const Padding(

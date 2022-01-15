@@ -33,7 +33,7 @@ class SpokeNotificationHandler {
         //     style: Theme.of(context)
         //         .textTheme
         //         .caption
-        //         .copyWith(color: Colors.white, fontSize: 16),
+        //         .copyWith(color: Colors.white, fontSize :6.sp),
         //   ),
         // ));
         await mainCubit.acceptRequest(message.data["_patientID"]);
@@ -46,7 +46,7 @@ class SpokeNotificationHandler {
         //     style: Theme.of(context)
         //         .textTheme
         //         .caption
-        //         .copyWith(color: Colors.white, fontSize: 16),
+        //         .copyWith(color: Colors.white, fontSize :6.sp),
         //   ),
         // ));
         mainCubit.driverAccepted(Location.fromJson(message.data["location"]));

@@ -1,5 +1,6 @@
 //@dart=2.9
 import 'dart:developer';
+import 'package:sizer/sizer.dart';
 
 import 'package:ccarev2_frontend/components/default_button.dart';
 import 'package:ccarev2_frontend/main/domain/treatment.dart';
@@ -59,7 +60,7 @@ class _PatientReportHistoryScreenState
         style: Theme.of(context)
             .textTheme
             .caption
-            .copyWith(color: Colors.white, fontSize: 16),
+            .copyWith(color: Colors.white, fontSize :12.sp),
       ),
     ));
   }
@@ -87,7 +88,7 @@ class _PatientReportHistoryScreenState
               child: Center(
                 child: Text(
                   state.error,
-                  style: TextStyle(fontSize: 18, color: Colors.black),
+                  style: TextStyle(fontSize :14.sp, color: Colors.black),
                 ),
               ),
             ),

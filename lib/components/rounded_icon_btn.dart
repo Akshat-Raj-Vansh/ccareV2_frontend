@@ -1,7 +1,7 @@
 //@dart=2.9
 import '../utils/size_config.dart';
 import 'package:flutter/material.dart';
-
+import 'package:sizer/sizer.dart';
 class RoundedIconBtn extends StatelessWidget {
   const RoundedIconBtn({
     Key key,
@@ -18,7 +18,7 @@ class RoundedIconBtn extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: getProportionateScreenWidth(40),
-      width: getProportionateScreenWidth(40),
+      width : 12.w,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         boxShadow: [

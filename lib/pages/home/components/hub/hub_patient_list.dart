@@ -4,7 +4,7 @@ import 'package:ccarev2_frontend/pages/home/components/hub/hub_patient_info.dart
 import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
 import 'package:ccarev2_frontend/user/domain/hub_doc_info.dart';
 import 'package:flutter/material.dart';
-
+import 'package:sizer/sizer.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
 
 class AcceptedPatientList extends StatelessWidget {
@@ -33,7 +33,7 @@ class AcceptedPatientList extends StatelessWidget {
                 leading: Icon(Icons.person),
                 trailing: Text(
                   details[index].patientDetails.age.toString(),
-                  style: TextStyle(color: Colors.green, fontSize: 15),
+                  style: TextStyle(color: Colors.green, fontSize :12.sp),
                 ),
                 title: Text(details[index].patientDetails.name)),
           );
