@@ -1,5 +1,5 @@
 //@dart=2.9
-
+import 'package:sizer/sizer.dart';
 import 'package:ccarev2_frontend/services/Notifications/notificationContoller.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -24,15 +24,17 @@ class MyApp extends StatelessWidget {
   const MyApp(this.startPage);
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        title: 'CardioCare',
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-            textTheme:
-                GoogleFonts.montserratTextTheme(Theme.of(context).textTheme),
-            accentColor: kAccentColor,
-            primaryColor: kPrimaryColor,
-            visualDensity: VisualDensity.adaptivePlatformDensity),
-        home: this.startPage);
+    return Sizer(
+      builder:(context, orientation, deviceType)=> MaterialApp(
+          title: 'CardioCare',
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+              textTheme:
+                  GoogleFonts.montserratTextTheme(Theme.of(context).textTheme),
+              accentColor: kAccentColor,
+              primaryColor: kPrimaryColor,
+              visualDensity: VisualDensity.adaptivePlatformDensity),
+          home: this.startPage),
+    );
   }
 }
