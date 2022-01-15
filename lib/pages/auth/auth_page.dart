@@ -139,7 +139,7 @@ class _AuthPageState extends State<AuthPage> {
                             style: Theme.of(context)
                                 .textTheme
                                 .caption
-                                .copyWith(color: Colors.white, fontSize :6.sp.sp),
+                                .copyWith(color: Colors.white, fontSize :6.sp),
                           ),
                         ));
                       }
@@ -183,7 +183,7 @@ class _AuthPageState extends State<AuthPage> {
         style: Theme.of(context)
             .textTheme
             .caption
-            .copyWith(color: Colors.white, fontSize :6.sp.sp),
+            .copyWith(color: Colors.white, fontSize :6.sp),
       ),
     ));
   }

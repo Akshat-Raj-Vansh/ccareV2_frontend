@@ -64,4 +64,4 @@ OutlineInputBorder outlineInputBorder() {
 // height 20 -> 3.h
 //fontSize reduce by 30%
 //getPropotionalScreenHeight(42) -> 5.h
-//getPropotionalScreenWidth(90) -> 3.h
+//getPropotionalScreenWidth(90) -> 25.w

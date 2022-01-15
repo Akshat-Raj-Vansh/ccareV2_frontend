@@ -1,6 +1,8 @@
 //@dart=2.9
 import 'dart:developer';
 import 'dart:io';
+
+import 'package:ccarev2_frontend/utils/constants.dart';
 import 'package:ccarev2_frontend/main/domain/edetails.dart';
 import 'package:ccarev2_frontend/pages/home/components/fullImage.dart';
 import 'package:image_picker/image_picker.dart';
@@ -605,7 +607,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
                               MaterialPageRoute(builder: (_) {
                             return FullScreenImage(
                               imageUrl:
-                                  "http://192.168.108.55:3000/treatment/fetchECG?fileID=${treatmentReport.ecg.ecg_file_id}",
+                                  "$BASEURL/treatment/fetchECG?fileID=${treatmentReport.ecg.ecg_file_id}",
                               tag: "generate_a_unique_tag",
                             );
                           }));
@@ -613,7 +615,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
                         child: Hero(
                           child: Image(
                               image: NetworkImage(
-                                  "http://192.168.108.55:3000/treatment/fetchECG?fileID=${treatmentReport.ecg.ecg_file_id}",
+                                  "$BASEURL/treatment/fetchECG?fileID=${treatmentReport.ecg.ecg_file_id}",
                                   headers: {
                                     "Authorization":
                                         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjFiOWNmNGNjNzUxNjMwZWFjOTI2MmY4IiwiaWF0IjoxNjM5NTY3MTgxLCJleHAiOjE2NDAxNzE5ODEsImlzcyI6ImNvbS5jY2FyZW5pdGgifQ.-LlsoqD5xKwUlm16-PBZzdO-kKBC9VK-otDoKwdWL00"

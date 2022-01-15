@@ -5,6 +5,8 @@ import 'package:ccarev2_frontend/utils/size_config.dart';
 import 'package:sizer/sizer.dart';
 import 'package:flutter/material.dart';
 
+import 'package:ccarev2_frontend/utils/constants.dart';
+
 class ReportOverview extends StatefulWidget {
   final TreatmentReport report;
   const ReportOverview(this.report);
@@ -131,7 +133,7 @@ class _ReportOverviewState extends State<ReportOverview> {
                               MaterialPageRoute(builder: (_) {
                             return FullScreenImage(
                               imageUrl:
-                                  "http://192.168.0.139:3000/treatment/fetchECG?fileID=${widget.report.ecg.ecg_file_id}",
+                                  "$BASEURL/treatment/fetchECG?fileID=${widget.report.ecg.ecg_file_id}",
                               tag: "generate_a_unique_tag",
                             );
                           }));
@@ -139,7 +141,7 @@ class _ReportOverviewState extends State<ReportOverview> {
                         child: Hero(
                           child: Image(
                               image: NetworkImage(
-                                  "http://192.168.0.139:3000/treatment/fetchECG?fileID=${widget.report.ecg.ecg_file_id}",
+                                  "$BASEURL/treatment/fetchECG?fileID=${widget.report.ecg.ecg_file_id}",
                                   headers: {
                                     "Authorization":
                                         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjFhMWU5ZGNiYWI4MjZkZTk4NjBmNzkzIiwiaWF0IjoxNjM4MjY1MzkxLCJleHAiOjE2Mzg4NzAxOTEsImlzcyI6ImNvbS5jY2FyZW5pdGgifQ.K-_DprXx2ipOwWt17DODlMDqQSgtWdv8aARjlPdEuzA"

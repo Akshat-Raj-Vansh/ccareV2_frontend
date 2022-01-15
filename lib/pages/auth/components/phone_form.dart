@@ -20,7 +20,7 @@ class _PhoneFormState extends State<PhoneForm> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height : 20.h,
+      height : 45.h,
       color: Colors.white,
       width: double.infinity,
       child: Padding(

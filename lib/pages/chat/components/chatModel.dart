@@ -6,9 +6,8 @@ import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'dart:convert';
 import 'package:ccarev2_frontend/cache/ilocal_store.dart';
 import 'package:socket_io_client/socket_io_client.dart';
-
 import 'message.dart';
-
+import 'package:ccarev2_frontend/utils/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ChatModel extends Model {
@@ -28,7 +27,7 @@ class ChatModel extends Model {
     userChatID = patientID + "-" + token;
 
     socket = IO.io(
-        'http://192.168.108.55:3000',
+        BASEURL,
         IO.OptionBuilder()
             .setTransports(['websocket'])
             .disableAutoConnect()
