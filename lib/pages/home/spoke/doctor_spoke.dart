@@ -147,7 +147,9 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
             currentState = NormalState;
           }
           if (currentState == null)
-            return Center(child: CircularProgressIndicator());
+            return Container(
+              color: Colors.white,
+              child: Center(child: CircularProgressIndicator()));
           return _buildUI(context);
         },
         listener: (context, state) async {
