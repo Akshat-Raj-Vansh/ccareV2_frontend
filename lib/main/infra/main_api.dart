@@ -457,6 +457,8 @@ class MainAPI extends IMainAPI {
       "Authorization": token.value
     };
     var response = await _client.get(Uri.parse(endpoint), headers: header);
+    //print the name of the function
+    print("getAllPatientRequests");
     print(response.body);
     print(response.statusCode);
     if (response.statusCode != 200) {

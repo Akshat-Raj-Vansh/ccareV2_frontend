@@ -234,8 +234,11 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
             // _emergency = true;
             log('LOG > doctor_spoke.dart > 280 > state: ${state.toString()}',
                 time: DateTime.now());
+                 CubitProvider.of<MainCubit>(context).getAllPatients();
+    CubitProvider.of<MainCubit>(context).getAllPatientRequests();
               setState(() {
                 
+   
               });
             //   CubitProvider.of<MainCubit>(context).fetchEmergencyDetails();
           } else if (state is ErrorState) {
