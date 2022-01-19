@@ -209,7 +209,7 @@ class MainCubit extends Cubit<MainState> {
       emit(NoReportState("No report exists"));
       return;
     }
-    log('LOG > main_cubit.dart > fetchPatientReport > 164 > result.asValue!.value["currentReport"]: ${result.asValue!.value["currentReport"]}');
+    // log('LOG > main_cubit.dart > fetchPatientReport > 164 > result.asValue!.value["currentReport"]: ${result.asValue!.value["currentReport"]}');
     if (result.isError) {
       emit(ErrorState(result.asError!.error as String));
       return;
@@ -386,7 +386,7 @@ class MainCubit extends Cubit<MainState> {
     final token = await localStore.fetch();
     final result = await api.fetchEmergencyDetails(token, patientID: patientID);
     if (result.isError) {
-      emit(NormalState(result.asError!.error as String));
+      emit(ErrorState(result.asError!.error as String));
       return;
     }
     emit(DetailsLoaded(result.asValue!.value));

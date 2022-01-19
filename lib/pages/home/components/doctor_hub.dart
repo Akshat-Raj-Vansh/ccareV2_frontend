@@ -18,7 +18,6 @@ import 'package:ccarev2_frontend/user/domain/credential.dart';
 import 'package:ccarev2_frontend/utils/constants.dart';
 import 'package:sizer/sizer.dart';
 
-
 import 'package:ccarev2_frontend/utils/size_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -82,7 +81,7 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
         style: Theme.of(context)
             .textTheme
             .caption
-            .copyWith(color: Colors.white, fontSize :12.sp),
+            .copyWith(color: Colors.white, fontSize: 12.sp),
       ),
     ));
   }
@@ -105,14 +104,14 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
                           'Are you sure?',
                           style: TextStyle(
                             fontWeight: FontWeight.w600,
-                            fontSize :16.sp,
+                            fontSize: 16.sp,
                           ),
                         ),
                         content: Text(
                           'Do you want to logout?',
                           style: TextStyle(
                             fontWeight: FontWeight.w300,
-                            fontSize :12.sp,
+                            fontSize: 12.sp,
                           ),
                         ),
                         actions: [
@@ -201,14 +200,14 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
                       'Are you sure?',
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
-                        fontSize :16.sp,
+                        fontSize: 16.sp,
                       ),
                     ),
                     content: Text(
                       'Do you want to accept the patient?',
                       style: TextStyle(
                         fontWeight: FontWeight.w300,
-                        fontSize :12.sp,
+                        fontSize: 12.sp,
                       ),
                     ),
                     actions: [

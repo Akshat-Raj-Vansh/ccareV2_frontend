@@ -4,6 +4,7 @@ import 'package:ccarev2_frontend/user/domain/profile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../../user/domain/credential.dart';
 import '../../state_management/user/user_cubit.dart';
 import '../../state_management/main/main_cubit.dart';
@@ -71,9 +72,10 @@ class HomePageAdapter extends IHomePageAdapter {
   @override
   void onLogout(BuildContext context, UserCubit userCubit) {
     userCubit.signOut();
-    Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => splashScreen()),
-        (Route<dynamic> route) => false);
+    // Navigator.pushAndRemoveUntil(
+    //     context,
+    //     MaterialPageRoute(builder: (context) => splashScreen()),
+    //     (Route<dynamic> route) => false);
+    SystemChannels.platform.invokeMethod('SystemNavigator.pop');
   }
 }

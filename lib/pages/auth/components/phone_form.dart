@@ -4,6 +4,7 @@ import 'package:ccarev2_frontend/utils/constants.dart';
 import 'package:ccarev2_frontend/utils/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
+
 class PhoneForm extends StatefulWidget {
   final UserCubit cubit;
   final Function verifyPhone;
@@ -20,7 +21,7 @@ class _PhoneFormState extends State<PhoneForm> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height : 45.h,
+      height: 45.h,
       color: Colors.white,
       width: double.infinity,
       child: Padding(
@@ -44,12 +45,12 @@ class _PhoneFormState extends State<PhoneForm> {
                     Text(
                       'Enter Mobile Number',
                       textAlign: TextAlign.center,
-                      style:
-                          TextStyle(fontSize :18.sp, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          fontSize: 18.sp, fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
-                SizedBox(height : 5.h),
+                SizedBox(height: 5.h),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -57,7 +58,7 @@ class _PhoneFormState extends State<PhoneForm> {
                       '+91',
                       style: TextStyle(
                         color: kPrimaryColor,
-                        fontSize :14.sp,
+                        fontSize: 14.sp,
                       ),
                     ),
                     CustomTextFormField(
@@ -85,6 +86,7 @@ class _PhoneFormState extends State<PhoneForm> {
                   onPressed: () async {
                     print('LOGIN BUTTON CLICKED');
                     if (_formKey.currentState!.validate()) {
+                      print('NOT COMING INSIDE');
                       widget.cubit.verifyPhone(_phone);
                     }
                   },
@@ -102,7 +104,7 @@ class _PhoneFormState extends State<PhoneForm> {
                     ),
                     child: Text(
                       "Login",
-                      style: TextStyle(color: Colors.white, fontSize :16.sp),
+                      style: TextStyle(color: Colors.white, fontSize: 16.sp),
                     ),
                   ),
                 ),

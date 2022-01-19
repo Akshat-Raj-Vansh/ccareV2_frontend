@@ -20,7 +20,7 @@ class SpokeNotificationHandler {
 
   static Future<void> foregroundMessageHandler(RemoteMessage message) async {
     print("Handling a foreground message for doctor: ${message.data}");
-    if(message.data['type']=='EmergencyStatus'){
+    if (message.data['type'] == 'EmergencyStatus') {
       await mainCubit.getStatus();
     }
     if (message.data['type'] == 'Emergency') {
@@ -33,7 +33,7 @@ class SpokeNotificationHandler {
         //     style: Theme.of(context)
         //         .textTheme
         //         .caption
-        //         .copyWith(color: Colors.white, fontSize :6.sp),
+        //         .copyWith(color: Colors.white, fontSize :8.sp),
         //   ),
         // ));
         await mainCubit.acceptRequest(message.data["_patientID"]);
@@ -46,11 +46,12 @@ class SpokeNotificationHandler {
         //     style: Theme.of(context)
         //         .textTheme
         //         .caption
-        //         .copyWith(color: Colors.white, fontSize :6.sp),
+        //         .copyWith(color: Colors.white, fontSize :8.sp),
         //   ),
         // ));
         mainCubit.driverAccepted(Location.fromJson(message.data["location"]));
-        await mainCubit.fetchEmergencyDetails(patientID:message.data["patientID"]);
+        await mainCubit.fetchEmergencyDetails(
+            patientID: message.data["patientID"]);
       }
     }
   }
@@ -60,7 +61,7 @@ class SpokeNotificationHandler {
       print("Not supposed to be here");
       await mainCubit.acceptRequest(message.data["_patientID"]);
     }
-    if(message.data['type']=='EmergencyStatus'){
+    if (message.data['type'] == 'EmergencyStatus') {
       await mainCubit.getStatus();
     }
   }
