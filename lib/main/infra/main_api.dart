@@ -649,6 +649,27 @@ class MainAPI extends IMainAPI {
     return Result.value(json["message"]);
   }
 
+
+@override
+Future<Result<String>> caseClose(Token token, String patientID) async {
+
+ String endpoint = baseUrl + "/treatment/spoke/caseClose";
+    var header = {
+      "Content-Type": "application/json",
+      "Authorization": token.value
+    };
+    var response = await _client.post(Uri.parse(endpoint), headers: header, body: jsonEncode({patientID: patientID}));
+    if (response.statusCode != 200) {
+      Map map = jsonDecode(response.body);
+      //print(transformError(map));
+      return Result.error(transformError(map));
+    }
+    if (jsonDecode(response.body)["message"] == null )
+      return Result.error("error");
+    return Result.value(jsonDecode(response.body)["message"]);
+   
+}
+
   @override
   Future<Result<List<Message>>> getAllMessages(
       Token token, String patientID) async {

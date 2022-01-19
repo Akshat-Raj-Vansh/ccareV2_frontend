@@ -425,7 +425,7 @@ class _PatientInfoState extends State<PatientInfo> {
               MaterialPageRoute(
                 builder: (context) => PatientReportScreen(
                   mainCubit: mainCubit,
-                  user: UserType.DOCTOR,
+                  user: UserType.SPOKE,
                   patientDetails: eDetails.patientDetails,
                 ),
               ));

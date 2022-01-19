@@ -216,12 +216,12 @@ class MainCubit extends Cubit<MainState> {
   }
 
   editPatientReport() async {
-    _startLoading("PatientReport - Edit");
+    // _startLoading("PatientReport - Edit");
     emit(EditPatientReport("editing patient report"));
   }
 
   imageClicked(XFile image, String type) async {
-    _startLoading("Image Clicked");
+    // _startLoading("Image Clicked");
     final token = await localStore.fetch();
     final result = await this.api.uploadImage(token, image, type);
     if (result.isError) {
@@ -229,6 +229,17 @@ class MainCubit extends Cubit<MainState> {
       return;
     }
     emit(ImageCaptured("Image Clicked"));
+  }
+
+  caseClose(String patientID)async{
+    final token= await localStore.fetch();
+    final result = await this.api.caseClose(token, patientID);
+    if(result.isError) {
+      emit(ErrorState(result.asError!.error as String));
+      return;
+    }
+    emit(CaseClosedState(result.asValue!.value));
+
   }
 
   fetchImage(String patientID) async {
@@ -243,12 +254,12 @@ class MainCubit extends Cubit<MainState> {
   }
 
   viewPatientReport() async {
-    _startLoading("PatientReport - View/Save");
+    // _startLoading("PatientReport - View/Save");
     emit(ViewPatientReport("viewing patient report"));
   }
 
   savePatientReport(treat.TreatmentReport report) async {
-    _startLoading("PatientReportSaved");
+    // _startLoading("PatientReportSaved");
     final token = await localStore.fetch();
     final result = await api.savePatientReport(Token(token.value), report);
     //print("Result ${result.asValue!.value}");
@@ -277,17 +288,17 @@ class MainCubit extends Cubit<MainState> {
   }
 
   editPatientExamReport() async {
-    _startLoading("PatientReportEdited");
+    // _startLoading("PatientReportEdited");
     emit(EditPatientExamReport("editing patient report"));
   }
 
   viewPatientExamReport() async {
-    _startLoading("PatientReportViewed");
+    // _startLoading("PatientReportViewed");
     emit(ViewPatientExamReport("viewing patient report"));
   }
 
   savePatientExamReport(exam.Examination ereport) async {
-    _startLoading("PatientReportSaved");
+    // _startLoading("PatientReportSaved");
     final token = await localStore.fetch();
     final result = await api.savePatientExamReport(Token(token.value), ereport);
     //print("Result ${result.asValue!.value}");
@@ -303,7 +314,7 @@ class MainCubit extends Cubit<MainState> {
   }
 
   editExaminationReport(bool val) async {
-    _startLoading("Edit Examination Report");
+    // _startLoading("Edit Examination Report");
     emit(EditExaminationReport(!val));
   }
 
@@ -418,7 +429,7 @@ class MainCubit extends Cubit<MainState> {
   }
 
   generateNewReport() async {
-    _startLoading("Updating Status");
+    // _startLoading("Updating Status");
     final token = await localStore.fetch();
     final result = await api.newReport(token);
     if (result.isError) {

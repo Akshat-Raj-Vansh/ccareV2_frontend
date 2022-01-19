@@ -116,6 +116,12 @@ class EditPatientReport extends MainState {
   List<Object> get props => [this.msg];
 }
 
+class CaseClosedState extends MainState{
+  final String msg;
+  CaseClosedState(this.msg);
+  @override
+  List<Object> get props => [this.msg];
+}
 class ImageCaptured extends MainState {
   final String msg;
   ImageCaptured(this.msg);

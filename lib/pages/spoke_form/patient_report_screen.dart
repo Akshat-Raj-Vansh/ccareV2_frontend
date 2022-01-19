@@ -92,6 +92,8 @@ class _PatientReportScreenState extends State<PatientReportScreen>
 
     setState(() {
       _image = image;
+       clickImage = true;
+      print(_image.path);
       // widget.mainCubit.imageClicked(image);
     });
   }
@@ -102,6 +104,8 @@ class _PatientReportScreenState extends State<PatientReportScreen>
 
     setState(() {
       _image = image;
+       clickImage = true;
+      print(_image.path);
       // widget.mainCubit.imageClicked(image);
     });
   }
@@ -183,7 +187,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
           //print("Patient Report Fetched state Called");
           log('LOG > patient_report_screen.dart > 179 > state: ${state.toString()}');
           editedReport = state.mixReport.currentTreatment;
-          log('LOG > patient_report_screen.dart > 182 > editedReport: ${editedReport}');
+          print('LOG > patient_report_screen.dart > 182 > editedReport: ${editedReport.ecg.ecg_time.toString() == "nill" }');
           if (state.mixReport.previousTreatment != null)
             previousReport = state.mixReport.previousTreatment;
           //print(editedReport.toString());
@@ -321,7 +325,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
         ),
       ),
       resizeToAvoidBottomInset: false,
-      body: noReport && widget.user != UserType.PATIENT
+      body: noReport && widget.user == UserType.PATIENT
           ? Center(child: Text('No Report Found'))
           : _buildFormBody(),
       floatingActionButton: widget.user != UserType.PATIENT
@@ -606,10 +610,10 @@ class _PatientReportScreenState extends State<PatientReportScreen>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('ECG Time: '),
-                Text(treatmentReport.ecg.ecg_time == "nill"
-                    ? "nill"
+                Text(treatmentReport.ecg.ecg_time.toString() == "nill"
+                    ?"nill"
                     : DateTime.fromMillisecondsSinceEpoch(
-                            int.parse(editedReport.ecg.ecg_time))
+                            int.parse(editedReport.ecg.ecg_time=="nill"? "0":editedReport.ecg.ecg_time))
                         .toString()),
               ],
             ),

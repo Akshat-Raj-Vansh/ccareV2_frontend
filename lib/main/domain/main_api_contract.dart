@@ -34,6 +34,7 @@ abstract class IMainAPI {
   Future<Result<List<Message>>> getAllMessages(Token token, String patientID);
 
   // Spoke Side APIs
+  Future<Result<String>> caseClose(Token token, String patientID);
   Future<Result<loc.Location>> acceptPatientbySpoke(Token token, Token patient);
   Future<Result<List<PatientListInfo>>> getAllPatientRequests(Token token);
   Future<Result<List<PatientListInfo>>> getAllPatients(Token token);
