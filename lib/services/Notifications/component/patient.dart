@@ -16,11 +16,11 @@ class PatientNotificationHandler {
   }
 
   static Future<void> backgroundMessageHandler(RemoteMessage message) async {
-    print("Handling a background message for patient: ${message.data}");
+    //print("Handling a background message for patient: ${message.data}");
   }
 
   static Future<void> foregroundMessageHandler(RemoteMessage message) async {
-    print("Handling a foreground message for patient: ${message.data}");
+    //print("Handling a foreground message for patient: ${message.data}");
     if (message.data['type'] == 'Emergency') {
       if (message.data["user"] == "DOCTOR") {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(

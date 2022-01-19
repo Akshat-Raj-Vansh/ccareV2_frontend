@@ -201,8 +201,8 @@ class MainAPI extends IMainAPI {
       "Authorization": token.value
     };
     var response = await _client.get(Uri.parse(endpoint), headers: header);
-    print(response.statusCode);
-    print(response.body);
+    //print(response.statusCode);
+    //print(response.body);
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
       //print(transformError(map));
@@ -223,8 +223,7 @@ class MainAPI extends IMainAPI {
     //print(
     // 'LOG > main_api.dart > fetchPatientReport > 202 > response.statusCode: ${response.statusCode}');
     //print(
-    //     'LOG > main_api.dart > fetchPatientReport > 203 > response.body: ${response.body}');
-
+    // 'LOG > main_api.dart > fetchPatientReport > 203 > response.body: ${response.body}');
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
       //print(transformError(map));
@@ -461,6 +460,8 @@ class MainAPI extends IMainAPI {
       "Authorization": token.value
     };
     var response = await _client.get(Uri.parse(endpoint), headers: header);
+    ////print the name of the function
+    //print("getAllPatientRequests");
     //print(response.body);
     //print(response.statusCode);
     if (response.statusCode != 200) {
@@ -637,10 +638,11 @@ class MainAPI extends IMainAPI {
     };
     var response = await _client.post(Uri.parse(endpoint),
         headers: header, body: jsonEncode({}));
-
+    //print('@main_api.dart/newReport response status: ${response.statusCode}');
+    //print('@main_api.dart/newReport response body: ${response.body}');
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
-
+      //print(transformError(map));
       return Result.error(transformError(map));
     }
     dynamic json = jsonDecode(response.body);
@@ -656,7 +658,10 @@ class MainAPI extends IMainAPI {
       "Authorization": token.value
     };
     var response = await _client.get(Uri.parse(endpoint), headers: header);
-
+    //print(
+    // '@main_api.dart/getAllMessages response status: ${response.statusCode}');
+    //print('@main_api.dart/getAllMessages response body: ${response.body}');
+    // //print(response.statusCode);
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
       //print(transformError(map));
@@ -666,7 +671,7 @@ class MainAPI extends IMainAPI {
         jsonDecode(response.body)["messages"].length == 0)
       return Result.error("error");
     dynamic json = jsonDecode(response.body)["messages"] as List;
-
+    //print(json.last);
     return Result.value(json
         .map<Message>((message) => Message.fromJson(jsonEncode(message)))
         .toList());

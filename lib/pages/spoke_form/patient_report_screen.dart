@@ -180,7 +180,6 @@ class _PatientReportScreenState extends State<PatientReportScreen>
       cubit: widget.mainCubit,
       builder: (_, state) {
         if (state is PatientReportFetched) {
-          //  _hideLoader();
           //print("Patient Report Fetched state Called");
           log('LOG > patient_report_screen.dart > 179 > state: ${state.toString()}');
           editedReport = state.mixReport.currentTreatment;
@@ -203,7 +202,6 @@ class _PatientReportScreenState extends State<PatientReportScreen>
           _image = state.image;
         }
         if (state is NoReportState) {
-          //_hideLoader();
           //print('No Report State Called');
           log('LOG > patient_report_screen.dart > 201 > state: ${state.toString()}');
           currentState = state;

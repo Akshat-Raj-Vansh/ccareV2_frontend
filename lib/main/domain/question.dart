@@ -10,7 +10,7 @@ class QuestionTree {
   final QuestionType question_type;
   final NodeType node_type;
   bool status = false;
-  List<String> answers = [];
+  List<String> answers=[];
   QuestionTree({
     required this.question,
     required this.parent,
@@ -103,5 +103,5 @@ class QuestionTree {
   }
 }
 
-enum QuestionType { BOOLEAN, MCQ, SELECTION, _ }
+enum QuestionType { BOOLEAN, MCQ, SELECTION ,_}
 enum NodeType { QUESTION, RESULT }

@@ -14,7 +14,11 @@ void main() async {
   var startPage = await CompositionRoot.start();
   await Firebase.initializeApp();
   await NotificationController.createChannels();
+<<<<<<< HEAD
   print('FCM Token: ' + await NotificationController.getFCMToken);
+=======
+  //print(await NotificationController.getFCMToken);
+>>>>>>> 4722e7c9f6449b92ab79ffc076bd511f5d8e8448
   runApp(MyApp(startPage));
 }
 

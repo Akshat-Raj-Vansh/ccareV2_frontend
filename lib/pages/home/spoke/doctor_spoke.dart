@@ -38,7 +38,7 @@ class HomeScreenSpoke extends StatefulWidget {
 }
 
 class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
-  dynamic currentState = NormalState;
+  dynamic currentState;
   String token;
   List<PatientListInfo> _patients = [];
   List<PatientListInfo> _requests = [];
@@ -142,19 +142,21 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
           //   }
           // }
 
-          if (state is NormalState) {
-            //   // _hideLoader();
-            currentState = NormalState;
-          }
+          // if (state is NormalState) {
+          //     // _hideLoader();
+          //   currentState = NormalState;
+          // }
           if (currentState == null)
-            return Center(child: CircularProgressIndicator());
+            return Container(
+                color: Colors.white,
+                child: Center(child: CircularProgressIndicator()));
           return _buildUI(context);
         },
         listener: (context, state) async {
           if (state is LoadingState) {
             //print("Loading State Called Doctor Spoke");
             log('LOG > doctor_spoke.dart > 197 > state: ${state.toString()}');
-            //      _showLoader();
+            _showLoader();
           } else if (state is TokenLoadedState) {
             token = state.token;
           }
@@ -186,7 +188,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
           //       time: DateTime.now());
           //}
           else if (state is AcceptState) {
-            // _hideLoader();
+            _hideLoader();
             log('LOG > doctor_spoke.dart > 237 > state: ${state.toString()}',
                 time: DateTime.now());
             await showDialog(
@@ -228,14 +230,16 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
                 ) ??
                 false;
           } else if (state is PatientAccepted) {
-            // _hideLoader();
+            _hideLoader();
             // _emergency = true;
             log('LOG > doctor_spoke.dart > 280 > state: ${state.toString()}',
                 time: DateTime.now());
+            CubitProvider.of<MainCubit>(context).getAllPatients();
+            CubitProvider.of<MainCubit>(context).getAllPatientRequests();
             setState(() {});
             //   CubitProvider.of<MainCubit>(context).fetchEmergencyDetails();
           } else if (state is ErrorState) {
-            //   // _hideLoader();
+            _hideLoader();
             // _emergency = true;
             //print(state.error);
           }
@@ -321,38 +325,37 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
                 await showDialog(
                       context: context,
                       builder: (context) => AlertDialog(
-                        title: Text(
-                          'Are you sure?',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 16.sp,
-                          ),
-                        ),
-                        content: Text(
-                          'Do you want to logout?',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w300,
-                            fontSize: 12.sp,
-                          ),
-                        ),
-                        actions: [
-                          TextButton(
-                            onPressed: () => Navigator.of(context).pop(false),
-                            child: Text(
-                              'Cancel',
+                          title: Text(
+                            'Are you sure?',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16.sp,
                             ),
                           ),
-                          TextButton(
-                            onPressed: () async {
-                              widget.homePageAdapter
-                                  .onLogout(context, widget.userCubit);
-                            },
-                            child: Text(
-                              'Yes',
+                          content: Text(
+                            'Do you want to logout?',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w300,
+                              fontSize: 12.sp,
                             ),
                           ),
-                        ],
-                      ),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.of(context).pop(false),
+                              child: Text(
+                                'Cancel',
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: () async {
+                                widget.homePageAdapter
+                                    .onLogout(context, widget.userCubit);
+                              },
+                              child: Text(
+                                'Yes',
+                              ),
+                            ),
+                          ]),
                     ) ??
                     false;
               },
@@ -452,8 +455,13 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
                     itemCount: _requests.length,
                     itemBuilder: (BuildContext context, int index) {
                       return InkWell(
-                        onTap: () => CubitProvider.of<MainCubit>(context)
-                            .acceptPatientBySpoke(_requests[index].id),
+                        onTap: () {
+                          CubitProvider.of<MainCubit>(context)
+                              .acceptPatientBySpoke(_requests[index].id);
+                          setState(() {
+                            _requests.removeAt(index);
+                          });
+                        },
                         child: ListTile(
                             leading: Icon(Icons.person),
                             title: Text(
