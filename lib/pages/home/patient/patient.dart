@@ -143,21 +143,22 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
         title: Text('CardioCare - Patient'),
         backgroundColor: kPrimaryColor,
         actions: [
-          IconButton(
-            onPressed: () async {
-              setState(() {
-                display.forEach((element) {
-                  element.answers = [];
-                  element.status = false;
+          if (!_emergency)
+            IconButton(
+              onPressed: () async {
+                setState(() {
+                  display.forEach((element) {
+                    element.answers = [];
+                    element.status = false;
+                  });
+                  display = [];
+                  answers = [];
+                  display.add(_questions
+                      .firstWhere((element) => element.parent == "root"));
                 });
-                display = [];
-                answers = [];
-                display.add(_questions
-                    .firstWhere((element) => element.parent == "root"));
-              });
-            },
-            icon: Icon(FontAwesomeIcons.recycle),
-          ),
+              },
+              icon: Icon(FontAwesomeIcons.recycle),
+            ),
           IconButton(
             onPressed: () async {
               await showDialog(
@@ -316,15 +317,17 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
             //     _questions.firstWhere((element) => element.parent == "root"));
             //   //print(display[0].status);
             if (_assessAgain) {
-              var cubit = CubitProvider.of<MainCubit>(context);
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) =>
-                      SelfAssessment(_questions, cubit, "homescreen"),
-                ),
-              );
+              CubitProvider.of<MainCubit>(context).selfAssessment();
             }
+          } else if (state is SelfAssessmentState) {
+            var cubit = CubitProvider.of<MainCubit>(context);
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                    SelfAssessment(state.questions, cubit, "homescreen"),
+              ),
+            );
           }
         },
       ),
@@ -728,7 +731,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
               borderRadius: BorderRadius.circular(5),
               border: Border.all(color: kPrimaryColor)),
           child: Text(
-            "View your Treatment Report History",
+            "View your Treatment Report",
             style: TextStyle(color: kPrimaryColor, fontSize: 12.sp),
             textAlign: TextAlign.center,
           ),

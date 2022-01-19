@@ -104,6 +104,7 @@ class _PatientReportHistoryScreenState
         if (state is PatientReportHistoryFetched) {
           //print("Patient TreatmentReport History Fetched state Called");
           reports = state.reports;
+          reports = reports.reversed.toList();
           // _hideLoader();
         }
 
@@ -146,7 +147,12 @@ class _PatientReportHistoryScreenState
                   contentsAlign: ContentsAlign.basic,
                   oppositeContentsBuilder: (context, index) => Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text('Medical History'),
+                    child: Text(
+                        DateTime.fromMillisecondsSinceEpoch(
+                                int.parse(reports[index].report_time))
+                            .toString()
+                            .split(' ')[0],
+                        style: TextStyle(fontSize: 12.sp)),
                   ),
                   contentsBuilder: (context, index) => InkWell(
                     onTap: () {
@@ -161,41 +167,31 @@ class _PatientReportHistoryScreenState
                     child: Card(
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Text(DateTime.fromMillisecondsSinceEpoch(
-                                int.parse(reports[index].report_time))
-                            .toString()),
+                        child: Text(
+                          DateTime.fromMillisecondsSinceEpoch(
+                                  int.parse(reports[index].report_time))
+                              .toString()
+                              .split(' ')[1],
+                          style: TextStyle(fontSize: 12.sp),
+                        ),
                       ),
                     ),
                   ),
-                  connectorStyleBuilder: (context, index) =>
-                      ConnectorStyle.solidLine,
-                  indicatorStyleBuilder: (context, index) => IndicatorStyle.dot,
+                  connectorStyleBuilder: (context, index) {
+                    if (index == 0)
+                      return ConnectorStyle.solidLine;
+                    else
+                      return ConnectorStyle.dashedLine;
+                  },
+                  indicatorStyleBuilder: (context, index) {
+                    if (index == 0)
+                      return IndicatorStyle.dot;
+                    else
+                      return IndicatorStyle.outlined;
+                  },
                   itemCount: reports.length,
                 ),
-              )
-                  // ListView.builder(
-                  //   itemCount: reports.length,
-                  //   itemBuilder: (context, index) {
-                  //     return GestureDetector(
-                  //       onTap: () {
-                  //         //FIXME: Navigate to the current report page
-                  //         Navigator.push(
-                  //             context,
-                  //             MaterialPageRoute(
-                  //               builder: (context) => ReportOverview(
-                  //                 reports[index],
-                  //               ),
-                  //             ));
-                  //       },
-                  //       child: Text(
-                  //         DateTime.fromMillisecondsSinceEpoch(
-                  //                 int.parse(reports[index].report_time))
-                  //             .toString(),
-                  //       ),
-                  //     );
-                  //   },
-                  // ),
-                  ),
+              )),
               // _buildReportDetails(),
               // _buildReport(),
               SizedBox(height: SizeConfig.screenHeight * 0.02),

@@ -41,7 +41,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
   final ImagePicker _imagePicker = ImagePicker();
   final List<Tab> _myTabs = [
     Tab(
-      child: Text('Patient Details'),
+      child: Text('Overview'),
     ),
     Tab(
       child: Text('ECG Report'),
@@ -328,49 +328,47 @@ class _PatientReportScreenState extends State<PatientReportScreen>
       body: noReport && widget.user == UserType.PATIENT
           ? Center(child: Text('No Report Found'))
           : _buildFormBody(),
-      floatingActionButton: widget.user != UserType.PATIENT
-          ? SpeedDial(
-              animatedIcon: AnimatedIcons.menu_close,
-              children: [
-                if (_currentIndex != 5)
-                  SpeedDialChild(
-                      label: 'Examination Report',
-                      onTap: () {
-                        _tabController.animateTo(5);
-                      }),
-                if (_currentIndex != 4)
-                  SpeedDialChild(
-                      label: 'Symptoms',
-                      onTap: () {
-                        _tabController.animateTo(4);
-                      }),
-                if (_currentIndex != 3)
-                  SpeedDialChild(
-                      label: 'Chest Report',
-                      onTap: () {
-                        _tabController.animateTo(3);
-                      }),
-                if (_currentIndex != 2)
-                  SpeedDialChild(
-                      label: 'Medical History',
-                      onTap: () {
-                        _tabController.animateTo(2);
-                      }),
-                if (_currentIndex != 1)
-                  SpeedDialChild(
-                      label: 'ECG Report',
-                      onTap: () {
-                        _tabController.animateTo(1);
-                      }),
-                if (_currentIndex != 0)
-                  SpeedDialChild(
-                      label: 'Patient Details',
-                      onTap: () {
-                        _tabController.animateTo(0);
-                      }),
-              ],
-            )
-          : null,
+      floatingActionButton: SpeedDial(
+        animatedIcon: AnimatedIcons.menu_close,
+        children: [
+          if (_currentIndex != 5)
+            SpeedDialChild(
+                label: 'Examination Report',
+                onTap: () {
+                  _tabController.animateTo(5);
+                }),
+          if (_currentIndex != 4)
+            SpeedDialChild(
+                label: 'Symptoms',
+                onTap: () {
+                  _tabController.animateTo(4);
+                }),
+          if (_currentIndex != 3)
+            SpeedDialChild(
+                label: 'Chest Report',
+                onTap: () {
+                  _tabController.animateTo(3);
+                }),
+          if (_currentIndex != 2)
+            SpeedDialChild(
+                label: 'Medical History',
+                onTap: () {
+                  _tabController.animateTo(2);
+                }),
+          if (_currentIndex != 1)
+            SpeedDialChild(
+                label: 'ECG Report',
+                onTap: () {
+                  _tabController.animateTo(1);
+                }),
+          if (_currentIndex != 0)
+            SpeedDialChild(
+                label: 'Overview',
+                onTap: () {
+                  _tabController.animateTo(0);
+                }),
+        ],
+      ),
     );
   }
 
@@ -441,9 +439,21 @@ class _PatientReportScreenState extends State<PatientReportScreen>
         child: Column(
           children: [
             // Patient Arrival Detail and Personal Information
-            _buildPatientDetails(),
+
+            SizedBox(height: 2.h),
+            Container(
+              width: SizeConfig.screenWidth,
+              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+              child: Text(
+                "Report Edit Details",
+                textAlign: TextAlign.left,
+                style: TextStyle(fontSize: 14.sp, color: kPrimaryColor),
+              ),
+            ),
+            _buildReportDetails(),
             // Report Edit details
-            _buildEditDetails(),
+            //  _buildEditDetails(),
             SizedBox(height: 2.h),
 
             // Patient Medical Report
@@ -514,21 +524,25 @@ class _PatientReportScreenState extends State<PatientReportScreen>
           ],
         ),
       );
-  _buildPatientDetails() => Container(
+
+  _buildReportDetails() => Container(
         decoration: BoxDecoration(
           color: Colors.green[100],
           borderRadius: BorderRadius.circular(20),
         ),
         width: SizeConfig.screenWidth,
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         child: Column(
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("Patient Name: "),
-                Text(widget.patientDetails.name),
+                Text("Date: "),
+                Text(DateTime.fromMillisecondsSinceEpoch(
+                        int.parse(editedReport.report_time))
+                    .toString()
+                    .split(' ')[0]),
               ],
             ),
             SizedBox(
@@ -537,60 +551,11 @@ class _PatientReportScreenState extends State<PatientReportScreen>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("Contact Number: "),
-                Text(widget.patientDetails.contactNumber,
-                    textAlign: TextAlign.right),
-              ],
-            ),
-            SizedBox(
-              height: 1.h,
-            ),
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //   children: [
-            //     Text("Address: "),
-            //     Text(widget.patientDetails.address, textAlign: TextAlign.right),
-            //   ],
-            // ),
-            // SizedBox(
-            //   height: 1.h,
-            // ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text("Arrived At Hospital: "),
-                Text(DateTime.now().toString(), textAlign: TextAlign.right),
-              ],
-            ),
-          ],
-        ),
-      );
-  _buildEditDetails() => Container(
-        decoration: BoxDecoration(
-          color: Colors.red[100],
-          borderRadius: BorderRadius.circular(20),
-        ),
-        width: SizeConfig.screenWidth,
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text("Last Edited: "),
-                Text(DateTime.now().toString()),
-              ],
-            ),
-            SizedBox(
-              height: 1.h,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text("Edited By: "),
-                Text("Dr. Doom\nApollo Medical Hospital",
-                    textAlign: TextAlign.right),
+                Text("Time: "),
+                Text(DateTime.fromMillisecondsSinceEpoch(
+                        int.parse(editedReport.report_time))
+                    .toString()
+                    .split(' ')[1]),
               ],
             ),
           ],
