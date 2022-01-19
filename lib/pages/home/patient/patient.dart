@@ -84,8 +84,8 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
   @override
   void initState() {
     super.initState();
-    display.remove(true);
-    answers.remove(true);
+    // display.remove(true);
+    // answers.remove(true);
     CubitProvider.of<MainCubit>(context).getStatus();
     CubitProvider.of<MainCubit>(context).fetchEmergencyDetails();
     CubitProvider.of<MainCubit>(context).getQuestions();
@@ -150,10 +150,10 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
           IconButton(
             onPressed: () async {
               setState(() {
-                // display.forEach((element) {
-                //   element.answers = [];
-                //   element.status = false;
-                // });
+                display.forEach((element) {
+                  element.answers = [];
+                  element.status = false;
+                });
                 display = [];
                 answers = [];
                 display.add(_questions
