@@ -206,7 +206,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
           log('LOG > patient_report_screen.dart > 201 > state: ${state.toString()}');
           currentState = state;
           noReport = true;
-          editReport = true;
+          editReport = false;
         }
         if (currentState == null) {
           return Container(
@@ -222,6 +222,24 @@ class _PatientReportScreenState extends State<PatientReportScreen>
         return buildUI();
       },
       listener: (context, state) {
+        if (state is PatientReportFetched) {
+          //print("Patient Report Fetched state Called");
+          log('LOG > patient_report_screen.dart > 179 > state: ${state.toString()}');
+          editedReport = state.mixReport.currentTreatment;
+          log('LOG > patient_report_screen.dart > 182 > editedReport: ${editedReport}');
+          if (state.mixReport.previousTreatment != null)
+            previousReport = state.mixReport.previousTreatment;
+          //print(editedReport.toString());
+          if (state.mixReport.previousTreatment != null) {
+            previousReport = state.mixReport.previousTreatment;
+            previousReportExists = true;
+          }
+          noReport = false;
+          currentState = state;
+          if (editedReport.ecg.ecg_file_id != null) {
+            ecgUploaded = true;
+          }
+        }
         if (state is EditPatientReport) {
           // _hideLoader();
           editReport = true;
@@ -303,9 +321,10 @@ class _PatientReportScreenState extends State<PatientReportScreen>
         ),
       ),
       resizeToAvoidBottomInset: false,
-      body:
-          noReport ? Center(child: Text('No Report Found')) : _buildFormBody(),
-      floatingActionButton: widget.user == UserType.DOCTOR
+      body: noReport && widget.user != UserType.PATIENT
+          ? Center(child: Text('No Report Found'))
+          : _buildFormBody(),
+      floatingActionButton: widget.user != UserType.PATIENT
           ? SpeedDial(
               animatedIcon: AnimatedIcons.menu_close,
               children: [

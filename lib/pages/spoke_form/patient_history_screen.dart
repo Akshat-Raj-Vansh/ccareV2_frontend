@@ -31,6 +31,7 @@ class _PatientReportHistoryScreenState
   @override
   void initState() {
     super.initState();
+    print('Patient Report History Init State');
     _fetchReport();
   }
 

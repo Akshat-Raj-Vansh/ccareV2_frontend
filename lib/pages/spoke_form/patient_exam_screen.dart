@@ -201,7 +201,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
           IconButton(
             onPressed: () async {
               //print('Refresh button pressed');
-              //  _fetchReport();
+              _fetchReport();
             },
             icon: Icon(Icons.refresh),
           ),

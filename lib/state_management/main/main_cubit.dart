@@ -189,7 +189,7 @@ class MainCubit extends Cubit<MainState> {
   }
 
   fetchPatientReportHistory() async {
-    _startLoading("PatientReportHistoryFetch");
+    // _startLoading("PatientReportHistoryFetch");
     final token = await localStore.fetch();
     final result = await api.fetchPatientReportHistory(Token(token.value));
     if (result.isError) {
@@ -261,7 +261,7 @@ class MainCubit extends Cubit<MainState> {
   }
 
   fetchPatientExamReport() async {
-    _startLoading("PatientReportFetch");
+//    _startLoading("PatientReportFetch");
     final token = await localStore.fetch();
     final result = await api.fetchPatientExamReport(Token(token.value));
     log('LOG > main_cubit.dart > fetchPatientExamReport > 226 > result.asValue!.value: ${result.asValue!.value}');

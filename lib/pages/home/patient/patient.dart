@@ -682,6 +682,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
 
   _buildPatientReportHistoryButton() => InkWell(
         onTap: () async {
+          print('Patient Report History');
           Navigator.push(
             context,
             MaterialPageRoute(
