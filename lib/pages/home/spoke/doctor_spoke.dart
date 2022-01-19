@@ -235,7 +235,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
             log('LOG > doctor_spoke.dart > 280 > state: ${state.toString()}',
                 time: DateTime.now());
                  CubitProvider.of<MainCubit>(context).getAllPatients();
-    CubitProvider.of<MainCubit>(context).getAllPatientRequests();
+                 CubitProvider.of<MainCubit>(context).getAllPatientRequests();
               setState(() {
                 
    
