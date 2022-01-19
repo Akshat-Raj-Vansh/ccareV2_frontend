@@ -161,8 +161,8 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
             print(token);
           }
           if (currentState == null) {
-            return Center(
-              child: Container(color: Colors.white, child: Text('Loading')),
+            return  Center(
+              child: CircularProgressIndicator()
             );
           }
 
@@ -221,6 +221,9 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
                         onPressed: () async {
                           // make api for accept patient by Hub
                           widget.mainCubit.acceptPatientByHub(state.patientID);
+                          setState(() {
+                           
+                          });
                         },
                         child: Text(
                           'Yes',
