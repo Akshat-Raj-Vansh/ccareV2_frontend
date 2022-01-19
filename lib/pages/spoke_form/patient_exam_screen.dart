@@ -215,8 +215,9 @@ class _PatientExamScreenState extends State<PatientExamScreen>
         ),
       ),
       resizeToAvoidBottomInset: false,
-      body:
-          noReport ? Center(child: Text('No Report Found')) : _buildFormBody(),
+      body: noReport && widget.user == UserType.PATIENT
+          ? Center(child: Text('No Report Found'))
+          : _buildFormBody(),
     );
   }
 
