@@ -317,15 +317,17 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
             //     _questions.firstWhere((element) => element.parent == "root"));
             //   //print(display[0].status);
             if (_assessAgain) {
-              var cubit = CubitProvider.of<MainCubit>(context);
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) =>
-                      SelfAssessment(_questions, cubit, "homescreen"),
-                ),
-              );
+              CubitProvider.of<MainCubit>(context).selfAssessment();
             }
+          } else if (state is SelfAssessmentState) {
+            var cubit = CubitProvider.of<MainCubit>(context);
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                    SelfAssessment(state.questions, cubit, "homescreen"),
+              ),
+            );
           }
         },
       ),

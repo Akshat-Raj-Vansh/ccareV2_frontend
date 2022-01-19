@@ -104,6 +104,7 @@ class _PatientReportHistoryScreenState
         if (state is PatientReportHistoryFetched) {
           //print("Patient TreatmentReport History Fetched state Called");
           reports = state.reports;
+          reports = reports.reversed.toList();
           // _hideLoader();
         }
 

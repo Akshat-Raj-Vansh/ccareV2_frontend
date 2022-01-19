@@ -74,6 +74,13 @@ class QuestionnaireState extends MainState {
   List<Object> get props => [this.questions];
 }
 
+class SelfAssessmentState extends MainState {
+  final List<QuestionTree> questions;
+  SelfAssessmentState(this.questions);
+  @override
+  List<Object> get props => [this.questions];
+}
+
 class PatientReportHistoryFetched extends MainState {
   final List<treat.TreatmentReport> reports;
   PatientReportHistoryFetched(this.reports);

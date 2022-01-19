@@ -31,6 +31,19 @@ class MainCubit extends Cubit<MainState> {
     emit(QuestionnaireState(result.asValue!.value));
   }
 
+  selfAssessment() async {
+    //_startLoading("getQuestions");
+
+    final token = await localStore.fetch();
+    final result = await api.getAll(Token(token.value));
+
+    if (result.isError) {
+      emit(ErrorState(result.asError!.error as String));
+      return;
+    }
+    emit(SelfAssessmentState(result.asValue!.value));
+  }
+
   loadMessages(String patientID) async {
     // _startLoading("loadMessages");
     final token = await localStore.fetch();
