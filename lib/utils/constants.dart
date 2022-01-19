@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'size_config.dart';
 
 import 'package:sizer/sizer.dart';
-const BASEURL = 'http://3.145.118.52:3000';
 
+const BASEURL = 'http://3.145.118.52:3000';
 
 const kPrimaryColor = Color(0XFF17AD75);
 const kPrimaryLightColor = Color(0XFF38CC8F);

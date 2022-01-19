@@ -28,7 +28,7 @@ class DriverNotificationHandler {
         //     style: Theme.of(context)
         //         .textTheme
         //         .caption
-        //         .copyWith(color: Colors.white, fontSize :6.sp),
+        //         .copyWith(color: Colors.white, fontSize :8.sp),
         //   ),
         // ));
 
@@ -43,12 +43,13 @@ class DriverNotificationHandler {
       //     style: Theme.of(context)
       //         .textTheme
       //         .caption
-      //         .copyWith(color: Colors.white, fontSize :6.sp),
+      //         .copyWith(color: Colors.white, fontSize :8.sp),
       //   ),
       // ));
-    
+
       mainCubit.doctorAccepted(Location.fromJson(message.data["location"]));
-      await mainCubit.fetchEmergencyDetails(patientID:message.data["patientID"]);
+      await mainCubit.fetchEmergencyDetails(
+          patientID: message.data["patientID"]);
     }
   }
 

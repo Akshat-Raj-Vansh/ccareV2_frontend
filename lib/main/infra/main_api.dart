@@ -220,8 +220,10 @@ class MainAPI extends IMainAPI {
       "Authorization": token.value
     };
     var response = await _client.get(Uri.parse(endpoint), headers: header);
-    log('LOG > main_api.dart > fetchPatientReport > 202 > response.statusCode: ${response.statusCode}');
-    log('LOG > main_api.dart > fetchPatientReport > 203 > response.body: ${response.body}');
+    print(
+        'LOG > main_api.dart > fetchPatientReport > 202 > response.statusCode: ${response.statusCode}');
+    print(
+        'LOG > main_api.dart > fetchPatientReport > 203 > response.body: ${response.body}');
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
       print(transformError(map));

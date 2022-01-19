@@ -29,6 +29,8 @@ class UserCubit extends Cubit<UserState> {
 
   verifyPhone(String phone) async {
     _startLoading();
+    print('INSIDE verifyPhone');
+    Future.delayed(Duration(milliseconds: 3));
     emit(PhoneVerificationState(phone));
   }
 

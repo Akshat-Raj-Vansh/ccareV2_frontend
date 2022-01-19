@@ -78,6 +78,7 @@ class _AuthPageState extends State<AuthPage> {
                   child: CubitConsumer<UserCubit, UserState>(
                     builder: (_, state) {
                       var cubit = CubitProvider.of<UserCubit>(context);
+
                       return _buildUI(context, cubit);
                     },
                     listener: (context, state) {
@@ -139,7 +140,7 @@ class _AuthPageState extends State<AuthPage> {
                             style: Theme.of(context)
                                 .textTheme
                                 .caption
-                                .copyWith(color: Colors.white, fontSize :6.sp),
+                                .copyWith(color: Colors.white, fontSize: 8.sp),
                           ),
                         ));
                       }
@@ -183,7 +184,7 @@ class _AuthPageState extends State<AuthPage> {
         style: Theme.of(context)
             .textTheme
             .caption
-            .copyWith(color: Colors.white, fontSize :6.sp),
+            .copyWith(color: Colors.white, fontSize: 8.sp),
       ),
     ));
   }
@@ -200,12 +201,12 @@ class _AuthPageState extends State<AuthPage> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height : 4.h),
+            SizedBox(height: 4.h),
             Text(
               "Welcome to CardioCare,\n Let’s take care of your heart!",
               textAlign: TextAlign.center,
             ),
-            SizedBox(height : 4.h),
+            SizedBox(height: 4.h),
             Image.asset(
               "assets/images/sp1e.png",
               height: getProportionateScreenHeight(45.h),
@@ -216,7 +217,7 @@ class _AuthPageState extends State<AuthPage> {
       );
 
   _buildUI(BuildContext context, UserCubit cubit) => Container(
-        height : 40.h + SizeConfig.bottomInsets,
+        height: 40.h + SizeConfig.bottomInsets,
         margin:
             EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
         width: MediaQuery.of(context).size.width,
