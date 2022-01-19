@@ -56,7 +56,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
 
   // Future<loc.Location> _getLocation() async {
   //   lloc.LocationData _locationData = await lloc.Location().getLocation();
-  //   print(_locationData.latitude.toString() +
+  //   //print(_locationData.latitude.toString() +
   //       "," +
   //       _locationData.longitude.toString());
   //   loc.Location _location = loc.Location(
@@ -90,7 +90,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
         style: Theme.of(context)
             .textTheme
             .caption
-            .copyWith(color: Colors.white, fontSize :12.sp),
+            .copyWith(color: Colors.white, fontSize: 12.sp),
       ),
     ));
   }
@@ -110,13 +110,13 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
             //  // _hideLoader();
             currentState = PatientsLoaded;
             _patients = state.patients;
-            print(_patients);
+            //print(_patients);
           }
           if (state is RequestsLoaded) {
             //  // _hideLoader();
             currentState = RequestsLoaded;
             _requests = state.req;
-            print(_requests);
+            //print(_requests);
           }
           // if (state is TokenLoadedState) {
           //   token = state.token;
@@ -152,7 +152,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
         },
         listener: (context, state) async {
           if (state is LoadingState) {
-            print("Loading State Called Doctor Spoke");
+            //print("Loading State Called Doctor Spoke");
             log('LOG > doctor_spoke.dart > 197 > state: ${state.toString()}');
             //      _showLoader();
           } else if (state is TokenLoadedState) {
@@ -196,14 +196,14 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
                       'Are you sure?',
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
-                        fontSize :16.sp,
+                        fontSize: 16.sp,
                       ),
                     ),
                     content: Text(
                       'Do you want to accept the patient?',
                       style: TextStyle(
                         fontWeight: FontWeight.w300,
-                        fontSize :12.sp,
+                        fontSize: 12.sp,
                       ),
                     ),
                     actions: [
@@ -232,21 +232,18 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
             // _emergency = true;
             log('LOG > doctor_spoke.dart > 280 > state: ${state.toString()}',
                 time: DateTime.now());
-              setState(() {
-                
-              });
+            setState(() {});
             //   CubitProvider.of<MainCubit>(context).fetchEmergencyDetails();
           } else if (state is ErrorState) {
             //   // _hideLoader();
             // _emergency = true;
-            print(state.error);
+            //print(state.error);
           }
           // else if (state is AllPatientsState) {
           //   log('LOG > doctor_spoke.dart > 284 > state: ${state.toString()}',
           //       time: DateTime.now());
           //   // _hideLoader();
           // }
-
         },
       ),
       drawer: Drawer(
@@ -263,7 +260,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
               ),
               child: Text(
                 'CardioCare  Spoke',
-                style: TextStyle(color: Colors.white, fontSize :32.sp),
+                style: TextStyle(color: Colors.white, fontSize: 32.sp),
               ),
             ),
             // ListTile(
@@ -328,14 +325,14 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
                           'Are you sure?',
                           style: TextStyle(
                             fontWeight: FontWeight.w600,
-                            fontSize :16.sp,
+                            fontSize: 16.sp,
                           ),
                         ),
                         content: Text(
                           'Do you want to logout?',
                           style: TextStyle(
                             fontWeight: FontWeight.w300,
-                            fontSize :12.sp,
+                            fontSize: 12.sp,
                           ),
                         ),
                         actions: [
@@ -379,7 +376,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
             child: Text(
               "Current Patients",
               textAlign: TextAlign.left,
-              style: TextStyle(fontSize :14.sp, color: kPrimaryColor),
+              style: TextStyle(fontSize: 14.sp, color: kPrimaryColor),
             ),
           ),
           _patients.length != 0
@@ -411,8 +408,8 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
                             leading: Icon(Icons.person),
                             title: Text(
                               _patients[index].name,
-                              style:
-                                  TextStyle(color: Colors.green, fontSize :12.sp),
+                              style: TextStyle(
+                                  color: Colors.green, fontSize: 12.sp),
                             ),
                             trailing: Text(_patients[index].gender.toString() +
                                 '   ' +
@@ -437,7 +434,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
             child: Text(
               "Current Requests",
               textAlign: TextAlign.left,
-              style: TextStyle(fontSize :14.sp, color: kPrimaryColor),
+              style: TextStyle(fontSize: 14.sp, color: kPrimaryColor),
             ),
           ),
           _requests.length != 0
@@ -461,8 +458,8 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
                             leading: Icon(Icons.person),
                             title: Text(
                               _requests[index].name,
-                              style:
-                                  TextStyle(color: Colors.green, fontSize :12.sp),
+                              style: TextStyle(
+                                  color: Colors.green, fontSize: 12.sp),
                             ),
                             trailing: Text(_requests[index].age.toString())),
                       );

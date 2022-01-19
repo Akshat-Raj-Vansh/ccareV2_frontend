@@ -14,7 +14,7 @@ void main() async {
   var startPage = await CompositionRoot.start();
   await Firebase.initializeApp();
   await NotificationController.createChannels();
-  print(await NotificationController.getFCMToken);
+  print('FCM Token: ' + await NotificationController.getFCMToken);
   runApp(MyApp(startPage));
 }
 
@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Sizer(
-      builder:(context, orientation, deviceType)=> MaterialApp(
+      builder: (context, orientation, deviceType) => MaterialApp(
           title: 'CardioCare',
           debugShowCheckedModeBanner: false,
           theme: ThemeData(

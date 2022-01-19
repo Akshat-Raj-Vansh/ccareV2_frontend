@@ -76,12 +76,12 @@ class CompositionRoot {
     // var isnewUser = await localStore.fetchNewUser();
     // var userType = await localStore.fetchUserType();
     Details details = await localStore.fetchDetails();
-    print("COMPOSITION ROOT START");
+    //print("COMPOSITION ROOT START");
 
     if (details == null) return splashScreen();
-    print("user type ${details.user_type}");
-    print('DETAILS:');
-    print(details.toJson());
+    //print("user type ${details.user_type}");
+    //print('DETAILS:');
+    //print(details.toJson());
     return details.user_token == null
         ? splashScreen()
         : details.newUser

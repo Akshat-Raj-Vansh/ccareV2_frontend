@@ -14,9 +14,9 @@ class Examination {
   Examination.initialize() {
     this.nTreatment = NTreatment.initialize();
     this.thrombolysis = Thrombolysis.initialize();
-    print('-----------------------------');
-    print(this.nTreatment.toString());
-    print(this.thrombolysis.toString());
+    //print('-----------------------------');
+    //print(this.nTreatment.toString());
+    //print(this.thrombolysis.toString());
   }
 
   Examination copyWith({
@@ -37,8 +37,8 @@ class Examination {
   }
 
   factory Examination.fromMap(Map<String, dynamic> map) {
-    print('NTR');
-    print(NTreatment.fromMap(map['normalTreatment']));
+    //print('NTR');
+    //print(NTreatment.fromMap(map['normalTreatment']));
     return Examination(
       nTreatment: NTreatment.fromMap(map['normalTreatment']),
       thrombolysis: Thrombolysis.fromMap(map['thrombolysis']),

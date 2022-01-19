@@ -84,9 +84,9 @@ class _PhoneFormState extends State<PhoneForm> {
                 SizedBox(height: SizeConfig.screenHeight * 0.06),
                 RaisedButton(
                   onPressed: () async {
-                    print('LOGIN BUTTON CLICKED');
+                    //print('LOGIN BUTTON CLICKED');
                     if (_formKey.currentState!.validate()) {
-                      print('NOT COMING INSIDE');
+                      //print('NOT COMING INSIDE');
                       widget.cubit.verifyPhone(_phone);
                     }
                   },

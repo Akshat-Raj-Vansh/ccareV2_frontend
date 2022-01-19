@@ -22,7 +22,7 @@ class NotificationController {
   static UserType userType;
   static configure(MainCubit mainCubit, UserType type, BuildContext context) {
     userType = type;
-    print(type);
+    //print(type);
     switch (userType) {
       case UserType.PATIENT:
         PatientNotificationHandler.configure(mainCubit, context);

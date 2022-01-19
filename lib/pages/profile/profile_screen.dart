@@ -8,7 +8,6 @@ import 'package:sizer/sizer.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
 import '../../utils/size_config.dart';
 
-
 class ProfileScreen extends StatefulWidget {
   final ProfileCubit cubit;
   final IProfilePageAdapter pageAdapter;
@@ -22,7 +21,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
-    print("PROFILE SCREEN");
+    //print("PROFILE SCREEN");
     super.initState();
   }
 
@@ -53,26 +52,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
   _buildUI(BuildContext context) => CubitConsumer<ProfileCubit, ProfileState>(
       cubit: widget.cubit,
       builder: (_, state) {
-        print("INSIDE BUILDER PROFILE SCREEN");
-        print('STATE:');
-        print(state.toString());
+        //print("INSIDE BUILDER PROFILE SCREEN");
+        //print('STATE:');
+        //print(state.toString());
         return Expanded(
           child: widget.pageAdapter
               .loadProfiles(context, widget.userType, widget.cubit),
         );
       },
       listener: (context, state) {
-        print(state);
+        //print(state);
         if (state is LoadingState) {
-          print("Loading State Called Profile Screen");
+          //print("Loading State Called Profile Screen");
           // _showLoader();
         } else if (state is AddProfileState) {
-          print("Add Profile State Called");
+          //print("Add Profile State Called");
           // _hideLoader();
           // _showMessage(state.message);
           widget.pageAdapter.onProfileCompletion(context, widget.userType);
         } else if (state is ErrorState) {
-          print('Error State Called PROFILE SCREEN');
+          //print('Error State Called PROFILE SCREEN');
           // _hideLoader();
           _showMessage(state.error);
         }
@@ -104,7 +103,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         style: Theme.of(context)
             .textTheme
             .caption
-            .copyWith(color: Colors.white, fontSize :12.sp),
+            .copyWith(color: Colors.white, fontSize: 12.sp),
       ),
     ));
   }
@@ -115,7 +114,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           children: [
             Image(
                 image: AssetImage("assets/logo.png"),
-                width : 55.w,
+                width: 55.w,
                 height: 180,
                 fit: BoxFit.fill),
             SizedBox(height: 10),
@@ -124,7 +123,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   text: "Personal",
                   style: Theme.of(context).textTheme.caption.copyWith(
                       color: Colors.lightGreen[500],
-                      fontSize :24.sp,
+                      fontSize: 24.sp,
                       fontWeight: FontWeight.bold),
                   children: [
                     TextSpan(
@@ -133,7 +132,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     )
                   ]),
             ),
-            SizedBox(height : 5.h)
+            SizedBox(height: 5.h)
           ],
         ),
       );

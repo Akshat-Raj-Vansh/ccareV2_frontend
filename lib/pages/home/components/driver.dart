@@ -107,9 +107,9 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
 
   _getLocation() async {
     lloc.LocationData _locationData = await lloc.Location().getLocation();
-    print(_locationData.latitude.toString() +
-        "," +
-        _locationData.longitude.toString());
+    //print(_locationData.latitude.toString() +
+    // "," +
+    // _locationData.longitude.toString());
 
     _userLocation = LatLng(_locationData.latitude, _locationData.longitude);
 
@@ -143,14 +143,14 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
                             'Are you sure?',
                             style: TextStyle(
                               fontWeight: FontWeight.w600,
-                              fontSize :16.sp,
+                              fontSize: 16.sp,
                             ),
                           ),
                           content: Text(
                             'Do you want to logout?',
                             style: TextStyle(
                               fontWeight: FontWeight.w300,
-                              fontSize :12.sp,
+                              fontSize: 12.sp,
                             ),
                           ),
                           actions: [
@@ -182,7 +182,7 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
           if (state is DetailsLoaded) {
             currentState = state;
             eDetails = state.eDetails;
-            print("Locations $eDetails");
+            //print("Locations $eDetails");
             if (eDetails != null) {
               if (eDetails.patientDetails != null) {
                 _patientAccepted = true;
@@ -210,11 +210,11 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
           return _buildUI(context);
         }, listener: (context, state) async {
           if (state is LoadingState) {
-            print("Loading State Called Driver");
+            //print("Loading State Called Driver");
             //    _showLoader();
           } else if (state is AcceptState) {
             // _hideLoader();
-            print("Accept State Called");
+            //print("Accept State Called");
             await showDialog(
                   context: context,
                   builder: (context) => AlertDialog(
@@ -222,14 +222,14 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
                       'Are you sure!!',
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
-                        fontSize :16.sp,
+                        fontSize: 16.sp,
                       ),
                     ),
                     content: Text(
                       'Do you want to accept the patient?',
                       style: TextStyle(
                         fontWeight: FontWeight.w300,
-                        fontSize :12.sp,
+                        fontSize: 12.sp,
                       ),
                     ),
                     actions: [
@@ -242,7 +242,7 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
                       TextButton(
                         onPressed: () {
                           // // _hideLoader();
-                          // print("inside");
+                          // //print("inside");
                           CubitProvider.of<MainCubit>(
                                   scaffoldKey.currentContext)
                               .acceptPatientByDriver(state.patientID);
@@ -258,11 +258,11 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
                 false;
           } else if (state is PatientAccepted) {
             // _hideLoader();
-            // print("patient arrived state");
-            // print(state.location);
+            // //print("patient arrived state");
+            // //print(state.location);
             _patientLocation =
                 LatLng(state.location.latitude, state.location.longitude);
-            print(_patientLocation);
+            //print(_patientLocation);
             _addPatientMarker();
             // // _hideLoader()zz;
             CubitProvider.of<MainCubit>(context).fetchEmergencyDetails();
@@ -270,7 +270,7 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
             // _hideLoader();
           } else if (state is DoctorAccepted) {
             // _hideLoader();
-            print("doctor accepted state");
+            //print("doctor accepted state");
             _doctorLocation =
                 LatLng(state.location.latitude, state.location.longitude);
             _addDoctorMarker();
@@ -311,7 +311,7 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
         style: Theme.of(context)
             .textTheme
             .caption
-            .copyWith(color: Colors.white, fontSize :12.sp),
+            .copyWith(color: Colors.white, fontSize: 12.sp),
       ),
     ));
   }
@@ -371,7 +371,7 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
           child: Text(
             "Patients Information",
             textAlign: TextAlign.left,
-            style: TextStyle(fontSize :14.sp),
+            style: TextStyle(fontSize: 14.sp),
           ),
         ),
         Container(
@@ -388,11 +388,11 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
                     radius: 25,
                     backgroundImage: AssetImage("/assets/images/dummy.jpeg"),
                   ),
-                  SizedBox(width : 3.w),
+                  SizedBox(width: 3.w),
                   Text(
                     eDetails.patientDetails.name,
                     style: TextStyle(
-                        fontSize :14.sp,
+                        fontSize: 14.sp,
                         color: Colors.blue,
                         fontWeight: FontWeight.bold),
                   ),
@@ -406,7 +406,7 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
                       icon: Icon(Icons.phone),
                       label: Text("CALL")),
                   TextButton.icon(
-                      onPressed: () => print("CANCEL"),
+                      onPressed: () => {}, //print("CANCEL"),
                       icon: Icon(Icons.cancel),
                       label: Text("CANCEL"))
                 ],
@@ -456,11 +456,11 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
                     radius: 25,
                     backgroundImage: AssetImage("/assets/images/dummy.jpeg"),
                   ),
-                  SizedBox(width : 3.w),
+                  SizedBox(width: 3.w),
                   Text(
                     eDetails.patientDetails.name,
                     style: TextStyle(
-                        fontSize :14.sp,
+                        fontSize: 14.sp,
                         color: Colors.blue,
                         fontWeight: FontWeight.bold),
                   ),

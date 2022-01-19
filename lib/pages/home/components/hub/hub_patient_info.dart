@@ -98,27 +98,27 @@ class _HubPatientInfoState extends State<HubPatientInfo> {
           if (state is TokenLoadedState) {
             log('LOG > doctor_hub.dart > 153 > state: ${state.toString()}');
             token = state.token;
-            print("Inside TokensLoaded State");
-            print(token);
+            //print("Inside TokensLoaded State");
+            //print(token);
           }
 
           return _buildPatientLoadedUI(context);
         }, listener: (context, state) async {
           // if (state is LoadingState) {
-          //   print("Loading State Called");
+          //   //print("Loading State Called");
           //   _showLoader();
           // } else
           log('LOG > doctor_hub.dart > 165 > state: ${state.toString()}');
           if (state is ErrorState) {
-            print("Error State Called HUB PATIENT");
+            //print("Error State Called HUB PATIENT");
             // // _hideLoader();
           } else if (state is TokenLoadedState) {
             token = state.token;
-            print("Inside TokensLoaded State");
-            print(token);
+            //print("Inside TokensLoaded State");
+            //print(token);
           } else if (state is AcceptState) {
             // // _hideLoader();
-            print("Accept State Called");
+            //print("Accept State Called");
             await showDialog(
                   context: context,
                   builder: (context) => AlertDialog(
@@ -126,14 +126,14 @@ class _HubPatientInfoState extends State<HubPatientInfo> {
                       'Are you sure?',
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
-                        fontSize :16.sp,
+                        fontSize: 16.sp,
                       ),
                     ),
                     content: Text(
                       'Do you want to accept the patient?',
                       style: TextStyle(
                         fontWeight: FontWeight.w300,
-                        fontSize :12.sp,
+                        fontSize: 12.sp,
                       ),
                     ),
                     actions: [
@@ -191,7 +191,7 @@ class _HubPatientInfoState extends State<HubPatientInfo> {
               borderRadius: BorderRadius.circular(20)),
           child: Text(
             widget.details.doctorDetails.name,
-            style: TextStyle(color: Colors.white, fontSize :12.sp),
+            style: TextStyle(color: Colors.white, fontSize: 12.sp),
             textAlign: TextAlign.center,
           ),
         ),
@@ -204,11 +204,11 @@ class _HubPatientInfoState extends State<HubPatientInfo> {
         leading: Icon(CupertinoIcons.person, color: Colors.white),
         title: Text(
           "No Patients Accepted Yet!!",
-          style: TextStyle(color: Colors.white, fontSize :16.sp),
+          style: TextStyle(color: Colors.white, fontSize: 16.sp),
         ),
         subtitle: Text(
           "Keep an eye out for the Patients",
-          style: TextStyle(color: Colors.white, fontSize :8.sp),
+          style: TextStyle(color: Colors.white, fontSize: 8.sp),
         ),
       ));
 
@@ -220,7 +220,7 @@ class _HubPatientInfoState extends State<HubPatientInfo> {
           child: Text(
             "Spoke Doctor's Information",
             textAlign: TextAlign.left,
-            style: TextStyle(fontSize :14.sp),
+            style: TextStyle(fontSize: 14.sp),
           ),
         ),
         Container(
@@ -271,7 +271,7 @@ class _HubPatientInfoState extends State<HubPatientInfo> {
           child: Text(
             "Patient's Information",
             textAlign: TextAlign.left,
-            style: TextStyle(fontSize :14.sp),
+            style: TextStyle(fontSize: 14.sp),
           ),
         ),
         Container(
@@ -325,7 +325,7 @@ class _HubPatientInfoState extends State<HubPatientInfo> {
               borderRadius: BorderRadius.circular(20)),
           child: Text(
             "View/Update Patient's Medical Report",
-            style: TextStyle(color: Colors.white, fontSize :12.sp),
+            style: TextStyle(color: Colors.white, fontSize: 12.sp),
             textAlign: TextAlign.center,
           ),
         ),
@@ -337,7 +337,7 @@ class _HubPatientInfoState extends State<HubPatientInfo> {
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           child: Text(
             "Patient Information",
-            style: TextStyle(fontSize :18.sp),
+            style: TextStyle(fontSize: 18.sp),
           ),
         ),
         _buildPatientDetails(widget.details),
@@ -345,7 +345,7 @@ class _HubPatientInfoState extends State<HubPatientInfo> {
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           child: Text(
             "Spoke Doctor Information",
-            style: TextStyle(fontSize :18.sp),
+            style: TextStyle(fontSize: 18.sp),
           ),
         ),
 
@@ -377,7 +377,7 @@ class _HubPatientInfoState extends State<HubPatientInfo> {
               borderRadius: BorderRadius.circular(20)),
           child: Text(
             "View/Update Patient's Exam Report",
-            style: TextStyle(color: Colors.white, fontSize :12.sp),
+            style: TextStyle(color: Colors.white, fontSize: 12.sp),
             textAlign: TextAlign.center,
           ),
         ),
@@ -398,7 +398,7 @@ class _HubPatientInfoState extends State<HubPatientInfo> {
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           child: Text(
             "View Patient's Medical Report History",
-            style: TextStyle(color: kPrimaryColor, fontSize :12.sp),
+            style: TextStyle(color: kPrimaryColor, fontSize: 12.sp),
             textAlign: TextAlign.center,
           ),
         ),

@@ -12,29 +12,25 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:http/http.dart' as http;
 
-
 void main() {
   MainAPI api;
-  setUp((){
-    String baseUrl =  "http://localhost:3000";
+  setUp(() {
+    String baseUrl = "http://localhost:3000";
     var client = http.Client();
     api = MainAPI(client, baseUrl);
   });
 
-  
+  group('FetchDetails', () {
+    test('returns patient and driver details', () async {
+      String token =
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjEzOGQyMDhlYmQzY2M4MmUxZmY2NWUyIiwiaWF0IjoxNjMxMTEzNzM3LCJleHAiOjE2MzE3MTg1MzcsImlzcyI6ImNvbS5jY2FyZW5pdGgifQ.OBCE6xyzGe0X6O3QoDIld5zIaXzN6GequUVzTreEtHY";
 
-  group('FetchDetails',(){
-    test('returns patient and driver details',() async {
-      String token =  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjEzOGQyMDhlYmQzY2M4MmUxZmY2NWUyIiwiaWF0IjoxNjMxMTEzNzM3LCJleHAiOjE2MzE3MTg1MzcsImlzcyI6ImNvbS5jY2FyZW5pdGgifQ.OBCE6xyzGe0X6O3QoDIld5zIaXzN6GequUVzTreEtHY";
-   
-        // dynamic result = await api.fetchEmergencyDetails(Token(token),patientID:token.value);
-       
-        // if(result.isError)
-        //   print(result.asError.error);
-        // else 
-        // print(result.asValue.value);
+      // dynamic result = await api.fetchEmergencyDetails(Token(token),patientID:token.value);
+
+      // if(result.isError)
+      //   //print(result.asError.error);
+      // else
+      // //print(result.asValue.value);
     });
   });
-
 }
-

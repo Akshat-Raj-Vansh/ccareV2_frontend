@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:location/location.dart' as lloc;
 import '../../../user/domain/location.dart' as loc;
 import 'package:sizer/sizer.dart';
+
 class DriverProfileScreen extends StatefulWidget {
   final ProfileCubit cubit;
   const DriverProfileScreen(this.cubit);
@@ -27,7 +28,7 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(height : 2.h),
+          SizedBox(height: 2.h),
           TextFormField(
             keyboardType: TextInputType.text,
             onSaved: (newValue) => name = newValue,
@@ -38,7 +39,7 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
               floatingLabelBehavior: FloatingLabelBehavior.always,
             ),
           ),
-          SizedBox(height : 1.h),
+          SizedBox(height: 1.h),
           TextFormField(
             keyboardType: TextInputType.text,
             onSaved: (newValue) => uniqueCode = newValue.toUpperCase(),
@@ -50,7 +51,7 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
               floatingLabelBehavior: FloatingLabelBehavior.always,
             ),
           ),
-          SizedBox(height : 1.h),
+          SizedBox(height: 1.h),
           TextFormField(
             keyboardType: TextInputType.text,
             onSaved: (newValue) => plateNumber = newValue.toUpperCase(),
@@ -77,7 +78,7 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
                       location: loc.Location(
                           latitude: locationData.latitude,
                           longitude: locationData.longitude));
-                  print(profile.toString());
+                  //print(profile.toString());
                   widget.cubit.addDriverProfile(profile);
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -87,7 +88,7 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
               },
             ),
           ),
-          SizedBox(height : 5.h),
+          SizedBox(height: 5.h),
         ],
       ),
     );
@@ -95,7 +96,7 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
 
   Future<lloc.LocationData> _getLocation() async {
     lloc.LocationData _location = await lloc.Location().getLocation();
-    print(_location.latitude.toString() + "," + _location.longitude.toString());
+    //print(_location.latitude.toString() + "," + _location.longitude.toString());
     return _location;
   }
 }

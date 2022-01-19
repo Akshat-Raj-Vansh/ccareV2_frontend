@@ -62,7 +62,7 @@ class _PatientListState extends State<PatientList> {
         style: Theme.of(context)
             .textTheme
             .caption
-            ?.copyWith(color: Colors.white, fontSize :12.sp),
+            ?.copyWith(color: Colors.white, fontSize: 12.sp),
       ),
     ));
   }
@@ -87,7 +87,7 @@ class _PatientListState extends State<PatientList> {
             //  // _hideLoader();
             currentState = PatientsLoaded;
             _patients = state.patients;
-            print(_patients);
+            //print(_patients);
           }
           if (state is NormalState) {
             //   // _hideLoader();
@@ -99,7 +99,7 @@ class _PatientListState extends State<PatientList> {
         },
         listener: (context, state) async {
           if (state is LoadingState) {
-            print("Loading State Called Patient List");
+            //print("Loading State Called Patient List");
             log('LOG > doctor_spoke.dart > 197 > state: ${state.toString()}');
 //_showLoader();
           } else if (state is ErrorState) {
@@ -135,7 +135,7 @@ class _PatientListState extends State<PatientList> {
                   leading: Icon(Icons.person),
                   title: Text(
                     _patients[index].name,
-                    style: TextStyle(color: Colors.green, fontSize :12.sp),
+                    style: TextStyle(color: Colors.green, fontSize: 12.sp),
                   ),
                   trailing: Text(_patients[index].gender.toString() +
                       '   ' +

@@ -15,17 +15,17 @@ class SpokeNotificationHandler {
   }
 
   static Future<void> backgroundMessageHandler(RemoteMessage message) async {
-    print("Handling a background message for doctor: ${message.data}");
+    //print("Handling a background message for doctor: ${message.data}");
   }
 
   static Future<void> foregroundMessageHandler(RemoteMessage message) async {
-    print("Handling a foreground message for doctor: ${message.data}");
+    //print("Handling a foreground message for doctor: ${message.data}");
     if (message.data['type'] == 'EmergencyStatus') {
       await mainCubit.getStatus();
     }
     if (message.data['type'] == 'Emergency') {
       if (message.data["user"] == "PATIENT") {
-        // print("inside");
+        // //print("inside");
         // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         //   backgroundColor: Theme.of(context).accentColor,
         //   content: Text(
@@ -58,7 +58,7 @@ class SpokeNotificationHandler {
 
   static Future<void> onMessageOpenedHandler(RemoteMessage message) async {
     if (message.data['type'] == 'Emergency') {
-      print("Not supposed to be here");
+      //print("Not supposed to be here");
       await mainCubit.acceptRequest(message.data["_patientID"]);
     }
     if (message.data['type'] == 'EmergencyStatus') {

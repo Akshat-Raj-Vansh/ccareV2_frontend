@@ -6,6 +6,7 @@ import 'package:ccarev2_frontend/user/domain/profile.dart';
 import 'package:ccarev2_frontend/utils/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
+
 class PatientProfileScreen extends StatefulWidget {
   final ProfileCubit cubit;
   const PatientProfileScreen(this.cubit);
@@ -27,7 +28,7 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(height : 2.h),
+          SizedBox(height: 2.h),
           TextFormField(
             keyboardType: TextInputType.text,
             onSaved: (newValue) => name = newValue,
@@ -38,7 +39,7 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
               floatingLabelBehavior: FloatingLabelBehavior.always,
             ),
           ),
-          SizedBox(height : 1.h),
+          SizedBox(height: 1.h),
           TextFormField(
             keyboardType: TextInputType.number,
             onSaved: (newValue) => age = int.parse(newValue),
@@ -51,7 +52,7 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
               floatingLabelBehavior: FloatingLabelBehavior.always,
             ),
           ),
-          SizedBox(height : 1.h),
+          SizedBox(height: 1.h),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -64,7 +65,7 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
                   onChanged: (Gender newValue) {
                     setState(() {
                       gender = newValue;
-                      print(gender);
+                      //print(gender);
                     });
                   },
                   items: Gender.values.map((Gender value) {
@@ -91,7 +92,7 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
                       name: name,
                       gender: gender.toString().split(".")[1],
                       age: age);
-                  print(profile.toString());
+                  //print(profile.toString());
                   widget.cubit.addPatientProfile(profile);
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -101,7 +102,7 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
               },
             ),
           ),
-          SizedBox(height : 5.h),
+          SizedBox(height: 5.h),
         ],
       ),
     );

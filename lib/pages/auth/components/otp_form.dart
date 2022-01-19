@@ -40,7 +40,7 @@ class _OTPFormState extends State<OTPForm> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height : 45.h,
+      height: 45.h,
       color: Colors.white,
       width: double.infinity,
       child: Padding(
@@ -66,12 +66,12 @@ class _OTPFormState extends State<OTPForm> with TickerProviderStateMixin {
                     Text(
                       'Enter OTP',
                       textAlign: TextAlign.center,
-                      style:
-                          TextStyle(fontSize :18.sp, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          fontSize: 18.sp, fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
-                SizedBox(height : 5.h),
+                SizedBox(height: 5.h),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -100,7 +100,7 @@ class _OTPFormState extends State<OTPForm> with TickerProviderStateMixin {
                 SizedBox(height: SizeConfig.screenHeight * 0.02),
                 Text(
                   "We sent your code to - ${widget.phone}",
-                  style: TextStyle(color: Colors.green, fontSize :12.sp),
+                  style: TextStyle(color: Colors.green, fontSize: 12.sp),
                 ),
                 GestureDetector(
                   onTap: () {
@@ -119,7 +119,7 @@ class _OTPFormState extends State<OTPForm> with TickerProviderStateMixin {
                 SizedBox(height: SizeConfig.screenHeight * 0.02),
                 RaisedButton(
                   onPressed: () {
-                    print('LOGIN BUTTON CLICKED');
+                    //print('LOGIN BUTTON CLICKED');
                     if (_formKey.currentState!.validate()) {
                       widget.verifyOTP(_otp);
                     }
@@ -138,7 +138,7 @@ class _OTPFormState extends State<OTPForm> with TickerProviderStateMixin {
                     ),
                     child: Text(
                       "Verify",
-                      style: TextStyle(color: Colors.white, fontSize :16.sp),
+                      style: TextStyle(color: Colors.white, fontSize: 16.sp),
                     ),
                   ),
                 ),
@@ -161,13 +161,13 @@ class _OTPFormState extends State<OTPForm> with TickerProviderStateMixin {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text("Resend OTP in ",
-            style: TextStyle(fontSize :12.sp, color: kPrimaryColor)),
+            style: TextStyle(fontSize: 12.sp, color: kPrimaryColor)),
         AnimatedBuilder(
           animation: animationController,
           builder: (_, child) {
             return Text(timeString,
                 style: TextStyle(
-                    fontSize :12.sp,
+                    fontSize: 12.sp,
                     color: kPrimaryColor,
                     fontWeight: FontWeight.bold));
           },

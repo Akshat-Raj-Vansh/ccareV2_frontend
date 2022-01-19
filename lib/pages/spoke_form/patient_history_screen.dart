@@ -60,13 +60,13 @@ class _PatientReportHistoryScreenState
         style: Theme.of(context)
             .textTheme
             .caption
-            .copyWith(color: Colors.white, fontSize :12.sp),
+            .copyWith(color: Colors.white, fontSize: 12.sp),
       ),
     ));
   }
 
   _fetchReport() async {
-    print("Fetching patient report");
+    //print("Fetching patient report");
     await widget.mainCubit.fetchPatientReportHistory();
   }
 
@@ -76,6 +76,9 @@ class _PatientReportHistoryScreenState
     return CubitConsumer<MainCubit, MainState>(
       cubit: widget.mainCubit,
       builder: (_, state) {
+        if (state is LoadingState) {
+          _hideLoader();
+        }
         if (state is NoHistoryState) {
           log('DATA > patient_history_screen.dart > FUNCTION_NAME > 77 > state.error: ${state.error}');
           return Scaffold(
@@ -88,7 +91,7 @@ class _PatientReportHistoryScreenState
               child: Center(
                 child: Text(
                   state.error,
-                  style: TextStyle(fontSize :14.sp, color: Colors.black),
+                  style: TextStyle(fontSize: 14.sp, color: Colors.black),
                 ),
               ),
             ),
@@ -98,13 +101,15 @@ class _PatientReportHistoryScreenState
       },
       listener: (context, state) {
         if (state is PatientReportHistoryFetched) {
-          print("Patient TreatmentReport History Fetched state Called");
+          _hideLoader();
+          //print("Patient TreatmentReport History Fetched state Called");
           reports = state.reports;
           // _hideLoader();
         }
 
         if (state is NoReportState) {
-          print('No Treatment Report State Called');
+          _hideLoader();
+          //print('No Treatment Report State Called');
           // _hideLoader();
         }
       },
@@ -120,7 +125,7 @@ class _PatientReportHistoryScreenState
         actions: [
           IconButton(
             onPressed: () async {
-              print('Refresh button pressed');
+              //print('Refresh button pressed');
               _fetchReport();
             },
             icon: Icon(Icons.refresh),

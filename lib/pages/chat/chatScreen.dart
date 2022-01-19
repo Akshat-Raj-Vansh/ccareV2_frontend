@@ -46,12 +46,12 @@ class _ChatPageState extends State<ChatPage> {
           topRight: Radius.circular(30),
           bottomLeft: Radius.circular(30)));
 
-  TextStyle styles = TextStyle(color: Colors.white, fontSize :14.sp);
+  TextStyle styles = TextStyle(color: Colors.white, fontSize: 14.sp);
   @override
   void initState() {
     super.initState();
     recieverChatID = widget.patientID + "-" + widget.recieverID;
-    print(widget.token);
+    //print(widget.token);
     chatModel.init(widget.patientID, widget.token);
     CubitProvider.of<MainCubit>(context).loadMessages(widget.patientID);
   }
@@ -108,7 +108,7 @@ class _ChatPageState extends State<ChatPage> {
                     controller: textEditingController,
                   ),
                 ),
-                SizedBox(width : 3.w),
+                SizedBox(width: 3.w),
                 FloatingActionButton(
                   onPressed: () {
                     model.sendMessage(
@@ -142,8 +142,8 @@ class _ChatPageState extends State<ChatPage> {
       body: CubitConsumer<MainCubit, MainState>(
         builder: (context, state) {
           if (state is MessagesLoadedState) {
-            print('Messages loaded state');
-            print(state.messages.last);
+            //print('Messages loaded state');
+            //print(state.messages.last);
             chatModel.addMessages(state.messages);
             currentState = state;
           }
@@ -152,7 +152,7 @@ class _ChatPageState extends State<ChatPage> {
         },
         listener: (context, state) {
           if (state is ErrorState) {
-            print("Error State Called CHAT SCREEN");
+            //print("Error State Called CHAT SCREEN");
             // // _hideLoader();
           }
         },

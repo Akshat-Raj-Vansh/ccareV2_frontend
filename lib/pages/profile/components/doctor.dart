@@ -30,10 +30,10 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
   Info docInfo;
   @override
   void initState() {
-    print("DOCTOR PROFILE");
-    print("USERTYPE");
-    print(widget.userType.toString());
-    print('CALLING GET DOC INFO');
+    //print("DOCTOR PROFILE");
+    //print("USERTYPE");
+    //print(widget.userType.toString());
+    //print('CALLING GET DOC INFO');
     widget.cubit.getDocInfo();
     super.initState();
     widget.cubit.getDocInfo();
@@ -46,11 +46,11 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
     return CubitConsumer<ProfileCubit, ProfileState>(
         cubit: widget.cubit,
         builder: (ctx, state) {
-          print("INSIDE BUILDER DOCTOR PROFILE");
-          print('STATE:');
-          print(state.toString());
+          //print("INSIDE BUILDER DOCTOR PROFILE");
+          //print('STATE:');
+          //print(state.toString());
           if (state is DocInfoState) {
-            print("Doc Info State Called");
+            //print("Doc Info State Called");
             docInfo = state.docInfo;
             return _buildOldForm();
           }
@@ -67,9 +67,9 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
         },
         listener: (ctx, state) {
           if (state is LoadingDocInfo) {
-            print("Doctor Profile Screen Loading State Called");
+            //print("Doctor Profile Screen Loading State Called");
           } else if (state is ErrorState) {
-            print('Error State Called');
+            //print('Error State Called');
             _showMessage(state.error);
           }
         });
@@ -80,7 +80,7 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height : 2.h),
+            SizedBox(height: 2.h),
             TextFormField(
               keyboardType: TextInputType.text,
               onSaved: (newValue) => name = newValue,
@@ -91,7 +91,7 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
                 floatingLabelBehavior: FloatingLabelBehavior.always,
               ),
             ),
-            SizedBox(height : 1.h),
+            SizedBox(height: 1.h),
             TextFormField(
               keyboardType: TextInputType.text,
               onSaved: (newValue) => hospital = newValue,
@@ -113,7 +113,7 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
                 floatingLabelBehavior: FloatingLabelBehavior.always,
               ),
             ),
-            SizedBox(height : 1.h),
+            SizedBox(height: 1.h),
             Container(
               padding: EdgeInsets.only(left: 15, right: 15, top: 5),
               color: Colors.white,
@@ -125,8 +125,8 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
                 ],
               ),
             ),
-            SizedBox(height : 1.h),
-            SizedBox(height : 1.h),
+            SizedBox(height: 1.h),
+            SizedBox(height: 1.h),
             Center(
               child: DefaultButton(
                 text: "Save",
@@ -144,7 +144,7 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
                           longitude: locationData.longitude),
                       type: widget.userType,
                     );
-                    print(profile.toString());
+                    //print(profile.toString());
                     widget.cubit.addDoctorProfile(profile);
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -154,7 +154,7 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
                 },
               ),
             ),
-            SizedBox(height : 5.h),
+            SizedBox(height: 5.h),
           ],
         ),
       );
@@ -164,29 +164,29 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height : 1.h),
+            SizedBox(height: 1.h),
             Container(
               padding: EdgeInsets.only(left: 15, right: 15, top: 5),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Name: ', style: TextStyle(fontSize :12.sp)),
-                  Text(docInfo.name, style: TextStyle(fontSize :12.sp)),
+                  Text('Name: ', style: TextStyle(fontSize: 12.sp)),
+                  Text(docInfo.name, style: TextStyle(fontSize: 12.sp)),
                 ],
               ),
             ),
-            SizedBox(height : 1.h),
+            SizedBox(height: 1.h),
             Container(
               padding: EdgeInsets.only(left: 15, right: 15, top: 5),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Hospital: ', style: TextStyle(fontSize :12.sp)),
-                  Text(docInfo.hospital, style: TextStyle(fontSize :12.sp)),
+                  Text('Hospital: ', style: TextStyle(fontSize: 12.sp)),
+                  Text(docInfo.hospital, style: TextStyle(fontSize: 12.sp)),
                 ],
               ),
             ),
-            SizedBox(height : 1.h),
+            SizedBox(height: 1.h),
             Container(
               padding: EdgeInsets.only(left: 15, right: 15, top: 5),
               child: Row(
@@ -197,7 +197,7 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
                 ],
               ),
             ),
-            SizedBox(height : 1.h),
+            SizedBox(height: 1.h),
             Container(
               padding: EdgeInsets.only(left: 15, right: 15, top: 5),
               child: Row(
@@ -208,23 +208,23 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
                 ],
               ),
             ),
-            SizedBox(height : 1.h),
+            SizedBox(height: 1.h),
             Container(
               padding: EdgeInsets.only(left: 15, right: 15, top: 5),
               child: TextButton(
-                child:
-                    Text('Pick your location', style: TextStyle(fontSize :12.sp)),
+                child: Text('Pick your location',
+                    style: TextStyle(fontSize: 12.sp)),
                 onPressed: () {},
               ),
             ),
-            SizedBox(height : 1.h),
+            SizedBox(height: 1.h),
             //Email
             Container(
               padding: EdgeInsets.only(left: 15, right: 15, top: 5),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Email ID: ', style: TextStyle(fontSize :12.sp)),
+                  Text('Email ID: ', style: TextStyle(fontSize: 12.sp)),
                   Container(
                     width: SizeConfig.screenWidth * 0.4,
                     child: TextFormField(
@@ -265,7 +265,7 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
             //               onChanged: (DoctorType newValue) {
             //                 setState(() {
             //                   _doctorType = newValue;
-            //                   print(_doctorType);
+            //                   //print(_doctorType);
             //                 });
             //               },
             //               items: DoctorType.values.map((DoctorType value) {
@@ -299,7 +299,7 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
                           longitude: locationData.longitude),
                       type: widget.userType,
                     );
-                    print(profile.toString());
+                    //print(profile.toString());
                     widget.cubit.addDoctorProfile(profile);
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -309,7 +309,7 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
                 },
               ),
             ),
-            SizedBox(height : 5.h),
+            SizedBox(height: 5.h),
           ],
         ),
       );
@@ -337,14 +337,14 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
       backgroundColor: Theme.of(context).accentColor,
       content: Text(
         msg,
-        style: Theme.of(context).textTheme.caption.copyWith(fontSize :12.sp),
+        style: Theme.of(context).textTheme.caption.copyWith(fontSize: 12.sp),
       ),
     ));
   }
 
   Future<lloc.LocationData> _getLocation() async {
     lloc.LocationData _location = await lloc.Location().getLocation();
-    print(_location.latitude.toString() + "," + _location.longitude.toString());
+    //print(_location.latitude.toString() + "," + _location.longitude.toString());
     return _location;
   }
 }
