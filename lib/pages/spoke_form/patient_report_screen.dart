@@ -167,7 +167,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
   }
 
   _fetchReport() async {
-    print("Fetching patient report");
+    //print("Fetching patient report");
     widget.mainCubit.fetchPatientReport();
     // widget.mainCubit.fetchImage(widget.patientDetails.id);
   }
@@ -179,13 +179,13 @@ class _PatientReportScreenState extends State<PatientReportScreen>
       cubit: widget.mainCubit,
       builder: (_, state) {
         if (state is PatientReportFetched) {
-          print("Patient Report Fetched state Called");
+          //print("Patient Report Fetched state Called");
           log('LOG > patient_report_screen.dart > 179 > state: ${state.toString()}');
           editedReport = state.mixReport.currentTreatment;
           log('LOG > patient_report_screen.dart > 182 > editedReport: ${editedReport}');
           if (state.mixReport.previousTreatment != null)
             previousReport = state.mixReport.previousTreatment;
-          print(editedReport.toString());
+          //print(editedReport.toString());
           if (state.mixReport.previousTreatment != null) {
             previousReport = state.mixReport.previousTreatment;
             previousReportExists = true;
@@ -201,7 +201,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
           _image = state.image;
         }
         if (state is NoReportState) {
-          print('No Report State Called');
+          //print('No Report State Called');
           log('LOG > patient_report_screen.dart > 201 > state: ${state.toString()}');
           currentState = state;
           noReport = true;
@@ -239,8 +239,8 @@ class _PatientReportScreenState extends State<PatientReportScreen>
           //  widget.mainCubit.fetchPatientReport();
         }
         if (state is PatientReportSaved) {
-          print("Patient Report Saved state Called");
-          print(state.msg);
+          //print("Patient Report Saved state Called");
+          //print(state.msg);
           log('LOG > patient_report_screen.dart > 239 > state: ${state.toString()}');
           // _hideLoader();
           _showMessage('Report Saved');
@@ -252,7 +252,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
   }
 
   buildUI() {
-    print(widget.user);
+    //print(widget.user);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -263,7 +263,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
             editReport
                 ? TextButton(
                     onPressed: () async {
-                      print(editedReport.toString());
+                      //print(editedReport.toString());
                       widget.mainCubit.savePatientReport(editedReport);
                     },
                     child: Text(
@@ -275,7 +275,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
                   )
                 : TextButton(
                     onPressed: () async {
-                      print('Edit Report Button Pressed');
+                      //print('Edit Report Button Pressed');
                       widget.mainCubit.editPatientReport();
                     },
                     child: Text(
@@ -287,7 +287,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
                   ),
           IconButton(
             onPressed: () async {
-              print('Refresh button pressed');
+              //print('Refresh button pressed');
               _fetchReport();
             },
             icon: Icon(Icons.refresh),

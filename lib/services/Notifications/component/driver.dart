@@ -14,11 +14,11 @@ class DriverNotificationHandler {
   }
 
   static Future<void> backgroundMessageHandler(RemoteMessage message) async {
-    print("Handling a background message for driver: ${message.data}");
+    //print("Handling a background message for driver: ${message.data}");
   }
 
   static Future<void> foregroundMessageHandler(RemoteMessage message) async {
-    print("Handling a foreground message for driver: ${message.data}");
+    //print("Handling a foreground message for driver: ${message.data}");
     if (message.data['type'] == 'Emergency') {
       if (message.data['user'] == "PATIENT") {
         // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -55,7 +55,7 @@ class DriverNotificationHandler {
 
   static Future<void> onMessageOpenedHandler(RemoteMessage message) async {
     if (message.data['type'] == 'Emergency') {
-      print(message.data);
+      //print(message.data);
       await mainCubit.acceptRequest(message.data["_patientID"]);
     }
   }

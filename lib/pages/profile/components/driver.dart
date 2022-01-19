@@ -77,7 +77,7 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
                       location: loc.Location(
                           latitude: locationData.latitude,
                           longitude: locationData.longitude));
-                  print(profile.toString());
+                  //print(profile.toString());
                   widget.cubit.addDriverProfile(profile);
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -95,7 +95,7 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
 
   Future<lloc.LocationData> _getLocation() async {
     lloc.LocationData _location = await lloc.Location().getLocation();
-    print(_location.latitude.toString() + "," + _location.longitude.toString());
+    //print(_location.latitude.toString() + "," + _location.longitude.toString());
     return _location;
   }
 }

@@ -30,10 +30,10 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
   Info docInfo;
   @override
   void initState() {
-    print("DOCTOR PROFILE");
-    print("USERTYPE");
-    print(widget.userType.toString());
-    print('CALLING GET DOC INFO');
+    //print("DOCTOR PROFILE");
+    //print("USERTYPE");
+    //print(widget.userType.toString());
+    //print('CALLING GET DOC INFO');
     widget.cubit.getDocInfo();
     super.initState();
     widget.cubit.getDocInfo();
@@ -46,11 +46,11 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
     return CubitConsumer<ProfileCubit, ProfileState>(
         cubit: widget.cubit,
         builder: (ctx, state) {
-          print("INSIDE BUILDER DOCTOR PROFILE");
-          print('STATE:');
-          print(state.toString());
+          //print("INSIDE BUILDER DOCTOR PROFILE");
+          //print('STATE:');
+          //print(state.toString());
           if (state is DocInfoState) {
-            print("Doc Info State Called");
+            //print("Doc Info State Called");
             docInfo = state.docInfo;
             return _buildOldForm();
           }
@@ -67,9 +67,9 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
         },
         listener: (ctx, state) {
           if (state is LoadingDocInfo) {
-            print("Doctor Profile Screen Loading State Called");
+            //print("Doctor Profile Screen Loading State Called");
           } else if (state is ErrorState) {
-            print('Error State Called');
+            //print('Error State Called');
             _showMessage(state.error);
           }
         });
@@ -144,7 +144,7 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
                           longitude: locationData.longitude),
                       type: widget.userType,
                     );
-                    print(profile.toString());
+                    //print(profile.toString());
                     widget.cubit.addDoctorProfile(profile);
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -265,7 +265,7 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
             //               onChanged: (DoctorType newValue) {
             //                 setState(() {
             //                   _doctorType = newValue;
-            //                   print(_doctorType);
+            //                   //print(_doctorType);
             //                 });
             //               },
             //               items: DoctorType.values.map((DoctorType value) {
@@ -299,7 +299,7 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
                           longitude: locationData.longitude),
                       type: widget.userType,
                     );
-                    print(profile.toString());
+                    //print(profile.toString());
                     widget.cubit.addDoctorProfile(profile);
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -344,7 +344,7 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
 
   Future<lloc.LocationData> _getLocation() async {
     lloc.LocationData _location = await lloc.Location().getLocation();
-    print(_location.latitude.toString() + "," + _location.longitude.toString());
+    //print(_location.latitude.toString() + "," + _location.longitude.toString());
     return _location;
   }
 }

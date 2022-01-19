@@ -41,9 +41,9 @@ class AuthPageAdapter extends IAuthPageAdapter {
 
   @override
   void onSplashScreenComplete(BuildContext context, UserType userType) {
-    print('AUTH PAGE ADAPTER/ON SPLASH SCREEN COMPLETE');
-    print("USERTYPE:");
-    print(userType);
+    //print('AUTH PAGE ADAPTER/ON SPLASH SCREEN COMPLETE');
+    //print("USERTYPE:");
+    //print(userType);
     Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (context) => authPage(userType)),

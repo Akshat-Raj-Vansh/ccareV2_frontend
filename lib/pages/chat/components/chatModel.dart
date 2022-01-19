@@ -35,14 +35,14 @@ class ChatModel extends Model {
             .build());
     socket.connect();
     socket.onConnect((_) {
-      print('connect');
+      //print('connect');
     });
     socket.onConnectError((err) {
-      print(err);
+      //print(err);
     });
     socket.on("receive_message", (jsonData) {
-      print(jsonEncode(jsonData));
-      print(jsonEncode(jsonData['content']));
+      //print(jsonEncode(jsonData));
+      //print(jsonEncode(jsonData['content']));
       Map<String, dynamic> data = jsonDecode(jsonEncode(jsonData));
       messages.add(Message(
           data['content'], data['senderChatID'], data['receiverChatID']));
@@ -51,17 +51,17 @@ class ChatModel extends Model {
   }
 
   void addMessages(List<Message> data) {
-    print('777777777777777777');
-    print(data.last);
+    //print('777777777777777777');
+    //print(data.last);
     messages.addAll(data);
-    print('888888888888888888');
-    print(messages.last);
+    //print('888888888888888888');
+    //print(messages.last);
     notifyListeners();
   }
 
   void sendMessage(String text, String receiverChatID) {
     messages.add(Message(text, userChatID, receiverChatID));
-    print("UserChatID$userChatID");
+    //print("UserChatID$userChatID");
     socket.emit("send_message", [
       {
         "content": text,
@@ -73,9 +73,9 @@ class ChatModel extends Model {
   }
 
   List<Message> getMessagesForChatID(String chatID) {
-    print(messages
-        .where((msg) => msg.senderID == chatID || msg.receiverID == chatID)
-        .toList());
+    //print(messages
+        // .where((msg) => msg.senderID == chatID || msg.receiverID == chatID)
+        // .toList());
     return messages
         .where((msg) => msg.senderID == chatID || msg.receiverID == chatID)
         .toList();

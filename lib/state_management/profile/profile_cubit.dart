@@ -32,17 +32,17 @@ class ProfileCubit extends Cubit<ProfileState> {
 
   getDocInfo() async {
     emit(LoadingDocInfo());
-    print("PROFILE CUBIT/GET DOC INFO PROFILE");
+    //print("PROFILE CUBIT/GET DOC INFO PROFILE");
     final docInfo = await this.localStore.fetchDocInfo();
     if (docInfo == null) {
-      print("DOC NOT FOUND");
+      //print("DOC NOT FOUND");
       Future.delayed(Duration(seconds: 1), () {
         emit(DocNotFoundState());
       });
       return;
     } else {
-      print('DOC INFO JSON:');
-      print(docInfo.toJson());
+      //print('DOC INFO JSON:');
+      //print(docInfo.toJson());
       Future.delayed(Duration(milliseconds: 100), () {
         emit(DocInfoState(docInfo));
       });
@@ -50,7 +50,7 @@ class ProfileCubit extends Cubit<ProfileState> {
   }
 
   addDoctorProfile(DoctorProfile profile) async {
-    print("PROFILE CUBIT/ADD DOCTOR PROFILE");
+    //print("PROFILE CUBIT/ADD DOCTOR PROFILE");
     _startLoading();
     final token = await this.localStore.fetch();
     final result = await api.addDoctorProfile(Token(token.value), profile);
@@ -61,8 +61,8 @@ class ProfileCubit extends Cubit<ProfileState> {
     }
     await this.localStore.updateNewUser(false);
     Details details = await this.localStore.fetchDetails();
-    print("DETAILS:");
-    print(details.toJson());
+    //print("DETAILS:");
+    //print(details.toJson());
     emit(AddProfileState(details));
   }
 

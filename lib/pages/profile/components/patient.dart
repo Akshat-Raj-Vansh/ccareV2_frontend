@@ -64,7 +64,7 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
                   onChanged: (Gender newValue) {
                     setState(() {
                       gender = newValue;
-                      print(gender);
+                      //print(gender);
                     });
                   },
                   items: Gender.values.map((Gender value) {
@@ -91,7 +91,7 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
                       name: name,
                       gender: gender.toString().split(".")[1],
                       age: age);
-                  print(profile.toString());
+                  //print(profile.toString());
                   widget.cubit.addPatientProfile(profile);
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(

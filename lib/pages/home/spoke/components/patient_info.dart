@@ -53,7 +53,7 @@ class _PatientInfoState extends State<PatientInfo> {
 
   // Future<loc.Location> _getLocation() async {
   //   lloc.LocationData _locationData = await lloc.Location().getLocation();
-  //   print(_locationData.latitude.toString() +
+  //   //print(_locationData.latitude.toString() +
   //       "," +
   //       _locationData.longitude.toString());
   //   loc.Location _location = loc.Location(
@@ -142,7 +142,7 @@ class _PatientInfoState extends State<PatientInfo> {
         },
         listener: (context, state) async {
           if (state is LoadingState) {
-            print("Loading State Called Patient Info");
+            //print("Loading State Called Patient Info");
             log('LOG > doctor_spoke.dart > 197 > state: ${state.toString()}');
             //  _showLoader();
           } else if (state is ErrorState) {

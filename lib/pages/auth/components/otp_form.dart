@@ -119,7 +119,7 @@ class _OTPFormState extends State<OTPForm> with TickerProviderStateMixin {
                 SizedBox(height: SizeConfig.screenHeight * 0.02),
                 RaisedButton(
                   onPressed: () {
-                    print('LOGIN BUTTON CLICKED');
+                    //print('LOGIN BUTTON CLICKED');
                     if (_formKey.currentState!.validate()) {
                       widget.verifyOTP(_otp);
                     }

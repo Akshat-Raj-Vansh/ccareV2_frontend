@@ -98,27 +98,27 @@ class _HubPatientInfoState extends State<HubPatientInfo> {
           if (state is TokenLoadedState) {
             log('LOG > doctor_hub.dart > 153 > state: ${state.toString()}');
             token = state.token;
-            print("Inside TokensLoaded State");
-            print(token);
+            //print("Inside TokensLoaded State");
+            //print(token);
           }
 
           return _buildPatientLoadedUI(context);
         }, listener: (context, state) async {
           // if (state is LoadingState) {
-          //   print("Loading State Called");
+          //   //print("Loading State Called");
           //   _showLoader();
           // } else
           log('LOG > doctor_hub.dart > 165 > state: ${state.toString()}');
           if (state is ErrorState) {
-            print("Error State Called HUB PATIENT");
+            //print("Error State Called HUB PATIENT");
             // // _hideLoader();
           } else if (state is TokenLoadedState) {
             token = state.token;
-            print("Inside TokensLoaded State");
-            print(token);
+            //print("Inside TokensLoaded State");
+            //print(token);
           } else if (state is AcceptState) {
             // // _hideLoader();
-            print("Accept State Called");
+            //print("Accept State Called");
             await showDialog(
                   context: context,
                   builder: (context) => AlertDialog(

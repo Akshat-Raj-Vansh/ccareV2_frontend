@@ -137,7 +137,7 @@ class ECG {
   }
 
   Map<String, dynamic> toMap() {
-    print(ecg_type.toString().split('.')[1]);
+    //print(ecg_type.toString().split('.')[1]);
     return {
       'ecg_time': ecg_time == "" ? "nill" : ecg_time,
       'ecg_type': ecg_type.toString().split('.')[1],

@@ -38,7 +38,7 @@ class HomeScreenSpoke extends StatefulWidget {
 }
 
 class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
-  dynamic currentState = NormalState;
+  dynamic currentState;
   String token;
   List<PatientListInfo> _patients = [];
   List<PatientListInfo> _requests = [];
@@ -56,7 +56,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
 
   // Future<loc.Location> _getLocation() async {
   //   lloc.LocationData _locationData = await lloc.Location().getLocation();
-  //   print(_locationData.latitude.toString() +
+  //   //print(_locationData.latitude.toString() +
   //       "," +
   //       _locationData.longitude.toString());
   //   loc.Location _location = loc.Location(
@@ -110,13 +110,13 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
             //  // _hideLoader();
             currentState = PatientsLoaded;
             _patients = state.patients;
-            print(_patients);
+            //print(_patients);
           }
           if (state is RequestsLoaded) {
             //  // _hideLoader();
             currentState = RequestsLoaded;
             _requests = state.req;
-            print(_requests);
+            //print(_requests);
           }
           // if (state is TokenLoadedState) {
           //   token = state.token;
@@ -142,10 +142,10 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
           //   }
           // }
 
-          if (state is NormalState) {
-            //   // _hideLoader();
-            currentState = NormalState;
-          }
+          // if (state is NormalState) {
+          //     // _hideLoader();
+          //   currentState = NormalState;
+          // }
           if (currentState == null)
             return Container(
               color: Colors.white,
@@ -154,9 +154,9 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
         },
         listener: (context, state) async {
           if (state is LoadingState) {
-            print("Loading State Called Doctor Spoke");
+            //print("Loading State Called Doctor Spoke");
             log('LOG > doctor_spoke.dart > 197 > state: ${state.toString()}');
-            //      _showLoader();
+                 _showLoader();
           } else if (state is TokenLoadedState) {
             token = state.token;
           }
@@ -188,7 +188,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
           //       time: DateTime.now());
           //}
           else if (state is AcceptState) {
-            // _hideLoader();
+            _hideLoader();
             log('LOG > doctor_spoke.dart > 237 > state: ${state.toString()}',
                 time: DateTime.now());
             await showDialog(
@@ -230,7 +230,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
                 ) ??
                 false;
           } else if (state is PatientAccepted) {
-            // _hideLoader();
+            _hideLoader();
             // _emergency = true;
             log('LOG > doctor_spoke.dart > 280 > state: ${state.toString()}',
                 time: DateTime.now());
@@ -242,9 +242,9 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
               });
             //   CubitProvider.of<MainCubit>(context).fetchEmergencyDetails();
           } else if (state is ErrorState) {
-            //   // _hideLoader();
+              _hideLoader();
             // _emergency = true;
-            print(state.error);
+            //print(state.error);
           }
           // else if (state is AllPatientsState) {
           //   log('LOG > doctor_spoke.dart > 284 > state: ${state.toString()}',
@@ -359,7 +359,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
                               'Yes',
                             ),
                           ),
-                        ],
+                        ]
                       ),
                     ) ??
                     false;
@@ -460,8 +460,15 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
                     itemCount: _requests.length,
                     itemBuilder: (BuildContext context, int index) {
                       return InkWell(
-                        onTap: () => CubitProvider.of<MainCubit>(context)
-                            .acceptPatientBySpoke(_requests[index].id),
+                        onTap: () {
+                          
+                          CubitProvider.of<MainCubit>(context)
+                            .acceptPatientBySpoke(_requests[index].id);
+                            setState(() {
+                              
+                            _requests.removeAt(index);
+                          });
+                            },
                         child: ListTile(
                             leading: Icon(Icons.person),
                             title: Text(

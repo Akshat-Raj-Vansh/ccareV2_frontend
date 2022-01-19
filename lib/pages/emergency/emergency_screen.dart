@@ -35,7 +35,7 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
   @override
   void initState() {
     super.initState();
-    print("Inside Emergenecy Screen initState");
+    //print("Inside Emergenecy Screen initState");
     _getLocations();
     _patientLocation = LatLng(40, 23);
     _doctorLocation = LatLng(100, 100);
@@ -148,8 +148,8 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
     return CubitConsumer<MainCubit, MainState>(
       listener: (context, state) {
         if (state is PatientAccepted) {
-          print("patient arrived state");
-          print(state.location);
+          //print("patient arrived state");
+          //print(state.location);
           _patientLocation =
               LatLng(state.location.latitude, state.location.longitude);
           _addPatientMarker();
@@ -157,7 +157,7 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
           _showMessage("Patient Accepted");
         }
         if (state is DoctorAccepted) {
-          print("doctor accepted state");
+          //print("doctor accepted state");
           _doctorLocation =
               LatLng(state.location.latitude, state.location.longitude);
           _addDoctorMarker();
@@ -165,7 +165,7 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
           // _showMessage("Doctor Accepted");
         }
         if (state is DriverAccepted) {
-          print("driver accepted state");
+          //print("driver accepted state");
           _driverLocation =
               LatLng(state.location.latitude, state.location.longitude);
           _addDriverMarker();
@@ -176,7 +176,7 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
       builder: (context, state) {
         if (state is DetailsLoaded) {
           details = state.eDetails;
-          print("Details $details");
+          //print("Details $details");
           if (details != null) {
             if (details.patientDetails != null) {
               _patientLocation = LatLng(

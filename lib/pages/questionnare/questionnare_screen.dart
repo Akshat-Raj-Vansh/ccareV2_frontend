@@ -148,9 +148,9 @@ class _SelfAssessmentState extends State<SelfAssessment> {
 
   Future<loc.Location> _getLocation() async {
     lloc.LocationData _locationData = await lloc.Location().getLocation();
-    print(_locationData.latitude.toString() +
-        "," +
-        _locationData.longitude.toString());
+    //print(_locationData.latitude.toString() +
+        // "," +
+        // _locationData.longitude.toString());
     loc.Location _location = loc.Location(
         latitude: _locationData.latitude, longitude: _locationData.longitude);
     return _location;
@@ -178,7 +178,7 @@ class _SelfAssessmentState extends State<SelfAssessment> {
                   separatorBuilder: (context, index) => SizedBox(height: 20),
                   itemBuilder: (context, index) {
                     if (display[index].status) {
-                      print("cmp");
+                      //print("cmp");
                       return Column(children: [
                         Align(
                           alignment: Alignment.topLeft,
@@ -212,7 +212,7 @@ class _SelfAssessmentState extends State<SelfAssessment> {
                                                 style: styles)))))
                       ]);
                     }
-                    print("here");
+                    //print("here");
                     var check = List<bool>.generate(
                         display[index].options.length, (index) => false);
                     var options =
@@ -234,7 +234,7 @@ class _SelfAssessmentState extends State<SelfAssessment> {
                                   answers = indexes
                                       .map((e) => display[index].options[e])
                                       .toList();
-                                  print(answers.join(','));
+                                  //print(answers.join(','));
                                   try {
                                     display.add(widget.questions.firstWhere(
                                         (element) =>
@@ -242,7 +242,7 @@ class _SelfAssessmentState extends State<SelfAssessment> {
                                                 display[index].question &&
                                             element.when == answers.join(',')));
                                   } catch (e) {
-                                    print(e);
+                                    //print(e);
                                   } //think about the when logic incase
                                 } else if (display[index].options[i ~/ 2] !=
                                     "next") {
@@ -287,21 +287,21 @@ class _SelfAssessmentState extends State<SelfAssessment> {
                                               display[index].question &&
                                           element.when ==
                                               display[index].options[i ~/ 2]));
-                                  print(display.last.question);
+                                  //print(display.last.question);
 
                                   if (display.last.node_type ==
                                       NodeType.RESULT) {
-                                    print("INSIDE");
+                                    //print("INSIDE");
                                     if (display.last.options[0] ==
                                         "EMERGENCY") {
-                                      print("Inside");
+                                      //print("Inside");
                                       _showAmbRequired();
                                     }
                                   }
                                 } catch (e) {
-                                  print(e);
+                                  //print(e);
                                 }
-                                print(display.length);
+                                //print(display.length);
                               });
                             }
                           },

@@ -14,7 +14,7 @@ void main() async {
   var startPage = await CompositionRoot.start();
   await Firebase.initializeApp();
   await NotificationController.createChannels();
-  print(await NotificationController.getFCMToken);
+  //print(await NotificationController.getFCMToken);
   runApp(MyApp(startPage));
 }
 

@@ -31,11 +31,11 @@ class MainAPI extends IMainAPI {
   MainAPI(this._client, this.baseUrl);
   transformError(Map map) {
     var contents = map["error"] ?? map['errors'];
-    print(contents);
+    //print(contents);
     if (contents is String) return contents;
     String errStr = "ERRORS";
     (contents as Map<dynamic, dynamic>).forEach((key, value) {
-      print("${key} : ${value}\n");
+      //print("${key} : ${value}\n");
     });
 
     return errStr;
@@ -53,11 +53,11 @@ class MainAPI extends IMainAPI {
     log('DATA > main_api.dart > FUNCTION_NAME > 53 > response.body: ${response.body}');
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
-      print(transformError(map));
+      //print(transformError(map));
       return Result.error(transformError(map));
     }
     dynamic json = jsonDecode(response.body);
-    print('@main_api.dart/getStatus json: $json');
+    //print('@main_api.dart/getStatus json: $json');
     var result = json["message"] as String;
     return Result.value(result);
   }
@@ -75,11 +75,11 @@ class MainAPI extends IMainAPI {
     log('LOG > main_api.dart > fetchPatientReportingTime > 74 > response.body: ${response.body}');
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
-      print(transformError(map));
+      //print(transformError(map));
       return Result.error(transformError(map));
     }
     dynamic json = jsonDecode(response.body);
-    print('@main_api.dart/getStatus json: $json');
+    //print('@main_api.dart/getStatus json: $json');
     var result = json["msg"] as String;
     return Result.value(result);
   }
@@ -96,7 +96,7 @@ class MainAPI extends IMainAPI {
     var response = await _client.get(Uri.parse(endpoint), headers: header);
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
-      print(transformError(map));
+      //print(transformError(map));
       return Result.error(transformError(map));
     }
     dynamic report = jsonDecode(response.body)['report'];
@@ -114,11 +114,11 @@ class MainAPI extends IMainAPI {
     var response = await _client.get(Uri.parse(endpoint), headers: header);
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
-      print(transformError(map));
+      //print(transformError(map));
       return Result.error(transformError(map));
     }
     dynamic json = jsonDecode(response.body);
-    print(json);
+    //print(json);
     var result = json["questions"] as List;
 
     return Result.value(result
@@ -130,9 +130,9 @@ class MainAPI extends IMainAPI {
   @override
   Future<Result<String>> emergencyRequest(
       Token token, Emergency emergency) async {
-    print("Emergency Notification Send");
+    //print("Emergency Notification Send");
     String endpoint = baseUrl + "/emergency/patient/notify";
-    print(endpoint);
+    //print(endpoint);
     var header = {
       "Content-Type": "application/json",
       "Authorization": token.value
@@ -143,9 +143,9 @@ class MainAPI extends IMainAPI {
       body: emergency.toJson(),
     );
     if (response.statusCode != 200) {
-      print("error");
+      //print("error");
       Map map = jsonDecode(response.body);
-      print(transformError(map));
+      //print(transformError(map));
       return Result.error(transformError(map));
     }
     dynamic json = jsonDecode(response.body);
@@ -161,7 +161,7 @@ class MainAPI extends IMainAPI {
     var ans = assessment
         ?.map((e) => {"question": e.question, "answer": e.answers})
         .toList();
-    print(ans);
+    //print(ans);
     var body = {
       "latitude": location.latitude,
       'longitude': location.longitude,
@@ -179,9 +179,9 @@ class MainAPI extends IMainAPI {
       body: jsonEncode(body),
     );
     if (response.statusCode != 200) {
-      print("error");
+      //print("error");
       Map map = jsonDecode(response.body);
-      print(transformError(map));
+      //print(transformError(map));
       return Result.error(transformError(map));
     }
     dynamic json = jsonDecode(response.body);
@@ -195,17 +195,17 @@ class MainAPI extends IMainAPI {
       {String? patientID}) async {
     String endpoint =
         baseUrl + "/emergency/fetchEmergencyDetails?patientID=$patientID";
-    print("Fetch Emergency Details");
+    //print("Fetch Emergency Details");
     var header = {
       "Content-Type": "application/json",
       "Authorization": token.value
     };
     var response = await _client.get(Uri.parse(endpoint), headers: header);
-    print(response.statusCode);
-    print(response.body);
+    //print(response.statusCode);
+    //print(response.body);
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
-      print(transformError(map));
+      //print(transformError(map));
       return Result.error(transformError(map));
     }
     dynamic json = jsonDecode(response.body);
@@ -220,19 +220,19 @@ class MainAPI extends IMainAPI {
       "Authorization": token.value
     };
     var response = await _client.get(Uri.parse(endpoint), headers: header);
-    print(
-        'LOG > main_api.dart > fetchPatientReport > 202 > response.statusCode: ${response.statusCode}');
-    print(
-        'LOG > main_api.dart > fetchPatientReport > 203 > response.body: ${response.body}');
+    //print(
+        // 'LOG > main_api.dart > fetchPatientReport > 202 > response.statusCode: ${response.statusCode}');
+    //print(
+        // 'LOG > main_api.dart > fetchPatientReport > 203 > response.body: ${response.body}');
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
-      print(transformError(map));
+      //print(transformError(map));
       return Result.error(transformError(map));
     }
     if (response.body == null)
       return Result.error('No report available currently!');
     dynamic currentReport = jsonDecode(response.body)['currentReport'];
-    print("Report $currentReport");
+    //print("Report $currentReport");
     if (currentReport == null) return currentReport;
     dynamic previousReport = jsonDecode(response.body)['previousReports'];
     if (previousReport == null)
@@ -243,7 +243,7 @@ class MainAPI extends IMainAPI {
         "previousReport": null
       });
     // if (currentReport['ecg'] == null) {
-    //   print('HELLO WORLD');
+    //   //print('HELLO WORLD');
     //   return Result.value({
     //     "currentReport": treat.TreatmentReport.initialize(),
     //     "previousReport":
@@ -272,7 +272,7 @@ class MainAPI extends IMainAPI {
     log('DATA > main_api.dart > FUNCTION_NAME > 270 > response.body: ${response.body}');
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
-      print(transformError(map));
+      //print(transformError(map));
       return Result.error(transformError(map));
     }
 
@@ -282,7 +282,7 @@ class MainAPI extends IMainAPI {
         (jsonDecode(response.body)['history'] as List)
             .map((data) => treat.TreatmentReport.fromJson(jsonEncode(data)))
             .toList();
-    print(report);
+    //print(report);
     return Result.value(report);
   }
 
@@ -298,14 +298,14 @@ class MainAPI extends IMainAPI {
     log('LOG > main_api.dart > fetchPatientExamReport > 270 > response.body: ${response.body}');
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
-      print(transformError(map));
+      //print(transformError(map));
       return Result.error(transformError(map));
     }
     dynamic report = jsonDecode(response.body)['treatment'];
     log('LOG > main_api.dart > fetchPatientExamReport > 277 > report: ${report}');
     var init = Examination.initialize();
-    print('NTR REPORT');
-    print(report);
+    //print('NTR REPORT');
+    //print(report);
     if (report['normalTreatment']['lmwh'] == null) return Result.value(init);
     return Result.value(Examination.fromJson(jsonEncode(report)));
 
@@ -315,7 +315,7 @@ class MainAPI extends IMainAPI {
     //       : Examination.initialize());
     // } catch (e) {
     //   var res = Examination.initialize();
-    //   print('@main_api/fetchPatientExamReport res: ${res.toString()}');
+    //   //print('@main_api/fetchPatientExamReport res: ${res.toString()}');
     //   return Result.value(res);
     // }
     // return Result.value(Examination.fromJson(jsonEncode(report)));
@@ -334,7 +334,7 @@ class MainAPI extends IMainAPI {
         headers: header, body: jsonEncode({"patID": patient.value}));
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
-      print(transformError(map));
+      //print(transformError(map));
       return Result.error(transformError(map));
     }
     dynamic json = jsonDecode(response.body);
@@ -351,12 +351,12 @@ class MainAPI extends IMainAPI {
     var response = await _client.get(Uri.parse(endpoint), headers: header);
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
-      print(transformError(map));
+      //print(transformError(map));
       return Result.error(transformError(map));
     }
     dynamic json = jsonDecode(response.body)["details"] as List;
     if (json.length == 0) return Result.error("No patients found");
-    print(json);
+    //print(json);
     return Result.value(
         json.map<EDetails>((e) => EDetails.fromJson(jsonEncode(e))).toList());
   }
@@ -371,12 +371,12 @@ class MainAPI extends IMainAPI {
     var response = await _client.get(Uri.parse(endpoint), headers: header);
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
-      print(transformError(map));
+      //print(transformError(map));
       return Result.error(transformError(map));
     }
     dynamic json = jsonDecode(response.body)["details"] as List;
     if (json.length == 0) return Result.error("No patients found");
-    print(json);
+    //print(json);
     return Result.value(
         json.map<EDetails>((e) => EDetails.fromJson(jsonEncode(e))).toList());
   }
@@ -393,11 +393,11 @@ class MainAPI extends IMainAPI {
     };
     var response = await _client.post(Uri.parse(endpoint),
         headers: header, body: jsonEncode({"patID": patient.value}));
-    print("Response: " + response.body);
+    //print("Response: " + response.body);
     if (response.statusCode != 200) {
-      print("error");
+      //print("error");
       Map map = jsonDecode(response.body);
-      print(transformError(map));
+      //print(transformError(map));
       return Result.error(transformError(map));
     }
     dynamic json = jsonDecode(response.body);
@@ -421,7 +421,7 @@ class MainAPI extends IMainAPI {
     log('LOG > main_api.dart > 361 > response.body: ${response.body}');
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
-      print(transformError(map));
+      //print(transformError(map));
       return Result.error(transformError(map));
     }
     dynamic json = jsonDecode(response.body);
@@ -439,7 +439,7 @@ class MainAPI extends IMainAPI {
     var response = await _client.post(Uri.parse(endpoint), headers: header);
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
-      print(transformError(map));
+      //print(transformError(map));
       return Result.error(transformError(map));
     }
 
@@ -459,17 +459,17 @@ class MainAPI extends IMainAPI {
       "Authorization": token.value
     };
     var response = await _client.get(Uri.parse(endpoint), headers: header);
-    //print the name of the function
-    print("getAllPatientRequests");
-    print(response.body);
-    print(response.statusCode);
+    ////print the name of the function
+    //print("getAllPatientRequests");
+    //print(response.body);
+    //print(response.statusCode);
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
-      print(transformError(map));
+      //print(transformError(map));
       return Result.error(transformError(map));
     }
     dynamic json = jsonDecode(response.body)['patients'];
-    print(json.toString());
+    //print(json.toString());
     if (json == null) return Result.error('No requests');
     return Result.value(json
         .map<PatientListInfo>(
@@ -487,13 +487,13 @@ class MainAPI extends IMainAPI {
     var response = await _client.get(Uri.parse(endpoint), headers: header);
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
-      print(transformError(map));
+      //print(transformError(map));
       return Result.error(transformError(map));
     }
     dynamic json = jsonDecode(response.body)["doctors"] as List;
 
     List<HubInfo> hubDoctors = json.map<HubInfo>((data) {
-      print(data);
+      //print(data);
       return HubInfo.fromJson(jsonEncode(data));
     }).toList();
 
@@ -503,7 +503,7 @@ class MainAPI extends IMainAPI {
   @override
   Future<Result<String>> savePatientReport(
       Token token, treat.TreatmentReport report) async {
-    print("Update Patient Report");
+    //print("Update Patient Report");
     String endpoint = baseUrl + "/treatment/spoke/updateReport";
     var header = {
       "Content-Type": "application/json",
@@ -512,10 +512,10 @@ class MainAPI extends IMainAPI {
     var response = await _client.post(Uri.parse(endpoint),
         headers: header, body: report.toJson());
 
-    print(response.body);
+    //print(response.body);
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
-      print(transformError(map));
+      //print(transformError(map));
       return Result.error(transformError(map));
     }
     dynamic json = jsonDecode(response.body);
@@ -534,7 +534,7 @@ class MainAPI extends IMainAPI {
         headers: header, body: examination.toJson());
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
-      print(transformError(map));
+      //print(transformError(map));
       return Result.error(transformError(map));
     }
     dynamic json = jsonDecode(response.body);
@@ -550,11 +550,11 @@ class MainAPI extends IMainAPI {
     };
     var response = await _client.post(Uri.parse(endpoint),
         headers: header, body: jsonEncode({'status': status}));
-    print(response.statusCode);
-    print(response.body);
+    //print(response.statusCode);
+    //print(response.body);
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
-      print(transformError(map));
+      //print(transformError(map));
       return Result.error(transformError(map));
     }
     dynamic json = jsonDecode(response.body);
@@ -570,11 +570,11 @@ class MainAPI extends IMainAPI {
     };
     var response = await _client.post(Uri.parse(endpoint),
         headers: header, body: jsonEncode({'hubDocID': docID}));
-    print(response.statusCode);
-    print(response.body);
+    //print(response.statusCode);
+    //print(response.body);
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
-      print(transformError(map));
+      //print(transformError(map));
       return Result.error(transformError(map));
     }
     dynamic json = jsonDecode(response.body);
@@ -584,8 +584,8 @@ class MainAPI extends IMainAPI {
   @override
   Future<Result<String>> uploadImage(
       Token token, XFile image, String type) async {
-    print("Upload Image");
-    print(image.name);
+    //print("Upload Image");
+    //print(image.name);
     String endpoint = baseUrl + "/treatment/spoke/uploadECG";
     final header = {
       // "Content-Type": "application/json",
@@ -601,10 +601,10 @@ class MainAPI extends IMainAPI {
     var response = await request.send();
 
     if (response.statusCode != 200) {
-      print("error");
+      //print("error");
       return Result.error("Server Error");
     }
-    print("Image Uploaded ,${response.statusCode}");
+    //print("Image Uploaded ,${response.statusCode}");
     return Result.value("Image Uploaded");
   }
 
@@ -617,11 +617,11 @@ class MainAPI extends IMainAPI {
     };
     var response = await _client.post(Uri.parse(endpoint),
         headers: header, body: jsonEncode({'patientID': patientID}));
-    print(response.statusCode);
-    print(response.bodyBytes);
+    //print(response.statusCode);
+    //print(response.bodyBytes);
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
-      print(transformError(map));
+      //print(transformError(map));
       return Result.error(transformError(map));
     }
 
@@ -637,11 +637,11 @@ class MainAPI extends IMainAPI {
     };
     var response = await _client.post(Uri.parse(endpoint),
         headers: header, body: jsonEncode({}));
-    print('@main_api.dart/newReport response status: ${response.statusCode}');
-    print('@main_api.dart/newReport response body: ${response.body}');
+    //print('@main_api.dart/newReport response status: ${response.statusCode}');
+    //print('@main_api.dart/newReport response body: ${response.body}');
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
-      print(transformError(map));
+      //print(transformError(map));
       return Result.error(transformError(map));
     }
     dynamic json = jsonDecode(response.body);
@@ -657,20 +657,20 @@ class MainAPI extends IMainAPI {
       "Authorization": token.value
     };
     var response = await _client.get(Uri.parse(endpoint), headers: header);
-    print(
-        '@main_api.dart/getAllMessages response status: ${response.statusCode}');
-    print('@main_api.dart/getAllMessages response body: ${response.body}');
-    // print(response.statusCode);
+    //print(
+        // '@main_api.dart/getAllMessages response status: ${response.statusCode}');
+    //print('@main_api.dart/getAllMessages response body: ${response.body}');
+    // //print(response.statusCode);
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
-      print(transformError(map));
+      //print(transformError(map));
       return Result.error(transformError(map));
     }
     if (jsonDecode(response.body)["messages"] == null ||
         jsonDecode(response.body)["messages"].length == 0)
       return Result.error("error");
     dynamic json = jsonDecode(response.body)["messages"] as List;
-    print(json.last);
+    //print(json.last);
     return Result.value(json
         .map<Message>((message) => Message.fromJson(jsonEncode(message)))
         .toList());

@@ -34,9 +34,9 @@ class HomePageAdapter extends IHomePageAdapter {
 
   @override
   void loadHomeUI(BuildContext context, UserType userType) {
-    print('HOME PAGE ADAPTER/LOAD HOME UI');
-    print('USERTYPE:');
-    print(userType.toString());
+    //print('HOME PAGE ADAPTER/LOAD HOME UI');
+    //print('USERTYPE:');
+    //print(userType.toString());
     if (userType == UserType.PATIENT)
       Navigator.pushAndRemoveUntil(
           context,

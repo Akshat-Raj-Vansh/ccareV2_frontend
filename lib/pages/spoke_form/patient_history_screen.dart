@@ -66,7 +66,7 @@ class _PatientReportHistoryScreenState
   }
 
   _fetchReport() async {
-    print("Fetching patient report");
+    //print("Fetching patient report");
     await widget.mainCubit.fetchPatientReportHistory();
   }
 
@@ -98,13 +98,13 @@ class _PatientReportHistoryScreenState
       },
       listener: (context, state) {
         if (state is PatientReportHistoryFetched) {
-          print("Patient TreatmentReport History Fetched state Called");
+          //print("Patient TreatmentReport History Fetched state Called");
           reports = state.reports;
           // _hideLoader();
         }
 
         if (state is NoReportState) {
-          print('No Treatment Report State Called');
+          //print('No Treatment Report State Called');
           // _hideLoader();
         }
       },
@@ -120,7 +120,7 @@ class _PatientReportHistoryScreenState
         actions: [
           IconButton(
             onPressed: () async {
-              print('Refresh button pressed');
+              //print('Refresh button pressed');
               _fetchReport();
             },
             icon: Icon(Icons.refresh),

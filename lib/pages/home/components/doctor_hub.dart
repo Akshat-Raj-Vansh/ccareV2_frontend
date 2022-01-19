@@ -143,7 +143,7 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
           if (state is HubPatientsLoaded) {
             log('LOG > doctor_hub.dart > 139 > state: ${state.toString()}');
             currentState = state;
-            print(state);
+            //print(state);
             eDetails = state.details;
             patientsLoaded = true;
           }
@@ -157,8 +157,8 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
           if (state is TokenLoadedState) {
             log('LOG > doctor_hub.dart > 153 > state: ${state.toString()}');
             token = state.token;
-            print("Inside TokensLoaded State");
-            print(token);
+            //print("Inside TokensLoaded State");
+            //print(token);
           }
           if (currentState == null) {
             return  Center(
@@ -169,12 +169,12 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
           return _buildUI(context);
         }, listener: (context, state) async {
           // if (state is LoadingState) {
-          //   print("Loading State Called");
+          //   //print("Loading State Called");
           //   _showLoader();
           // } else
           log('LOG > doctor_hub.dart > 165 > state: ${state.toString()}');
           if (state is ErrorState) {
-            print("Error State Called HUB DOCTORr");
+            //print("Error State Called HUB DOCTORr");
             // // _hideLoader();
           } else if (state is HubPatientsLoaded) {
             eDetails = state.details;
@@ -188,11 +188,11 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
             widget.mainCubit.fetchHubRequests();
           } else if (state is TokenLoadedState) {
             token = state.token;
-            print("Inside TokensLoaded State");
-            print(token);
+            //print("Inside TokensLoaded State");
+            //print(token);
           } else if (state is AcceptState) {
             // // _hideLoader();
-            print("Accept State Called");
+            //print("Accept State Called");
             await showDialog(
                   context: context,
                   builder: (context) => AlertDialog(
@@ -236,7 +236,7 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
             //Create new state PatientAccepted by Hub
           } else if (state is PatientAccepted) {
             // // _hideLoader();
-            print("Inside patient accepted by Doctor state");
+            //print("Inside patient accepted by Doctor state");
             widget.mainCubit.fetchHubPatientDetails();
           }
         }));

@@ -98,7 +98,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
   }
 
   _fetchReport() async {
-    print("Fetching patient  exam report");
+    //print("Fetching patient  exam report");
     await widget.mainCubit.fetchPatientExamReport();
   }
 
@@ -111,11 +111,11 @@ class _PatientExamScreenState extends State<PatientExamScreen>
         if (state is PatientExamReportFetched) {
           log('LOG > patient_exam_screen.dart > 112 > state: ${state.toString()}');
           editedReport = state.ereport;
-          print('DATA > patient_exam_screen.dart > 113 > state: ${state}');
-          print(editedReport);
+          //print('DATA > patient_exam_screen.dart > 113 > state: ${state}');
+          //print(editedReport);
           log('LOG > patient_exam_screen.dart > 116 > editedReport: ${editedReport}');
           noReport = false;
-          print(widget.patientDetails.toString());
+          //print(widget.patientDetails.toString());
           //  // _hideLoader();
         }
         if (state is NoReportState) {
@@ -130,7 +130,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
           editedReport = state.ereport;
           log('LOG > patient_exam_screen.dart > 116 > editedReport: ${editedReport}');
           noReport = false;
-          print(widget.patientDetails.toString());
+          //print(widget.patientDetails.toString());
           //  // _hideLoader();
         }
         if (state is EditPatientExamReport) {
@@ -146,7 +146,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
         }
         if (state is PatientExamReportSaved) {
           log('LOG > patient_exam_screen.dart > 131 > state: ${state.toString()}');
-          print(state.msg);
+          //print(state.msg);
           //     // _hideLoader();
           _showMessage('Report Saved');
           editReport = false;
@@ -154,7 +154,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
         }
         if (state is NoReportState) {
           log('LOG > patient_exam_screen.dart > 140 > state: ${state.toString()}');
-          print('No Report State Called');
+          //print('No Report State Called');
 //// _hideLoader();
           noReport = true;
         }
@@ -175,8 +175,8 @@ class _PatientExamScreenState extends State<PatientExamScreen>
             editReport
                 ? TextButton(
                     onPressed: () async {
-                      print('before saving');
-                      print(editedReport.toString());
+                      //print('before saving');
+                      //print(editedReport.toString());
                       widget.mainCubit.savePatientExamReport(editedReport);
                     },
                     child: Text(
@@ -188,7 +188,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
                   )
                 : TextButton(
                     onPressed: () async {
-                      print('Edit Report Button Pressed');
+                      //print('Edit Report Button Pressed');
                       widget.mainCubit.editPatientExamReport();
                     },
                     child: Text(
@@ -200,7 +200,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
                   ),
           IconButton(
             onPressed: () async {
-              print('Refresh button pressed');
+              //print('Refresh button pressed');
               //  _fetchReport();
             },
             icon: Icon(Icons.refresh),

@@ -47,7 +47,7 @@ class _AuthPageState extends State<AuthPage> {
   @override
   void initState() {
     super.initState();
-    print('AUTH PAGE');
+    //print('AUTH PAGE');
     FirebaseMessaging.instance.getToken().then((value) => _fcmToken = value);
   }
 
@@ -83,26 +83,26 @@ class _AuthPageState extends State<AuthPage> {
                     },
                     listener: (context, state) {
                       if (state is LoadingState) {
-                        print("Loading State Called Auth");
+                        //print("Loading State Called Auth");
                         //    _showLoader();
                       } else if (state is LoginSuccessState) {
-                        print("Login Success State Called");
+                        //print("Login Success State Called");
                         //    // _hideLoader();
-                        print(widget.userType);
+                        //print(widget.userType);
                         state.details.newUser
                             ? widget.pageAdatper
                                 .onAuthSuccess(context, widget.userType)
                             : widget.pageAdatper
                                 .onLoginSuccess(context, widget.userType);
-                        print(state.details.toString());
+                        //print(state.details.toString());
                       } else if (state is PhoneVerificationState) {
                         //    // _hideLoader();
-                        print("PhoneVerification State Called");
+                        //print("PhoneVerification State Called");
                         //    _showLoader();
                         _phone = state.phone;
                         _verifyPhone(_phone);
                       } else if (state is OTPVerificationState) {
-                        print("OTP State Called");
+                        //print("OTP State Called");
                         //  // _hideLoader();
 
                         _controller.nextPage(
@@ -111,8 +111,8 @@ class _AuthPageState extends State<AuthPage> {
                       } else {
                         //   // _hideLoader();
                         if (state is ErrorState) {
-                          print("Error State Called");
-                          print(state.error);
+                          //print("Error State Called");
+                          //print(state.error);
                           _showMessage(state.error);
                         }
                       }
@@ -123,7 +123,7 @@ class _AuthPageState extends State<AuthPage> {
                   child: Container(),
                   listener: (context, state) {
                     if (state is profileState.LoadingState) {
-                      print("LoadingStateCalled");
+                      //print("LoadingStateCalled");
                       //  _showLoader();
                     } else if (state is profileState.AddProfileState) {
                       widget.pageAdatper
@@ -131,8 +131,8 @@ class _AuthPageState extends State<AuthPage> {
                     } else {
                       //   // _hideLoader();
                       if (state is profileState.ErrorState) {
-                        print("ErrorState");
-                        print(state.error);
+                        //print("ErrorState");
+                        //print(state.error);
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           backgroundColor: Theme.of(context).accentColor,
                           content: Text(
@@ -233,8 +233,8 @@ class _AuthPageState extends State<AuthPage> {
       );
 
   _verifyPhone(String phone) async {
-    print('INSIDE VERIFY PHONE');
-    print("AuthPage: $_phone");
+    //print('INSIDE VERIFY PHONE');
+    //print("AuthPage: $_phone");
     String _msg = "VERIFICATION INCOMPLETE";
     try {
       await FirebaseAuth.instance.verifyPhoneNumber(
@@ -277,9 +277,9 @@ class _AuthPageState extends State<AuthPage> {
   _verifyOTP(String otp) async {
     // _showLoader();
     String _msg = "OTP VERIFICATION INCOMPLETE";
-    print('INSIDE VERIFY OTP');
-    print('USERTYPE:');
-    print(widget.userType);
+    //print('INSIDE VERIFY OTP');
+    //print('USERTYPE:');
+    //print(widget.userType);
     try {
       await FirebaseAuth.instance
           .signInWithCredential(PhoneAuthProvider.credential(
@@ -291,12 +291,12 @@ class _AuthPageState extends State<AuthPage> {
               widget.userType, _fcmToken, Token(value.user.uid.toString())));
         } else {
           _msg = "VERIFICATION FAILED. INVALID OTP.";
-          print('INVALID OTP');
+          //print('INVALID OTP');
           // _hideLoader();
           _showMessage(_msg);
         }
       }).catchError((err) {
-        print("INVALID OTP 2");
+        //print("INVALID OTP 2");
         _showMessage('WRONG OTP ENTERED');
       });
     } catch (e) {

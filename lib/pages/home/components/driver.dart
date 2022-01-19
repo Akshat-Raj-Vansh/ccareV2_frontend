@@ -107,9 +107,9 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
 
   _getLocation() async {
     lloc.LocationData _locationData = await lloc.Location().getLocation();
-    print(_locationData.latitude.toString() +
-        "," +
-        _locationData.longitude.toString());
+    //print(_locationData.latitude.toString() +
+        // "," +
+        // _locationData.longitude.toString());
 
     _userLocation = LatLng(_locationData.latitude, _locationData.longitude);
 
@@ -182,7 +182,7 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
           if (state is DetailsLoaded) {
             currentState = state;
             eDetails = state.eDetails;
-            print("Locations $eDetails");
+            //print("Locations $eDetails");
             if (eDetails != null) {
               if (eDetails.patientDetails != null) {
                 _patientAccepted = true;
@@ -210,11 +210,11 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
           return _buildUI(context);
         }, listener: (context, state) async {
           if (state is LoadingState) {
-            print("Loading State Called Driver");
+            //print("Loading State Called Driver");
             //    _showLoader();
           } else if (state is AcceptState) {
             // _hideLoader();
-            print("Accept State Called");
+            //print("Accept State Called");
             await showDialog(
                   context: context,
                   builder: (context) => AlertDialog(
@@ -242,7 +242,7 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
                       TextButton(
                         onPressed: () {
                           // // _hideLoader();
-                          // print("inside");
+                          // //print("inside");
                           CubitProvider.of<MainCubit>(
                                   scaffoldKey.currentContext)
                               .acceptPatientByDriver(state.patientID);
@@ -258,11 +258,11 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
                 false;
           } else if (state is PatientAccepted) {
             // _hideLoader();
-            // print("patient arrived state");
-            // print(state.location);
+            // //print("patient arrived state");
+            // //print(state.location);
             _patientLocation =
                 LatLng(state.location.latitude, state.location.longitude);
-            print(_patientLocation);
+            //print(_patientLocation);
             _addPatientMarker();
             // // _hideLoader()zz;
             CubitProvider.of<MainCubit>(context).fetchEmergencyDetails();
@@ -270,7 +270,7 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
             // _hideLoader();
           } else if (state is DoctorAccepted) {
             // _hideLoader();
-            print("doctor accepted state");
+            //print("doctor accepted state");
             _doctorLocation =
                 LatLng(state.location.latitude, state.location.longitude);
             _addDoctorMarker();
