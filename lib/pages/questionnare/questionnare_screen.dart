@@ -67,7 +67,7 @@ class _SelfAssessmentState extends State<SelfAssessment> {
           leading: widget.from == "homescreen"
               ? IconButton(
                   onPressed: () {
-                    Navigator.of(context).pop();
+                    Navigator.of(context).pop(true);
                   },
                   icon: Icon(Icons.arrow_back, color: kPrimaryColor),
                 )
@@ -116,6 +116,7 @@ class _SelfAssessmentState extends State<SelfAssessment> {
         TextButton(
           onPressed: () async {
             // _hideLoader();
+            Navigator.of(context).pop(true);
             loc.Location location = await _getLocation();
             await widget.cubit
                 .notify("QUESTIONNAIRE", true, location, assessment: display);
@@ -128,6 +129,7 @@ class _SelfAssessmentState extends State<SelfAssessment> {
         TextButton(
           onPressed: () async {
             // _hideLoader();
+            Navigator.of(context).pop(true);
             loc.Location location = await _getLocation();
             await widget.cubit
                 .notify("QUESTIONNAIRE", false, location, assessment: display);

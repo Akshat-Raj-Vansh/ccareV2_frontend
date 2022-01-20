@@ -395,9 +395,9 @@ class MainCubit extends Cubit<MainState> {
     emit(AllHubDoctorsState(result.asValue!.value));
   }
 
-  hubAccepted() async {
-    _startLoading("Hub Accepted");
-    emit(PatientAcceptedHub());
+  spokeStatusFetched() async {
+    //_startLoading("Hub Accepted");
+    emit(StatusFetched(''));
   }
 
   consultHub(String uid, String patientID) async {
@@ -428,7 +428,7 @@ class MainCubit extends Cubit<MainState> {
   }
 
   statusUpdate(String status, {String? patientID}) async {
-    // _startLoading("Updating Status");
+    //_startLoading("Updating Status");
     print('DATA > main_cubit.dart > 399 > Inside statusUpdate');
     final token = await localStore.fetch();
     final result = await api.updateStatus(token, status, patientID);
