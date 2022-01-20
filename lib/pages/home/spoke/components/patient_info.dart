@@ -230,15 +230,51 @@ class _PatientInfoState extends State<PatientInfo> {
                 time: DateTime.now());
             // _hideLoader();
           } else if (state is CaseClosedState) {
-            _showMessage('The Treatment for the Patient has been completed.');
-            setState(() {
-              _emergency = false;
-              _patientAccepted = false;
-              _driverAccepted = false;
-              _hubAccepted = false;
-              _ugt = false;
-              _currentStatus = "NORMAL";
-            });
+            await showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: Text(
+                      'Are you sure?',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16.sp,
+                      ),
+                    ),
+                    content: Text(
+                      'Do you want to close the current treatment session?',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w300,
+                        fontSize: 12.sp,
+                      ),
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(false),
+                        child: Text(
+                          'Cancel',
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () async {
+                          _showMessage(
+                              'The Treatment for the Patient has been completed.');
+                          setState(() {
+                            _emergency = false;
+                            _patientAccepted = false;
+                            _driverAccepted = false;
+                            _hubAccepted = false;
+                            _ugt = false;
+                            _currentStatus = "NORMAL";
+                          });
+                        },
+                        child: Text(
+                          'Yes',
+                        ),
+                      ),
+                    ],
+                  ),
+                ) ??
+                false;
           }
         },
       ),
