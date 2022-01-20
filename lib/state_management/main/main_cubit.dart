@@ -436,7 +436,7 @@ class MainCubit extends Cubit<MainState> {
     emit(DetailsLoaded(result.asValue!.value));
   }
 
-  statusUpdate(String status,String patientID) async {
+  statusUpdate(String status,String? patientID) async {
     _startLoading("Updating Status");
     print('DATA > main_cubit.dart > 399 > Inside statusUpdate');
     final token = await localStore.fetch();

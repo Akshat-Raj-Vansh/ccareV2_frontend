@@ -42,7 +42,7 @@ abstract class IMainAPI {
   Future<Result<String>> savePatientReport(Token token, TreatmentReport report);
   Future<Result<String>> savePatientExamReport(
       Token token, exam.Examination examination);
-  Future<Result<String>> updateStatus(Token token, String status,String patientID);
+  Future<Result<String>> updateStatus(Token token, String status,String? patientID);
   Future<Result<String>> consultHub(Token token, String docID);
   Future<Result<String>> uploadImage(Token token, XFile image, String type);
   Future<Result<XFile>> fetchImage(Token token, String patientID);

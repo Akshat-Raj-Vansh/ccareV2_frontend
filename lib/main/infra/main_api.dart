@@ -543,7 +543,7 @@ class MainAPI extends IMainAPI {
   }
 
   @override
-  Future<Result<String>> updateStatus(Token token, String status,String patientID) async {
+  Future<Result<String>> updateStatus(Token token, String status,String? patientID) async {
     String endpoint = baseUrl + "/emergency/updateStatus";
     var header = {
       "Content-Type": "application/json",
