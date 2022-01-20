@@ -543,14 +543,14 @@ class MainAPI extends IMainAPI {
   }
 
   @override
-  Future<Result<String>> updateStatus(Token token, String status) async {
+  Future<Result<String>> updateStatus(Token token, String status,String patientID) async {
     String endpoint = baseUrl + "/emergency/updateStatus";
     var header = {
       "Content-Type": "application/json",
       "Authorization": token.value
     };
     var response = await _client.post(Uri.parse(endpoint),
-        headers: header, body: jsonEncode({'status': status}));
+        headers: header, body: jsonEncode({'status': status,'patientID':patientID}));
     //print(response.statusCode);
     //print(response.body);
     if (response.statusCode != 200) {

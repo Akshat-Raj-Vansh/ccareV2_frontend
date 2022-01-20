@@ -22,6 +22,7 @@ class UserCubit extends Cubit<UserState> {
 
   login(Credential credential) async {
     _startLoading();
+    
     final result = await userAPI.loginNew(credential);
     if (result == null) print("result is null");
     print('Result: ' + result.toString());

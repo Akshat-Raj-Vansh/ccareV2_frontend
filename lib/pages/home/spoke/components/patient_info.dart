@@ -462,7 +462,7 @@ class _PatientInfoState extends State<PatientInfo> {
 
   _buildStartTreatmentButton() => InkWell(
         onTap: () async {
-          widget.mainCubit.statusUpdate("UGT");
+          widget.mainCubit.statusUpdate("UGT",widget.patientID);
           _currentStatus = "UGT";
           _ugt = true;
         },
