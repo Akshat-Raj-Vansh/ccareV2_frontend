@@ -143,7 +143,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
         title: Text('CardioCare - Patient'),
         backgroundColor: kPrimaryColor,
         actions: [
-          if (!_emergency)
+          if (!_emergency && currentState == QuestionnaireState)
             IconButton(
               onPressed: () async {
                 setState(() {

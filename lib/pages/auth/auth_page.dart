@@ -86,15 +86,15 @@ class _AuthPageState extends State<AuthPage> {
                         //print("Loading State Called Auth");
                         //    _showLoader();
                       } else if (state is LoginSuccessState) {
-                        //print("Login Success State Called");
+                        print("Login Success State Called");
                         //    // _hideLoader();
-                        //print(widget.userType);
+                        print(widget.userType);
                         state.details.newUser
                             ? widget.pageAdatper
                                 .onAuthSuccess(context, widget.userType)
                             : widget.pageAdatper
                                 .onLoginSuccess(context, widget.userType);
-                        //print(state.details.toString());
+                        print(state.details.toString());
                       } else if (state is PhoneVerificationState) {
                         //    // _hideLoader();
                         //print("PhoneVerification State Called");
@@ -245,6 +245,7 @@ class _AuthPageState extends State<AuthPage> {
                 .then((value) async {
               if (value.user != null) {
                 _msg = "VERIFICATION SUCCESSFUL " + value.user.uid;
+                print('auth_page.dart : ' + _msg);
                 CubitProvider.of<UserCubit>(context).login(Credential(
                     _phone,
                     widget.userType,
@@ -286,8 +287,8 @@ class _AuthPageState extends State<AuthPage> {
               verificationId: _verificationCode, smsCode: otp))
           .then((value) async {
         if (value.user != null) {
-          _msg = "VERIFICATION SUCCESSFUL " + value.user.uid;
-          print(_msg);
+          _msg = "VERIFICATION SUCCESSFUL OTP " + value.user.uid;
+          print('auth_page.dart : ' + _msg);
           CubitProvider.of<UserCubit>(context).login(Credential(_phone,
               widget.userType, _fcmToken, Token(value.user.uid.toString())));
         } else {
@@ -299,6 +300,7 @@ class _AuthPageState extends State<AuthPage> {
       }).catchError((err) {
         print(err);
         //print("INVALID OTP 2");
+        print('ERROR: ' + err.toString());
         _showMessage('WRONG OTP ENTERED');
       });
     } catch (e) {
