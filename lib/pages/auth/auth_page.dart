@@ -260,11 +260,11 @@ class _AuthPageState extends State<AuthPage> {
             _showMessage(_msg);
           },
           codeSent: (String verificationID, int resendToken) {
-            setState(() {
-              _msg = "CODE SENT " + verificationID;
-              _verificationCode = verificationID;
-              CubitProvider.of<UserCubit>(context).verifyOTP();
-            });
+            //  setState(() {
+            _msg = "CODE SENT " + verificationID;
+            _verificationCode = verificationID;
+            CubitProvider.of<UserCubit>(context).verifyOTP();
+            // });
           },
           codeAutoRetrievalTimeout: (String verificationID) {},
           timeout: const Duration(seconds: 30));

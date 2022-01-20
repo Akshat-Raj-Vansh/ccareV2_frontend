@@ -22,9 +22,12 @@ class UserCubit extends Cubit<UserState> {
 
   login(Credential credential) async {
     _startLoading();
+    Future.delayed(Duration(milliseconds: 3));
+    print('Inside Login Cubit');
     final result = await userAPI.loginNew(credential);
     if (result == null) print("result is null");
     print('Result: ' + result.toString());
+
     _setResultOfAuthStateNew(result);
   }
 
@@ -36,6 +39,7 @@ class UserCubit extends Cubit<UserState> {
   }
 
   verifyOTP() async {
+    Future.delayed(Duration(milliseconds: 3));
     emit(OTPVerificationState());
   }
 
