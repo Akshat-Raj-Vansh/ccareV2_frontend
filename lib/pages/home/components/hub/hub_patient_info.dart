@@ -167,13 +167,11 @@ class _HubPatientInfoState extends State<HubPatientInfo> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (ctx) => CubitProvider<MainCubit>(
-                      create: (_) => CubitProvider.of<MainCubit>(context),
-                      child: ChatPage(
+                  builder: (ctx) => ChatPage(
                           widget.details.doctorDetails.name,
                           widget.details.doctorDetails.id,
                           widget.details.patientDetails.id,
-                          token))));
+                          token,CubitProvider.of<MainCubit>(context))));
           // widget.mainCubit.getAllHubDoctors();
           // Navigator.push(
           //     context,

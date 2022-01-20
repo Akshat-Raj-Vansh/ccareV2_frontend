@@ -400,11 +400,8 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
                         onTap: () => Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (ctx) => CubitProvider<MainCubit>(
-                              create: (ctx) =>
-                                  CubitProvider.of<MainCubit>(context),
-                              child: PatientInfo(_patients[index].id),
-                            ),
+                            builder: (ctx) =>  PatientInfo(_patients[index].id, CubitProvider.of<MainCubit>(context)),
+                            
                           ),
                         ),
                         child: ListTile(

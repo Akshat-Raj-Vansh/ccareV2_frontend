@@ -108,6 +108,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
     return CubitConsumer<MainCubit, MainState>(
       cubit: widget.mainCubit,
       builder: (_, state) {
+        print("PatientExamScreen builder state: $state");
         if (state is PatientExamReportFetched) {
           log('LOG > patient_exam_screen.dart > 112 > state: ${state.toString()}');
           editedReport = state.ereport;
@@ -125,6 +126,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
         return buildUI();
       },
       listener: (context, state) {
+        print("PatientExamScreen > build > listener > state: ${state.toString()}");
         if (state is PatientExamReportFetched) {
           log('LOG > patient_exam_screen.dart > 112 > state: ${state.toString()}');
           editedReport = state.ereport;

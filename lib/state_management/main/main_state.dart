@@ -206,8 +206,9 @@ class PatientAcceptedHub extends MainState {
 
 class MessagesLoadedState extends MainState {
   final List<Message> messages;
+  // print(messages);
   MessagesLoadedState(this.messages) {
-    //print(messages.last);
+    print(messages.last);
   }
   @override
   List<Object> get props => [messages];

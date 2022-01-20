@@ -1,3 +1,4 @@
+//@dart=2.9
 import 'package:ccarev2_frontend/main/domain/edetails.dart';
 import 'package:ccarev2_frontend/pages/chat/components/chatModel.dart';
 import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
@@ -17,16 +18,17 @@ class ChatPage extends StatefulWidget {
   final String recieverID;
   final String patientID;
   final String token;
-  ChatPage(this.name, this.recieverID, this.patientID, this.token);
+  final MainCubit mainCubit;
+  ChatPage(this.name, this.recieverID, this.patientID, this.token,this.mainCubit);
   @override
   _ChatPageState createState() => _ChatPageState();
 }
 
 class _ChatPageState extends State<ChatPage> {
   final TextEditingController textEditingController = TextEditingController();
-  late String recieverChatID;
-  late ChatModel chatModel = ChatModel();
-  late MainState currentState;
+   String recieverChatID;
+   ChatModel chatModel = ChatModel();
+  MainState currentState;
   BoxDecoration decA = const BoxDecoration(
       color: kPrimaryColor,
       borderRadius: BorderRadius.only(
@@ -51,9 +53,9 @@ class _ChatPageState extends State<ChatPage> {
   void initState() {
     super.initState();
     recieverChatID = widget.patientID + "-" + widget.recieverID;
-    //print(widget.token);
+    print(widget.token);
     chatModel.init(widget.patientID, widget.token);
-    CubitProvider.of<MainCubit>(context).loadMessages(widget.patientID);
+    widget.mainCubit.loadMessages(widget.patientID);
   }
 
   Widget buildSingleMessage(Message message) {
@@ -140,17 +142,26 @@ class _ChatPageState extends State<ChatPage> {
         ),
       ),
       body: CubitConsumer<MainCubit, MainState>(
+        cubit:widget.mainCubit,
         builder: (context, state) {
+          
+          print("ChatScreen Builder state: $state");
           if (state is MessagesLoadedState) {
             //print('Messages loaded state');
-            //print(state.messages.last);
+            print(state.messages.last);
             chatModel.addMessages(state.messages);
             currentState = state;
           }
-
+          if (currentState == null)
+            return Container(
+                color: Colors.white,
+                child: Center(child: CircularProgressIndicator()));
+       
           return buildBody();
         },
         listener: (context, state) {
+
+          print("ChatScreen Listner state: $state");
           if (state is ErrorState) {
             //print("Error State Called CHAT SCREEN");
             // // _hideLoader();

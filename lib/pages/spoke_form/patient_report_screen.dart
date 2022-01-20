@@ -184,7 +184,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
       cubit: widget.mainCubit,
       builder: (_, state) {
         if (state is PatientReportFetched) {
-          //print("Patient Report Fetched state Called");
+          print("Patient Report Fetched state builder Called $state");
           log('LOG > patient_report_screen.dart > 179 > state: ${state.toString()}');
           editedReport = state.mixReport.currentTreatment;
           print('LOG > patient_report_screen.dart > 182 > editedReport: ${editedReport.ecg.ecg_time.toString() == "nill" }');
@@ -227,7 +227,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
       },
       listener: (context, state) {
         if (state is PatientReportFetched) {
-          //print("Patient Report Fetched state Called");
+          print("Patient Report Fetched state  listener Called $state");
           log('LOG > patient_report_screen.dart > 179 > state: ${state.toString()}');
           editedReport = state.mixReport.currentTreatment;
           log('LOG > patient_report_screen.dart > 182 > editedReport: ${editedReport}');

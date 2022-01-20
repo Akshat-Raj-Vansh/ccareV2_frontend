@@ -15,11 +15,15 @@ class SpokeNotificationHandler {
   }
 
   static Future<void> backgroundMessageHandler(RemoteMessage message) async {
-    //print("Handling a background message for doctor: ${message.data}");
+    print("Handling a background message for doctor: ${message.data}");
   }
 
   static Future<void> foregroundMessageHandler(RemoteMessage message) async {
-    //print("Handling a foreground message for doctor: ${message.data}");
+    print("Handling a foreground message for doctor: ${message.data}");
+
+    //  if(message.data["type"]=="Consultation" && message.data["user"]=="HUB"){
+    //   await mainCubit.hubAccepted();
+    // }
     if (message.data['type'] == 'EmergencyStatus') {
       await mainCubit.getStatus();
     }
@@ -64,5 +68,8 @@ class SpokeNotificationHandler {
     if (message.data['type'] == 'EmergencyStatus') {
       await mainCubit.getStatus();
     }
+    // if(message.data["type"]=="Consultation" && message.data["user"]=="HUB"){
+    //   await mainCubit.hubAccepted();
+    // }
   }
 }

@@ -52,7 +52,7 @@ class MainCubit extends Cubit<MainState> {
       emit(ErrorState(result.asError!.error as String));
       return;
     }
-    log('LOG > main_cubit.dart > 39 > result.asValue!.value.last: ${result.asValue!.value.last}');
+    print('LOG > main_cubit.dart > 39 > result.asValue!.value.last: ${result.asValue!.value.last}');
     emit(MessagesLoadedState(result.asValue!.value));
   }
 
@@ -389,6 +389,10 @@ class MainCubit extends Cubit<MainState> {
     emit(AllHubDoctorsState(result.asValue!.value));
   }
 
+  hubAccepted()async{
+    _startLoading("Hub Accepted");
+    emit(PatientAcceptedHub());
+  }
   consultHub(String uid) async {
     _startLoading("CONSULT HUB LOADING STATE");
     //print("MAIN CUBIT/CONSULT HUB DOCTORS");
@@ -453,7 +457,7 @@ class MainCubit extends Cubit<MainState> {
   }
 
   void _startLoading(String from) {
-    //print(from);
+    print(from);
     emit(LoadingState());
   }
 }
