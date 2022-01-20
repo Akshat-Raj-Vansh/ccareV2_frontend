@@ -433,8 +433,8 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20))),
                     onPressed: () async {
-                      CubitProvider.of<MainCubit>(context)
-                          .statusUpdate("OTW", eDetails.patientDetails.id);
+                      CubitProvider.of<MainCubit>(context).statusUpdate("OTW",
+                          patientID: eDetails.patientDetails.id);
 
                       setState(() {
                         patientStatus = EStatus.OTW;
@@ -490,8 +490,8 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20))),
                     onPressed: () async {
-                      CubitProvider.of<MainCubit>(context)
-                          .statusUpdate("ATH", eDetails.patientDetails.id);
+                      CubitProvider.of<MainCubit>(context).statusUpdate("ATH",
+                          patientID: eDetails.patientDetails.id);
                       setState(() {
                         _patientAccepted = false;
                       });

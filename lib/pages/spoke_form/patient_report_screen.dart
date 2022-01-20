@@ -92,7 +92,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
 
     setState(() {
       _image = image;
-       clickImage = true;
+      clickImage = true;
       print(_image.path);
       // widget.mainCubit.imageClicked(image);
     });
@@ -104,7 +104,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
 
     setState(() {
       _image = image;
-       clickImage = true;
+      clickImage = true;
       print(_image.path);
       // widget.mainCubit.imageClicked(image);
     });
@@ -173,7 +173,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
 
   _fetchReport() async {
     //print("Fetching patient report");
-    widget.mainCubit.fetchPatientReport();
+    widget.mainCubit.fetchPatientReport(widget.patientDetails.id);
     // widget.mainCubit.fetchImage(widget.patientDetails.id);
   }
 
@@ -187,7 +187,8 @@ class _PatientReportScreenState extends State<PatientReportScreen>
           print("Patient Report Fetched state builder Called $state");
           log('LOG > patient_report_screen.dart > 179 > state: ${state.toString()}');
           editedReport = state.mixReport.currentTreatment;
-          print('LOG > patient_report_screen.dart > 182 > editedReport: ${editedReport.ecg.ecg_time.toString() == "nill" }');
+          print(
+              'LOG > patient_report_screen.dart > 182 > editedReport: ${editedReport.ecg.ecg_time.toString() == "nill"}');
           if (state.mixReport.previousTreatment != null)
             previousReport = state.mixReport.previousTreatment;
           //print(editedReport.toString());
@@ -268,7 +269,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
           // _hideLoader();
           _showMessage('Report Saved');
           editReport = false;
-          widget.mainCubit.fetchPatientReport();
+          widget.mainCubit.fetchPatientReport(widget.patientDetails.id);
         }
       },
     );
@@ -287,7 +288,8 @@ class _PatientReportScreenState extends State<PatientReportScreen>
                 ? TextButton(
                     onPressed: () async {
                       //print(editedReport.toString());
-                      widget.mainCubit.savePatientReport(editedReport);
+                      widget.mainCubit.savePatientReport(
+                          editedReport, widget.patientDetails.id);
                     },
                     child: Text(
                       'SAVE',
@@ -525,44 +527,48 @@ class _PatientReportScreenState extends State<PatientReportScreen>
         ),
       );
 
-  _buildReportDetails(){
- 
+  _buildReportDetails() {
     return Container(
-        decoration: BoxDecoration(
-          color: Colors.green[100],
-          borderRadius: BorderRadius.circular(20),
-        ),
-        width: SizeConfig.screenWidth,
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text("Date: "),
-                Text(DateTime.fromMillisecondsSinceEpoch(
-                        int.parse(editedReport.report_time==null?DateTime.now().millisecondsSinceEpoch.toString():editedReport.report_time))
-                    .toString()
-                    .split(' ')[0]),
-              ],
-            ),
-            SizedBox(
-              height: 1.h,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text("Time: "),
-                Text(DateTime.fromMillisecondsSinceEpoch(
-                        int.parse(editedReport.report_time==null?DateTime.now().millisecondsSinceEpoch.toString():editedReport.report_time))
-                    .toString()
-                    .split(' ')[1]),
-              ],
-            ),
-          ],
-        ),
-      );}
+      decoration: BoxDecoration(
+        color: Colors.green[100],
+        borderRadius: BorderRadius.circular(20),
+      ),
+      width: SizeConfig.screenWidth,
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text("Date: "),
+              Text(DateTime.fromMillisecondsSinceEpoch(int.parse(
+                      editedReport.report_time == null
+                          ? DateTime.now().millisecondsSinceEpoch.toString()
+                          : editedReport.report_time))
+                  .toString()
+                  .split(' ')[0]),
+            ],
+          ),
+          SizedBox(
+            height: 1.h,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text("Time: "),
+              Text(DateTime.fromMillisecondsSinceEpoch(int.parse(
+                      editedReport.report_time == null
+                          ? DateTime.now().millisecondsSinceEpoch.toString()
+                          : editedReport.report_time))
+                  .toString()
+                  .split(' ')[1]),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
 
   _buildECGDetails(TreatmentReport treatmentReport) => Container(
         width: SizeConfig.screenWidth,
@@ -578,9 +584,11 @@ class _PatientReportScreenState extends State<PatientReportScreen>
               children: [
                 Text('ECG Time: '),
                 Text(treatmentReport.ecg.ecg_time.toString() == "nill"
-                    ?"nill"
-                    : DateTime.fromMillisecondsSinceEpoch(
-                            int.parse(editedReport.ecg.ecg_time=="nill"? "0":editedReport.ecg.ecg_time))
+                    ? "nill"
+                    : DateTime.fromMillisecondsSinceEpoch(int.parse(
+                            editedReport.ecg.ecg_time == "nill"
+                                ? "0"
+                                : editedReport.ecg.ecg_time))
                         .toString()),
               ],
             ),

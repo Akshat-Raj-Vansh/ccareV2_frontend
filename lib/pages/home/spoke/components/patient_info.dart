@@ -180,7 +180,8 @@ class _PatientInfoState extends State<PatientInfo> {
             showModalBottomSheet(
                 context: context,
                 builder: (_) {
-                  return HubDoctorsList(state.docs, widget.mainCubit);
+                  return HubDoctorsList(
+                      state.docs, widget.mainCubit, widget.patientID);
                 });
           } else if (state is ConsultHub) {
             _hideLoader();
@@ -457,7 +458,7 @@ class _PatientInfoState extends State<PatientInfo> {
 
   _buildStartTreatmentButton() => InkWell(
         onTap: () async {
-          widget.mainCubit.statusUpdate("UGT",widget.patientID);
+          widget.mainCubit.statusUpdate("UGT", patientID: widget.patientID);
           _currentStatus = "UGT";
           _ugt = true;
         },
@@ -612,7 +613,7 @@ class _PatientInfoState extends State<PatientInfo> {
 
   _buildNewReportButton() => InkWell(
         onTap: () async {
-          widget.mainCubit.generateNewReport();
+          widget.mainCubit.generateNewReport(widget.patientID);
         },
         child: Container(
           width: SizeConfig.screenWidth,

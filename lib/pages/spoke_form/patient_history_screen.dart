@@ -18,8 +18,10 @@ import 'package:timelines/timelines.dart';
 
 class PatientReportHistoryScreen extends StatefulWidget {
   final MainCubit mainCubit;
+  final String patientID;
 
-  const PatientReportHistoryScreen({Key key, this.mainCubit}) : super(key: key);
+  const PatientReportHistoryScreen({Key key, this.mainCubit, this.patientID})
+      : super(key: key);
   @override
   _PatientReportHistoryScreenState createState() =>
       _PatientReportHistoryScreenState();
@@ -68,7 +70,7 @@ class _PatientReportHistoryScreenState
 
   _fetchReport() async {
     //print("Fetching patient report");
-    await widget.mainCubit.fetchPatientReportHistory();
+    await widget.mainCubit.fetchPatientReportHistory(widget.patientID);
   }
 
   @override

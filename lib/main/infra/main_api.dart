@@ -213,17 +213,14 @@ class MainAPI extends IMainAPI {
   }
 
   @override
-  Future<Result<dynamic>> fetchPatientReport(Token token) async {
-    String endpoint = baseUrl + "/treatment/getReport";
+  Future<Result<dynamic>> fetchPatientReport(Token token, String patID) async {
+    String endpoint = baseUrl + "/treatment/getReport?patientID=$patID";
     var header = {
       "Content-Type": "application/json",
       "Authorization": token.value
     };
     var response = await _client.get(Uri.parse(endpoint), headers: header);
-    //print(
-    // 'LOG > main_api.dart > fetchPatientReport > 202 > response.statusCode: ${response.statusCode}');
-    //print(
-    // 'LOG > main_api.dart > fetchPatientReport > 203 > response.body: ${response.body}');
+
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
       //print(transformError(map));
@@ -262,8 +259,8 @@ class MainAPI extends IMainAPI {
 
   @override
   Future<Result<List<treat.TreatmentReport>>> fetchPatientReportHistory(
-      Token token) async {
-    String endpoint = baseUrl + "/treatment/getHistory";
+      Token token, String patID) async {
+    String endpoint = baseUrl + "/treatment/getHistory?patientID=$patID";
     var header = {
       "Content-Type": "application/json",
       "Authorization": token.value
@@ -288,8 +285,9 @@ class MainAPI extends IMainAPI {
   }
 
   @override
-  Future<Result<Examination>> fetchPatientExamReport(Token token) async {
-    String endpoint = baseUrl + "/treatment/getTreatment";
+  Future<Result<Examination>> fetchPatientExamReport(
+      Token token, String patID) async {
+    String endpoint = baseUrl + "/treatment/getTreatment?patientID=$patID";
     var header = {
       "Content-Type": "application/json",
       "Authorization": token.value
@@ -503,9 +501,10 @@ class MainAPI extends IMainAPI {
 
   @override
   Future<Result<String>> savePatientReport(
-      Token token, treat.TreatmentReport report) async {
+      Token token, treat.TreatmentReport report, String? patID) async {
     //print("Update Patient Report");
-    String endpoint = baseUrl + "/treatment/spoke/updateReport";
+    String endpoint =
+        baseUrl + "/treatment/spoke/updateReport?patientID=$patID";
     var header = {
       "Content-Type": "application/json",
       "Authorization": token.value
@@ -525,8 +524,9 @@ class MainAPI extends IMainAPI {
 
   @override
   Future<Result<String>> savePatientExamReport(
-      Token token, Examination examination) async {
-    String endpoint = baseUrl + "/treatment/spoke/updateTreatment";
+      Token token, Examination examination, String patID) async {
+    String endpoint =
+        baseUrl + "/treatment/spoke/updateTreatment?patientID=$patID";
     var header = {
       "Content-Type": "application/json",
       "Authorization": token.value
@@ -543,14 +543,16 @@ class MainAPI extends IMainAPI {
   }
 
   @override
-  Future<Result<String>> updateStatus(Token token, String status,String? patientID) async {
+  Future<Result<String>> updateStatus(
+      Token token, String status, String? patientID) async {
     String endpoint = baseUrl + "/emergency/updateStatus";
     var header = {
       "Content-Type": "application/json",
       "Authorization": token.value
     };
     var response = await _client.post(Uri.parse(endpoint),
-        headers: header, body: jsonEncode({'status': status,'patientID':patientID}));
+        headers: header,
+        body: jsonEncode({'status': status, 'patientID': patientID}));
     //print(response.statusCode);
     //print(response.body);
     if (response.statusCode != 200) {
@@ -563,8 +565,9 @@ class MainAPI extends IMainAPI {
   }
 
   @override
-  Future<Result<String>> consultHub(Token token, String docID) async {
-    String endpoint = baseUrl + "/treatment/spoke/consult";
+  Future<Result<String>> consultHub(
+      Token token, String docID, String patID) async {
+    String endpoint = baseUrl + "/treatment/spoke/consult?patientID=$patID";
     var header = {
       "Content-Type": "application/json",
       "Authorization": token.value
@@ -630,8 +633,8 @@ class MainAPI extends IMainAPI {
   }
 
   @override
-  Future<Result<String>> newReport(Token token) async {
-    String endpoint = baseUrl + "/treatment/spoke/newReport";
+  Future<Result<String>> newReport(Token token, String patID) async {
+    String endpoint = baseUrl + "/treatment/spoke/newReport?patientID=$patID";
     var header = {
       "Content-Type": "application/json",
       "Authorization": token.value
@@ -649,26 +652,24 @@ class MainAPI extends IMainAPI {
     return Result.value(json["message"]);
   }
 
-
-@override
-Future<Result<String>> caseClose(Token token, String patientID) async {
-
- String endpoint = baseUrl + "/treatment/spoke/caseClose";
+  @override
+  Future<Result<String>> caseClose(Token token, String patientID) async {
+    String endpoint = baseUrl + "/treatment/spoke/caseClose";
     var header = {
       "Content-Type": "application/json",
       "Authorization": token.value
     };
-    var response = await _client.post(Uri.parse(endpoint), headers: header, body: jsonEncode({'patientID': patientID}));
+    var response = await _client.post(Uri.parse(endpoint),
+        headers: header, body: jsonEncode({'patientID': patientID}));
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
       //print(transformError(map));
       return Result.error(transformError(map));
     }
-    if (jsonDecode(response.body)["message"] == null )
+    if (jsonDecode(response.body)["message"] == null)
       return Result.error("error");
     return Result.value(jsonDecode(response.body)["message"]);
-   
-}
+  }
 
   @override
   Future<Result<List<Message>>> getAllMessages(

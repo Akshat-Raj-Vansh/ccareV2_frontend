@@ -28,9 +28,10 @@ abstract class IMainAPI {
   // Doctors Side APIs
   Future<Result<EDetails>> fetchEmergencyDetails(Token token,
       {String? patientID});
-  Future<Result<dynamic>> fetchPatientReport(Token token);
-  Future<Result<dynamic>> fetchPatientReportHistory(Token token);
-  Future<Result<exam.Examination>> fetchPatientExamReport(Token token);
+  Future<Result<dynamic>> fetchPatientReport(Token token, String patID);
+  Future<Result<dynamic>> fetchPatientReportHistory(Token token, String patID);
+  Future<Result<exam.Examination>> fetchPatientExamReport(
+      Token token, String patID);
   Future<Result<List<Message>>> getAllMessages(Token token, String patientID);
 
   // Spoke Side APIs
@@ -39,14 +40,16 @@ abstract class IMainAPI {
   Future<Result<List<PatientListInfo>>> getAllPatientRequests(Token token);
   Future<Result<List<PatientListInfo>>> getAllPatients(Token token);
   Future<Result<List<HubInfo>>> getAllHubDoctors(Token token);
-  Future<Result<String>> savePatientReport(Token token, TreatmentReport report);
+  Future<Result<String>> savePatientReport(
+      Token token, TreatmentReport report, String? patID);
   Future<Result<String>> savePatientExamReport(
-      Token token, exam.Examination examination);
-  Future<Result<String>> updateStatus(Token token, String status,String? patientID);
-  Future<Result<String>> consultHub(Token token, String docID);
+      Token token, exam.Examination examination, String patID);
+  Future<Result<String>> updateStatus(
+      Token token, String status, String? patientID);
+  Future<Result<String>> consultHub(Token token, String docID, String patID);
   Future<Result<String>> uploadImage(Token token, XFile image, String type);
   Future<Result<XFile>> fetchImage(Token token, String patientID);
-  Future<Result<String>> newReport(Token token);
+  Future<Result<String>> newReport(Token token, String patientID);
 
   // Driver Side APIs
   Future<Result<loc.Location>> acceptPatientbyDriver(

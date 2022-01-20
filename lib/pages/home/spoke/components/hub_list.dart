@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 class HubDoctorsList extends StatelessWidget {
   final List<HubInfo> hubDocs;
   final MainCubit cubit;
-
-  const HubDoctorsList(this.hubDocs, this.cubit);
+  final String patientID;
+  const HubDoctorsList(this.hubDocs, this.cubit, this.patientID);
 
   @override
   Widget build(BuildContext context) {
@@ -16,12 +16,15 @@ class HubDoctorsList extends StatelessWidget {
         itemCount: hubDocs.length,
         itemBuilder: (BuildContext context, int index) {
           return InkWell(
-            onTap: () => cubit.consultHub(hubDocs[index].id),
+            onTap: () => cubit.consultHub(
+              hubDocs[index].id,
+              patientID,
+            ),
             child: ListTile(
                 leading: Icon(Icons.person),
                 trailing: Text(
                   hubDocs[index].hospitalName,
-                  style: TextStyle(color: Colors.green, fontSize :12.sp),
+                  style: TextStyle(color: Colors.green, fontSize: 12.sp),
                 ),
                 title: Text(hubDocs[index].name)),
           );

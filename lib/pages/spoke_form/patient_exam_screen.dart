@@ -99,7 +99,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
 
   _fetchReport() async {
     //print("Fetching patient  exam report");
-    await widget.mainCubit.fetchPatientExamReport();
+    await widget.mainCubit.fetchPatientExamReport(widget.patientDetails.id);
   }
 
   @override
@@ -126,7 +126,8 @@ class _PatientExamScreenState extends State<PatientExamScreen>
         return buildUI();
       },
       listener: (context, state) {
-        print("PatientExamScreen > build > listener > state: ${state.toString()}");
+        print(
+            "PatientExamScreen > build > listener > state: ${state.toString()}");
         if (state is PatientExamReportFetched) {
           log('LOG > patient_exam_screen.dart > 112 > state: ${state.toString()}');
           editedReport = state.ereport;
@@ -177,7 +178,8 @@ class _PatientExamScreenState extends State<PatientExamScreen>
                     onPressed: () async {
                       //print('before saving');
                       //print(editedReport.toString());
-                      widget.mainCubit.savePatientExamReport(editedReport);
+                      widget.mainCubit.savePatientExamReport(
+                          editedReport, widget.patientDetails.id);
                     },
                     child: Text(
                       'SAVE',
