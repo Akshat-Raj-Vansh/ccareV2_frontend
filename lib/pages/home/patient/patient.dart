@@ -241,6 +241,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
           }
           if (state is QuestionnaireState && display.length == 0) {
             //print("Questionnaire State Called X");
+            //_currentStatus = "SELFANANLYSIS";
             currentState = QuestionnaireState;
             // display.forEach((element) {
             //   element.answers = [];
@@ -258,6 +259,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
           }
           if (state is PreviousHistory) {
             _treatmentReport = state.treatmentReport;
+            //  _currentStatus = "HISTORY";
             currentState = PreviousHistory;
             if (_treatmentReport != null) _historyFetched = true;
           }
@@ -382,10 +384,16 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                 ),
               if (_doctorAccepted) _buildDoctorDetails(),
               if (_driverAccepted) _buildDriverDetails(),
-              if (_currentStatus == "UGT") _buildPatientReportButton(),
+              if (_currentStatus == "UGT" &&
+                  currentState != PreviousHistory &&
+                  currentState != QuestionnaireState)
+                _buildPatientReportButton(),
               if (!_questionnaire || _notificationSent)
                 _buildPatientReportHistoryButton(),
-              if (_currentStatus == "UGT") _buildPatientTreatmentReportButton(),
+              if (_currentStatus == "UGT" &&
+                  currentState != PreviousHistory &&
+                  currentState != QuestionnaireState)
+                _buildPatientTreatmentReportButton(),
             ],
           ),
         ),
@@ -893,7 +901,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
           onPressed: () async {
             loc.Location location = await _getLocation();
             Navigator.of(context).pop(false);
-            await widget.mainCubit.notify("QUESTIONNAIRE", false, location);
+            await widget.mainCubit.notify("EBUTTON", false, location);
             // await widget.mainCubit.fetchEmergencyDetails();
           },
           child: Text(

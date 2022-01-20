@@ -54,7 +54,8 @@ class MainCubit extends Cubit<MainState> {
       emit(ErrorState(result.asError!.error as String));
       return;
     }
-    print('LOG > main_cubit.dart > 39 > result.asValue!.value.last: ${result.asValue!.value.last}');
+    print(
+        'LOG > main_cubit.dart > 39 > result.asValue!.value.last: ${result.asValue!.value.last}');
     emit(MessagesLoadedState(result.asValue!.value));
   }
 
@@ -260,7 +261,7 @@ class MainCubit extends Cubit<MainState> {
   caseClose(String patientID) async {
     final token = await localStore.fetch();
     final result = await this.api.caseClose(token, patientID);
-    
+
     if (result.isError) {
       print(result.asError?.error);
       emit(ErrorState(result.asError!.error as String));
@@ -403,10 +404,11 @@ class MainCubit extends Cubit<MainState> {
     emit(AllHubDoctorsState(result.asValue!.value));
   }
 
-  hubAccepted()async{
+  hubAccepted() async {
     _startLoading("Hub Accepted");
     emit(PatientAcceptedHub());
   }
+
   consultHub(String uid) async {
     _startLoading("CONSULT HUB LOADING STATE");
     //print("MAIN CUBIT/CONSULT HUB DOCTORS");
