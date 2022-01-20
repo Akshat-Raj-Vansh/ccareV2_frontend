@@ -60,13 +60,9 @@ class _ChatPageState extends State<ChatPage> {
     widget.mainCubit.loadMessages(widget.patientID);
   }
 
-  void scrollToBottom() {
-    final bottomOffset = _scrollController.position.maxScrollExtent;
-    _scrollController.animateTo(
-      bottomOffset,
-      duration: Duration(milliseconds: 1000),
-      curve: Curves.easeInOut,
-    );
+ _scrollToEnd() {
+    _scrollController.animateTo(_scrollController.position.maxScrollExtent,
+        duration: Duration(milliseconds: 200), curve: Curves.easeInOut);
   }
 
   Widget buildSingleMessage(Message message) {
@@ -128,6 +124,7 @@ class _ChatPageState extends State<ChatPage> {
                     model.sendMessage(
                         textEditingController.text, recieverChatID);
                     textEditingController.text = '';
+                    _scrollToEnd();
                   },
                   elevation: 0,
                   child: Icon(Icons.send),
@@ -161,6 +158,7 @@ class _ChatPageState extends State<ChatPage> {
           if (state is MessagesLoadedState) {
             //print('Messages loaded state');
             print(state.messages.last);
+            chatModel.messages=[];
             chatModel.addMessages(state.messages);
             currentState = state;
           }
@@ -168,7 +166,8 @@ class _ChatPageState extends State<ChatPage> {
             return Container(
                 color: Colors.white,
                 child: Center(child: CircularProgressIndicator()));
-       
+       WidgetsBinding.instance
+                    .addPostFrameCallback((_) => _scrollToEnd());
           return buildBody();
         },
         listener: (context, state) {
