@@ -319,6 +319,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
             //     _questions.firstWhere((element) => element.parent == "root"));
             //   //print(display[0].status);
             if (_assessAgain) {
+              _hideLoader();
               CubitProvider.of<MainCubit>(context).selfAssessment();
             }
           } else if (state is SelfAssessmentState) {
@@ -424,8 +425,8 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
 
   _buildSelfAnalysisButton() => InkWell(
         onTap: () async {
-          _showAmbRequired();
-          setState(() {});
+          _assessAgain = true;
+          CubitProvider.of<MainCubit>(context).getQuestions();
         },
         child: Container(
           width: SizeConfig.screenWidth,

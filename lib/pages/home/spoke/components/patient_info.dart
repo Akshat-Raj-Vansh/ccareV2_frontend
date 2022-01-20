@@ -156,6 +156,8 @@ class _PatientInfoState extends State<PatientInfo> {
             log('LOG > doctor_spoke.dart > 204 > state: ${state.toString()}');
           } else if (state is TokenLoadedState) {
             token = state.token;
+          } else if (state is StatusFetched) {
+            setState(() {});
           }
           if (state is NewReportGenerated) {
             // _hideLoader();
@@ -537,8 +539,10 @@ class _PatientInfoState extends State<PatientInfo> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (ctx) =>
-                    PatientReportHistoryScreen(mainCubit: widget.mainCubit),
+                builder: (ctx) => PatientReportHistoryScreen(
+                  mainCubit: widget.mainCubit,
+                  patientID: widget.patientID,
+                ),
               ));
         },
         child: Container(
