@@ -658,7 +658,7 @@ Future<Result<String>> caseClose(Token token, String patientID) async {
       "Content-Type": "application/json",
       "Authorization": token.value
     };
-    var response = await _client.post(Uri.parse(endpoint), headers: header, body: jsonEncode({patientID: patientID}));
+    var response = await _client.post(Uri.parse(endpoint), headers: header, body: jsonEncode({'patientID': patientID}));
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
       //print(transformError(map));

@@ -32,6 +32,8 @@ class HomePageAdapter extends IHomePageAdapter {
       this.emergencyScreen,
       this.splashScreen);
 
+
+
   @override
   void loadHomeUI(BuildContext context, UserType userType) {
     //print('HOME PAGE ADAPTER/LOAD HOME UI');
@@ -78,4 +80,6 @@ class HomePageAdapter extends IHomePageAdapter {
     //     (Route<dynamic> route) => false);
     SystemChannels.platform.invokeMethod('SystemNavigator.pop');
   }
+
+  
 }

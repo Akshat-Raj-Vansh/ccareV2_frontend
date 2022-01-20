@@ -102,7 +102,7 @@ class _ChatPageState extends State<ChatPage> {
             height: MediaQuery.of(context).size.height * 0.75,
             child: ListView.builder(
               // reverse: true,
-              // controller: _scrollController,
+              controller: _scrollController,
               itemCount: messages.length,
               itemBuilder: (BuildContext context, int index) {
                 return buildSingleMessage(messages[index]);
@@ -155,10 +155,11 @@ class _ChatPageState extends State<ChatPage> {
                 SizedBox(width: 1.w),
                 FloatingActionButton(
                   onPressed: () {
+                    if(textEditingController.text!=""){
                     model.sendMessage(
                         textEditingController.text, recieverChatID);
                     textEditingController.text = '';
-                    _scrollToEnd();
+                    _scrollToEnd();}
                   },
                   elevation: 0,
                   child: Icon(Icons.send),

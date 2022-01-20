@@ -1,6 +1,7 @@
 //@dart=2.9
 import 'dart:developer';
 
+import 'package:ccarev2_frontend/pages/home/home_page_adapter.dart';
 import 'package:ccarev2_frontend/pages/home/spoke/components/hub_list.dart';
 import 'package:flutter/material.dart';
 
@@ -24,7 +25,9 @@ import 'package:flutter/material.dart';
 class PatientInfo extends StatefulWidget {
   final String patientID;
   final MainCubit mainCubit;
-  const PatientInfo(this.patientID,this.mainCubit);
+
+  final IHomePageAdapter homePageAdapter;
+  const PatientInfo(this.patientID,this.mainCubit,this.homePageAdapter);
 
   @override
   _PatientInfoState createState() => _PatientInfoState();
@@ -276,6 +279,10 @@ class _PatientInfoState extends State<PatientInfo> {
                             _ugt = false;
                             _currentStatus = "NORMAL";
                           });
+                            Navigator.of(context).pop(false);
+                            Navigator.of(context).pop(true);
+                            widget.mainCubit.getAllPatients();
+                          
                         },
                         child: Text(
                           'Yes',

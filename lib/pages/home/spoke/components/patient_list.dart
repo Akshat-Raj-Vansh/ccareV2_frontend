@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:ccarev2_frontend/main/domain/edetails.dart';
+import 'package:ccarev2_frontend/pages/home/home_page_adapter.dart';
 import 'package:ccarev2_frontend/pages/home/spoke/components/patient_info.dart';
 import 'package:ccarev2_frontend/services/Notifications/notificationContoller.dart';
 import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
@@ -15,7 +16,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
 
 class PatientList extends StatefulWidget {
-  const PatientList();
+
+  final IHomePageAdapter homePageAdapter;
+
+  const PatientList(this.homePageAdapter);
 
   @override
   State<PatientList> createState() => _PatientListState();
@@ -125,7 +129,7 @@ class _PatientListState extends State<PatientList> {
               onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (ctx) => PatientInfo(_patients[index].id, CubitProvider.of<MainCubit>(context)),
+                  builder: (ctx) => PatientInfo(_patients[index].id, CubitProvider.of<MainCubit>(context),widget.homePageAdapter),
                   
                 ),
               ),

@@ -260,7 +260,9 @@ class MainCubit extends Cubit<MainState> {
   caseClose(String patientID) async {
     final token = await localStore.fetch();
     final result = await this.api.caseClose(token, patientID);
+    
     if (result.isError) {
+      print(result.asError?.error);
       emit(ErrorState(result.asError!.error as String));
       return;
     }
