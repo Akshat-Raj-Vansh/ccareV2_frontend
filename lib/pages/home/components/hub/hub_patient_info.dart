@@ -49,50 +49,6 @@ class _HubPatientInfoState extends State<HubPatientInfo> {
         appBar: AppBar(
           title: Text(widget.details.patientDetails.name),
           backgroundColor: kPrimaryColor,
-          // actions: [
-          //   IconButton(
-          //     onPressed: () async {
-          //       await showDialog(
-          //             context: context,
-          //             builder: (context) => AlertDialog(
-          //               title: Text(
-          //                 'Are you sure?',
-          //                 style: TextStyle(
-          //                   fontWeight: FontWeight.w600,
-          //                   fontSize :16.sp,
-          //                 ),
-          //               ),
-          //               content: Text(
-          //                 'Do you want to logout?',
-          //                 style: TextStyle(
-          //                   fontWeight: FontWeight.w300,
-          //                   fontSize :12.sp,
-          //                 ),
-          //               ),
-          //               actions: [
-          //                 TextButton(
-          //                   onPressed: () => Navigator.of(context).pop(false),
-          //                   child: Text(
-          //                     'Cancel',
-          //                   ),
-          //                 ),
-          //                 TextButton(
-          //                   onPressed: () async {
-          //                     widget.homePageAdapter
-          //                         .onLogout(context, widget.userCubit);
-          //                   },
-          //                   child: Text(
-          //                     'Yes',
-          //                   ),
-          //                 ),
-          //               ],
-          //             ),
-          //           ) ??
-          //           false;
-          // },
-          // icon: Icon(Icons.logout),
-          // ),
-          // ],
         ),
         body: CubitConsumer<MainCubit, MainState>(builder: (_, state) {
           if (state is TokenLoadedState) {
@@ -104,10 +60,6 @@ class _HubPatientInfoState extends State<HubPatientInfo> {
 
           return _buildPatientLoadedUI(context);
         }, listener: (context, state) async {
-          // if (state is LoadingState) {
-          //   //print("Loading State Called");
-          //   _showLoader();
-          // } else
           log('LOG > doctor_hub.dart > 165 > state: ${state.toString()}');
           if (state is ErrorState) {
             //print("Error State Called HUB PATIENT");
@@ -165,22 +117,28 @@ class _HubPatientInfoState extends State<HubPatientInfo> {
   _buildChatButton() => InkWell(
         onTap: () async {
           Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (ctx) => CubitProvider<MainCubit>(
-                      create: (_) => CubitProvider.of<MainCubit>(context),
-                      child: ChatPage(
-                          widget.details.doctorDetails.name,
-                          widget.details.doctorDetails.id,
-                          widget.details.patientDetails.id,
-                          token))));
-          // widget.mainCubit.getAllHubDoctors();
+            context,
+            MaterialPageRoute(
+              builder: (ctx) => CubitProvider<MainCubit>(
+                create: (_) => CubitProvider.of<MainCubit>(context),
+                child: ChatPage(
+                    widget.details.doctorDetails.name,
+                    widget.details.doctorDetails.id,
+                    widget.details.patientDetails.id,
+                    token),
+              ),
+            ),
+          );
           // Navigator.push(
-          //     context,
-          //     MaterialPageRoute(
-          //       builder: (context) =>
-          //           PatientReportHistoryScreen(mainCubit: widget.mainCubit),
-          //     ));
+          //   context,
+          //   MaterialPageRoute(
+          //     builder: (ctx) => ChatPage(
+          //         widget.details.doctorDetails.name,
+          //         widget.details.doctorDetails.id,
+          //         widget.details.patientDetails.id,
+          //         token),
+          //   ),
+          // );
         },
         child: Container(
           width: SizeConfig.screenWidth,
@@ -197,32 +155,17 @@ class _HubPatientInfoState extends State<HubPatientInfo> {
         ),
       );
 
-  _buildHeader() => Container(
-      color: Colors.green[400],
-      padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-      child: ListTile(
-        leading: Icon(CupertinoIcons.person, color: Colors.white),
-        title: Text(
-          "No Patients Accepted Yet!!",
-          style: TextStyle(color: Colors.white, fontSize: 16.sp),
-        ),
-        subtitle: Text(
-          "Keep an eye out for the Patients",
-          style: TextStyle(color: Colors.white, fontSize: 8.sp),
-        ),
-      ));
-
   _buildSpokeDetails(EDetails details) => Column(children: [
-        Container(
-          width: SizeConfig.screenWidth,
-          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-          child: Text(
-            "Spoke Doctor's Information",
-            textAlign: TextAlign.left,
-            style: TextStyle(fontSize: 14.sp),
-          ),
-        ),
+        // Container(
+        //   width: SizeConfig.screenWidth,
+        //   margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+        //   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+        //   child: Text(
+        //     "Spoke Doctor's Information",
+        //     textAlign: TextAlign.left,
+        //     style: TextStyle(fontSize: 14.sp),
+        //   ),
+        // ),
         Container(
           decoration: BoxDecoration(
               color: Colors.red[100], borderRadius: BorderRadius.circular(20)),
@@ -264,16 +207,16 @@ class _HubPatientInfoState extends State<HubPatientInfo> {
       ]);
 
   _buildPatientDetails(EDetails details) => Column(children: [
-        Container(
-          width: SizeConfig.screenWidth,
-          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-          child: Text(
-            "Patient's Information",
-            textAlign: TextAlign.left,
-            style: TextStyle(fontSize: 14.sp),
-          ),
-        ),
+        // Container(
+        //   width: SizeConfig.screenWidth,
+        //   margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+        //   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+        //   child: Text(
+        //     "Patient's Information",
+        //     textAlign: TextAlign.left,
+        //     style: TextStyle(fontSize: 14.sp),
+        //   ),
+        // ),
         Container(
           decoration: BoxDecoration(
               color: Colors.red[100], borderRadius: BorderRadius.circular(20)),

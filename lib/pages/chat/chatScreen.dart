@@ -24,6 +24,7 @@ class ChatPage extends StatefulWidget {
 
 class _ChatPageState extends State<ChatPage> {
   final TextEditingController textEditingController = TextEditingController();
+  late ScrollController _scrollController;
   late String recieverChatID;
   late ChatModel chatModel = ChatModel();
   late MainState currentState;
@@ -50,10 +51,20 @@ class _ChatPageState extends State<ChatPage> {
   @override
   void initState() {
     super.initState();
+    _scrollController = ScrollController();
     recieverChatID = widget.patientID + "-" + widget.recieverID;
     //print(widget.token);
     chatModel.init(widget.patientID, widget.token);
     CubitProvider.of<MainCubit>(context).loadMessages(widget.patientID);
+  }
+
+  void scrollToBottom() {
+    final bottomOffset = _scrollController.position.maxScrollExtent;
+    _scrollController.animateTo(
+      bottomOffset,
+      duration: Duration(milliseconds: 1000),
+      curve: Curves.easeInOut,
+    );
   }
 
   Widget buildSingleMessage(Message message) {
@@ -83,6 +94,7 @@ class _ChatPageState extends State<ChatPage> {
           return Container(
             height: MediaQuery.of(context).size.height * 0.75,
             child: ListView.builder(
+              controller: _scrollController,
               itemCount: messages.length,
               itemBuilder: (BuildContext context, int index) {
                 return buildSingleMessage(messages[index]);
@@ -142,8 +154,8 @@ class _ChatPageState extends State<ChatPage> {
       body: CubitConsumer<MainCubit, MainState>(
         builder: (context, state) {
           if (state is MessagesLoadedState) {
-            //print('Messages loaded state');
-            //print(state.messages.last);
+            print('Messages loaded state');
+            print(state.messages.last);
             chatModel.addMessages(state.messages);
             currentState = state;
           }
@@ -152,7 +164,7 @@ class _ChatPageState extends State<ChatPage> {
         },
         listener: (context, state) {
           if (state is ErrorState) {
-            //print("Error State Called CHAT SCREEN");
+            print("Error State Called CHAT SCREEN");
             // // _hideLoader();
           }
         },

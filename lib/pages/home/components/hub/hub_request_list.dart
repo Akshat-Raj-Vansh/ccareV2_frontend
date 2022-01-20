@@ -16,18 +16,21 @@ class RequestPatientList extends StatelessWidget {
         shrinkWrap: true,
         itemCount: patients.length,
         itemBuilder: (BuildContext context, int index) {
-          return ListTile(
-              leading: Icon(Icons.person),
-              subtitle: Text(
-                patients[index].name,
-                style: TextStyle(color: Colors.green, fontSize :12.sp),
-              ),
-              title: Text(patients[index].name),
-              trailing: TextButton(
-                  onPressed: () {
-                    mainCubit.acceptPatientByHub(patients[index].id);
-                  },
-                  child: Text('Accept')));
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+            child: ListTile(
+                leading: Icon(Icons.person),
+                subtitle: Text(
+                  patients[index].name,
+                  style: TextStyle(color: Colors.green, fontSize: 12.sp),
+                ),
+                title: Text(patients[index].name),
+                trailing: TextButton(
+                    onPressed: () {
+                      mainCubit.acceptPatientByHub(patients[index].id);
+                    },
+                    child: Text('Accept'))),
+          );
         });
   }
 }
