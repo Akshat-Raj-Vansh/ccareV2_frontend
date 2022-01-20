@@ -27,7 +27,7 @@ class PatientInfo extends StatefulWidget {
   final MainCubit mainCubit;
 
   final IHomePageAdapter homePageAdapter;
-  const PatientInfo(this.patientID,this.mainCubit,this.homePageAdapter);
+  const PatientInfo(this.patientID, this.mainCubit, this.homePageAdapter);
 
   @override
   _PatientInfoState createState() => _PatientInfoState();
@@ -44,7 +44,7 @@ class _PatientInfoState extends State<PatientInfo> {
   dynamic currentState = null;
   String token;
   bool loader = false;
- 
+
   @override
   void initState() {
     super.initState();
@@ -110,9 +110,8 @@ class _PatientInfoState extends State<PatientInfo> {
             icon: Icon(Icons.arrow_back_ios)),
       ),
       body: CubitConsumer<MainCubit, MainState>(
-        cubit:widget.mainCubit,
+        cubit: widget.mainCubit,
         builder: (_, state) {
-          
           print("PatientInfo Builder state: $state");
           if (state is TokenLoadedState) {
             token = state.token;
@@ -147,7 +146,6 @@ class _PatientInfoState extends State<PatientInfo> {
           return _buildUI(context);
         },
         listener: (context, state) async {
-
           print("PatientInfo Listner state: $state");
           if (state is LoadingState) {
             //print("Loading State Called Patient Info");
@@ -172,12 +170,10 @@ class _PatientInfoState extends State<PatientInfo> {
             //       ),
             //     ));theek hsintheek hsin
             _showMessage(state.msg);
-          } 
-          else if(state is PatientAcceptedHub){
+          } else if (state is PatientAcceptedHub) {
             _hideLoader();
             widget.mainCubit.fetchEmergencyDetails(patientID: widget.patientID);
-          }
-          else if (state is AllHubDoctorsState) {
+          } else if (state is AllHubDoctorsState) {
             _hideLoader();
             log('LOG > doctor_spoke.dart > 223 > state: ${state.toString()}',
                 time: DateTime.now());
@@ -220,7 +216,8 @@ class _PatientInfoState extends State<PatientInfo> {
                       ),
                       TextButton(
                         onPressed: () async {
-                          widget.mainCubit.acceptPatientBySpoke(state.patientID);
+                          widget.mainCubit
+                              .acceptPatientBySpoke(state.patientID);
                           Navigator.of(context).pop(false);
                         },
                         child: Text(
@@ -236,8 +233,7 @@ class _PatientInfoState extends State<PatientInfo> {
             _emergency = true;
             log('LOG > doctor_spoke.dart > 280 > state: ${state.toString()}',
                 time: DateTime.now());
-            widget.mainCubit
-                .fetchEmergencyDetails(patientID: widget.patientID);
+            widget.mainCubit.fetchEmergencyDetails(patientID: widget.patientID);
           } else if (state is AllPatientsState) {
             log('LOG > doctor_spoke.dart > 284 > state: ${state.toString()}',
                 time: DateTime.now());
@@ -279,10 +275,9 @@ class _PatientInfoState extends State<PatientInfo> {
                             _ugt = false;
                             _currentStatus = "NORMAL";
                           });
-                            Navigator.of(context).pop(false);
-                            Navigator.of(context).pop(true);
-                            widget.mainCubit.getAllPatients();
-                          
+                          Navigator.of(context).pop(false);
+                          Navigator.of(context).pop(true);
+                          widget.mainCubit.getAllPatients();
                         },
                         child: Text(
                           'Yes',
@@ -517,6 +512,7 @@ class _PatientInfoState extends State<PatientInfo> {
                 builder: (ctx) => PatientExamScreen(
                   mainCubit: widget.mainCubit,
                   patientDetails: eDetails.patientDetails,
+                  user: UserType.SPOKE,
                 ),
               ));
         },
@@ -586,10 +582,11 @@ class _PatientInfoState extends State<PatientInfo> {
               context,
               MaterialPageRoute(
                   builder: (cTX) => ChatPage(
-                          eDetails.hubDetails.name,
-                          eDetails.hubDetails.id,
-                          eDetails.patientDetails.id,
-                          token,widget.mainCubit)));
+                      eDetails.hubDetails.name,
+                      eDetails.hubDetails.id,
+                      eDetails.patientDetails.id,
+                      token,
+                      widget.mainCubit)));
           // widget.widget.mainCubit.getAllHubDoctors();
           // Navigator.push(
           //     context,
