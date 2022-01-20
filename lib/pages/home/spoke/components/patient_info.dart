@@ -229,6 +229,16 @@ class _PatientInfoState extends State<PatientInfo> {
             log('LOG > doctor_spoke.dart > 284 > state: ${state.toString()}',
                 time: DateTime.now());
             // _hideLoader();
+          } else if (state is CaseClosedState) {
+            _showMessage('The Treatment for the Patient has been completed.');
+            setState(() {
+              _emergency = false;
+              _patientAccepted = false;
+              _driverAccepted = false;
+              _hubAccepted = false;
+              _ugt = false;
+              _currentStatus = "NORMAL";
+            });
           }
         },
       ),
@@ -318,6 +328,7 @@ class _PatientInfoState extends State<PatientInfo> {
             if (_hubAccepted) _buildChatButton(),
             if (_patientAccepted && _ugt) _buildNewReportButton(),
             if (_patientAccepted && _ugt) _buildPatientReportHistoryButton(),
+            if (_patientAccepted && _ugt) _buildEndTreatmentButton(),
             if (_driverAccepted) _buildDriverDetails(),
             if (!_emergency) _buildHeader(),
             // Padding(
@@ -565,6 +576,25 @@ class _PatientInfoState extends State<PatientInfo> {
               border: Border.all(color: kPrimaryColor)),
           child: Text(
             "Create New Report",
+            style: TextStyle(color: kPrimaryColor, fontSize: 12.sp),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      );
+  _buildEndTreatmentButton() => InkWell(
+        onTap: () async {
+          mainCubit.caseClose(widget.patientID);
+        },
+        child: Container(
+          width: SizeConfig.screenWidth,
+          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: kPrimaryColor)),
+          child: Text(
+            "End Current Treatment",
             style: TextStyle(color: kPrimaryColor, fontSize: 12.sp),
             textAlign: TextAlign.center,
           ),
