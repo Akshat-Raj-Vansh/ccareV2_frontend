@@ -280,6 +280,7 @@ class _AuthPageState extends State<AuthPage> {
     String _msg = "OTP VERIFICATION INCOMPLETE";
     print('INSIDE VERIFY OTP');
     print('USERTYPE:');
+    print(await FirebaseAuth.instance.currentUser);
     print(widget.userType);
     try {
       await FirebaseAuth.instance
