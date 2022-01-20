@@ -57,5 +57,22 @@ class PatientNotificationHandler {
             patientID: message.data["patientID"]);
       }
     }
+    if (message.data['type'] == 'EmergencyStatus') {
+      if (message.data["status"] == "UGT") {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          backgroundColor: Theme.of(context).accentColor,
+          content: Text(
+            message.notification.body,
+            style: Theme.of(context)
+                .textTheme
+                .caption
+                .copyWith(color: Colors.white, fontSize: 12.sp),
+          ),
+        ));
+        print("Status Updated to UGT");
+        //print(message.data["location"]);
+        await mainCubit.getStatus();
+      }
+    }
   }
 }
