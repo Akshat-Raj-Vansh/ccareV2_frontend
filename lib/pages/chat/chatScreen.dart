@@ -32,7 +32,7 @@ class _ChatPageState extends State<ChatPage> {
   MainState currentState;
   ScrollController _scrollController = ScrollController();
   BoxDecoration decA = const BoxDecoration(
-      color: kPrimaryColor,
+      color: kSecondaryColor,
       borderRadius: BorderRadius.only(
           topLeft: Radius.circular(30),
           topRight: Radius.circular(30),
@@ -120,15 +120,39 @@ class _ChatPageState extends State<ChatPage> {
       child: ScopedModelDescendant<ChatModel>(
         builder: (context, child, model) {
           return Container(
+            padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
             child: Row(
               children: <Widget>[
                 Container(
+                  // padding: const EdgeInsets.symmetric(
+                  //     vertical: 5.0, horizontal: 20.0),
                   width: MediaQuery.of(context).size.width * 0.8,
                   child: TextField(
                     controller: textEditingController,
+                    decoration: InputDecoration(
+                      enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(color: kPrimaryColor)),
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(color: kPrimaryColor)),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(color: kPrimaryColor)),
+                      labelText: 'Send',
+                      labelStyle: TextStyle(
+                        color: kPrimaryColor,
+                      ),
+                      hintText: 'Write your message here.',
+                    ),
+                    style: TextStyle(
+                        color: kPrimaryColor,
+                        fontSize: 12.sp,
+                        decorationColor: kPrimaryColor),
+                    cursorColor: kPrimaryColor,
                   ),
                 ),
-                SizedBox(width: 3.w),
+                SizedBox(width: 1.w),
                 FloatingActionButton(
                   onPressed: () {
                     model.sendMessage(
@@ -151,7 +175,11 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.name),
+        backgroundColor: kPrimaryColor,
+        title: Text(
+          widget.name,
+          style: TextStyle(color: Colors.white),
+        ),
         centerTitle: false,
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
@@ -192,6 +220,7 @@ class _ChatPageState extends State<ChatPage> {
 
   ListView buildBody() {
     return ListView(
+      padding: EdgeInsets.zero,
       children: <Widget>[
         buildChatList(),
         buildChatArea(),
