@@ -35,6 +35,7 @@ class _AuthPageState extends State<AuthPage> {
   String _otp = "";
   String _phone = "";
   String _fcmToken = "";
+  bool verified = false;
 
   int hex(String color) {
     return int.parse("FF" + color.toUpperCase(), radix: 16);
@@ -244,6 +245,7 @@ class _AuthPageState extends State<AuthPage> {
                 .signInWithCredential(credential)
                 .then((value) async {
               if (value.user != null) {
+                verified=true;
                 _msg = "VERIFICATION SUCCESSFUL " + value.user.uid;
                 print('auth_page.dart : ' + _msg);
                 CubitProvider.of<UserCubit>(context).login(Credential(
@@ -260,11 +262,12 @@ class _AuthPageState extends State<AuthPage> {
             _showMessage(_msg);
           },
           codeSent: (String verificationID, int resendToken) {
+            if(!verified){
             setState(() {
               _msg = "CODE SENT " + verificationID;
               _verificationCode = verificationID;
               CubitProvider.of<UserCubit>(context).verifyOTP();
-            });
+            });}
           },
           codeAutoRetrievalTimeout: (String verificationID) {},
           timeout: const Duration(seconds: 30));
@@ -280,8 +283,8 @@ class _AuthPageState extends State<AuthPage> {
     String _msg = "OTP VERIFICATION INCOMPLETE";
     print('INSIDE VERIFY OTP');
     print('USERTYPE:');
-    print(await FirebaseAuth.instance.currentUser);
     print(widget.userType);
+    
     try {
       await FirebaseAuth.instance
           .signInWithCredential(PhoneAuthProvider.credential(
