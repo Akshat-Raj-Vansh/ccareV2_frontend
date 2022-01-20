@@ -19,17 +19,18 @@ class ChatPage extends StatefulWidget {
   final String patientID;
   final String token;
   final MainCubit mainCubit;
-  ChatPage(this.name, this.recieverID, this.patientID, this.token,this.mainCubit);
+  ChatPage(
+      this.name, this.recieverID, this.patientID, this.token, this.mainCubit);
   @override
   _ChatPageState createState() => _ChatPageState();
 }
 
 class _ChatPageState extends State<ChatPage> {
   final TextEditingController textEditingController = TextEditingController();
-   String recieverChatID;
-   ChatModel chatModel = ChatModel();
+  String recieverChatID;
+  ChatModel chatModel = ChatModel();
   MainState currentState;
-  ScrollController _scrollController;
+  ScrollController _scrollController = ScrollController();
   BoxDecoration decA = const BoxDecoration(
       color: kPrimaryColor,
       borderRadius: BorderRadius.only(
@@ -53,11 +54,11 @@ class _ChatPageState extends State<ChatPage> {
   @override
   void initState() {
     super.initState();
-    _scrollController = ScrollController();
     recieverChatID = widget.patientID + "-" + widget.recieverID;
     print(widget.token);
     chatModel.init(widget.patientID, widget.token);
     widget.mainCubit.loadMessages(widget.patientID);
+    _scrollController = ScrollController();
   }
 
   void scrollToBottom() {
@@ -67,6 +68,12 @@ class _ChatPageState extends State<ChatPage> {
       duration: Duration(milliseconds: 1000),
       curve: Curves.easeInOut,
     );
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   Widget buildSingleMessage(Message message) {
@@ -90,13 +97,16 @@ class _ChatPageState extends State<ChatPage> {
     return ScopedModel(
       model: chatModel,
       child: ScopedModelDescendant<ChatModel>(
+        rebuildOnChange: true,
         builder: (context, child, model) {
           List<Message> messages = model.getMessagesForChatID(recieverChatID);
+          // scrollToBottom();
 
           return Container(
             height: MediaQuery.of(context).size.height * 0.75,
             child: ListView.builder(
-              controller: _scrollController,
+              // reverse: true,
+              // controller: _scrollController,
               itemCount: messages.length,
               itemBuilder: (BuildContext context, int index) {
                 return buildSingleMessage(messages[index]);
@@ -154,25 +164,24 @@ class _ChatPageState extends State<ChatPage> {
         ),
       ),
       body: CubitConsumer<MainCubit, MainState>(
-        cubit:widget.mainCubit,
+        cubit: widget.mainCubit,
         builder: (context, state) {
-          
           print("ChatScreen Builder state: $state");
           if (state is MessagesLoadedState) {
             //print('Messages loaded state');
             print(state.messages.last);
             chatModel.addMessages(state.messages);
             currentState = state;
+            //  scrollToBottom();
           }
           if (currentState == null)
             return Container(
                 color: Colors.white,
                 child: Center(child: CircularProgressIndicator()));
-       
+
           return buildBody();
         },
         listener: (context, state) {
-
           print("ChatScreen Listner state: $state");
           if (state is ErrorState) {
             print("Error State Called CHAT SCREEN");
