@@ -854,10 +854,10 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
   _updateStatus() {
     if (_currentStatus == "EMERGENCY") {
       _currentStatus = "OTW";
-      return widget.mainCubit.statusUpdate("OTW");
+      return widget.mainCubit.statusUpdate("OTW", "");
     }
     _currentStatus = "ATH";
-    return widget.mainCubit.statusUpdate("ATH");
+    return widget.mainCubit.statusUpdate("ATH", "");
   }
 
   _showAmbRequired() async {
