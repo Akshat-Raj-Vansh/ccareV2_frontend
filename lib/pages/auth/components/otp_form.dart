@@ -25,7 +25,7 @@ class _OTPFormState extends State<OTPForm> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     animationController =
-        AnimationController(vsync: this, duration: const Duration(minutes: 2));
+        AnimationController(vsync: this, duration: const Duration(minutes: 1));
     animationController.reverse(
         from: animationController.value == 0 ? 1.0 : animationController.value);
   }
