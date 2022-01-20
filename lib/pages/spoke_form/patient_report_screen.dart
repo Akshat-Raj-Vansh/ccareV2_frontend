@@ -525,7 +525,9 @@ class _PatientReportScreenState extends State<PatientReportScreen>
         ),
       );
 
-  _buildReportDetails() => Container(
+  _buildReportDetails(){
+ 
+    return Container(
         decoration: BoxDecoration(
           color: Colors.green[100],
           borderRadius: BorderRadius.circular(20),
@@ -540,7 +542,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
               children: [
                 Text("Date: "),
                 Text(DateTime.fromMillisecondsSinceEpoch(
-                        int.parse(editedReport.report_time))
+                        int.parse(editedReport.report_time==null?DateTime.now().millisecondsSinceEpoch.toString():editedReport.report_time))
                     .toString()
                     .split(' ')[0]),
               ],
@@ -553,14 +555,14 @@ class _PatientReportScreenState extends State<PatientReportScreen>
               children: [
                 Text("Time: "),
                 Text(DateTime.fromMillisecondsSinceEpoch(
-                        int.parse(editedReport.report_time))
+                        int.parse(editedReport.report_time==null?DateTime.now().millisecondsSinceEpoch.toString():editedReport.report_time))
                     .toString()
                     .split(' ')[1]),
               ],
             ),
           ],
         ),
-      );
+      );}
 
   _buildECGDetails(TreatmentReport treatmentReport) => Container(
         width: SizeConfig.screenWidth,
