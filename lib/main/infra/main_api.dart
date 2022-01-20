@@ -213,7 +213,7 @@ class MainAPI extends IMainAPI {
   }
 
   @override
-  Future<Result<dynamic>> fetchPatientReport(Token token, String patID) async {
+  Future<Result<dynamic>> fetchPatientReport(Token token, String? patID) async {
     String endpoint = baseUrl + "/treatment/getReport?patientID=$patID";
     var header = {
       "Content-Type": "application/json",
@@ -273,7 +273,7 @@ class MainAPI extends IMainAPI {
       //print(transformError(map));
       return Result.error(transformError(map));
     }
-
+    print(jsonDecode(response.body));
     if (jsonDecode(response.body)['history'].length == 0)
       return Result.error("No history in records");
     List<treat.TreatmentReport> report =

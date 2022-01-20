@@ -28,7 +28,7 @@ abstract class IMainAPI {
   // Doctors Side APIs
   Future<Result<EDetails>> fetchEmergencyDetails(Token token,
       {String? patientID});
-  Future<Result<dynamic>> fetchPatientReport(Token token, String patID);
+  Future<Result<dynamic>> fetchPatientReport(Token token, String? patID);
   Future<Result<dynamic>> fetchPatientReportHistory(Token token, String patID);
   Future<Result<exam.Examination>> fetchPatientExamReport(
       Token token, String patID);

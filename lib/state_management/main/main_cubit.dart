@@ -229,7 +229,7 @@ class MainCubit extends Cubit<MainState> {
     emit(PatientReportHistoryFetched(reports));
   }
 
-  fetchPatientReport(String patientID) async {
+  fetchPatientReport(String? patientID) async {
     // _startLoading("PatientReportFetch");
     final token = await localStore.fetch();
     final result = await api.fetchPatientReport(Token(token.value), patientID);

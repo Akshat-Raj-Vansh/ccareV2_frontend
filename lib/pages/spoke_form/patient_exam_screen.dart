@@ -99,7 +99,8 @@ class _PatientExamScreenState extends State<PatientExamScreen>
 
   _fetchReport() async {
     //print("Fetching patient  exam report");
-    await widget.mainCubit.fetchPatientExamReport(widget.patientDetails.id);
+    await widget.mainCubit.fetchPatientExamReport(
+        widget.patientDetails == null ? '' : widget.patientDetails.id);
   }
 
   @override

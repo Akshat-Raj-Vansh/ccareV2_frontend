@@ -173,7 +173,8 @@ class _PatientReportScreenState extends State<PatientReportScreen>
 
   _fetchReport() async {
     //print("Fetching patient report");
-    widget.mainCubit.fetchPatientReport(widget.patientDetails.id);
+    widget.mainCubit.fetchPatientReport(
+        widget.patientDetails == null ? '' : widget.patientDetails.id);
     // widget.mainCubit.fetchImage(widget.patientDetails.id);
   }
 
