@@ -58,6 +58,7 @@ class UserCubit extends Cubit<UserState> {
   // }
 
   void _setResultOfAuthStateNew(Result<dynamic> result) {
+    print("result is ${result.toString()}");
     if (result.asError != null) {
       emit(ErrorState(result.asError.error));
       return;

@@ -277,9 +277,9 @@ class _AuthPageState extends State<AuthPage> {
   _verifyOTP(String otp) async {
     // _showLoader();
     String _msg = "OTP VERIFICATION INCOMPLETE";
-    //print('INSIDE VERIFY OTP');
-    //print('USERTYPE:');
-    //print(widget.userType);
+    print('INSIDE VERIFY OTP');
+    print('USERTYPE:');
+    print(widget.userType);
     try {
       await FirebaseAuth.instance
           .signInWithCredential(PhoneAuthProvider.credential(
@@ -287,15 +287,17 @@ class _AuthPageState extends State<AuthPage> {
           .then((value) async {
         if (value.user != null) {
           _msg = "VERIFICATION SUCCESSFUL " + value.user.uid;
+          print(_msg);
           CubitProvider.of<UserCubit>(context).login(Credential(_phone,
               widget.userType, _fcmToken, Token(value.user.uid.toString())));
         } else {
           _msg = "VERIFICATION FAILED. INVALID OTP.";
-          //print('INVALID OTP');
+          print('INVALID OTP');
           // _hideLoader();
           _showMessage(_msg);
         }
       }).catchError((err) {
+        print(err);
         //print("INVALID OTP 2");
         _showMessage('WRONG OTP ENTERED');
       });

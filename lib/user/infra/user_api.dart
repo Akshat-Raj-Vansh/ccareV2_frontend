@@ -48,8 +48,7 @@ class UserAPI implements UserService {
     dynamic response = await _client.post(Uri.parse(endpoint),
         body: credential.toJson(), headers: header);
     //print('DOC LOGIN API CALL');
-    log('LOG > user_api.dart > 51 > response.body: ${response.body}',
-        time: DateTime.now());
+    print('LOG > user_api.dart > 51 > response.body: ${response.body}');
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
       //print(transformError(map));
