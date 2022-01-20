@@ -2,6 +2,7 @@
 import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
 
 class HubNotificationHandler {
   static MainCubit mainCubit;
@@ -17,28 +18,28 @@ class HubNotificationHandler {
 
   static Future<void> foregroundMessageHandler(RemoteMessage message) async {
     print("Handling a foreground message for spoke: ${message.data}");
-    if (message.data['type'] == 'Consult') {
+    if (message.data['type'] == 'Consultation') {
       if (message.data["user"] == "SPOKE") {
         // //print("inside");
-        // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        //   backgroundColor: Theme.of(context).accentColor,
-        //   content: Text(
-        //     'Patient in emergency!! Accepting the emergency',
-        //     style: Theme.of(context)
-        //         .textTheme
-        //         .caption
-        //         .copyWith(color: Colors.white, fontSize :8.sp),
-        //   ),
-        // ));
-        await mainCubit.acceptPatientByHub(message.data["_patientID"]);
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          backgroundColor: Theme.of(context).accentColor,
+          content: Text(
+            'New Patient Request Received!',
+            style: Theme.of(context)
+                .textTheme
+                .caption
+                .copyWith(color: Colors.white, fontSize: 8.sp),
+          ),
+        ));
+        await mainCubit.acceptPatientByHub(message.data["patientID"]);
       }
     }
   }
 
   static Future<void> onMessageOpenedHandler(RemoteMessage message) async {
-    if (message.data['type'] == 'Consult') {
-      //print("Not supposed to be here");
-      await mainCubit.acceptPatientByHub(message.data["_patientID"]);
+    if (message.data['type'] == 'Consultation') {
+      print("Not supposed to be here");
+      await mainCubit.acceptPatientByHub(message.data["patientID"]);
     }
   }
 }

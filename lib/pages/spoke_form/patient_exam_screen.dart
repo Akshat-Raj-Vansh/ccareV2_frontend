@@ -171,9 +171,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
         title: Text('Examination Form'),
         backgroundColor: kPrimaryColor,
         actions: [
-          if (_currentIndex != 0 &&
-              !noReport &&
-              widget.user != UserType.PATIENT)
+          if (_currentIndex != 0 && !noReport && widget.user == UserType.SPOKE)
             editReport
                 ? TextButton(
                     onPressed: () async {

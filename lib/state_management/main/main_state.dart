@@ -123,12 +123,13 @@ class EditPatientReport extends MainState {
   List<Object> get props => [this.msg];
 }
 
-class CaseClosedState extends MainState{
+class CaseClosedState extends MainState {
   final String msg;
   CaseClosedState(this.msg);
   @override
   List<Object> get props => [this.msg];
 }
+
 class ImageCaptured extends MainState {
   final String msg;
   ImageCaptured(this.msg);
@@ -295,6 +296,22 @@ class NewErrorState extends MainState {
   final String error;
   final String prevState;
   NewErrorState(this.error, this.prevState) {}
+  @override
+  List<Object> get props => [this.error, this.prevState];
+}
+
+class NoPatientRequested extends MainState {
+  final String error;
+  final String prevState;
+  NoPatientRequested(this.error, this.prevState) {}
+  @override
+  List<Object> get props => [this.error, this.prevState];
+}
+
+class NoPatientAccepted extends MainState {
+  final String error;
+  final String prevState;
+  NoPatientAccepted(this.error, this.prevState) {}
   @override
   List<Object> get props => [this.error, this.prevState];
 }

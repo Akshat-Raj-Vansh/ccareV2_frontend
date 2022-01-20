@@ -29,13 +29,16 @@ class AcceptedPatientList extends StatelessWidget {
                         )),
               ),
             },
-            child: ListTile(
-                leading: Icon(Icons.person),
-                trailing: Text(
-                  details[index].patientDetails.age.toString(),
-                  style: TextStyle(color: Colors.green, fontSize :12.sp),
-                ),
-                title: Text(details[index].patientDetails.name)),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+              child: ListTile(
+                  leading: Icon(Icons.person),
+                  trailing: Text(
+                    details[index].patientDetails.age.toString(),
+                    style: TextStyle(color: Colors.green, fontSize: 12.sp),
+                  ),
+                  title: Text(details[index].patientDetails.name)),
+            ),
           );
         });
   }

@@ -141,24 +141,39 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
         ),
         body: CubitConsumer<MainCubit, MainState>(builder: (_, state) {
           if (state is HubPatientsLoaded) {
-            log('LOG > doctor_hub.dart > 139 > state: ${state.toString()}');
+            print('LOG > doctor_hub.dart > 139 > state: ${state.toString()}');
             currentState = state;
-            //print(state);
+            print(state);
             eDetails = state.details;
             patientsLoaded = true;
           }
           if (state is HubRequestsLoaded) {
-            log('LOG > doctor_hub.dart > 146 > state: ${state.toString()}');
+            print('LOG > doctor_hub.dart > 146 > state: ${state.toString()}');
             currentState = state;
             rDetails = state.details;
-            log('LOG > doctor_hub.dart > 149 > rDetails: ${rDetails}');
+            print('LOG > doctor_hub.dart > 149 > rDetails: ${rDetails}');
             requestsLoaded = true;
           }
           if (state is TokenLoadedState) {
-            log('LOG > doctor_hub.dart > 153 > state: ${state.toString()}');
+            print('LOG > doctor_hub.dart > 153 > state: ${state.toString()}');
             token = state.token;
-            //print("Inside TokensLoaded State");
-            //print(token);
+            print("Inside TokensLoaded State");
+            print(token);
+          }
+          if (state is NewErrorState) {
+            print('New Error Satet');
+            if (state.prevState == "HUB REUQESTS") requestsLoaded = false;
+            if (state.prevState == "HUB PATIENTS") patientsLoaded = false;
+          }
+          if (state is NoPatientAccepted) {
+            print('NoPatientAccepted');
+            patientsLoaded = false;
+            currentState = state;
+          }
+          if (state is NoPatientRequested) {
+            print('NoPatientRequested');
+            requestsLoaded = false;
+            currentState = state;
           }
           if (currentState == null) {
             return Center(child: CircularProgressIndicator());
@@ -172,7 +187,7 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
           // } else
           log('LOG > doctor_hub.dart > 165 > state: ${state.toString()}');
           if (state is ErrorState) {
-            //print("Error State Called HUB DOCTORr");
+            print("Error State Called HUB DOCTORr");
             // // _hideLoader();
           } else if (state is HubPatientsLoaded) {
             eDetails = state.details;
@@ -182,15 +197,16 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
             rDetails = state.details;
             requestsLoaded = true;
           } else if (state is PatientAcceptedHub) {
-            widget.mainCubit.fetchHubPatientDetails();
-            widget.mainCubit.fetchHubRequests();
+            print('PatientAcceptedHUb state claled');
+            // widget.mainCubit.fetchHubPatientDetails();
+            // widget.mainCubit.fetchHubRequests();
           } else if (state is TokenLoadedState) {
             token = state.token;
-            //print("Inside TokensLoaded State");
-            //print(token);
+            print("Inside TokensLoaded State");
+            print(token);
           } else if (state is AcceptState) {
             // // _hideLoader();
-            //print("Accept State Called");
+            print("Accept State Called");
             await showDialog(
                   context: context,
                   builder: (context) => AlertDialog(
@@ -218,8 +234,13 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
                       TextButton(
                         onPressed: () async {
                           // make api for accept patient by Hub
+                          // widget.mainCubit.acceptPatientByHub(state.patientID);
+                          // setState(() {});
+                          print('AcceptState');
                           widget.mainCubit.acceptPatientByHub(state.patientID);
-                          setState(() {});
+                          widget.mainCubit.fetchHubPatientDetails();
+                          widget.mainCubit.fetchHubRequests();
+                          Navigator.of(context).pop(false);
                         },
                         child: Text(
                           'Yes',
@@ -232,7 +253,7 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
             //Create new state PatientAccepted by Hub
           } else if (state is PatientAccepted) {
             // // _hideLoader();
-            //print("Inside patient accepted by Doctor state");
+            print("Inside patient accepted by Doctor state");
             widget.mainCubit.fetchHubPatientDetails();
           }
         }));
@@ -242,314 +263,46 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
         SingleChildScrollView(
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            // patientsLoaded ? _buildPatientLoadedUI(context) : SizedBox(),
-            // patientsLoaded ? _buildChatButton() : SizedBox(),
-            // _buildPatientLoadedUI(context),
-            // _buildChatButton(),
-            //  requestsLoaded ? _buildRequestUI(buildContext) : SizedBox(),
+            Container(
+              width: SizeConfig.screenWidth,
+              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+              child: Text(
+                "Patient Request List",
+                textAlign: TextAlign.left,
+                style: TextStyle(fontSize: 18.sp, color: kPrimaryColor),
+              ),
+            ),
             requestsLoaded
                 ? RequestPatientList(
                     patients: rDetails
                         .map<PatientDetails>((e) => e.patientDetails)
                         .toList(),
                     mainCubit: widget.mainCubit)
-                : SizedBox(),
+                : Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 30, vertical: 5),
+                    child: Text("No Patients"),
+                  ),
+            Container(
+              width: SizeConfig.screenWidth,
+              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+              child: Text(
+                "Patient Accepted List",
+                textAlign: TextAlign.left,
+                style: TextStyle(fontSize: 18.sp, color: kPrimaryColor),
+              ),
+            ),
             patientsLoaded
                 ? AcceptedPatientList(
                     eDetails, CubitProvider.of<MainCubit>(context))
-                : Text("No Patients"),
-            !patientsLoaded && !requestsLoaded
-                ? Text("No Patients and Requests")
-                : SizedBox(),
+                : Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 30, vertical: 5),
+                    child: Text("No Patients"),
+                  ),
           ]),
         ),
       ]);
-
-  // _buildChatButton() => InkWell(
-  //       onTap: () async {
-  //         Navigator.push(
-  //             context,
-  //             MaterialPageRoute(
-  //                 builder: (context) => CubitProvider<MainCubit>(
-  //                     create: (_) => widget.mainCubit,
-  //                     child: ChatPage(
-  //                         eDetails.doctorDetails.name,
-  //                         eDetails.doctorDetails.id,
-  //                         eDetails.patientDetails.id,
-  //                         token))));
-  //         // widget.mainCubit.getAllHubDoctors();
-  //         // Navigator.push(
-  //         //     context,
-  //         //     MaterialPageRoute(
-  //         //       builder: (context) =>
-  //         //           PatientReportHistoryScreen(mainCubit: widget.mainCubit),
-  //         //     ));
-  //       },
-  //       child: Container(
-  //         width: SizeConfig.screenWidth,
-  //         margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-  //         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-  //         decoration: BoxDecoration(
-  //             color: kPrimaryLightColor,
-  //             borderRadius: BorderRadius.circular(20)),
-  //         child: Text(
-  //           eDetails.doctorDetails.name,
-  //           style: TextStyle(color: Colors.white, fontSize :12.sp),
-  //           textAlign: TextAlign.center,
-  //         ),
-  //       ),
-  //     );
-
-  // _buildPatientLoadedUI(BuildContext context) =>
-  //     Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-  //       if (!_patientAccepted) _buildHeader(),
-  //       Padding(
-  //         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-  //         child: Text(
-  //           "Patient Information",
-  //           style: TextStyle(fontSize :18.sp),
-  //         ),
-  //       ),
-  //       _buildPatientDetails(eDetails),
-  //       Padding(
-  //         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-  //         child: Text(
-  //           "Spoke Doctor Information",
-  //           style: TextStyle(fontSize :18.sp),
-  //         ),
-  //       ),
-
-  //       _buildSpokeDetails(eDetails),
-  //       //Needs to be conditional
-  //       _buildPatientReportButton(),
-  //       _buildPatientExamButton(),
-  //       _buildPatientReportHistoryButton(),
-  //     ]);
-  // _buildRequestUI(BuildContext buildContext) =>
-  //     Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-  //       Text(
-  //         "Requests",
-  //         style: TextStyle(fontSize :18.sp),
-  //       ),
-  //       Padding(
-  //         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-  //         child: Text(
-  //           "Patient Information",
-  //           style: TextStyle(fontSize :18.sp),
-  //         ),
-  //       ),
-  //       _buildPatientDetails(rDetails),
-  //       Padding(
-  //         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-  //         child: Text(
-  //           "Spoke Doctor Information",
-  //           style: TextStyle(fontSize :18.sp),
-  //         ),
-  //       ),
-  //       _buildSpokeDetails(rDetails),
-  //       _buildAcceptRequestButton()
-  //     ]);
-
-  // _buildHeader() => Container(
-  //     color: Colors.green[400],
-  //     padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-  //     child: ListTile(
-  //       leading: Icon(CupertinoIcons.person, color: Colors.white),
-  //       title: Text(
-  //         "No Patients Accepted Yet!!",
-  //         style: TextStyle(color: Colors.white, fontSize :16.sp),
-  //       ),
-  //       subtitle: Text(
-  //         "Keep an eye out for the Patients",
-  //         style: TextStyle(color: Colors.white, fontSize :8.sp),
-  //       ),
-  //     ));
-
-  // _buildSpokeDetails(EDetails details) => Column(children: [
-  //       Container(
-  //         width: SizeConfig.screenWidth,
-  //         margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-  //         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-  //         child: Text(
-  //           "Spoke Doctor's Information",
-  //           textAlign: TextAlign.left,
-  //           style: TextStyle(fontSize :14.sp),
-  //         ),
-  //       ),
-  //       Container(
-  //         decoration: BoxDecoration(
-  //             color: Colors.red[100], borderRadius: BorderRadius.circular(20)),
-  //         width: SizeConfig.screenWidth,
-  //         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-  //         margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-  //         child: Column(
-  //           children: [
-  //             Row(
-  //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //               children: [
-  //                 Text("Name: "),
-  //                 Text(details.doctorDetails.name),
-  //               ],
-  //             ),
-  //             SizedBox(
-  //               height: 1.h,
-  //             ),
-  //             Row(
-  //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //               children: [
-  //                 Text("Contact Number: "),
-  //                 Text(details.doctorDetails.contactNumber),
-  //               ],
-  //             ),
-  //             SizedBox(
-  //               height: 1.h,
-  //             ),
-  //             Row(
-  //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //               children: [
-  //                 Text("Hospital: "),
-  //                 Text(details.doctorDetails.hospital),
-  //               ],
-  //             ),
-  //           ],
-  //         ),
-  //       ),
-  //     ]);
-
-  // _buildPatientDetails(EDetails details) => Column(children: [
-  //       Container(
-  //         width: SizeConfig.screenWidth,
-  //         margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-  //         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-  //         child: Text(
-  //           "Patient's Information",
-  //           textAlign: TextAlign.left,
-  //           style: TextStyle(fontSize :14.sp),
-  //         ),
-  //       ),
-  //       Container(
-  //         decoration: BoxDecoration(
-  //             color: Colors.red[100], borderRadius: BorderRadius.circular(20)),
-  //         width: SizeConfig.screenWidth,
-  //         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-  //         margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-  //         child: Column(
-  //           children: [
-  //             Row(
-  //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //               children: [
-  //                 Text("Name: "),
-  //                 Text(details.patientDetails.name),
-  //               ],
-  //             ),
-  //             SizedBox(
-  //               height: 1.h,
-  //             ),
-  //             Row(
-  //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //               children: [
-  //                 Text("Contact Number: "),
-  //                 Text(details.patientDetails.contactNumber),
-  //               ],
-  //             ),
-  //           ],
-  //         ),
-  //       ),
-  //     ]);
-
-  // _buildPatientReportButton() => InkWell(
-  //       onTap: () async {
-  //         Navigator.push(
-  //             context,
-  //             MaterialPageRoute(
-  //               builder: (context) => PatientReportScreen(
-  //                 mainCubit: widget.mainCubit,
-  //                 user: UserType.DOCTOR,
-  //                 patientDetails: eDetails.patientDetails,
-  //               ),
-  //             ));
-  //       },
-  //       child: Container(
-  //         width: SizeConfig.screenWidth,
-  //         margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-  //         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-  //         decoration: BoxDecoration(
-  //             color: kPrimaryLightColor,
-  //             borderRadius: BorderRadius.circular(20)),
-  //         child: Text(
-  //           "View/Update Patient's Medical Report",
-  //           style: TextStyle(color: Colors.white, fontSize :12.sp),
-  //           textAlign: TextAlign.center,
-  //         ),
-  //       ),
-  //     );
-
-  // _buildAcceptRequestButton() => InkWell(
-  //       onTap: () async {
-  //         widget.mainCubit.acceptPatientByHub(rDetails.patientDetails.id);
-  //         setState(() {
-  //           requestsLoaded = false;
-  //         });
-  //       },
-  //       child: Container(
-  //         width: SizeConfig.screenWidth,
-  //         margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-  //         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-  //         decoration: BoxDecoration(
-  //             color: kPrimaryLightColor,
-  //             borderRadius: BorderRadius.circular(20)),
-  //         child: Text(
-  //           "Accept Request",
-  //           style: TextStyle(color: Colors.white, fontSize :12.sp),
-  //           textAlign: TextAlign.center,
-  //         ),
-  //       ),
-  //     );
-
-  // _buildPatientExamButton() => InkWell(
-  //       onTap: () async {
-  //         Navigator.push(
-  //             context,
-  //             MaterialPageRoute(
-  //               builder: (context) => PatientExamScreen(
-  //                 mainCubit: widget.mainCubit,
-  //                 patientDetails: eDetails.patientDetails,
-  //               ),
-  //             ));
-  //       },
-  //       child: Container(
-  //         width: SizeConfig.screenWidth,
-  //         margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-  //         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-  //         decoration: BoxDecoration(
-  //             color: kPrimaryLightColor,
-  //             borderRadius: BorderRadius.circular(20)),
-  //         child: Text(
-  //           "View/Update Patient's Exam Report",
-  //           style: TextStyle(color: Colors.white, fontSize :12.sp),
-  //           textAlign: TextAlign.center,
-  //         ),
-  //       ),
-  //     );
-
-  // _buildPatientReportHistoryButton() => InkWell(
-  //       onTap: () async {
-  //         Navigator.push(
-  //             context,
-  //             MaterialPageRoute(
-  //               builder: (context) =>
-  //                   PatientReportHistoryScreen(mainCubit: widget.mainCubit),
-  //             ));
-  //       },
-  //       child: Container(
-  //         width: SizeConfig.screenWidth,
-  //         margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-  //         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-  //         child: Text(
-  //           "View Patient's Medical Report History",
-  //           style: TextStyle(color: kPrimaryColor, fontSize :12.sp),
-  //           textAlign: TextAlign.center,
-  //         ),
-  //       ),
-  //     );
 }

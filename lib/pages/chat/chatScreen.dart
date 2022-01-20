@@ -29,6 +29,7 @@ class _ChatPageState extends State<ChatPage> {
    String recieverChatID;
    ChatModel chatModel = ChatModel();
   MainState currentState;
+  ScrollController _scrollController;
   BoxDecoration decA = const BoxDecoration(
       color: kPrimaryColor,
       borderRadius: BorderRadius.only(
@@ -52,10 +53,20 @@ class _ChatPageState extends State<ChatPage> {
   @override
   void initState() {
     super.initState();
+    _scrollController = ScrollController();
     recieverChatID = widget.patientID + "-" + widget.recieverID;
     print(widget.token);
     chatModel.init(widget.patientID, widget.token);
     widget.mainCubit.loadMessages(widget.patientID);
+  }
+
+  void scrollToBottom() {
+    final bottomOffset = _scrollController.position.maxScrollExtent;
+    _scrollController.animateTo(
+      bottomOffset,
+      duration: Duration(milliseconds: 1000),
+      curve: Curves.easeInOut,
+    );
   }
 
   Widget buildSingleMessage(Message message) {
@@ -85,6 +96,7 @@ class _ChatPageState extends State<ChatPage> {
           return Container(
             height: MediaQuery.of(context).size.height * 0.75,
             child: ListView.builder(
+              controller: _scrollController,
               itemCount: messages.length,
               itemBuilder: (BuildContext context, int index) {
                 return buildSingleMessage(messages[index]);
@@ -163,7 +175,7 @@ class _ChatPageState extends State<ChatPage> {
 
           print("ChatScreen Listner state: $state");
           if (state is ErrorState) {
-            //print("Error State Called CHAT SCREEN");
+            print("Error State Called CHAT SCREEN");
             // // _hideLoader();
           }
         },

@@ -49,6 +49,8 @@ class MainCubit extends Cubit<MainState> {
     final token = await localStore.fetch();
     final result = await api.getAllMessages(token, patientID);
     if (result.isError) {
+      print(
+          'LOG > main_cubit.dart > 39 > result.asError!.errror: ${result.asError!.error}');
       emit(ErrorState(result.asError!.error as String));
       return;
     }
@@ -148,33 +150,44 @@ class MainCubit extends Cubit<MainState> {
     final result =
         await api.acceptPatientbyHub(Token(token.value), Token(patientID));
     if (result.isError) {
+      print(
+          'LOG > main_cubit.dart > acceptPatientByHub > 140 > result.asError!.error: ${result.asError!.error}');
       emit(ErrorState(result.asError!.error as String));
       return;
     }
-    emit(PatientAcceptedHub());
+    print(
+        'LOG > main_cubit.dart > acceptPatientByHub > 129 > result.asValue!.value: ${result.asValue!.value}');
+    emit(AcceptState(patientID));
   }
 
   fetchHubPatientDetails() async {
-    _startLoading("Fetch Hub Patient Details");
+    //  _startLoading("Fetch Hub Patient Details");
     final token = await localStore.fetch();
     final result = await api.fetchHubPatientDetails(Token(token.value));
-    log('LOG > main_cubit.dart > fetchHubPatientDetails > 129 > result.asValue!.value: ${result.asValue!.value}');
     if (result.isError) {
-      emit(ErrorState(result.asError!.error as String));
+      print(
+          'LOG > main_cubit.dart > fetchHubPatientDetails > 140 > result.asError!.error: ${result.asError!.error}');
+      emit(NoPatientAccepted(result.asError!.error as String, 'HUB PATIENTS'));
       return;
     }
+    print(
+        'LOG > main_cubit.dart > fetchHubPatientDetails > 129 > result.asValue!.value: ${result.asValue!.value}');
     emit(HubPatientsLoaded(result.asValue!.value));
   }
 
   fetchHubRequests() async {
-    _startLoading("Fetch Hub Consultation Requests");
+    //_startLoading("Fetch Hub Consultation Requests");
+    print('Inside fetchHubRequests');
     final token = await localStore.fetch();
     final result = await api.fetchHubRequests(Token(token.value));
-    log('LOG > main_cubit.dart > fetchHubRequests > 140 > result.asValue!.value: ${result.asValue!.value}');
     if (result.isError) {
-      emit(ErrorState(result.asError!.error as String));
+      print(
+          'LOG > main_cubit.dart > fetchHubRequests > 140 > result.asError!.error: ${result.asError!.error}');
+      emit(NoPatientRequested(result.asError!.error as String, 'HUB REQUESTS'));
       return;
     }
+    print(
+        'LOG > main_cubit.dart > fetchHubRequests > 140 > result.asValue!.value: ${result.asValue!.value}');
     emit(HubRequestsLoaded(result.asValue!.value));
   }
 
@@ -244,15 +257,14 @@ class MainCubit extends Cubit<MainState> {
     emit(ImageCaptured("Image Clicked"));
   }
 
-  caseClose(String patientID)async{
-    final token= await localStore.fetch();
+  caseClose(String patientID) async {
+    final token = await localStore.fetch();
     final result = await this.api.caseClose(token, patientID);
-    if(result.isError) {
+    if (result.isError) {
       emit(ErrorState(result.asError!.error as String));
       return;
     }
     emit(CaseClosedState(result.asValue!.value));
-
   }
 
   fetchImage(String patientID) async {
