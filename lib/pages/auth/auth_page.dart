@@ -245,7 +245,7 @@ class _AuthPageState extends State<AuthPage> {
                 .signInWithCredential(credential)
                 .then((value) async {
               if (value.user != null) {
-                verified=true;
+                verified = true;
                 _msg = "VERIFICATION SUCCESSFUL " + value.user.uid;
                 print('auth_page.dart : ' + _msg);
                 CubitProvider.of<UserCubit>(context).login(Credential(
@@ -285,7 +285,7 @@ class _AuthPageState extends State<AuthPage> {
     print('INSIDE VERIFY OTP');
     print('USERTYPE:');
     print(widget.userType);
-    
+
     try {
       await FirebaseAuth.instance
           .signInWithCredential(PhoneAuthProvider.credential(

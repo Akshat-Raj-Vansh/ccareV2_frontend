@@ -120,10 +120,11 @@ class _HubPatientInfoState extends State<HubPatientInfo> {
               context,
               MaterialPageRoute(
                   builder: (ctx) => ChatPage(
-                          widget.details.doctorDetails.name,
-                          widget.details.doctorDetails.id,
-                          widget.details.patientDetails.id,
-                          token,CubitProvider.of<MainCubit>(context))));
+                      widget.details.doctorDetails.name,
+                      widget.details.doctorDetails.id,
+                      widget.details.patientDetails.id,
+                      token,
+                      CubitProvider.of<MainCubit>(context))));
           // widget.mainCubit.getAllHubDoctors();
           // Navigator.push(
           //   context,
@@ -304,6 +305,7 @@ class _HubPatientInfoState extends State<HubPatientInfo> {
                 builder: (_) => PatientExamScreen(
                   mainCubit: CubitProvider.of<MainCubit>(context),
                   patientDetails: widget.details.patientDetails,
+                  user: UserType.HUB,
                 ),
               ));
         },
