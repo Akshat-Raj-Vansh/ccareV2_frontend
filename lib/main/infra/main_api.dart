@@ -680,10 +680,10 @@ class MainAPI extends IMainAPI {
       "Authorization": token.value
     };
     var response = await _client.get(Uri.parse(endpoint), headers: header);
-    //print(
-    // '@main_api.dart/getAllMessages response status: ${response.statusCode}');
-    //print('@main_api.dart/getAllMessages response body: ${response.body}');
-    // //print(response.statusCode);
+    print(
+        '@main_api.dart/getAllMessages response status: ${response.statusCode}');
+    print('@main_api.dart/getAllMessages response body: ${response.body}');
+    //print(response.statusCode);
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
       //print(transformError(map));
