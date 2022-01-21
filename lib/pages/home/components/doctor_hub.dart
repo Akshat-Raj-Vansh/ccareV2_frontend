@@ -198,8 +198,11 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
             requestsLoaded = true;
           } else if (state is PatientAcceptedHub) {
             print('PatientAcceptedHUb state claled');
-            // widget.mainCubit.fetchHubPatientDetails();
-            // widget.mainCubit.fetchHubRequests();
+            widget.mainCubit.fetchHubPatientDetails();
+            widget.mainCubit.fetchHubRequests();
+            setState(() {
+              
+            });
           } else if (state is TokenLoadedState) {
             token = state.token;
             print("Inside TokensLoaded State");
