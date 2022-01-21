@@ -338,7 +338,7 @@ class _HubPatientInfoState extends State<HubPatientInfo> {
               context,
               MaterialPageRoute(
                 builder: (_) => PatientReportHistoryScreen(
-                    mainCubit: widget.mainCubit),
+                    mainCubit: widget.mainCubit,patientID: widget.details.patientDetails.id,),
               ));
         },
         child: Container(
