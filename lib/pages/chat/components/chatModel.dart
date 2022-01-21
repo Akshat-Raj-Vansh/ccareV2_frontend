@@ -40,6 +40,7 @@ class ChatModel extends Model {
     socket.onConnectError((err) {
       //print(err);
     });
+
     socket.on("receive_message", (jsonData) {
       //print(jsonEncode(jsonData));
       //print(jsonEncode(jsonData['content']));
