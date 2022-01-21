@@ -59,18 +59,18 @@ class _PatientInfoState extends State<PatientInfo> {
   }
 
   @override
-  void dispose(){
+  void dispose() {
     print("Disposing");
-    eDetails=null;
-  _emergency = false;
-   _patientAccepted = false;
-   _driverAccepted = false;
+    eDetails = null;
+    _emergency = false;
+    _patientAccepted = false;
+    _driverAccepted = false;
     _hubAccepted = false;
-  _ugt = false;
+    _ugt = false;
     _currentStatus = "UNKNOWN";
-  currentState = null;
-token=null;
-  loader = false;
+    currentState = null;
+    token = null;
+    loader = false;
     super.dispose();
   }
 

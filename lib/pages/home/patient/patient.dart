@@ -893,6 +893,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
             Navigator.of(context).pop(false);
             loc.Location location = await _getLocation();
             _notificationSent = true;
+
             await widget.mainCubit.notify("EBUTTON", true, location);
             // await widget.mainCubit.fetchEmergencyDetails();
           },

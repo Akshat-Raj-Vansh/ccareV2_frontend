@@ -47,7 +47,8 @@ abstract class IMainAPI {
   Future<Result<String>> updateStatus(
       Token token, String status, String? patientID);
   Future<Result<String>> consultHub(Token token, String docID, String patID);
-  Future<Result<String>> uploadImage(Token token, XFile image, String type,String patID);
+  Future<Result<String>> uploadImage(
+      Token token, XFile image, String type, String patID);
   Future<Result<XFile>> fetchImage(Token token, String patientID);
   Future<Result<String>> newReport(Token token, String patientID);
 
