@@ -26,9 +26,9 @@ class PatientList extends StatefulWidget {
 }
 
 class _PatientListState extends State<PatientList> {
-  static List<PatientListInfo> _patients = [];
-  static bool loader = false;
-  static dynamic currentState = null;
+  List<PatientListInfo> _patients = [];
+  bool loader = false;
+   dynamic currentState = null;
 
   @override
   void initState() {
