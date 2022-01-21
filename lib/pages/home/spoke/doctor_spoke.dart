@@ -163,35 +163,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
             _showLoader();
           } else if (state is TokenLoadedState) {
             token = state.token;
-          }
-          // if (state is NewReportGenerated) {
-          //   // _hideLoader();
-          //   log('LOG > doctor_spoke.dart > 212 > state: ${state.toString()}');
-          //   // Navigator.push(
-          //   //     context,
-          //   //     MaterialPageRoute(
-          //   //       builder: (context) => PatientReportScreen(
-          //   //         mainCubit: widget.mainCubit,
-          //   //         user: UserType.DOCTOR,
-          //   //         patientDetails: eDetails.patientDetails,
-          //   //       ),
-          //   //     ));
-          //   _showMessage(state.msg);
-          // } else if (state is AllHubDoctorsState) {
-          //   // _hideLoader();
-          //   log('LOG > doctor_spoke.dart > 223 > state: ${state.toString()}',
-          //       time: DateTime.now());
-          //   showModalBottomSheet(
-          //       context: context,
-          //       builder: (_) {
-          //         return HubDoctorsList(state.docs, widget.mainCubit);
-          //       });
-          // } else if (state is ConsultHub) {
-          //   // _hideLoader();
-          //   log('LOG > doctor_spoke.dart > 231 > state: ${state.toString()}',
-          //       time: DateTime.now());
-          //}
-          else if (state is AcceptState) {
+          } else if (state is AcceptState) {
             _hideLoader();
             log('LOG > doctor_spoke.dart > 237 > state: ${state.toString()}',
                 time: DateTime.now());

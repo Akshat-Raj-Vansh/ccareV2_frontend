@@ -98,7 +98,8 @@ class _PatientExamScreenState extends State<PatientExamScreen>
   }
 
   _fetchReport() async {
-    //print("Fetching patient  exam report");
+    print("Fetching patient exam report");
+    print(widget.patientDetails == null ? '' : widget.patientDetails.id);
     await widget.mainCubit.fetchPatientExamReport(
         widget.patientDetails == null ? '' : widget.patientDetails.id);
   }
@@ -177,8 +178,8 @@ class _PatientExamScreenState extends State<PatientExamScreen>
             editReport
                 ? TextButton(
                     onPressed: () async {
-                      //print('before saving');
-                      //print(editedReport.toString());
+                      print('before saving');
+                      print(editedReport.toString());
                       widget.mainCubit.savePatientExamReport(
                           editedReport, widget.patientDetails.id);
                     },

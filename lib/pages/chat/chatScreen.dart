@@ -70,7 +70,7 @@ class _ChatPageState extends State<ChatPage> {
   @override
   void dispose() {
     _scrollController.dispose();
-    chatModel.closeChat();
+    // chatModel.closeChat();
     super.dispose();
   }
 
