@@ -28,7 +28,9 @@ class PatientInfo extends StatefulWidget {
 
   final IHomePageAdapter homePageAdapter;
 
-  const PatientInfo({Key key, this.patientID, this.mainCubit, this.homePageAdapter}) : super(key: key);
+  const PatientInfo(
+      {Key key, this.patientID, this.mainCubit, this.homePageAdapter})
+      : super(key: key);
 
   @override
   _PatientInfoState createState() => _PatientInfoState();
@@ -37,11 +39,11 @@ class PatientInfo extends StatefulWidget {
 class _PatientInfoState extends State<PatientInfo> {
   EDetails eDetails;
   bool _emergency = false;
-   bool _patientAccepted = false;
-   bool _driverAccepted = false;
-   bool _hubAccepted = false;
-   bool _ugt = false;
-   String _currentStatus = "UNKNOWN";
+  bool _patientAccepted = false;
+  bool _driverAccepted = false;
+  bool _hubAccepted = false;
+  bool _ugt = false;
+  String _currentStatus = "UNKNOWN";
   dynamic currentState = null;
   String token;
   bool loader = false;
@@ -49,7 +51,8 @@ class _PatientInfoState extends State<PatientInfo> {
   @override
   void initState() {
     super.initState();
-    widget.mainCubit.fetchEmergencyDetails(patientID: widget.patientID);
+    widget.mainCubit.patientInfoLoading();
+    // widget.mainCubit.fetchEmergencyDetails(patientID: widget.patientID);
     NotificationController.configure(widget.mainCubit, UserType.SPOKE, context);
     NotificationController.fcmHandler();
     widget.mainCubit.fetchToken();
@@ -122,10 +125,15 @@ class _PatientInfoState extends State<PatientInfo> {
         cubit: widget.mainCubit,
         builder: (_, state) {
           print("PatientInfo Builder state: $state");
+          if (state is PatientInfoLoadingState) {
+            // _showLoader();
+            widget.mainCubit.fetchEmergencyDetails(patientID: widget.patientID);
+          }
           if (state is TokenLoadedState) {
             token = state.token;
           }
           if (state is DetailsLoaded) {
+            //       _hideLoader();
             currentState = DetailsLoaded;
             eDetails = state.eDetails;
             if (eDetails.patientDetails != null) {
@@ -144,7 +152,6 @@ class _PatientInfoState extends State<PatientInfo> {
             if (eDetails.hubDetails != null) {
               _hubAccepted = true;
             }
-            
           }
 
           if (state is NormalState) {
@@ -169,7 +176,7 @@ class _PatientInfoState extends State<PatientInfo> {
           } else if (state is StatusFetched) {
             setState(() {});
           }
-          
+
           if (state is NewReportGenerated) {
             // _hideLoader();
             log('LOG > doctor_spoke.dart > 212 > state: ${state.toString()}');

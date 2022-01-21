@@ -16,7 +16,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
 
 class PatientList extends StatefulWidget {
-
   final IHomePageAdapter homePageAdapter;
 
   const PatientList(this.homePageAdapter);
@@ -129,8 +128,10 @@ class _PatientListState extends State<PatientList> {
               onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (ctx) => PatientInfo(patientID:_patients[index].id,mainCubit: CubitProvider.of<MainCubit>(context),homePageAdapter:widget.homePageAdapter),
-                  
+                  builder: (ctx) => PatientInfo(
+                      patientID: _patients[index].id,
+                      mainCubit: CubitProvider.of<MainCubit>(context),
+                      homePageAdapter: widget.homePageAdapter),
                 ),
               ),
               child: ListTile(
@@ -146,31 +147,4 @@ class _PatientListState extends State<PatientList> {
           },
         ),
       );
-
-  //  ListView.builder(
-  //       shrinkWrap: true,
-  //       itemCount: _patients.length,
-  //       itemBuilder: (BuildContext context, int index) {
-  //         return InkWell(
-  //           onTap: () => Navigator.push(
-  //             context,
-  //             MaterialPageRoute(
-  //               builder: (ctx) => CubitProvider<MainCubit>(
-  //                 create: (ctx) => CubitProvider.of<MainCubit>(context),
-  //                 child: PatientInfo(_patients[index].id),
-  //               ),
-  //             ),
-  //           ),
-  //           child: ListTile(
-  //               leading: Icon(Icons.person),
-  //               title: Text(
-  //                 _patients[index].name,
-  //                 style: TextStyle(color: Colors.green, fontSize :12.sp),
-  //               ),
-  //               trailing: Text(_patients[index].gender.toString() +
-  //                   '   ' +
-  //                   _patients[index].age.toString())),
-  //         );
-  //       },
-  //     );
 }
