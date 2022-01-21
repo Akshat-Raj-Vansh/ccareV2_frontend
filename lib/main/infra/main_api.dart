@@ -293,8 +293,10 @@ class MainAPI extends IMainAPI {
       "Authorization": token.value
     };
     var response = await _client.get(Uri.parse(endpoint), headers: header);
-    log('LOG > main_api.dart > fetchPatientExamReport > 269 > response.statusCode: ${response.statusCode}');
-    log('LOG > main_api.dart > fetchPatientExamReport > 270 > response.body: ${response.body}');
+    print(
+        'LOG > main_api.dart > fetchPatientExamReport > 269 > response.statusCode: ${response.statusCode}');
+    print(
+        'LOG > main_api.dart > fetchPatientExamReport > 270 > response.body: ${response.body}');
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
       //print(transformError(map));
@@ -525,6 +527,7 @@ class MainAPI extends IMainAPI {
   @override
   Future<Result<String>> savePatientExamReport(
       Token token, Examination examination, String patID) async {
+    print('Examination Report: ' + examination.toString());
     String endpoint =
         baseUrl + "/treatment/spoke/updateTreatment?patientID=$patID";
     var header = {
@@ -533,6 +536,8 @@ class MainAPI extends IMainAPI {
     };
     var response = await _client.post(Uri.parse(endpoint),
         headers: header, body: examination.toJson());
+    print('Response Status: ' + response.statusCode.toString());
+    print('Response Body: ' + response.body.toString());
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
       //print(transformError(map));

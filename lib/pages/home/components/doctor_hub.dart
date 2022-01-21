@@ -48,9 +48,9 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
   @override
   void initState() {
     super.initState();
-    widget.mainCubit.fetchHubRequests();
-    widget.mainCubit.fetchHubPatientDetails();
-    widget.mainCubit.fetchToken();
+    CubitProvider.of<MainCubit>(context).fetchHubPatientDetails();
+    CubitProvider.of<MainCubit>(context).fetchHubRequests();
+    CubitProvider.of<MainCubit>(context).fetchToken();
     NotificationController.configure(widget.mainCubit, UserType.HUB, context);
     NotificationController.fcmHandler();
   }
@@ -184,12 +184,13 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
           // if (state is LoadingState) {
           //   //print("Loading State Called");
           //   _showLoader();
-          // } else
+          // }
           log('LOG > doctor_hub.dart > 165 > state: ${state.toString()}');
           if (state is ErrorState) {
             print("Error State Called HUB DOCTORr");
             // // _hideLoader();
           } else if (state is HubPatientsLoaded) {
+            currentState = state;
             eDetails = state.details;
             patientsLoaded = true;
           } else if (state is HubRequestsLoaded) {
