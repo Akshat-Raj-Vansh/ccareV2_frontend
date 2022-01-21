@@ -99,7 +99,10 @@ class _PatientInfoState extends State<PatientInfo> {
   }
 
   _hideLoader() {
+    if(loader){
     Navigator.of(context, rootNavigator: true).pop();
+    loader=false;
+    }
   }
 
   _showMessage(String msg) {
@@ -177,7 +180,11 @@ class _PatientInfoState extends State<PatientInfo> {
             //print("Loading State Called Patient Info");
             log('LOG > doctor_spoke.dart > 197 > state: ${state.toString()}');
             //  _showLoader();
-          } else if (state is ErrorState) {
+          } 
+          else if(state is NormalState){
+            _hideLoader();
+          }
+          else if (state is ErrorState) {
             // _hideLoader();
             log('LOG > doctor_spoke.dart > 204 > state: ${state.toString()}');
           } else if (state is TokenLoadedState) {

@@ -157,6 +157,10 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
         },
         listener: (context, state) async {
           print("Auth Page State $state");
+          if (state is NormalState) {
+              _hideLoader();
+            // currentState = NormalState;
+          }
           if (state is LoadingState) {
             //print("Loading State Called Doctor Spoke");
             log('LOG > doctor_spoke.dart > 197 > state: ${state.toString()}');
