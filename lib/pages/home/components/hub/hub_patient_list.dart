@@ -19,8 +19,7 @@ class AcceptedPatientList extends StatelessWidget {
         shrinkWrap: true,
         itemCount: details.length,
         itemBuilder: (BuildContext context, int index) {
-            return
-          
+            return  
           InkWell(
             child:  Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
