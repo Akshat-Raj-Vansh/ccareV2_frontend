@@ -23,10 +23,8 @@ class AcceptedPatientList extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => CubitProvider(
-                          create: (_) => cubit,
-                          child: HubPatientInfo(details: details[index]),
-                        )),
+                    builder: (context) => HubPatientInfo(details: details[index],mainCubit:cubit,),
+                        ),
               ),
             },
             child: Padding(

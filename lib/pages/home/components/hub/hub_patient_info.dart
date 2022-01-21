@@ -20,8 +20,10 @@ import 'package:flutter_cubit/flutter_cubit.dart';
 
 class HubPatientInfo extends StatefulWidget {
   final EDetails details;
+  final MainCubit mainCubit;
   const HubPatientInfo({
     this.details,
+    this.mainCubit
   });
 
   @override
@@ -35,9 +37,9 @@ class _HubPatientInfoState extends State<HubPatientInfo> {
   void initState() {
     super.initState();
 
-    CubitProvider.of<MainCubit>(context).fetchToken();
+    widget.mainCubit.fetchToken();
     NotificationController.configure(
-        CubitProvider.of<MainCubit>(context), UserType.HUB, context);
+        widget.mainCubit, UserType.HUB, context);
     NotificationController.fcmHandler();
   }
 
@@ -50,7 +52,10 @@ class _HubPatientInfoState extends State<HubPatientInfo> {
           title: Text(widget.details.patientDetails.name),
           backgroundColor: kPrimaryColor,
         ),
-        body: CubitConsumer<MainCubit, MainState>(builder: (_, state) {
+        body: CubitConsumer<MainCubit, MainState>(
+          cubit: widget.mainCubit,
+          builder: (_, state) {
+          print("state is $state");
           if (state is TokenLoadedState) {
             log('LOG > doctor_hub.dart > 153 > state: ${state.toString()}');
             token = state.token;
@@ -61,6 +66,7 @@ class _HubPatientInfoState extends State<HubPatientInfo> {
           return _buildPatientLoadedUI(context);
         }, listener: (context, state) async {
           log('LOG > doctor_hub.dart > 165 > state: ${state.toString()}');
+          print(" Listener state is $state");
           if (state is ErrorState) {
             //print("Error State Called HUB PATIENT");
             // // _hideLoader();
@@ -98,7 +104,7 @@ class _HubPatientInfoState extends State<HubPatientInfo> {
                       TextButton(
                         onPressed: () async {
                           // make api for accept patient by Hub
-                          CubitProvider.of<MainCubit>(context)
+                          widget.mainCubit
                               .acceptPatientByHub(state.patientID);
                         },
                         child: Text(
@@ -126,7 +132,7 @@ class _HubPatientInfoState extends State<HubPatientInfo> {
                       widget.details.doctorDetails.id,
                       widget.details.patientDetails.id,
                       token,
-                      CubitProvider.of<MainCubit>(context))));
+                      widget.mainCubit)));
           // widget.mainCubit.getAllHubDoctors();
           // Navigator.push(
           //   context,
@@ -252,7 +258,7 @@ class _HubPatientInfoState extends State<HubPatientInfo> {
               context,
               MaterialPageRoute(
                 builder: (_) => PatientReportScreen(
-                  mainCubit: CubitProvider.of<MainCubit>(context),
+                  mainCubit: widget.mainCubit,
                   user: UserType.DOCTOR,
                   patientDetails: widget.details.patientDetails,
                 ),
@@ -305,7 +311,7 @@ class _HubPatientInfoState extends State<HubPatientInfo> {
               context,
               MaterialPageRoute(
                 builder: (_) => PatientExamScreen(
-                  mainCubit: CubitProvider.of<MainCubit>(context),
+                  mainCubit: widget.mainCubit,
                   patientDetails: widget.details.patientDetails,
                   user: UserType.HUB,
                 ),
@@ -332,7 +338,7 @@ class _HubPatientInfoState extends State<HubPatientInfo> {
               context,
               MaterialPageRoute(
                 builder: (_) => PatientReportHistoryScreen(
-                    mainCubit: CubitProvider.of<MainCubit>(context)),
+                    mainCubit: widget.mainCubit),
               ));
         },
         child: Container(

@@ -471,6 +471,7 @@ class MainCubit extends Cubit<MainState> {
     emit(PatientInfoLoadingState());
   }
 
+
   void _startLoading(String from) {
     print(from);
     emit(LoadingState());
