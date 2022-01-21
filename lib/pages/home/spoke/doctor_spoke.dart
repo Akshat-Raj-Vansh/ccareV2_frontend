@@ -79,9 +79,9 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
   }
 
   _hideLoader() {
-    if(loader=true){
-    Navigator.of(context, rootNavigator: true).pop();
-    loader=false;
+    if (loader = true) {
+      Navigator.of(context, rootNavigator: true).pop();
+      loader = false;
     }
   }
 
@@ -388,15 +388,15 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
           ),
           _patients.length != 0
               ? Container(
-                 
                   width: SizeConfig.screenWidth,
                   padding:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                   margin:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                   child: ListView.separated(
-                     separatorBuilder: (BuildContext context, int index) { 
-                      return Container(height:10);},
+                    separatorBuilder: (BuildContext context, int index) {
+                      return Container(height: 10);
+                    },
                     itemCount: _patients.length,
                     shrinkWrap: true,
                     itemBuilder: (BuildContext context, int index) {
@@ -404,16 +404,16 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
                         onTap: () => Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (ctx) => PatientInfo(
-                               patientID: _patients[index].id,
-                                mainCubit:CubitProvider.of<MainCubit>(context),
-                                homePageAdapter:widget.homePageAdapter),
-                          ),
+                              builder: (ctx) => PatientInfo(
+                                  patientID: _patients[index].id,
+                                  mainCubit:
+                                      CubitProvider.of<MainCubit>(context),
+                                  homePageAdapter: widget.homePageAdapter)),
                         ),
                         child: Container(
-                           decoration: BoxDecoration(
-                      color: Colors.green[100],
-                      borderRadius: BorderRadius.circular(20)),
+                          decoration: BoxDecoration(
+                              color: Colors.green[100],
+                              borderRadius: BorderRadius.circular(20)),
                           child: ListTile(
                               leading: Icon(Icons.person),
                               title: Text(
@@ -421,9 +421,10 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
                                 style: TextStyle(
                                     color: Colors.green, fontSize: 12.sp),
                               ),
-                              trailing: Text(_patients[index].gender.toString() +
-                                  '   ' +
-                                  _patients[index].age.toString())),
+                              trailing: Text(
+                                  _patients[index].gender.toString() +
+                                      '   ' +
+                                      _patients[index].age.toString())),
                         ),
                       );
                     },
@@ -450,7 +451,6 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
           ),
           _requests.length != 0
               ? Container(
-                
                   width: SizeConfig.screenWidth,
                   padding:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
@@ -469,9 +469,9 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
                           });
                         },
                         child: Container(
-                            decoration: BoxDecoration(
-                      color: Colors.red[100],
-                      borderRadius: BorderRadius.circular(20)),
+                          decoration: BoxDecoration(
+                              color: Colors.red[100],
+                              borderRadius: BorderRadius.circular(20)),
                           child: ListTile(
                               leading: Icon(Icons.person),
                               title: Text(
@@ -482,9 +482,10 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
                               trailing: Text(_requests[index].age.toString())),
                         ),
                       );
-                    }, separatorBuilder: (BuildContext context, int index) { 
-                      return Divider(height:5);
-                     },
+                    },
+                    separatorBuilder: (BuildContext context, int index) {
+                      return Divider(height: 5);
+                    },
                   ),
                 )
               : Padding(

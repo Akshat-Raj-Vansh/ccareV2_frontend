@@ -316,6 +316,12 @@ class NoPatientAccepted extends MainState {
   List<Object> get props => [this.error, this.prevState];
 }
 
+class PatientInfoLoadingState extends MainState {
+  PatientInfoLoadingState() {}
+  @override
+  List<Object> get props => [];
+}
+
 class ErrorState extends MainState {
   final String error;
   ErrorState(this.error) {}
