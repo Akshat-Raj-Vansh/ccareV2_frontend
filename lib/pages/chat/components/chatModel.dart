@@ -19,11 +19,6 @@ class ChatModel extends Model {
   ILocalStore localStore;
 
   void init(String patientID, String token) {
-    // const patientID = "61a1ea2abab826de9860f7a2";
-
-    // // localStore =  LocalStore(sharedPreferences);
-    // // var token = await localStore.fetch();
-    // const token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjFhMWU5ZGNiYWI4MjZkZTk4NjBmNzkzIiwiaWF0IjoxNjM4MjY1MzkxLCJleHAiOjE2Mzg4NzAxOTEsImlzcyI6ImNvbS5jY2FyZW5pdGgifQ.K-_DprXx2ipOwWt17DODlMDqQSgtWdv8aARjlPdEuzA";
     userChatID = patientID + "-" + token;
 
     socket = IO.io(
@@ -58,6 +53,10 @@ class ChatModel extends Model {
     //print('888888888888888888');
     //print(messages.last);
     notifyListeners();
+  }
+
+  void closeChat() {
+    socket.close();
   }
 
   void sendMessage(String text, String receiverChatID) {

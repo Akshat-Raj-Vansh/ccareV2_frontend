@@ -55,7 +55,8 @@ class _ChatPageState extends State<ChatPage> {
   void initState() {
     super.initState();
     recieverChatID = widget.patientID + "-" + widget.recieverID;
-    print(widget.token);
+    print('Token:' + widget.token);
+    print('PatientID:' + widget.patientID);
     chatModel.init(widget.patientID, widget.token);
     widget.mainCubit.loadMessages(widget.patientID);
     _scrollController = ScrollController();
@@ -69,6 +70,7 @@ class _ChatPageState extends State<ChatPage> {
   @override
   void dispose() {
     _scrollController.dispose();
+    chatModel.closeChat();
     super.dispose();
   }
 
@@ -155,11 +157,12 @@ class _ChatPageState extends State<ChatPage> {
                 SizedBox(width: 1.w),
                 FloatingActionButton(
                   onPressed: () {
-                    if(textEditingController.text!=""){
-                    model.sendMessage(
-                        textEditingController.text, recieverChatID);
-                    textEditingController.text = '';
-                    _scrollToEnd();}
+                    if (textEditingController.text != "") {
+                      model.sendMessage(
+                          textEditingController.text, recieverChatID);
+                      textEditingController.text = '';
+                      _scrollToEnd();
+                    }
                   },
                   elevation: 0,
                   child: Icon(Icons.send),
@@ -185,7 +188,7 @@ class _ChatPageState extends State<ChatPage> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.of(context).pop(true);
           },
         ),
       ),
@@ -193,6 +196,7 @@ class _ChatPageState extends State<ChatPage> {
         cubit: widget.mainCubit,
         builder: (context, state) {
           print("ChatScreen Builder state: $state");
+
           if (state is MessagesLoadedState) {
             //print('Messages loaded state');
             print(state.messages.last);
@@ -202,14 +206,14 @@ class _ChatPageState extends State<ChatPage> {
             //  WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToEnd());
             //  scrollToBottom();
           }
-          if(state is ErrorState){
-            currentState=state;
+          if (state is ErrorState) {
+            currentState = state;
           }
           if (currentState == null)
             return Container(
                 color: Colors.white,
                 child: Center(child: CircularProgressIndicator()));
-         
+
           return buildBody();
         },
         listener: (context, state) {

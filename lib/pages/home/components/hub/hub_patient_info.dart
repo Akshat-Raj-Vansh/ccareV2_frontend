@@ -29,7 +29,7 @@ class HubPatientInfo extends StatefulWidget {
 }
 
 class _HubPatientInfoState extends State<HubPatientInfo> {
-  String token;
+  static String token;
 
   @override
   void initState() {
@@ -116,6 +116,8 @@ class _HubPatientInfoState extends State<HubPatientInfo> {
 
   _buildChatButton() => InkWell(
         onTap: () async {
+          print('Patient ID from Hub: ' + widget.details.patientDetails.id);
+          print('Token from Hub: ' + token);
           Navigator.push(
               context,
               MaterialPageRoute(
