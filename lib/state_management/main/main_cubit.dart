@@ -248,7 +248,8 @@ class MainCubit extends Cubit<MainState> {
     emit(EditPatientReport("editing patient report"));
   }
 
-  imageClicked(XFile image, String type, String patID) async {
+  imageClicked(XFile image, String type, String patID,
+      treat.TreatmentReport report) async {
     // _startLoading("Image Clicked");
     final token = await localStore.fetch();
     final result = await this.api.uploadImage(token, image, type, patID);
@@ -256,7 +257,18 @@ class MainCubit extends Cubit<MainState> {
       emit(ErrorState(result.asError!.error as String));
       return;
     }
-    emit(ImageCaptured("Image Clicked"));
+
+    emit(ImageCaptured("Image Clicked", result.asValue!.value.split('#')[1],
+        result.asValue!.value.split('#')[2]));
+    report.ecg.ecg_file_id = result.asValue!.value.split('#')[1];
+    report.ecg.ecg_time = result.asValue!.value.split('#')[2];
+    final result2 =
+        await api.savePatientReport(Token(token.value), report, patID);
+    if (result2.isError) {
+      emit(ErrorState(result.asError!.error as String));
+      return;
+    }
+    emit(PatientReportSaved("Saved"));
   }
 
   caseClose(String patientID) async {

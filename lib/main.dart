@@ -1,4 +1,5 @@
 //@dart=2.9
+import 'package:flutter/services.dart';
 import 'package:sizer/sizer.dart';
 import 'package:ccarev2_frontend/services/Notifications/notificationContoller.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -14,6 +15,9 @@ void main() async {
   await Firebase.initializeApp();
   await NotificationController.createChannels();
   print('FCM Token: ' + await NotificationController.getFCMToken);
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]);
   runApp(MyApp(startPage));
 }
 

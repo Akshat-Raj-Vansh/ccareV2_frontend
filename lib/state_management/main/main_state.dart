@@ -132,9 +132,11 @@ class CaseClosedState extends MainState {
 
 class ImageCaptured extends MainState {
   final String msg;
-  ImageCaptured(this.msg);
+  final String id;
+  final String time;
+  ImageCaptured(this.msg, this.id, this.time);
   @override
-  List<Object> get props => [this.msg];
+  List<Object> get props => [this.msg, this.id, this.time];
 }
 
 class ImageLoaded extends MainState {
