@@ -237,7 +237,7 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
                           // widget.mainCubit.acceptPatientByHub(state.patientID);
                           // setState(() {});
                           print('AcceptState');
-                          widget.mainCubit.acceptPatientByHub(state.patientID);
+                          // widget.mainCubit.acceptPatientByHub(state.patientID);
                           widget.mainCubit.fetchHubPatientDetails();
                           widget.mainCubit.fetchHubRequests();
                           Navigator.of(context).pop(false);

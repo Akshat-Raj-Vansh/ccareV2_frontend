@@ -288,7 +288,8 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
             _showLoader();
           } else if (state is StatusFetched) {
             _hideLoader();
-            log('DATA > patient.dart > FUNCTION_NAME > 237 > state.msg: ${state.msg}');
+            print(
+                'DATA > patient.dart > FUNCTION_NAME > 237 > state.msg: ${state.msg}');
             _currentStatus = state.msg;
           } else if (state is EmergencyState) {
             _hideLoader();
