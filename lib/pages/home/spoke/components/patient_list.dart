@@ -129,7 +129,7 @@ class _PatientListState extends State<PatientList> {
               onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (ctx) => PatientInfo(_patients[index].id, CubitProvider.of<MainCubit>(context),widget.homePageAdapter),
+                  builder: (ctx) => PatientInfo(patientID:_patients[index].id,mainCubit: CubitProvider.of<MainCubit>(context),homePageAdapter:widget.homePageAdapter),
                   
                 ),
               ),

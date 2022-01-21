@@ -79,7 +79,10 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
   }
 
   _hideLoader() {
+    if(loader=true){
     Navigator.of(context, rootNavigator: true).pop();
+    loader=false;
+    }
   }
 
   _showMessage(String msg) {
@@ -153,6 +156,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
           return _buildUI(context);
         },
         listener: (context, state) async {
+          print("Auth Page State $state");
           if (state is LoadingState) {
             //print("Loading State Called Doctor Spoke");
             log('LOG > doctor_spoke.dart > 197 > state: ${state.toString()}');
@@ -239,7 +243,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
             setState(() {});
             //   CubitProvider.of<MainCubit>(context).fetchEmergencyDetails();
           } else if (state is ErrorState) {
-            _hideLoader();
+            // _hideLoader();
             // _emergency = true;
             //print(state.error);
           }
@@ -384,15 +388,15 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
           ),
           _patients.length != 0
               ? Container(
-                  decoration: BoxDecoration(
-                      color: Colors.green[100],
-                      borderRadius: BorderRadius.circular(20)),
+                 
                   width: SizeConfig.screenWidth,
                   padding:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                   margin:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-                  child: ListView.builder(
+                  child: ListView.separated(
+                     separatorBuilder: (BuildContext context, int index) { 
+                      return Container(height:10);},
                     itemCount: _patients.length,
                     shrinkWrap: true,
                     itemBuilder: (BuildContext context, int index) {
@@ -401,21 +405,26 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
                           context,
                           MaterialPageRoute(
                             builder: (ctx) => PatientInfo(
-                                _patients[index].id,
-                                CubitProvider.of<MainCubit>(context),
-                                widget.homePageAdapter),
+                               patientID: _patients[index].id,
+                                mainCubit:CubitProvider.of<MainCubit>(context),
+                                homePageAdapter:widget.homePageAdapter),
                           ),
                         ),
-                        child: ListTile(
-                            leading: Icon(Icons.person),
-                            title: Text(
-                              _patients[index].name,
-                              style: TextStyle(
-                                  color: Colors.green, fontSize: 12.sp),
-                            ),
-                            trailing: Text(_patients[index].gender.toString() +
-                                '   ' +
-                                _patients[index].age.toString())),
+                        child: Container(
+                           decoration: BoxDecoration(
+                      color: Colors.green[100],
+                      borderRadius: BorderRadius.circular(20)),
+                          child: ListTile(
+                              leading: Icon(Icons.person),
+                              title: Text(
+                                _patients[index].name,
+                                style: TextStyle(
+                                    color: Colors.green, fontSize: 12.sp),
+                              ),
+                              trailing: Text(_patients[index].gender.toString() +
+                                  '   ' +
+                                  _patients[index].age.toString())),
+                        ),
                       );
                     },
                   ),
@@ -441,15 +450,13 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
           ),
           _requests.length != 0
               ? Container(
-                  decoration: BoxDecoration(
-                      color: Colors.red[100],
-                      borderRadius: BorderRadius.circular(20)),
+                
                   width: SizeConfig.screenWidth,
                   padding:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                   margin:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-                  child: ListView.builder(
+                  child: ListView.separated(
                     shrinkWrap: true,
                     itemCount: _requests.length,
                     itemBuilder: (BuildContext context, int index) {
@@ -461,16 +468,23 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
                             _requests.removeAt(index);
                           });
                         },
-                        child: ListTile(
-                            leading: Icon(Icons.person),
-                            title: Text(
-                              _requests[index].name,
-                              style: TextStyle(
-                                  color: Colors.green, fontSize: 12.sp),
-                            ),
-                            trailing: Text(_requests[index].age.toString())),
+                        child: Container(
+                            decoration: BoxDecoration(
+                      color: Colors.red[100],
+                      borderRadius: BorderRadius.circular(20)),
+                          child: ListTile(
+                              leading: Icon(Icons.person),
+                              title: Text(
+                                _requests[index].name,
+                                style: TextStyle(
+                                    color: Colors.green, fontSize: 12.sp),
+                              ),
+                              trailing: Text(_requests[index].age.toString())),
+                        ),
                       );
-                    },
+                    }, separatorBuilder: (BuildContext context, int index) { 
+                      return Divider(height:5);
+                     },
                   ),
                 )
               : Padding(

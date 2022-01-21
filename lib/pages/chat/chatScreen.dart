@@ -199,13 +199,17 @@ class _ChatPageState extends State<ChatPage> {
             chatModel.messages = [];
             chatModel.addMessages(state.messages);
             currentState = state;
+            //  WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToEnd());
             //  scrollToBottom();
+          }
+          if(state is ErrorState){
+            currentState=state;
           }
           if (currentState == null)
             return Container(
                 color: Colors.white,
                 child: Center(child: CircularProgressIndicator()));
-          WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToEnd());
+         
           return buildBody();
         },
         listener: (context, state) {

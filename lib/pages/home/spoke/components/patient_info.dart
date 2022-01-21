@@ -27,7 +27,8 @@ class PatientInfo extends StatefulWidget {
   final MainCubit mainCubit;
 
   final IHomePageAdapter homePageAdapter;
-  const PatientInfo(this.patientID, this.mainCubit, this.homePageAdapter);
+
+  const PatientInfo({Key key, this.patientID, this.mainCubit, this.homePageAdapter}) : super(key: key);
 
   @override
   _PatientInfoState createState() => _PatientInfoState();
@@ -35,12 +36,12 @@ class PatientInfo extends StatefulWidget {
 
 class _PatientInfoState extends State<PatientInfo> {
   EDetails eDetails;
-  static bool _emergency = false;
-  static bool _patientAccepted = false;
-  static bool _driverAccepted = false;
-  static bool _hubAccepted = false;
-  static bool _ugt = false;
-  static String _currentStatus = "UNKNOWN";
+  bool _emergency = false;
+   bool _patientAccepted = false;
+   bool _driverAccepted = false;
+   bool _hubAccepted = false;
+   bool _ugt = false;
+   String _currentStatus = "UNKNOWN";
   dynamic currentState = null;
   String token;
   bool loader = false;
@@ -53,6 +54,13 @@ class _PatientInfoState extends State<PatientInfo> {
     NotificationController.fcmHandler();
     widget.mainCubit.fetchToken();
   }
+
+  // @override
+  // void dispose(){
+  //   print("DISPOSED");
+  //   widget.mainCubit.close();
+  //   super.dispose();
+  // }
 
   // Future<loc.Location> _getLocation() async {
   //   lloc.LocationData _locationData = await lloc.Location().getLocation();
@@ -105,7 +113,8 @@ class _PatientInfoState extends State<PatientInfo> {
         backgroundColor: kPrimaryColor,
         leading: IconButton(
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.of(context, rootNavigator: true).pop(false);
+              // widget.homePageAdapter.loadHomeUI(context, UserType.SPOKE);
             },
             icon: Icon(Icons.arrow_back_ios)),
       ),
@@ -135,6 +144,7 @@ class _PatientInfoState extends State<PatientInfo> {
             if (eDetails.hubDetails != null) {
               _hubAccepted = true;
             }
+            
           }
 
           if (state is NormalState) {
@@ -159,6 +169,7 @@ class _PatientInfoState extends State<PatientInfo> {
           } else if (state is StatusFetched) {
             setState(() {});
           }
+          
           if (state is NewReportGenerated) {
             // _hideLoader();
             log('LOG > doctor_spoke.dart > 212 > state: ${state.toString()}');

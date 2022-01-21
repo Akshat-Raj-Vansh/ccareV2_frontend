@@ -549,7 +549,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
                 Container(
                   width: SizeConfig.screenWidth * 0.4,
                   child: DropdownButton<YN>(
-                    value: editedReport.nTreatment.aspirin_loading,
+                    value: editedReport.nTreatment.c_p_t_loading,
                     isDense: false,
                     onChanged: (YN newValue) {
                       setState(() {
