@@ -592,10 +592,10 @@ class MainAPI extends IMainAPI {
 
   @override
   Future<Result<String>> uploadImage(
-      Token token, XFile image, String type) async {
+      Token token, XFile image, String type,String patID) async {
     //print("Upload Image");
     //print(image.name);
-    String endpoint = baseUrl + "/treatment/spoke/uploadECG";
+    String endpoint = baseUrl + "/treatment/spoke/uploadECG?patientID=$patID";
     final header = {
       // "Content-Type": "application/json",
       "Authorization": token.value
