@@ -261,6 +261,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
           // _hideLoader();
           clickImage = true;
           log('LOG > patient_report_screen.dart > 233 > state: ${state.toString()}');
+          _showMessage("Image Uploaded");
           //  widget.mainCubit.fetchPatientReport();
         }
         if (state is PatientReportSaved) {
@@ -986,7 +987,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
             InkWell(
                 onTap: () async {
                   widget.mainCubit.imageClicked(_image,
-                      editedReport.ecg.ecg_type.toString().split(".")[1]);
+                      editedReport.ecg.ecg_type.toString().split(".")[1],widget.patientDetails.id);
                 },
                 child: Container(
                   width: SizeConfig.screenWidth,
