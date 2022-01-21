@@ -186,10 +186,13 @@ class _PatientReportScreenState extends State<PatientReportScreen>
       builder: (_, state) {
         if (state is PatientReportFetched) {
           print("Patient Report Fetched state builder Called $state");
-          log('LOG > patient_report_screen.dart > 179 > state: ${state.toString()}');
+          print(
+              'LOG > patient_report_screen.dart > 179 > state: ${state.toString()}');
           editedReport = state.mixReport.currentTreatment;
           print(
               'LOG > patient_report_screen.dart > 182 > editedReport: ${editedReport.ecg.ecg_time.toString() == "nill"}');
+          print(
+              'LOG > patient_report_screen.dart > 182 > ecg id: ${editedReport.ecg.ecg_file_id.toString()}');
           if (state.mixReport.previousTreatment != null)
             previousReport = state.mixReport.previousTreatment;
           //print(editedReport.toString());
@@ -232,7 +235,10 @@ class _PatientReportScreenState extends State<PatientReportScreen>
           print("Patient Report Fetched state  listener Called $state");
           log('LOG > patient_report_screen.dart > 179 > state: ${state.toString()}');
           editedReport = state.mixReport.currentTreatment;
-          log('LOG > patient_report_screen.dart > 182 > editedReport: ${editedReport}');
+          print(
+              'LOG > patient_report_screen.dart > 182 > editedReport: ${editedReport}');
+          print(
+              'LOG > patient_report_screen.dart > 182 > editedReport: ${editedReport.ecg.ecg_file_id}');
           if (state.mixReport.previousTreatment != null)
             previousReport = state.mixReport.previousTreatment;
           //print(editedReport.toString());
@@ -262,6 +268,8 @@ class _PatientReportScreenState extends State<PatientReportScreen>
           clickImage = true;
           log('LOG > patient_report_screen.dart > 233 > state: ${state.toString()}');
           _showMessage("Image Uploaded");
+          widget.mainCubit
+              .savePatientReport(editedReport, widget.patientDetails.id);
           //  widget.mainCubit.fetchPatientReport();
         }
         if (state is PatientReportSaved) {
@@ -986,8 +994,10 @@ class _PatientReportScreenState extends State<PatientReportScreen>
             ),
             InkWell(
                 onTap: () async {
-                  widget.mainCubit.imageClicked(_image,
-                      editedReport.ecg.ecg_type.toString().split(".")[1],widget.patientDetails.id);
+                  widget.mainCubit.imageClicked(
+                      _image,
+                      editedReport.ecg.ecg_type.toString().split(".")[1],
+                      widget.patientDetails.id);
                 },
                 child: Container(
                   width: SizeConfig.screenWidth,

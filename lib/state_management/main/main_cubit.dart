@@ -248,10 +248,10 @@ class MainCubit extends Cubit<MainState> {
     emit(EditPatientReport("editing patient report"));
   }
 
-  imageClicked(XFile image, String type,String patID) async {
+  imageClicked(XFile image, String type, String patID) async {
     // _startLoading("Image Clicked");
     final token = await localStore.fetch();
-    final result = await this.api.uploadImage(token, image, type,patID);
+    final result = await this.api.uploadImage(token, image, type, patID);
     if (result.isError) {
       emit(ErrorState(result.asError!.error as String));
       return;
@@ -470,7 +470,6 @@ class MainCubit extends Cubit<MainState> {
   patientInfoLoading() async {
     emit(PatientInfoLoadingState());
   }
-
 
   void _startLoading(String from) {
     print(from);
