@@ -35,6 +35,7 @@ class ChatModel extends Model {
     socket.onConnectError((err) {
       //print(err);
     });
+
     socket.on("receive_message", (jsonData) {
       //print(jsonEncode(jsonData));
       //print(jsonEncode(jsonData['content']));
@@ -50,7 +51,8 @@ class ChatModel extends Model {
     //print(data.last);
     messages.addAll(data);
     //print('888888888888888888');
-    //print(messages.last);
+    print(messages.last);
+    
     notifyListeners();
   }
 
@@ -75,8 +77,10 @@ class ChatModel extends Model {
     //print(messages
     // .where((msg) => msg.senderID == chatID || msg.receiverID == chatID)
     // .toList());
-    return messages
-        .where((msg) => msg.senderID == chatID || msg.receiverID == chatID)
-        .toList();
+    print(messages.length);
+    return messages;
+    // return messages
+    //     .where((msg) => msg.senderID == chatID || msg.receiverID == chatID)
+    //     .toList();
   }
 }

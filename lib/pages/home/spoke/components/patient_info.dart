@@ -58,12 +58,21 @@ class _PatientInfoState extends State<PatientInfo> {
     widget.mainCubit.fetchToken();
   }
 
-  // @override
-  // void dispose(){
-  //   print("DISPOSED");
-  //   widget.mainCubit.close();
-  //   super.dispose();
-  // }
+  @override
+  void dispose(){
+    print("Disposing");
+    eDetails=null;
+  _emergency = false;
+   _patientAccepted = false;
+   _driverAccepted = false;
+    _hubAccepted = false;
+  _ugt = false;
+    _currentStatus = "UNKNOWN";
+  currentState = null;
+token=null;
+  loader = false;
+    super.dispose();
+  }
 
   // Future<loc.Location> _getLocation() async {
   //   lloc.LocationData _locationData = await lloc.Location().getLocation();

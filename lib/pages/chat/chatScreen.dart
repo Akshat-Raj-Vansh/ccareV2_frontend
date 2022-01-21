@@ -58,7 +58,8 @@ class _ChatPageState extends State<ChatPage> {
     print('Token:' + widget.token);
     print('PatientID:' + widget.patientID);
     chatModel.init(widget.patientID, widget.token);
-    widget.mainCubit.loadMessages(widget.patientID);
+    // widget.mainCubit.loadMessages(widget.patientID);
+    widget.mainCubit.chatLoading();
     _scrollController = ScrollController();
   }
 
@@ -99,7 +100,7 @@ class _ChatPageState extends State<ChatPage> {
         builder: (context, child, model) {
           List<Message> messages = model.getMessagesForChatID(recieverChatID);
           // scrollToBottom();
-
+          print(messages.length);
           return Container(
             height: MediaQuery.of(context).size.height * 0.75,
             child: ListView.builder(
@@ -197,13 +198,17 @@ class _ChatPageState extends State<ChatPage> {
         builder: (context, state) {
           print("ChatScreen Builder state: $state");
 
+        if(state is ChatLoadingState){
+          widget.mainCubit.loadMessages(widget.patientID);
+        }
           if (state is MessagesLoadedState) {
-            //print('Messages loaded state');
+            print('Messages loaded state');
             print(state.messages.last);
             chatModel.messages = [];
+            print(state.messages.length);
             chatModel.addMessages(state.messages);
             currentState = state;
-            //  WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToEnd());
+             WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToEnd());
             //  scrollToBottom();
           }
           if (state is ErrorState) {

@@ -15,40 +15,22 @@ class AcceptedPatientList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-          color: Colors.green[100], borderRadius: BorderRadius.circular(20)),
-      width: SizeConfig.screenWidth,
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-      child: ListView.builder(
-          shrinkWrap: true,
-          itemCount: details.length,
-          itemBuilder: (BuildContext context, int index) {
-            return InkWell(
+    return ListView.builder(
+        shrinkWrap: true,
+        itemCount: details.length,
+        itemBuilder: (BuildContext context, int index) {
+          return InkWell(
               onTap: () => {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => CubitProvider(
-                            create: (_) => cubit,
-                            child: HubPatientInfo(details: details[index]),
-                          )),
-                ),
-              },
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-                child: ListTile(
-                    leading: Icon(Icons.person),
-                    trailing: Text(
-                      details[index].patientDetails.age.toString(),
-                      style: TextStyle(color: Colors.green, fontSize: 12.sp),
-                    ),
-                    title: Text(details[index].patientDetails.name)),
-              ),
-            );
-          }),
-    );
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => HubPatientInfo(
+                          details: details[index],
+                          mainCubit: cubit,
+                        ),
+                      ),
+                    )
+                  });
+        });
   }
 }
