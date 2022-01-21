@@ -463,6 +463,10 @@ class MainCubit extends Cubit<MainState> {
     emit(NewReportGenerated(result.asValue!.value));
   }
 
+  chatLoading() async {
+    emit(ChatLoadingState());
+  }
+
   patientInfoLoading() async {
     emit(PatientInfoLoadingState());
   }

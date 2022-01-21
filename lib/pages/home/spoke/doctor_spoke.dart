@@ -299,26 +299,26 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
                     ));
               },
             ),
-            ListTile(
-              leading: Icon(Icons.question_answer),
-              title: Text(
-                'Consultation',
-                style: TextStyle(color: Colors.black54),
-              ),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.settings),
-              title: Text(
-                'Settings',
-                style: TextStyle(color: Colors.black54),
-              ),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
+            // ListTile(
+            //   leading: Icon(Icons.question_answer),
+            //   title: Text(
+            //     'Consultation',
+            //     style: TextStyle(color: Colors.black54),
+            //   ),
+            //   onTap: () {
+            //     Navigator.pop(context);
+            //   },
+            // ),
+            // ListTile(
+            //   leading: Icon(Icons.settings),
+            //   title: Text(
+            //     'Settings',
+            //     style: TextStyle(color: Colors.black54),
+            //   ),
+            //   onTap: () {
+            //     Navigator.pop(context);
+            //   },
+            // ),
             ListTile(
               leading: Icon(Icons.logout),
               title: Text(
