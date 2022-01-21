@@ -406,7 +406,8 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
   _buildPatienEmergencyButton() => InkWell(
         onTap: () async {
           _showAmbRequired();
-          setState(() {});
+          setState(() {
+              });
         },
         child: Container(
           width: SizeConfig.screenWidth,

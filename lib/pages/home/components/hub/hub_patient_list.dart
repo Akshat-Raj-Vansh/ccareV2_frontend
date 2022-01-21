@@ -19,7 +19,20 @@ class AcceptedPatientList extends StatelessWidget {
         shrinkWrap: true,
         itemCount: details.length,
         itemBuilder: (BuildContext context, int index) {
-          return InkWell(
+            return
+          
+          InkWell(
+            child:  Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+              child: ListTile(
+                  leading: Icon(Icons.person),
+                  title: Text(
+                    details[index].patientDetails.name,
+                    style: TextStyle(color: Colors.green, fontSize: 12.sp),
+                  ),
+                  trailing: Text(details[index].patientDetails.age.toString()),
+                 ),
+            ),
               onTap: () => {
                     Navigator.push(
                       context,
