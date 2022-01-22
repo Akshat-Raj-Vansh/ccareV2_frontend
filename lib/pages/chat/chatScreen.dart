@@ -64,8 +64,11 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   _scrollToEnd() {
+    Future.delayed(Duration(milliseconds: 100), () {
+         
     _scrollController.animateTo(_scrollController.position.maxScrollExtent,
         duration: Duration(milliseconds: 200), curve: Curves.easeInOut);
+    });
   }
 
   @override
