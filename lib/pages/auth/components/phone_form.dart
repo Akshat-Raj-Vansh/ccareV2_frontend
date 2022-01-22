@@ -85,6 +85,7 @@ class _PhoneFormState extends State<PhoneForm> {
                 RaisedButton(
                   onPressed: () async {
                     //print('LOGIN BUTTON CLICKED');
+                    FocusManager.instance.primaryFocus?.unfocus();
                     if (_formKey.currentState!.validate()) {
                       //print('NOT COMING INSIDE');
                       widget.cubit.verifyPhone(_phone);

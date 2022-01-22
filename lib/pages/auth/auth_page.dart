@@ -97,9 +97,6 @@ class _AuthPageState extends State<AuthPage> {
                                 .onLoginSuccess(context, widget.userType);
                         print(state.details.toString());
                       } else if (state is PhoneVerificationState) {
-                        //    // _hideLoader();
-                        //print("PhoneVerification State Called");
-                        //    _showLoader();
                         _phone = state.phone;
                         _verifyPhone(_phone);
                       } else if (state is OTPVerificationState) {
@@ -262,12 +259,12 @@ class _AuthPageState extends State<AuthPage> {
             _showMessage(_msg);
           },
           codeSent: (String verificationID, int resendToken) {
-            if(!verified){
-            setState(() {
-              _msg = "CODE SENT " + verificationID;
-              _verificationCode = verificationID;
-              CubitProvider.of<UserCubit>(context).verifyOTP();
-            });
+            if (!verified) {
+              setState(() {
+                _msg = "CODE SENT " + verificationID;
+                _verificationCode = verificationID;
+                CubitProvider.of<UserCubit>(context).verifyOTP();
+              });
             }
           },
           codeAutoRetrievalTimeout: (String verificationID) {},

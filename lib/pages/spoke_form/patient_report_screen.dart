@@ -1583,7 +1583,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
                 Container(
                   width: SizeConfig.screenWidth * 0.4,
                   child: TextFormField(
-                    keyboardType: TextInputType.number,
+                    keyboardType: TextInputType.text,
                     focusNode: null,
                     onChanged: (newValue) =>
                         editedReport.examination.bp = newValue,
@@ -1605,7 +1605,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
                 Container(
                   width: SizeConfig.screenWidth * 0.4,
                   child: TextFormField(
-                    keyboardType: TextInputType.number,
+                    keyboardType: TextInputType.text,
                     focusNode: null,
                     onChanged: (newValue) =>
                         editedReport.examination.local_tenderness = newValue,
