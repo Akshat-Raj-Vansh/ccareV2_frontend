@@ -101,15 +101,17 @@ class _ChatPageState extends State<ChatPage> {
           List<Message> messages = model.getMessagesForChatID(recieverChatID);
           // scrollToBottom();
           print(messages.length);
-          return Container(
-            height: MediaQuery.of(context).size.height * 0.75,
-            child: ListView.builder(
-              // reverse: true,
-              controller: _scrollController,
-              itemCount: messages.length,
-              itemBuilder: (BuildContext context, int index) {
-                return buildSingleMessage(messages[index]);
-              },
+          return SingleChildScrollView(
+            child: Container(
+              height: MediaQuery.of(context).size.height * 0.75,
+              child: ListView.builder(
+                // reverse: true,
+                controller: _scrollController,
+                itemCount: messages.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return buildSingleMessage(messages[index]);
+                },
+              ),
             ),
           );
         },
@@ -159,6 +161,7 @@ class _ChatPageState extends State<ChatPage> {
                 FloatingActionButton(
                   onPressed: () {
                     if (textEditingController.text != "") {
+                       FocusManager.instance.primaryFocus?.unfocus();
                       model.sendMessage(
                           textEditingController.text, recieverChatID);
                       textEditingController.text = '';
@@ -179,7 +182,7 @@ class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         backgroundColor: kPrimaryColor,
         title: Text(

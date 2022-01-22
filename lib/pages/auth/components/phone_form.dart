@@ -5,10 +5,12 @@ import 'package:ccarev2_frontend/utils/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
+import 'package:flutter_cubit/flutter_cubit.dart';
 class PhoneForm extends StatefulWidget {
-  final UserCubit cubit;
+  final  UserCubit cubit;
   final Function verifyPhone;
   final Function backPressed;
+  // final BuildContext context;
   const PhoneForm(this.cubit, this.verifyPhone, this.backPressed);
 
   @override
@@ -20,6 +22,7 @@ class _PhoneFormState extends State<PhoneForm> {
   String _phone = "";
   @override
   Widget build(BuildContext context) {
+    // print(widget.context);
     return Container(
       height: 45.h,
       color: Colors.white,
@@ -84,11 +87,12 @@ class _PhoneFormState extends State<PhoneForm> {
                 SizedBox(height: SizeConfig.screenHeight * 0.06),
                 RaisedButton(
                   onPressed: () async {
-                    //print('LOGIN BUTTON CLICKED');
+                    print('LOGIN BUTTON CLICKED');
                     FocusManager.instance.primaryFocus?.unfocus();
                     if (_formKey.currentState!.validate()) {
-                      //print('NOT COMING INSIDE');
+                      print('NOT COMING INSIDE');
                       widget.cubit.verifyPhone(_phone);
+                      // CubitProvider.of<UserCubit>(widget.context).verifyPhone(_phone);
                     }
                   },
                   shape: RoundedRectangleBorder(

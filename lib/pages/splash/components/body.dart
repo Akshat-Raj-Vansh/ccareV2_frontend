@@ -38,6 +38,7 @@ class _BodyState extends State<Body> {
   void initState() {
     super.initState();
     _getLocationPermission();
+    print("here");
   }
 
   _getLocationPermission() async {

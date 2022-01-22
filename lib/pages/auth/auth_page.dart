@@ -48,7 +48,7 @@ class _AuthPageState extends State<AuthPage> {
   @override
   void initState() {
     super.initState();
-    //print('AUTH PAGE');
+    print('AUTH PAGE');
     FirebaseMessaging.instance.getToken().then((value) => _fcmToken = value);
   }
 
@@ -78,11 +78,14 @@ class _AuthPageState extends State<AuthPage> {
                   bottom: 0,
                   child: CubitConsumer<UserCubit, UserState>(
                     builder: (_, state) {
-                      var cubit = CubitProvider.of<UserCubit>(context);
+                      print("Builder State $state");
+                      // var cubit = CubitProvider.of<UserCubit>(context);
 
-                      return _buildUI(context, cubit);
+                      return _buildUI();
                     },
-                    listener: (context, state) {
+                    listener: (_, state) {
+                      print(context);
+                      print("Listener State: $state");
                       if (state is LoadingState) {
                         //print("Loading State Called Auth");
                         //    _showLoader();
@@ -97,6 +100,7 @@ class _AuthPageState extends State<AuthPage> {
                                 .onLoginSuccess(context, widget.userType);
                         print(state.details.toString());
                       } else if (state is PhoneVerificationState) {
+                        print("Phone Verification State Called");
                         _phone = state.phone;
                         _verifyPhone(_phone);
                       } else if (state is OTPVerificationState) {
@@ -151,7 +155,9 @@ class _AuthPageState extends State<AuthPage> {
     );
   }
 
-  _onBackPressed(BuildContext context) => Navigator.pushAndRemoveUntil(
+  _onBackPressed(BuildContext context) => 
+  // Navigator.of(context).pop(true);
+  Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(builder: (context) => SplashScreen(widget.pageAdatper)),
       (Route<dynamic> route) => false);
@@ -214,7 +220,7 @@ class _AuthPageState extends State<AuthPage> {
         ),
       );
 
-  _buildUI(BuildContext context, UserCubit cubit) => Container(
+  _buildUI() => Container(
         height: 40.h + SizeConfig.bottomInsets,
         margin:
             EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
@@ -224,15 +230,15 @@ class _AuthPageState extends State<AuthPage> {
           controller: _controller,
           physics: NeverScrollableScrollPhysics(),
           children: [
-            PhoneForm(cubit, _verifyPhone, _onBackPressed),
-            OTPForm(_controller, cubit, _verifyOTP, _phone)
+            PhoneForm(CubitProvider.of<UserCubit>(context), _verifyPhone, _onBackPressed),
+            OTPForm(_controller, CubitProvider.of<UserCubit>(context), _verifyOTP, _phone)
           ],
         ),
       );
 
   _verifyPhone(String phone) async {
-    //print('INSIDE VERIFY PHONE');
-    //print("AuthPage: $_phone");
+    print('INSIDE VERIFY PHONE');
+    print("AuthPage: $_phone");
     String _msg = "VERIFICATION INCOMPLETE";
     try {
       await FirebaseAuth.instance.verifyPhoneNumber(

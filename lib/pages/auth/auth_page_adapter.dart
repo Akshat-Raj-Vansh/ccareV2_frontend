@@ -44,9 +44,11 @@ class AuthPageAdapter extends IAuthPageAdapter {
     //print('AUTH PAGE ADAPTER/ON SPLASH SCREEN COMPLETE');
     //print("USERTYPE:");
     //print(userType);
+    print(context);
     Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (context) => authPage(userType)),
         (Route<dynamic> route) => false);
+    // Navigator.push(context, MaterialPageRoute(builder: (context) => authPage(userType)));
   }
 }
