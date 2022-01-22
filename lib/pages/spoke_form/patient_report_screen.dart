@@ -254,6 +254,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
           if (editedReport.ecg.ecg_file_id != null) {
             ecgUploaded = true;
           }
+          
         }
         if (state is EditPatientReport) {
           // _hideLoader();

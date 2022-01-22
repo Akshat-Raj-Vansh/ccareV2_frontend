@@ -158,13 +158,17 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
         listener: (context, state) async {
           print("Auth Page State $state");
           if (state is NormalState) {
-              _hideLoader();
+            _hideLoader();
             // currentState = NormalState;
           }
           if (state is LoadingState) {
             //print("Loading State Called Doctor Spoke");
             log('LOG > doctor_spoke.dart > 197 > state: ${state.toString()}');
             _showLoader();
+          } else if (state is ConsultHub) {
+            _hideLoader();
+          } else if (state is AllHubDoctorsState) {
+            _hideLoader();
           } else if (state is TokenLoadedState) {
             token = state.token;
           } else if (state is AcceptState) {
