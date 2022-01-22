@@ -17,7 +17,7 @@ class LoadingState extends UserState {
 class PhoneVerificationState extends UserState {
   final String phone;
 
-  PhoneVerificationState(this.phone){
+  PhoneVerificationState(this.phone) {
     print("PhoneVerificationState");
   }
   @override
@@ -56,6 +56,12 @@ class LoginSuccessState extends UserState {
 }
 
 class SignOutSuccessState extends UserState {
+  @override
+  List<Object> get props => [];
+}
+
+class LoginInProcessState extends UserState {
+  LoginInProcessState() {}
   @override
   List<Object> get props => [];
 }

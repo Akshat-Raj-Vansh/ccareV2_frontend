@@ -334,6 +334,5 @@ class ErrorState extends MainState {
   final String error;
   ErrorState(this.error) {}
   @override
-  // TODO: implement props
   List<Object> get props => [this.error];
 }

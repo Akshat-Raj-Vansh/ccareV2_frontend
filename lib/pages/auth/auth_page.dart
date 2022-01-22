@@ -87,11 +87,14 @@ class _AuthPageState extends State<AuthPage> {
                       print(context);
                       print("Listener State: $state");
                       if (state is LoadingState) {
-                        //print("Loading State Called Auth");
-                        //    _showLoader();
+                        print('Inside Loading State in Auth Page');
+                      }
+                      if (state is LoginInProcessState) {
+                        _showLoader();
+                        print('Inside Loading State in Auth Page');
                       } else if (state is LoginSuccessState) {
                         print("Login Success State Called");
-                        //    // _hideLoader();
+                        _hideLoader();
                         print(widget.userType);
                         state.details.newUser
                             ? widget.pageAdatper
@@ -100,12 +103,13 @@ class _AuthPageState extends State<AuthPage> {
                                 .onLoginSuccess(context, widget.userType);
                         print(state.details.toString());
                       } else if (state is PhoneVerificationState) {
+                        _showLoader();
                         print("Phone Verification State Called");
                         _phone = state.phone;
                         _verifyPhone(_phone);
                       } else if (state is OTPVerificationState) {
                         //print("OTP State Called");
-                        //  // _hideLoader();
+                        _hideLoader();
 
                         _controller.nextPage(
                             duration: const Duration(microseconds: 1000),
@@ -155,12 +159,13 @@ class _AuthPageState extends State<AuthPage> {
     );
   }
 
-  _onBackPressed(BuildContext context) => 
-  // Navigator.of(context).pop(true);
-  Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(builder: (context) => SplashScreen(widget.pageAdatper)),
-      (Route<dynamic> route) => false);
+  _onBackPressed(BuildContext context) =>
+      // Navigator.of(context).pop(true);
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+              builder: (context) => SplashScreen(widget.pageAdatper)),
+          (Route<dynamic> route) => false);
 
   _showLoader() {
     var alert = const AlertDialog(
@@ -230,8 +235,10 @@ class _AuthPageState extends State<AuthPage> {
           controller: _controller,
           physics: NeverScrollableScrollPhysics(),
           children: [
-            PhoneForm(CubitProvider.of<UserCubit>(context), _verifyPhone, _onBackPressed),
-            OTPForm(_controller, CubitProvider.of<UserCubit>(context), _verifyOTP, _phone)
+            PhoneForm(CubitProvider.of<UserCubit>(context), _verifyPhone,
+                _onBackPressed),
+            OTPForm(_controller, CubitProvider.of<UserCubit>(context),
+                _verifyOTP, _phone)
           ],
         ),
       );

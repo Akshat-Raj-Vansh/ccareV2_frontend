@@ -6,8 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
 import 'package:flutter_cubit/flutter_cubit.dart';
+
 class PhoneForm extends StatefulWidget {
-  final  UserCubit cubit;
+  final UserCubit cubit;
   final Function verifyPhone;
   final Function backPressed;
   // final BuildContext context;
@@ -20,6 +21,13 @@ class PhoneForm extends StatefulWidget {
 class _PhoneFormState extends State<PhoneForm> {
   final _formKey = GlobalKey<FormState>();
   String _phone = "";
+
+  @override
+  void initState() {
+    print('INSIDE PHONE FORM');
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     // print(widget.context);
@@ -39,7 +47,10 @@ class _PhoneFormState extends State<PhoneForm> {
                 Row(
                   children: [
                     IconButton(
-                      onPressed: () => widget.backPressed(context),
+                      onPressed: () {
+                        FocusManager.instance.primaryFocus?.unfocus();
+                        widget.backPressed(context);
+                      },
                       icon: const Icon(
                         Icons.close,
                         color: Colors.black,

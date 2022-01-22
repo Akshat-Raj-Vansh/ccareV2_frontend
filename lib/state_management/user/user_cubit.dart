@@ -21,8 +21,8 @@ class UserCubit extends Cubit<UserState> {
   ) : super(InitialState());
 
   login(Credential credential) async {
-    _startLoading();
-    
+    // _startLoading();
+    emit(LoginInProcessState());
     final result = await userAPI.loginNew(credential);
     if (result == null) print("result is null");
     print('Result: ' + result.toString());
@@ -31,7 +31,8 @@ class UserCubit extends Cubit<UserState> {
   }
 
   verifyPhone(String phone) async {
-    _startLoading();
+    //_startLoading();
+    //  emit(LoginInProcessState());
     print('INSIDE verifyPhone');
     Future.delayed(Duration(milliseconds: 3));
     emit(PhoneVerificationState(phone));

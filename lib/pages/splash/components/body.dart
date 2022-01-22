@@ -38,7 +38,7 @@ class _BodyState extends State<Body> {
   void initState() {
     super.initState();
     _getLocationPermission();
-    print("here");
+    print("Inside body.dart initState");
   }
 
   _getLocationPermission() async {
@@ -75,15 +75,14 @@ class _BodyState extends State<Body> {
             Expanded(
               flex: 2,
               child: Padding(
-                padding: EdgeInsets.symmetric(
-                    horizontal:5.w),
+                padding: EdgeInsets.symmetric(horizontal: 5.w),
                 child: Column(
                   children: <Widget>[
                     const Spacer(flex: 1),
                     Text(
                       "I'm a",
                       style: TextStyle(
-                          fontSize :18.sp,
+                          fontSize: 18.sp,
                           fontWeight: FontWeight.w700,
                           color: kPrimaryColor),
                     ),
@@ -107,14 +106,14 @@ class _BodyState extends State<Body> {
                                         'Doctor Type',
                                         style: TextStyle(
                                           fontWeight: FontWeight.w600,
-                                          fontSize :16.sp,
+                                          fontSize: 16.sp,
                                         ),
                                       ),
-                                      content:  Text(
+                                      content: Text(
                                         'Choose the type of doctor-',
                                         style: TextStyle(
                                           fontWeight: FontWeight.w300,
-                                          fontSize :12.sp,
+                                          fontSize: 12.sp,
                                         ),
                                       ),
                                       actions: [
@@ -161,7 +160,7 @@ class _BodyState extends State<Body> {
 
   _button({String text, Function press}) => SizedBox(
         width: 25.w,
-        height:5.h,
+        height: 5.h,
         child: FlatButton(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
@@ -170,7 +169,7 @@ class _BodyState extends State<Body> {
           child: Text(
             text,
             style: TextStyle(
-              fontSize :12.sp,
+              fontSize: 12.sp,
               color: Colors.white,
             ),
           ),

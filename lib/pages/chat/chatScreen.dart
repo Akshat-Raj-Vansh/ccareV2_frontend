@@ -161,7 +161,7 @@ class _ChatPageState extends State<ChatPage> {
                 FloatingActionButton(
                   onPressed: () {
                     if (textEditingController.text != "") {
-                       FocusManager.instance.primaryFocus?.unfocus();
+                      FocusManager.instance.primaryFocus?.unfocus();
                       model.sendMessage(
                           textEditingController.text, recieverChatID);
                       textEditingController.text = '';
