@@ -111,6 +111,8 @@ class _PatientReportScreenState extends State<PatientReportScreen>
   }
 
   _showPicker(context) {
+     widget.mainCubit
+              .savePatientReport(editedReport, widget.patientDetails.id);
     showModalBottomSheet(
         context: context,
         builder: (BuildContext bc) {
@@ -251,6 +253,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
           if (editedReport.ecg.ecg_file_id != null) {
             ecgUploaded = true;
           }
+          
         }
         if (state is EditPatientReport) {
           // _hideLoader();
@@ -268,8 +271,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
           clickImage = true;
           log('LOG > patient_report_screen.dart > 233 > state: ${state.toString()}');
           _showMessage("Image Uploaded");
-          widget.mainCubit
-              .savePatientReport(editedReport, widget.patientDetails.id);
+         
           //  widget.mainCubit.fetchPatientReport();
         }
         if (state is PatientReportSaved) {
