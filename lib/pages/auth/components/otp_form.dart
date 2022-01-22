@@ -120,6 +120,7 @@ class _OTPFormState extends State<OTPForm> with TickerProviderStateMixin {
                 RaisedButton(
                   onPressed: () {
                     //print('LOGIN BUTTON CLICKED');
+                    FocusManager.instance.primaryFocus?.unfocus();
                     if (_formKey.currentState!.validate()) {
                       widget.verifyOTP(_otp);
                     }

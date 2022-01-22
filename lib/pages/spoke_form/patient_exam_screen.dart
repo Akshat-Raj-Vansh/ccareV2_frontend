@@ -175,6 +175,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
     return Scaffold(
   
       backgroundColor: Colors.white,
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: Text('Examination Form'),
         backgroundColor: kPrimaryColor,
@@ -223,7 +224,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
           tabs: _myTabs,
         ),
       ),
-      resizeToAvoidBottomInset: true,
+      
       body: noReport && widget.user == UserType.PATIENT
           ? Center(child: Text('No Report Found'))
           : _buildFormBody(),

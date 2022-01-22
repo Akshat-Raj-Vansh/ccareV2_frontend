@@ -179,6 +179,7 @@ class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: kPrimaryColor,
         title: Text(
@@ -198,9 +199,9 @@ class _ChatPageState extends State<ChatPage> {
         builder: (context, state) {
           print("ChatScreen Builder state: $state");
 
-        if(state is ChatLoadingState){
-          widget.mainCubit.loadMessages(widget.patientID);
-        }
+          if (state is ChatLoadingState) {
+            widget.mainCubit.loadMessages(widget.patientID);
+          }
           if (state is MessagesLoadedState) {
             print('Messages loaded state');
             print(state.messages.last);
@@ -208,7 +209,7 @@ class _ChatPageState extends State<ChatPage> {
             print(state.messages.length);
             chatModel.addMessages(state.messages);
             currentState = state;
-             WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToEnd());
+            WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToEnd());
             //  scrollToBottom();
           }
           if (state is ErrorState) {
@@ -238,6 +239,9 @@ class _ChatPageState extends State<ChatPage> {
       children: <Widget>[
         buildChatList(),
         buildChatArea(),
+        SizedBox(
+          height: MediaQuery.of(context).viewInsets.bottom,
+        ),
       ],
     );
   }
