@@ -340,7 +340,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
           tabs: _myTabs,
         ),
       ),
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       body: noReport && widget.user == UserType.PATIENT
           ? Center(child: Text('No Report Found'))
           : _buildFormBody(),
@@ -927,7 +927,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
           left: 20,
           right: 20,
           top: 0,
-          bottom: MediaQuery.of(context).viewInsets.bottom,
+          // bottom: MediaQuery.of(context).viewInsets.bottom,
         ),
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
         child: Column(
@@ -1044,7 +1044,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
           left: 20,
           right: 20,
           top: 0,
-          bottom: MediaQuery.of(context).viewInsets.bottom,
+          // bottom: MediaQuery.of(context).viewInsets.bottom,
         ),
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
         child: Column(
@@ -1206,201 +1206,203 @@ class _PatientReportScreenState extends State<PatientReportScreen>
           ],
         ),
       );
-  _buildChestForm() => Container(
-        width: SizeConfig.screenWidth,
-        margin: EdgeInsets.only(
-          left: 20,
-          right: 20,
-          top: 0,
-          bottom: MediaQuery.of(context).viewInsets.bottom,
-        ),
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(height: 2.h),
-            // Chest Pain
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Chest Pain: '),
-                Container(
-                  width: SizeConfig.screenWidth * 0.4,
-                  child: DropdownButton<YN>(
-                    value: editedReport.chestReport.chest_pain,
-                    isDense: false,
-                    onChanged: (YN newValue) {
-                      setState(() {
-                        editedReport.chestReport.chest_pain = newValue;
-                      });
-                    },
-                    items: YN.values.map((YN value) {
-                      return DropdownMenuItem<YN>(
-                        value: value,
-                        child: Text(value.toString().split('.')[1]),
-                      );
-                    }).toList(),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 1.h),
-            // Site
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Site: '),
-                Container(
-                  width: SizeConfig.screenWidth * 0.4,
-                  child: DropdownButton<Site>(
-                    value: editedReport.chestReport.site,
-                    isDense: false,
-                    onChanged: (Site newValue) {
-                      setState(() {
-                        editedReport.chestReport.site = newValue;
-                      });
-                    },
-                    items: Site.values.map((Site value) {
-                      return DropdownMenuItem<Site>(
-                        value: value,
-                        child: Text(value.toString().split('.')[1]),
-                      );
-                    }).toList(),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 1.h),
-            // Location
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Location: '),
-                Container(
-                  width: SizeConfig.screenWidth * 0.4,
-                  child: DropdownButton<Location>(
-                    value: editedReport.chestReport.location,
-                    isDense: false,
-                    onChanged: (Location newValue) {
-                      setState(() {
-                        editedReport.chestReport.location = newValue;
-                      });
-                    },
-                    items: Location.values.map((Location value) {
-                      return DropdownMenuItem<Location>(
-                        value: value,
-                        child: Text(value.toString().split('.')[1]),
-                      );
-                    }).toList(),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 1.h),
-            // Intensity
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-              Text('Intensity: '),
-              Container(
-                width: SizeConfig.screenWidth * 0.4,
-                child: DropdownButton<Intensity>(
-                  value: editedReport.chestReport.intensity,
-                  isDense: false,
-                  onChanged: (Intensity newValue) {
-                    setState(() {
-                      editedReport.chestReport.intensity = newValue;
-                    });
-                  },
-                  items: Intensity.values.map((Intensity value) {
-                    return DropdownMenuItem<Intensity>(
-                      value: value,
-                      child: Text(value.toString().split('.')[1]),
-                    );
-                  }).toList(),
-                ),
-              ),
-            ]),
-
-            SizedBox(height: 1.h),
-            // Severity
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-              Text('Severity: '),
-              Container(
-                width: SizeConfig.screenWidth * 0.4,
-                child: DropdownButton<Severity>(
-                  value: editedReport.chestReport.severity,
-                  isDense: false,
-                  onChanged: (Severity newValue) {
-                    setState(() {
-                      editedReport.chestReport.severity = newValue;
-                    });
-                  },
-                  items: Severity.values.map((Severity value) {
-                    return DropdownMenuItem<Severity>(
-                      value: value,
-                      child: Text(value.toString().split('.')[1]),
-                    );
-                  }).toList(),
-                ),
-              ),
-            ]),
-            SizedBox(height: 1.h),
-            // Radiation
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Radiation: '),
-                Container(
-                  width: SizeConfig.screenWidth * 0.4,
-                  child: DropdownButton<Radiation>(
-                    value: editedReport.chestReport.radiation,
-                    isDense: false,
-                    onChanged: (Radiation newValue) {
-                      setState(() {
-                        editedReport.chestReport.radiation = newValue;
-                      });
-                    },
-                    items: Radiation.values.map((Radiation value) {
-                      return DropdownMenuItem<Radiation>(
-                        value: value,
-                        child: Text(value.toString().split('.')[1]),
-                      );
-                    }).toList(),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 1.h),
-            // Duration
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Duration (in mins): '),
-                Container(
-                  width: SizeConfig.screenWidth * 0.4,
-                  child: TextFormField(
-                    keyboardType: TextInputType.text,
-                    focusNode: null,
-                    initialValue: editedReport.chestReport.duration,
-                    onChanged: (newValue) =>
-                        editedReport.chestReport.duration = newValue,
-                    decoration: const InputDecoration(
-                      hintText: "Enter duration",
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
+  _buildChestForm() => SingleChildScrollView(
+    child: Container(
+          width: SizeConfig.screenWidth,
+          margin: EdgeInsets.only(
+            left: 20,
+            right: 20,
+            top: 0,
+            // bottom: MediaQuery.of(context).viewInsets.bottom,
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 2.h),
+              // Chest Pain
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Chest Pain: '),
+                  Container(
+                    width: SizeConfig.screenWidth * 0.4,
+                    child: DropdownButton<YN>(
+                      value: editedReport.chestReport.chest_pain,
+                      isDense: false,
+                      onChanged: (YN newValue) {
+                        setState(() {
+                          editedReport.chestReport.chest_pain = newValue;
+                        });
+                      },
+                      items: YN.values.map((YN value) {
+                        return DropdownMenuItem<YN>(
+                          value: value,
+                          child: Text(value.toString().split('.')[1]),
+                        );
+                      }).toList(),
                     ),
                   ),
+                ],
+              ),
+              SizedBox(height: 1.h),
+              // Site
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Site: '),
+                  Container(
+                    width: SizeConfig.screenWidth * 0.4,
+                    child: DropdownButton<Site>(
+                      value: editedReport.chestReport.site,
+                      isDense: false,
+                      onChanged: (Site newValue) {
+                        setState(() {
+                          editedReport.chestReport.site = newValue;
+                        });
+                      },
+                      items: Site.values.map((Site value) {
+                        return DropdownMenuItem<Site>(
+                          value: value,
+                          child: Text(value.toString().split('.')[1]),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 1.h),
+              // Location
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Location: '),
+                  Container(
+                    width: SizeConfig.screenWidth * 0.4,
+                    child: DropdownButton<Location>(
+                      value: editedReport.chestReport.location,
+                      isDense: false,
+                      onChanged: (Location newValue) {
+                        setState(() {
+                          editedReport.chestReport.location = newValue;
+                        });
+                      },
+                      items: Location.values.map((Location value) {
+                        return DropdownMenuItem<Location>(
+                          value: value,
+                          child: Text(value.toString().split('.')[1]),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 1.h),
+              // Intensity
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                Text('Intensity: '),
+                Container(
+                  width: SizeConfig.screenWidth * 0.4,
+                  child: DropdownButton<Intensity>(
+                    value: editedReport.chestReport.intensity,
+                    isDense: false,
+                    onChanged: (Intensity newValue) {
+                      setState(() {
+                        editedReport.chestReport.intensity = newValue;
+                      });
+                    },
+                    items: Intensity.values.map((Intensity value) {
+                      return DropdownMenuItem<Intensity>(
+                        value: value,
+                        child: Text(value.toString().split('.')[1]),
+                      );
+                    }).toList(),
+                  ),
                 ),
-              ],
-            ),
-          ],
+              ]),
+  
+              SizedBox(height: 1.h),
+              // Severity
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                Text('Severity: '),
+                Container(
+                  width: SizeConfig.screenWidth * 0.4,
+                  child: DropdownButton<Severity>(
+                    value: editedReport.chestReport.severity,
+                    isDense: false,
+                    onChanged: (Severity newValue) {
+                      setState(() {
+                        editedReport.chestReport.severity = newValue;
+                      });
+                    },
+                    items: Severity.values.map((Severity value) {
+                      return DropdownMenuItem<Severity>(
+                        value: value,
+                        child: Text(value.toString().split('.')[1]),
+                      );
+                    }).toList(),
+                  ),
+                ),
+              ]),
+              SizedBox(height: 1.h),
+              // Radiation
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Radiation: '),
+                  Container(
+                    width: SizeConfig.screenWidth * 0.4,
+                    child: DropdownButton<Radiation>(
+                      value: editedReport.chestReport.radiation,
+                      isDense: false,
+                      onChanged: (Radiation newValue) {
+                        setState(() {
+                          editedReport.chestReport.radiation = newValue;
+                        });
+                      },
+                      items: Radiation.values.map((Radiation value) {
+                        return DropdownMenuItem<Radiation>(
+                          value: value,
+                          child: Text(value.toString().split('.')[1]),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 1.h),
+              // Duration
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Duration (in mins): '),
+                  Container(
+                    width: SizeConfig.screenWidth * 0.4,
+                    child: TextFormField(
+                      keyboardType: TextInputType.text,
+                      focusNode: null,
+                      initialValue: editedReport.chestReport.duration,
+                      onChanged: (newValue) =>
+                          editedReport.chestReport.duration = newValue,
+                      decoration: const InputDecoration(
+                        hintText: "Enter duration",
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
-      );
+  );
   _buildSymptomsForm() => Container(
         width: SizeConfig.screenWidth,
         margin: EdgeInsets.only(
           left: 20,
           right: 20,
           top: 0,
-          bottom: MediaQuery.of(context).viewInsets.bottom,
+          // bottom: MediaQuery.of(context).viewInsets.bottom,
         ),
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
         child: Column(
@@ -1571,7 +1573,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
           left: 20,
           right: 20,
           top: 0,
-          bottom: MediaQuery.of(context).viewInsets.bottom,
+          // bottom: MediaQuery.of(context).viewInsets.bottom,
         ),
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
         child: Column(

@@ -31,6 +31,9 @@ class _PatientExamScreenState extends State<PatientExamScreen>
     with TickerProviderStateMixin {
   TabController _tabController;
   bool editReport = false;
+  // ScrollController scrollView;
+  // ScrollView scrollView;
+  
   final List<Tab> _myTabs = [
     Tab(
       child: Text('Patient Details'),
@@ -52,6 +55,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
     _tabController = new TabController(vsync: this, length: _myTabs.length);
     _tabController.addListener(_handleTabSelection);
     _fetchReport();
+    // scrollView=ScrollController();
   }
 
   @override
@@ -169,6 +173,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
 
   buildUI() {
     return Scaffold(
+  
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text('Examination Form'),
@@ -218,7 +223,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
           tabs: _myTabs,
         ),
       ),
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       body: noReport && widget.user == UserType.PATIENT
           ? Center(child: Text('No Report Found'))
           : _buildFormBody(),
@@ -508,213 +513,216 @@ class _PatientExamScreenState extends State<PatientExamScreen>
         ),
       );
 
-  _buildNTreatmentForm() => Container(
-        width: SizeConfig.screenWidth,
-        margin: EdgeInsets.only(
-          left: 20,
-          right: 20,
-          top: 0,
-          bottom: MediaQuery.of(context).viewInsets.bottom,
+  _buildNTreatmentForm() => SingleChildScrollView(
+    child: Container(
+          width: SizeConfig.screenWidth,
+          margin: EdgeInsets.only(
+            left: 20,
+            right: 20,
+            top: 0,
+            // bottom: MediaQuery.of(context).viewInsets.bottom,
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 2.h),
+              // Aspirin Loading
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Aspirin Loading: '),
+                  Container(
+                    width: SizeConfig.screenWidth * 0.4,
+                    child: DropdownButton<YN>(
+                      value: editedReport.nTreatment.aspirin_loading,
+                      isDense: false,
+                      onChanged: (YN newValue) {
+                        setState(() {
+                          editedReport.nTreatment.aspirin_loading = newValue;
+                        });
+                      },
+                      items: YN.values.map((YN value) {
+                        return DropdownMenuItem<YN>(
+                          value: value,
+                          child: Text(value.toString().split('.')[1]),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 1.h),
+              // CPT loading
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('CPT Loading: '),
+                  Container(
+                    width: SizeConfig.screenWidth * 0.4,
+                    child: DropdownButton<YN>(
+                      value: editedReport.nTreatment.c_p_t_loading,
+                      isDense: false,
+                      onChanged: (YN newValue) {
+                        setState(() {
+                          editedReport.nTreatment.c_p_t_loading = newValue;
+                        });
+                      },
+                      items: YN.values.map((YN value) {
+                        return DropdownMenuItem<YN>(
+                          value: value,
+                          child: Text(value.toString().split('.')[1]),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 1.h),
+              // LMWH
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('LMWH: '),
+                  Container(
+                    width: SizeConfig.screenWidth * 0.4,
+                    child: TextFormField(
+                      // onTap:()=> scrollView.scrollTo(0, scrollView.getBottom()),
+                      keyboardType: TextInputType.text,
+                      focusNode: null,
+                      initialValue: editedReport.nTreatment.lmwh,
+                      onChanged: (newValue) =>
+                          editedReport.nTreatment.lmwh = newValue,
+                      decoration: const InputDecoration(
+                        hintText: "Enter LMWH",
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 1.h),
+              // Statins
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Statins: '),
+                  Container(
+                    width: SizeConfig.screenWidth * 0.4,
+                    child: TextFormField(
+                      keyboardType: TextInputType.text,
+                      focusNode: null,
+                      initialValue: editedReport.nTreatment.statins,
+                      onChanged: (newValue) =>
+                          editedReport.nTreatment.statins = newValue,
+                      decoration: const InputDecoration(
+                        hintText: "Enter Statins",
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 1.h),
+              // Beta Blockers
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Beta Blockers: '),
+                  Container(
+                    width: SizeConfig.screenWidth * 0.4,
+                    child: TextFormField(
+                      keyboardType: TextInputType.text,
+                      focusNode: null,
+                      initialValue: editedReport.nTreatment.beta_blockers,
+                      onChanged: (newValue) =>
+                          editedReport.nTreatment.beta_blockers = newValue,
+                      decoration: const InputDecoration(
+                        hintText: "Enter Beta Blockers",
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 1.h),
+              // Nitrates
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Nitrates: '),
+                  Container(
+                    width: SizeConfig.screenWidth * 0.4,
+                    child: TextFormField(
+                      keyboardType: TextInputType.text,
+                      focusNode: null,
+                      initialValue: editedReport.nTreatment.nitrates,
+                      onChanged: (newValue) =>
+                          editedReport.nTreatment.nitrates = newValue,
+                      decoration: const InputDecoration(
+                        hintText: "Enter Nitrates",
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 1.h),
+              // Deuretics
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('LMWH: '),
+                  Container(
+                    width: SizeConfig.screenWidth * 0.4,
+                    child: TextFormField(
+                      keyboardType: TextInputType.text,
+                      focusNode: null,
+                      initialValue: editedReport.nTreatment.diuretics,
+                      onChanged: (newValue) =>
+                          editedReport.nTreatment.diuretics = newValue,
+                      decoration: const InputDecoration(
+                        hintText: "Enter Deuretics",
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 1.h),
+              // ACEI ARB
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('ACEI ARD: '),
+                  Container(
+                    width: SizeConfig.screenWidth * 0.4,
+                    child: TextFormField(
+                      keyboardType: TextInputType.text,
+                      focusNode: null,
+                      initialValue: editedReport.nTreatment.acei_arb,
+                      onChanged: (newValue) =>
+                          editedReport.nTreatment.acei_arb = newValue,
+                      decoration: const InputDecoration(
+                        hintText: "Enter ACEI ARD",
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(height: 2.h),
-            // Aspirin Loading
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Aspirin Loading: '),
-                Container(
-                  width: SizeConfig.screenWidth * 0.4,
-                  child: DropdownButton<YN>(
-                    value: editedReport.nTreatment.aspirin_loading,
-                    isDense: false,
-                    onChanged: (YN newValue) {
-                      setState(() {
-                        editedReport.nTreatment.aspirin_loading = newValue;
-                      });
-                    },
-                    items: YN.values.map((YN value) {
-                      return DropdownMenuItem<YN>(
-                        value: value,
-                        child: Text(value.toString().split('.')[1]),
-                      );
-                    }).toList(),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 1.h),
-            // CPT loading
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('CPT Loading: '),
-                Container(
-                  width: SizeConfig.screenWidth * 0.4,
-                  child: DropdownButton<YN>(
-                    value: editedReport.nTreatment.c_p_t_loading,
-                    isDense: false,
-                    onChanged: (YN newValue) {
-                      setState(() {
-                        editedReport.nTreatment.c_p_t_loading = newValue;
-                      });
-                    },
-                    items: YN.values.map((YN value) {
-                      return DropdownMenuItem<YN>(
-                        value: value,
-                        child: Text(value.toString().split('.')[1]),
-                      );
-                    }).toList(),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 1.h),
-            // LMWH
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('LMWH: '),
-                Container(
-                  width: SizeConfig.screenWidth * 0.4,
-                  child: TextFormField(
-                    keyboardType: TextInputType.text,
-                    focusNode: null,
-                    initialValue: editedReport.nTreatment.lmwh,
-                    onChanged: (newValue) =>
-                        editedReport.nTreatment.lmwh = newValue,
-                    decoration: const InputDecoration(
-                      hintText: "Enter LMWH",
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 1.h),
-            // Statins
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Statins: '),
-                Container(
-                  width: SizeConfig.screenWidth * 0.4,
-                  child: TextFormField(
-                    keyboardType: TextInputType.text,
-                    focusNode: null,
-                    initialValue: editedReport.nTreatment.statins,
-                    onChanged: (newValue) =>
-                        editedReport.nTreatment.statins = newValue,
-                    decoration: const InputDecoration(
-                      hintText: "Enter Statins",
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 1.h),
-            // Beta Blockers
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Beta Blockers: '),
-                Container(
-                  width: SizeConfig.screenWidth * 0.4,
-                  child: TextFormField(
-                    keyboardType: TextInputType.text,
-                    focusNode: null,
-                    initialValue: editedReport.nTreatment.beta_blockers,
-                    onChanged: (newValue) =>
-                        editedReport.nTreatment.beta_blockers = newValue,
-                    decoration: const InputDecoration(
-                      hintText: "Enter Beta Blockers",
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 1.h),
-            // Nitrates
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Nitrates: '),
-                Container(
-                  width: SizeConfig.screenWidth * 0.4,
-                  child: TextFormField(
-                    keyboardType: TextInputType.text,
-                    focusNode: null,
-                    initialValue: editedReport.nTreatment.nitrates,
-                    onChanged: (newValue) =>
-                        editedReport.nTreatment.nitrates = newValue,
-                    decoration: const InputDecoration(
-                      hintText: "Enter Nitrates",
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 1.h),
-            // Deuretics
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('LMWH: '),
-                Container(
-                  width: SizeConfig.screenWidth * 0.4,
-                  child: TextFormField(
-                    keyboardType: TextInputType.text,
-                    focusNode: null,
-                    initialValue: editedReport.nTreatment.diuretics,
-                    onChanged: (newValue) =>
-                        editedReport.nTreatment.diuretics = newValue,
-                    decoration: const InputDecoration(
-                      hintText: "Enter Deuretics",
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 1.h),
-            // ACEI ARB
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('ACEI ARD: '),
-                Container(
-                  width: SizeConfig.screenWidth * 0.4,
-                  child: TextFormField(
-                    keyboardType: TextInputType.text,
-                    focusNode: null,
-                    initialValue: editedReport.nTreatment.acei_arb,
-                    onChanged: (newValue) =>
-                        editedReport.nTreatment.acei_arb = newValue,
-                    decoration: const InputDecoration(
-                      hintText: "Enter ACEI ARD",
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      );
+  );
 
   _buildThrombolysisForm() => Container(
         width: SizeConfig.screenWidth,
         margin: EdgeInsets.only(
-          left: 20,
-          right: 20,
+          left: 10,
+          right: 10,
           top: 0,
-          bottom: MediaQuery.of(context).viewInsets.bottom,
+          // bottom: MediaQuery.of(context).viewInsets.bottom,
         ),
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
         child: Column(
