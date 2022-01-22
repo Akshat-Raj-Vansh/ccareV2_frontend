@@ -179,6 +179,7 @@ class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: kPrimaryColor,
         title: Text(
@@ -236,11 +237,11 @@ class _ChatPageState extends State<ChatPage> {
     return ListView(
       padding: EdgeInsets.zero,
       children: <Widget>[
-        Spacer(
-          flex: 1,
-        ),
         buildChatList(),
         buildChatArea(),
+        SizedBox(
+          height: MediaQuery.of(context).viewInsets.bottom,
+        ),
       ],
     );
   }
