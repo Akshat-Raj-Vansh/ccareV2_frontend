@@ -89,30 +89,29 @@ class _PatientReportScreenState extends State<PatientReportScreen>
   _imgFromCamera() async {
     XFile image = await _imagePicker.pickImage(
         source: ImageSource.camera, imageQuality: 50);
-
-    setState(() {
-      _image = image;
-      clickImage = true;
-      print(_image.path);
-      // widget.mainCubit.imageClicked(image);
-    });
+    if (image != null)
+      setState(() {
+        _image = image;
+        clickImage = true;
+        print(_image.path);
+        // widget.mainCubit.imageClicked(image);
+      });
   }
 
   _imgFromGallery() async {
     XFile image = await _imagePicker.pickImage(
         source: ImageSource.gallery, imageQuality: 50);
-
-    setState(() {
-      _image = image;
-      clickImage = true;
-      print(_image.path);
-      // widget.mainCubit.imageClicked(image);
-    });
+    if (image != null)
+      setState(() {
+        _image = image;
+        clickImage = true;
+        print(_image.path);
+        // widget.mainCubit.imageClicked(image);
+      });
   }
 
   _showPicker(context) {
-     widget.mainCubit
-              .savePatientReport(editedReport, widget.patientDetails.id);
+    //   widget.mainCubit.savePatientReport(editedReport, widget.patientDetails.id);
     showModalBottomSheet(
         context: context,
         builder: (BuildContext bc) {
@@ -207,6 +206,8 @@ class _PatientReportScreenState extends State<PatientReportScreen>
           if (editedReport.ecg.ecg_file_id != null) {
             ecgUploaded = true;
           }
+          // widget.mainCubit
+          //     .savePatientReport(editedReport, widget.patientDetails.id);
         }
         if (state is ImageLoaded) {
           log('LOG > patient_report_screen.dart > 195 > state: ${state.toString()}');
@@ -271,7 +272,9 @@ class _PatientReportScreenState extends State<PatientReportScreen>
           clickImage = true;
           log('LOG > patient_report_screen.dart > 233 > state: ${state.toString()}');
           _showMessage("Image Uploaded");
-         
+          editedReport.ecg.ecg_file_id = state.id;
+          editedReport.ecg.ecg_time = state.time;
+
           //  widget.mainCubit.fetchPatientReport();
         }
         if (state is PatientReportSaved) {
@@ -999,7 +1002,8 @@ class _PatientReportScreenState extends State<PatientReportScreen>
                   widget.mainCubit.imageClicked(
                       _image,
                       editedReport.ecg.ecg_type.toString().split(".")[1],
-                      widget.patientDetails.id);
+                      widget.patientDetails.id,
+                      editedReport);
                 },
                 child: Container(
                   width: SizeConfig.screenWidth,

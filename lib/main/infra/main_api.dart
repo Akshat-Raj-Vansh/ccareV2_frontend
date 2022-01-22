@@ -592,7 +592,7 @@ class MainAPI extends IMainAPI {
 
   @override
   Future<Result<String>> uploadImage(
-      Token token, XFile image, String type,String patID) async {
+      Token token, XFile image, String type, String patID) async {
     //print("Upload Image");
     //print(image.name);
     String endpoint = baseUrl + "/treatment/spoke/uploadECG?patientID=$patID";
@@ -608,13 +608,15 @@ class MainAPI extends IMainAPI {
     request.fields['type'] = type;
     request.files.add(file);
     var response = await request.send();
-
     if (response.statusCode != 200) {
       //print("error");
       return Result.error("Server Error");
     }
-    //print("Image Uploaded ,${response.statusCode}");
-    return Result.value("Image Uploaded");
+    final respStr = await response.stream.bytesToString();
+    var fileID = jsonDecode(respStr)['fileID'];
+    var time = jsonDecode(respStr)['time'];
+    print("Image Uploaded#${fileID}#${time}");
+    return Result.value("Image Uploaded#${fileID}#${time}");
   }
 
   @override
