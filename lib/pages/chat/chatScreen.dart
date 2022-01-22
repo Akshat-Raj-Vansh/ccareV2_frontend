@@ -239,9 +239,6 @@ class _ChatPageState extends State<ChatPage> {
       children: <Widget>[
         buildChatList(),
         buildChatArea(),
-        SizedBox(
-          height: MediaQuery.of(context).viewInsets.bottom,
-        ),
       ],
     );
   }
