@@ -254,7 +254,6 @@ class _PatientReportScreenState extends State<PatientReportScreen>
           if (editedReport.ecg.ecg_file_id != null) {
             ecgUploaded = true;
           }
-          
         }
         if (state is EditPatientReport) {
           // _hideLoader();
@@ -924,7 +923,12 @@ class _PatientReportScreenState extends State<PatientReportScreen>
 
   _buildECGForm() => Container(
         width: SizeConfig.screenWidth,
-        margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+        margin: EdgeInsets.only(
+          left: 20,
+          right: 20,
+          top: 0,
+          bottom: MediaQuery.of(context).viewInsets.bottom,
+        ),
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -1036,7 +1040,12 @@ class _PatientReportScreenState extends State<PatientReportScreen>
       );
   _buildMedHistForm() => Container(
         width: SizeConfig.screenWidth,
-        margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+        margin: EdgeInsets.only(
+          left: 20,
+          right: 20,
+          top: 0,
+          bottom: MediaQuery.of(context).viewInsets.bottom,
+        ),
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -1199,7 +1208,12 @@ class _PatientReportScreenState extends State<PatientReportScreen>
       );
   _buildChestForm() => Container(
         width: SizeConfig.screenWidth,
-        margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+        margin: EdgeInsets.only(
+          left: 20,
+          right: 20,
+          top: 0,
+          bottom: MediaQuery.of(context).viewInsets.bottom,
+        ),
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -1382,7 +1396,12 @@ class _PatientReportScreenState extends State<PatientReportScreen>
       );
   _buildSymptomsForm() => Container(
         width: SizeConfig.screenWidth,
-        margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+        margin: EdgeInsets.only(
+          left: 20,
+          right: 20,
+          top: 0,
+          bottom: MediaQuery.of(context).viewInsets.bottom,
+        ),
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -1548,7 +1567,12 @@ class _PatientReportScreenState extends State<PatientReportScreen>
       );
   _buildExaminationForm() => Container(
         width: SizeConfig.screenWidth,
-        margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+        margin: EdgeInsets.only(
+          left: 20,
+          right: 20,
+          top: 0,
+          bottom: MediaQuery.of(context).viewInsets.bottom,
+        ),
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

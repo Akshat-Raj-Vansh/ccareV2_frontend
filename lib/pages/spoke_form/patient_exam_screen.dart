@@ -510,7 +510,12 @@ class _PatientExamScreenState extends State<PatientExamScreen>
 
   _buildNTreatmentForm() => Container(
         width: SizeConfig.screenWidth,
-        margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+        margin: EdgeInsets.only(
+          left: 20,
+          right: 20,
+          top: 0,
+          bottom: MediaQuery.of(context).viewInsets.bottom,
+        ),
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -705,7 +710,12 @@ class _PatientExamScreenState extends State<PatientExamScreen>
 
   _buildThrombolysisForm() => Container(
         width: SizeConfig.screenWidth,
-        margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+        margin: EdgeInsets.only(
+          left: 20,
+          right: 20,
+          top: 0,
+          bottom: MediaQuery.of(context).viewInsets.bottom,
+        ),
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
