@@ -89,6 +89,17 @@ class MainCubit extends Cubit<MainState> {
     });
   }
 
+  getAssessments(String patientID) async {
+    _startLoading("getAssessments");
+    final token = await localStore.fetch();
+    final result = await api.getAssessments(token, patientID);
+    if (result.isError) {
+      emit(ErrorState(result.asError!.error as String));
+      return;
+    }
+    emit(AssessmentLoaded(result.asValue!.value));
+  }
+
   notify(String action, bool ambRequired, loc.Location location,
       {List<QuestionTree>? assessment}) async {
     //print("Inside Notify");

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
+import 'package:ccarev2_frontend/main/domain/assessment.dart';
 import 'package:ccarev2_frontend/main/domain/edetails.dart';
 import 'package:ccarev2_frontend/main/domain/examination.dart';
 import 'package:ccarev2_frontend/main/domain/treatment.dart' as treat;
@@ -703,6 +704,35 @@ class MainAPI extends IMainAPI {
     //print(json.last);
     return Result.value(json
         .map<Message>((message) => Message.fromJson(jsonEncode(message)))
+        .toList());
+  }
+
+  @override
+  Future<Result<List<PatientAssessment>>> getAssessments(
+      Token token, String patientID) async {
+    String endpoint =
+        baseUrl + "/emergency/getAssessments?patientID=$patientID";
+    var header = {
+      "Content-Type": "application/json",
+      "Authorization": token.value
+    };
+    var response = await _client.get(Uri.parse(endpoint), headers: header);
+    print(
+        '@main_api.dart/getAssessments response status: ${response.statusCode}');
+    print('@main_api.dart/getAssessments response body: ${response.body}');
+    if (response.statusCode != 200) {
+      Map map = jsonDecode(response.body);
+      //print(transformError(map));
+      return Result.error(transformError(map));
+    }
+    if (jsonDecode(response.body)["assessments"] == null ||
+        jsonDecode(response.body)["assessments"].length == 0)
+      return Result.error("error");
+    dynamic json = jsonDecode(response.body)["assessments"] as List;
+    //print(json.last);
+    return Result.value(json
+        .map<PatientAssessment>(
+            (assessment) => PatientAssessment.fromJson(jsonEncode(assessment)))
         .toList());
   }
 }

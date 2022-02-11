@@ -1,4 +1,5 @@
 import 'package:ccarev2_frontend/cache/local_store.dart';
+import 'package:ccarev2_frontend/main/domain/assessment.dart';
 import 'package:ccarev2_frontend/main/domain/edetails.dart';
 import 'package:ccarev2_frontend/main/domain/examination.dart';
 import 'package:ccarev2_frontend/main/domain/mixReport.dart';
@@ -30,6 +31,13 @@ class AcceptState extends MainState {
   AcceptState(this.patientID);
   @override
   List<Object> get props => [patientID];
+}
+
+class AssessmentLoaded extends MainState {
+  final List<PatientAssessment> assessments;
+  AssessmentLoaded(this.assessments);
+  @override
+  List<Object> get props => [assessments];
 }
 
 class PatientAccepted extends MainState {

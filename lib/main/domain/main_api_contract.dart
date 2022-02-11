@@ -1,4 +1,5 @@
 import 'package:async/async.dart';
+import 'package:ccarev2_frontend/main/domain/assessment.dart';
 import 'package:ccarev2_frontend/main/domain/edetails.dart';
 import 'package:ccarev2_frontend/main/domain/examination.dart' as exam;
 import 'package:ccarev2_frontend/main/domain/treatment.dart';
@@ -16,6 +17,8 @@ abstract class IMainAPI {
   // General API
   Future<Result<String>> getStatus(Token token);
   Future<Result<String>> fetchPatientReportingTime(Token token, Token patient);
+  Future<Result<List<PatientAssessment>>> getAssessments(
+      Token token, String patientID);
 
   // Patient Side APIs
   Future<Result<List<QuestionTree>>> getAll(Token token);

@@ -39,10 +39,18 @@ class EDetails {
 
   factory EDetails.fromMap(Map<String, dynamic> map) {
     return EDetails(
-      patientDetails: map['patientDetails'] != null ? PatientDetails.fromMap(map['patientDetails']) : null,
-      doctorDetails: map['doctorDetails'] != null ? DoctorDetails.fromMap(map['doctorDetails']) : null,
-      driverDetails: map['driverDetails'] != null ? DriverDetails.fromMap(map['driverDetails']) : null,
-      hubDetails: map['hubDetails'] != null ? DoctorDetails.fromMap(map['hubDetails']) : null,
+      patientDetails: map['patientDetails'] != null
+          ? PatientDetails.fromMap(map['patientDetails'])
+          : null,
+      doctorDetails: map['doctorDetails'] != null
+          ? DoctorDetails.fromMap(map['doctorDetails'])
+          : null,
+      driverDetails: map['driverDetails'] != null
+          ? DriverDetails.fromMap(map['driverDetails'])
+          : null,
+      hubDetails: map['hubDetails'] != null
+          ? DoctorDetails.fromMap(map['hubDetails'])
+          : null,
     );
   }
 
@@ -59,29 +67,30 @@ class EDetails {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-  
+
     return other is EDetails &&
-      other.patientDetails == patientDetails &&
-      other.doctorDetails == doctorDetails &&
-      other.driverDetails == driverDetails &&
-      other.hubDetails == hubDetails;
+        other.patientDetails == patientDetails &&
+        other.doctorDetails == doctorDetails &&
+        other.driverDetails == driverDetails &&
+        other.hubDetails == hubDetails;
   }
 
   @override
   int get hashCode {
     return patientDetails.hashCode ^
-      doctorDetails.hashCode ^
-      driverDetails.hashCode ^
-      hubDetails.hashCode;
+        doctorDetails.hashCode ^
+        driverDetails.hashCode ^
+        hubDetails.hashCode;
   }
 }
 
-enum EStatus { OTW, EMERGENCY, ATH, UGT  }
+enum EStatus { OTW, EMERGENCY, ATH, UGT }
 
 class PatientDetails {
   final String id;
   final String name;
   final Location location;
+  final String action;
   final int age;
   final String gender;
   final String contactNumber;
@@ -91,6 +100,7 @@ class PatientDetails {
     required this.id,
     required this.name,
     required this.location,
+    required this.action,
     required this.age,
     required this.gender,
     required this.contactNumber,
@@ -102,6 +112,7 @@ class PatientDetails {
     String? id,
     String? name,
     Location? location,
+    String? action,
     int? age,
     String? gender,
     String? contactNumber,
@@ -112,6 +123,7 @@ class PatientDetails {
       id: id ?? this.id,
       name: name ?? this.name,
       location: location ?? this.location,
+      action: action ?? this.action,
       age: age ?? this.age,
       gender: gender ?? this.gender,
       contactNumber: contactNumber ?? this.contactNumber,
@@ -125,6 +137,7 @@ class PatientDetails {
       'id': id,
       'name': name,
       'location': location.toMap(),
+      'action': action,
       'age': age,
       'gender': gender,
       'contactNumber': contactNumber,
@@ -138,6 +151,7 @@ class PatientDetails {
       id: map['id'],
       name: map['name'],
       location: Location.fromMap(map['location']),
+      action: map['action'],
       age: map['age'],
       gender: map['gender'],
       contactNumber: map['contactNumber'],
@@ -154,7 +168,7 @@ class PatientDetails {
 
   @override
   String toString() {
-    return 'PatientDetails(id: $id, name: $name, location: $location, age: $age, gender: $gender, contactNumber: $contactNumber, address: $address, status:$status)';
+    return 'PatientDetails(id: $id, name: $name, location: $location,action:$action, age: $age, gender: $gender, contactNumber: $contactNumber, address: $address, status:$status)';
   }
 
   @override
@@ -165,6 +179,7 @@ class PatientDetails {
         other.id == id &&
         other.name == name &&
         other.location == location &&
+        other.action == action &&
         other.age == age &&
         other.gender == gender &&
         other.contactNumber == contactNumber &&
@@ -177,6 +192,7 @@ class PatientDetails {
     return id.hashCode ^
         name.hashCode ^
         location.hashCode ^
+        action.hashCode ^
         age.hashCode ^
         gender.hashCode ^
         contactNumber.hashCode ^
