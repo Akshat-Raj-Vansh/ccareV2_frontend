@@ -405,9 +405,8 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
 
   _buildPatienEmergencyButton() => InkWell(
         onTap: () async {
-          _showAmbRequired();
-          setState(() {
-              });
+          _showAmbRequired("EBUTTON");
+          setState(() {});
         },
         child: Container(
           width: SizeConfig.screenWidth,
@@ -559,7 +558,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
 
                                 if (display.last.node_type == "RESULT") {
                                   if (display.last.options[0] == "EMERGENCY") {
-                                    _showAmbRequired();
+                                    _showAmbRequired("QUESTIONNAIRE");
                                     ScaffoldMessenger.of(context)
                                         .showSnackBar(SnackBar(
                                       backgroundColor:
@@ -595,7 +594,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                                     if (display.last.options[0] ==
                                         "EMERGENCY") {
                                       //print("Inside");
-                                      _showAmbRequired();
+                                      _showAmbRequired("QUESTIONNAIRE");
                                     }
                                   }
                                 } catch (e) {
@@ -819,7 +818,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                 onPressed: () async {
                   //print(_emergency);
                   if (!_emergency) {
-                    _showAmbRequired();
+                    _showAmbRequired("EBUTTON");
                   } else {
                     // _showLoader();
                     // loc.Location location = await _getLocation();
@@ -863,7 +862,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
     return widget.mainCubit.statusUpdate("ATH", patientID: "");
   }
 
-  _showAmbRequired() async {
+  _showAmbRequired(String action) async {
     var alert = AlertDialog(
       title: Center(
         child: Text(
@@ -894,7 +893,8 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
             loc.Location location = await _getLocation();
             _notificationSent = true;
 
-            await widget.mainCubit.notify("EBUTTON", true, location);
+            await widget.mainCubit.notify(action, true, location,
+                assessment: action == "QUESTIONNAIRE" ? display : null);
             // await widget.mainCubit.fetchEmergencyDetails();
           },
           child: Text(
@@ -905,7 +905,8 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
           onPressed: () async {
             loc.Location location = await _getLocation();
             Navigator.of(context).pop(false);
-            await widget.mainCubit.notify("EBUTTON", false, location);
+            await widget.mainCubit.notify(action, false, location,
+                assessment: action == "QUESTIONNAIRE" ? display : null);
             // await widget.mainCubit.fetchEmergencyDetails();
           },
           child: Text(
@@ -1194,7 +1195,9 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('Trop I: '),
-                Text(_treatmentReport.medicalHist.trop_i),
+                Text(_treatmentReport.medicalHist.trop_i
+                    .toString()
+                    .split('.')[1]),
               ],
             ),
             SizedBox(height: 3.h),
@@ -1377,12 +1380,21 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
               ],
             ),
             SizedBox(height: 1.h),
-            // BP
+            // DBP
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('BP: '),
-                Text(_treatmentReport.examination.bp),
+                Text('Diastolic: '),
+                Text(_treatmentReport.examination.dbp),
+              ],
+            ),
+            SizedBox(height: 1.h),
+            // SBP
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Systolic: '),
+                Text(_treatmentReport.examination.sbp),
               ],
             ),
             SizedBox(height: 1.h),

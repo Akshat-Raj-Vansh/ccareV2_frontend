@@ -179,7 +179,7 @@ class MedicalHist {
   YN hypertensive;
   YN dyslipidaemia;
   YN old_mi;
-  String trop_i;
+  PN trop_i;
   MedicalHist({
     this.smoker,
     this.diabetic,
@@ -194,10 +194,10 @@ class MedicalHist {
     this.hypertensive = YN.nill;
     this.dyslipidaemia = YN.nill;
     this.old_mi = YN.nill;
-    this.trop_i = "nill";
+    this.trop_i = PN.nill;
   }
 
-  set trop_i_(String value) => this.trop_i = value;
+  set trop_i_(PN value) => this.trop_i = value;
   set smoker_(YN value) => this.smoker = value;
   set diabetic_(YN value) => this.diabetic = value;
   set hypertensive_(YN value) => this.hypertensive = value;
@@ -209,7 +209,7 @@ class MedicalHist {
     YN hypertensive,
     YN dyslipidaemia,
     YN old_mi,
-    String trop_i,
+    PN trop_i,
   }) {
     return MedicalHist(
       smoker: smoker ?? this.smoker,
@@ -228,7 +228,7 @@ class MedicalHist {
       'hypertensive': hypertensive.toString().split('.')[1],
       'dyslipidaemia': dyslipidaemia.toString().split('.')[1],
       'old_mi': old_mi.toString().split('.')[1],
-      'trop_i': trop_i == "" ? "nill" : trop_i,
+      'trop_i': trop_i.toString().split(".")[1]
     };
   }
 
@@ -240,13 +240,20 @@ class MedicalHist {
       return YN.nill;
     }
 
+    PN pnCheck(String value) {
+      if (value == "negative")
+        return PN.negative;
+      else if (value == "positive") return PN.positive;
+      return PN.nill;
+    }
+
     return MedicalHist(
       smoker: ynCheck(map['smoker']),
       diabetic: ynCheck(map['diabetic']),
       hypertensive: ynCheck(map['hypertensive']),
       dyslipidaemia: ynCheck(map['dyslipidaemia']),
       old_mi: ynCheck(map['old_mi']),
-      trop_i: map['trop_i'],
+      trop_i: pnCheck(map['trop_i']),
     );
   }
 
@@ -521,30 +528,36 @@ class Symptoms {
 
 class Examination {
   String pulse_rate;
-  String bp;
+  String dbp;
+  String sbp;
   String local_tenderness;
   Examination({
     this.pulse_rate,
-    this.bp,
+    this.dbp,
+    this.sbp,
     this.local_tenderness,
   });
   Examination.initialize() {
     this.pulse_rate = "nill";
-    this.bp = "nill";
+    this.dbp = "nill";
+    this.sbp = "nill";
     this.local_tenderness = "nill";
   }
   set pulse_rate_(String value) => this.pulse_rate = value;
-  set bp_(String value) => this.bp = value;
+  set dbp_(String value) => this.dbp = value;
+  set sbp_(String value) => this.sbp = value;
   set local_tenderness_(String value) => this.local_tenderness = value;
 
   Examination copyWith({
     String pulse_rate,
-    String bp,
+    String dbp,
+    String sbp,
     String local_tenderness,
   }) {
     return Examination(
       pulse_rate: pulse_rate ?? this.pulse_rate,
-      bp: bp ?? this.bp,
+      dbp: dbp ?? this.dbp,
+      sbp: sbp ?? this.sbp,
       local_tenderness: local_tenderness ?? this.local_tenderness,
     );
   }
@@ -552,7 +565,8 @@ class Examination {
   Map<String, dynamic> toMap() {
     return {
       'pulse_rate': pulse_rate == "" ? "nill" : pulse_rate,
-      'bp': bp == "" ? "nill" : bp,
+      'dbp': dbp == "" ? "nill" : dbp,
+      'sbp': sbp == "" ? "nill" : sbp,
       'local_tenderness': local_tenderness == "" ? "nill" : local_tenderness,
     };
   }
@@ -560,7 +574,8 @@ class Examination {
   factory Examination.fromMap(Map<String, dynamic> map) {
     return Examination(
       pulse_rate: map['pulse_rate'],
-      bp: map['bp'],
+      dbp: map['dbp'],
+      sbp: map['sbp'],
       local_tenderness: map['local_tenderness'],
     );
   }
@@ -572,7 +587,7 @@ class Examination {
 
   @override
   String toString() =>
-      'Examination(pulse_rate: $pulse_rate, bp: $bp, local_tenderness: $local_tenderness)';
+      'Examination(pulse_rate: $pulse_rate, dbp: $dbp, sbp: $sbp local_tenderness: $local_tenderness)';
 
   @override
   bool operator ==(Object other) {
@@ -580,13 +595,17 @@ class Examination {
 
     return other is Examination &&
         other.pulse_rate == pulse_rate &&
-        other.bp == bp &&
+        other.dbp == dbp &&
+        other.sbp == sbp &&
         other.local_tenderness == local_tenderness;
   }
 
   @override
   int get hashCode =>
-      pulse_rate.hashCode ^ bp.hashCode ^ local_tenderness.hashCode;
+      pulse_rate.hashCode ^
+      dbp.hashCode ^
+      sbp.hashCode ^
+      local_tenderness.hashCode;
 }
 
 enum ECGType { nill, STEMI, NSTEMI }
@@ -596,3 +615,4 @@ enum Location { nill, Localized, Diffuse }
 enum Intensity { nill, Mild, Severe }
 enum Severity { nill, Mild, Moderate, Severe }
 enum Radiation { nill, Substernal, Epigastric, Arm, Jaw, Neck }
+enum PN { nill, positive, negative }

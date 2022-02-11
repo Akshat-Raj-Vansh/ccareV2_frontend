@@ -724,7 +724,9 @@ class _PatientReportScreenState extends State<PatientReportScreen>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('Trop I: '),
-                Text(treatmentReport.medicalHist.trop_i),
+                Text(treatmentReport.medicalHist.trop_i
+                    .toString()
+                    .split('.')[1]),
               ],
             ),
             SizedBox(height: 3.h),
@@ -899,12 +901,20 @@ class _PatientReportScreenState extends State<PatientReportScreen>
               ],
             ),
             SizedBox(height: 1.h),
-            // BP
+            // DBP
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('BP: '),
-                Text(treatmentReport.examination.bp),
+                Text('Diastolic: '),
+                Text(treatmentReport.examination.dbp),
+              ],
+            ),
+            SizedBox(height: 1.h),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Systolic: '),
+                Text(treatmentReport.examination.sbp),
               ],
             ),
             SizedBox(height: 1.h),
@@ -1189,16 +1199,20 @@ class _PatientReportScreenState extends State<PatientReportScreen>
                 Text('Trop I: '),
                 Container(
                   width: SizeConfig.screenWidth * 0.4,
-                  child: TextFormField(
-                    keyboardType: TextInputType.number,
-                    focusNode: null,
-                    initialValue: editedReport.medicalHist.trop_i,
-                    onChanged: (newValue) =>
-                        editedReport.medicalHist.trop_i = newValue,
-                    decoration: const InputDecoration(
-                      hintText: "Enter Trop I",
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
-                    ),
+                  child: DropdownButton<PN>(
+                    value: editedReport.medicalHist.trop_i,
+                    isDense: false,
+                    onChanged: (PN newValue) {
+                      setState(() {
+                        editedReport.medicalHist.trop_i = newValue;
+                      });
+                    },
+                    items: PN.values.map((PN value) {
+                      return DropdownMenuItem<PN>(
+                        value: value,
+                        child: Text(value.toString().split('.')[1]),
+                      );
+                    }).toList(),
                   ),
                 ),
               ],
@@ -1207,7 +1221,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
         ),
       );
   _buildChestForm() => SingleChildScrollView(
-    child: Container(
+        child: Container(
           width: SizeConfig.screenWidth,
           margin: EdgeInsets.only(
             left: 20,
@@ -1320,7 +1334,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
                   ),
                 ),
               ]),
-  
+
               SizedBox(height: 1.h),
               // Severity
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
@@ -1395,7 +1409,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
             ],
           ),
         ),
-  );
+      );
   _buildSymptomsForm() => Container(
         width: SizeConfig.screenWidth,
         margin: EdgeInsets.only(
@@ -1602,21 +1616,42 @@ class _PatientReportScreenState extends State<PatientReportScreen>
               ],
             ),
             SizedBox(height: 1.h),
-            // BP
+            // DBP
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('BP: '),
+                Text('Diastolic: '),
                 Container(
                   width: SizeConfig.screenWidth * 0.4,
                   child: TextFormField(
                     keyboardType: TextInputType.text,
                     focusNode: null,
                     onChanged: (newValue) =>
-                        editedReport.examination.bp = newValue,
-                    initialValue: editedReport.examination.bp,
+                        editedReport.examination.dbp = newValue,
+                    initialValue: editedReport.examination.dbp,
                     decoration: const InputDecoration(
-                      hintText: "Enter BP",
+                      hintText: "Enter Diastolic",
+                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 1.h),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Systolic: '),
+                Container(
+                  width: SizeConfig.screenWidth * 0.4,
+                  child: TextFormField(
+                    keyboardType: TextInputType.text,
+                    focusNode: null,
+                    onChanged: (newValue) =>
+                        editedReport.examination.sbp = newValue,
+                    initialValue: editedReport.examination.sbp,
+                    decoration: const InputDecoration(
+                      hintText: "Enter Systolic",
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                     ),
                   ),

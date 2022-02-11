@@ -237,7 +237,7 @@ class _ReportOverviewState extends State<ReportOverview> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('Trop I: '),
-                Text(widget.report.medicalHist.trop_i),
+                Text(widget.report.medicalHist.trop_i.toString().split('.')[1]),
               ],
             ),
             SizedBox(height: 3.h),
@@ -418,8 +418,16 @@ class _ReportOverviewState extends State<ReportOverview> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('BP: '),
-                Text(widget.report.examination.bp),
+                Text('Diastolic: '),
+                Text(widget.report.examination.dbp),
+              ],
+            ),
+            SizedBox(height: 1.h),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Szstolic: '),
+                Text(widget.report.examination.sbp),
               ],
             ),
             SizedBox(height: 1.h),
