@@ -7,6 +7,7 @@ import 'package:ccarev2_frontend/main/domain/mixReport.dart';
 import 'package:ccarev2_frontend/main/domain/question.dart';
 import 'package:ccarev2_frontend/main/domain/treatment.dart' as treat;
 import 'package:ccarev2_frontend/user/domain/location.dart' as loc;
+import 'package:ccarev2_frontend/user/domain/profile.dart';
 import 'package:ccarev2_frontend/user/domain/token.dart';
 import 'package:cubit/cubit.dart';
 import 'package:image_picker/image_picker.dart';
@@ -282,6 +283,17 @@ class MainCubit extends Cubit<MainState> {
     emit(PatientReportSaved("Saved"));
   }
 
+  uploadChatImage(XFile image) async {
+    // _startLoading("Image Clicked");
+    final token = await localStore.fetch();
+    final result = await this.api.uploadChatImage(token, image);
+    if (result.isError) {
+      emit(ErrorState(result.asError!.error as String));
+      return;
+    }
+    emit(ChatImageUploaded(result.asValue!.value));
+  }
+
   caseClose(String patientID) async {
     final token = await localStore.fetch();
     final result = await this.api.caseClose(token, patientID);
@@ -292,6 +304,18 @@ class MainCubit extends Cubit<MainState> {
       return;
     }
     emit(CaseClosedState(result.asValue!.value));
+  }
+
+  addPatient(PatientProfile patientProfile, String phone_number) async {
+    _startLoading("Add Patient");
+    final token = await localStore.fetch();
+    final result =
+        await api.addPatient(Token(token.value), patientProfile, phone_number);
+    if (result.isError) {
+      emit(ErrorState(result.asError!.error as String));
+      return;
+    }
+    emit(PatientAdded());
   }
 
   fetchImage(String patientID) async {

@@ -11,6 +11,7 @@ import 'package:ccarev2_frontend/user/domain/emergency.dart';
 import 'package:ccarev2_frontend/user/domain/hub_doc_info.dart';
 import 'package:ccarev2_frontend/user/domain/location.dart';
 import 'package:ccarev2_frontend/user/domain/patient_list_info.dart';
+import 'package:ccarev2_frontend/user/domain/profile.dart';
 import 'package:ccarev2_frontend/utils/constants.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:http/http.dart' as http;
@@ -734,5 +735,54 @@ class MainAPI extends IMainAPI {
         .map<PatientAssessment>(
             (assessment) => PatientAssessment.fromJson(jsonEncode(assessment)))
         .toList());
+  }
+
+  Future<Result<String>> uploadChatImage(Token token, XFile image) async {
+    String endpoint = baseUrl + "/treatment/uploadChatImage";
+    final header = {
+      // "Content-Type": "application/json",
+      "Authorization": token.value
+    };
+    var file = await http.MultipartFile.fromBytes(
+        'file', await image.readAsBytes(),
+        filename: image.name, contentType: MediaType('image', 'jpg'));
+    var request = http.MultipartRequest('POST', Uri.parse(endpoint))
+      ..headers["Authorization"] = token.value;
+    request.files.add(file);
+    var response = await request.send();
+    if (response.statusCode != 200) {
+      //print("error");
+      return Result.error("Server Error");
+    }
+    final respStr = await response.stream.bytesToString();
+    var fileID = jsonDecode(respStr)['fileID'];
+    return Result.value(fileID);
+  }
+
+  Future<Result<String>> addPatient(
+      Token token, PatientProfile patientProfile, String phone_number) async {
+    String endpoint = baseUrl + "/emergency/addPatient";
+    var header = {
+      "Content-Type": "application/json",
+      "Authorization": token.value
+    };
+    var response = await _client.post(Uri.parse(endpoint),
+        headers: header,
+        body: jsonEncode({
+          "profile": {
+            "name": patientProfile.name,
+            "age": patientProfile.age,
+            "gender": patientProfile.gender,
+            "phoneNumber": phone_number
+          }
+        }));
+    if (response.statusCode != 200) {
+      Map map = jsonDecode(response.body);
+      //print(transformError(map));
+      return Result.error(transformError(map));
+    }
+    if (jsonDecode(response.body)["message"] == null)
+      return Result.error("error");
+    return Result.value(jsonDecode(response.body)["message"]);
   }
 }

@@ -4,23 +4,23 @@ class Message {
   final String text;
   final String senderID;
   final String receiverID;
-
-  Message(
-    this.text,
-    this.senderID,
-    this.receiverID,
-  );
+  final String type;
+  final String time;
+  String? path;
+  Message(this.text, this.senderID, this.receiverID, this.type, this.time,
+      {this.path});
 
   Message copyWith({
     String? text,
     String? senderID,
     String? receiverID,
+    String? type,
+    String? time,
+    String? path,
   }) {
-    return Message(
-      text ?? this.text,
-      senderID ?? this.senderID,
-      receiverID ?? this.receiverID,
-    );
+    return Message(text ?? this.text, senderID ?? this.senderID,
+        receiverID ?? this.receiverID, type ?? this.type, time ?? this.time,
+        path: path ?? this.path);
   }
 
   Map<String, dynamic> toMap() {
@@ -28,14 +28,20 @@ class Message {
       'text': text,
       'senderID': senderID,
       'receiverID': receiverID,
+      'type': type,
+      'time': time,
+      'path': path,
     };
   }
 
   factory Message.fromMap(Map<String, dynamic> map) {
     return Message(
-      map['message'],
-      map['from'],
-      map['to'],
+      map['text'] ?? '',
+      map['senderID'] ?? '',
+      map['receiverID'] ?? '',
+      map['type'] ?? '',
+      map['time'] ?? '',
+      path: map['path'] ?? '',
     );
   }
 
@@ -45,8 +51,9 @@ class Message {
       Message.fromMap(json.decode(source));
 
   @override
-  String toString() =>
-      'Message(text: $text, senderID: $senderID, receiverID: $receiverID)';
+  String toString() {
+    return 'Message(text: $text, senderID: $senderID, receiverID: $receiverID, type: $type, time: $time, path: $path)';
+  }
 
   @override
   bool operator ==(Object other) {
@@ -55,9 +62,19 @@ class Message {
     return other is Message &&
         other.text == text &&
         other.senderID == senderID &&
-        other.receiverID == receiverID;
+        other.receiverID == receiverID &&
+        other.type == type &&
+        other.time == time &&
+        other.path == path;
   }
 
   @override
-  int get hashCode => text.hashCode ^ senderID.hashCode ^ receiverID.hashCode;
+  int get hashCode {
+    return text.hashCode ^
+        senderID.hashCode ^
+        receiverID.hashCode ^
+        type.hashCode ^
+        time.hashCode ^
+        path.hashCode;
+  }
 }

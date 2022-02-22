@@ -65,9 +65,8 @@ class _ChatPageState extends State<ChatPage> {
 
   _scrollToEnd() {
     Future.delayed(Duration(milliseconds: 100), () {
-         
-    _scrollController.animateTo(_scrollController.position.maxScrollExtent,
-        duration: Duration(milliseconds: 200), curve: Curves.easeInOut);
+      _scrollController.animateTo(_scrollController.position.maxScrollExtent,
+          duration: Duration(milliseconds: 200), curve: Curves.easeInOut);
     });
   }
 
@@ -166,7 +165,7 @@ class _ChatPageState extends State<ChatPage> {
                     if (textEditingController.text != "") {
                       FocusManager.instance.primaryFocus?.unfocus();
                       model.sendMessage(
-                          textEditingController.text, recieverChatID);
+                          textEditingController.text, recieverChatID, "text");
                       textEditingController.text = '';
                       _scrollToEnd();
                     }

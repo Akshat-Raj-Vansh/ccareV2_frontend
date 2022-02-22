@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:ccarev2_frontend/cache/local_store.dart';
 import 'package:ccarev2_frontend/main/domain/assessment.dart';
 import 'package:ccarev2_frontend/main/domain/edetails.dart';
@@ -115,6 +117,18 @@ class PatientReportSaved extends MainState {
   PatientReportSaved(this.msg);
   @override
   List<Object> get props => [this.msg];
+}
+
+class PatientAdded extends MainState {
+  @override
+  List<Object> get props => [];
+}
+
+class ChatImageUploaded extends MainState {
+  final String fileID;
+  ChatImageUploaded(this.fileID);
+  @override
+  List<Object> get props => [this.fileID];
 }
 
 class ViewPatientReport extends MainState {

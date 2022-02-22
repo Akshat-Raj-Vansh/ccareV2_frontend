@@ -9,6 +9,7 @@ import 'package:ccarev2_frontend/user/domain/emergency.dart';
 import 'package:ccarev2_frontend/user/domain/hub_doc_info.dart';
 import 'package:ccarev2_frontend/user/domain/location.dart' as loc;
 import 'package:ccarev2_frontend/user/domain/patient_list_info.dart';
+import 'package:ccarev2_frontend/user/domain/profile.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../user/domain/token.dart';
 import 'question.dart';
@@ -29,6 +30,7 @@ abstract class IMainAPI {
       {List<QuestionTree>? assessment});
 
   // Doctors Side APIs
+  Future<Result<String>> uploadChatImage(Token token, XFile image);
   Future<Result<EDetails>> fetchEmergencyDetails(Token token,
       {String? patientID});
   Future<Result<dynamic>> fetchPatientReport(Token token, String? patID);
@@ -38,6 +40,8 @@ abstract class IMainAPI {
   Future<Result<List<Message>>> getAllMessages(Token token, String patientID);
 
   // Spoke Side APIs
+  Future<Result<String>> addPatient(
+      Token token, PatientProfile patientProfile, String phone_number);
   Future<Result<String>> caseClose(Token token, String patientID);
   Future<Result<loc.Location>> acceptPatientbySpoke(Token token, Token patient);
   Future<Result<List<PatientListInfo>>> getAllPatientRequests(Token token);

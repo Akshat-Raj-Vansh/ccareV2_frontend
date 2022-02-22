@@ -40,8 +40,9 @@ class ChatModel extends Model {
       //print(jsonEncode(jsonData));
       //print(jsonEncode(jsonData['content']));
       Map<String, dynamic> data = jsonDecode(jsonEncode(jsonData));
-      messages.add(Message(
-          data['content'], data['senderChatID'], data['receiverChatID']));
+      messages.add(Message(data['content'], data['senderChatID'],
+          data['receiverChatID'], data['type'], data['time'],
+          path: data["type"] == "IMAGE" ? data['path'] : ""));
       notifyListeners();
     });
   }
@@ -52,7 +53,7 @@ class ChatModel extends Model {
     messages.addAll(data);
     //print('888888888888888888');
     print(messages.last);
-    
+
     notifyListeners();
   }
 
@@ -60,14 +61,20 @@ class ChatModel extends Model {
     socket.close();
   }
 
-  void sendMessage(String text, String receiverChatID) {
-    messages.add(Message(text, userChatID, receiverChatID));
+  void sendMessage(String text, String receiverChatID, String type,
+      {String path}) {
+    messages.add(Message(
+        text, userChatID, receiverChatID, type, DateTime.now().toString(),
+        path: type == "IMAGE" ? path : ""));
     //print("UserChatID$userChatID");
     socket.emit("send_message", [
       {
         "content": text,
         "senderChatID": userChatID,
-        "receiverChatID": receiverChatID
+        "receiverChatID": receiverChatID,
+        "type": type,
+        "time": DateTime.now().toString(),
+        "path": type == "IMAGE" ? path : ""
       }
     ]);
     notifyListeners();
