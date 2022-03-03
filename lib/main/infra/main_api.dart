@@ -765,7 +765,7 @@ class MainAPI extends IMainAPI {
 
   Future<Result<String>> addPatient(
       Token token, PatientProfile patientProfile, String phone_number) async {
-    String endpoint = baseUrl + "/emergency/addPatient";
+    String endpoint = baseUrl + "/emergency/spoke/addPatient";
     var header = {
       "Content-Type": "application/json",
       "Authorization": token.value

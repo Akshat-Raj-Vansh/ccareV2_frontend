@@ -106,10 +106,11 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
             SizedBox(height: 1.h),
             TextFormField(
               keyboardType: TextInputType.number,
-              onSaved: (newValue) => age = int.parse(newValue),
+              onSaved: (newValue) =>
+                  {if (newValue.length <= 10) phone = newValue},
               validator: (value) => value.isEmpty
                   ? "Phone Number is required"
-                  : (value.length > 10 || value.contains(RegExp(r'[A-Z][a-z]'))
+                  : (value.length != 10 || value.contains(RegExp(r'[A-Z][a-z]'))
                       ? "Enter a valid Phone Number"
                       : null),
               decoration: const InputDecoration(
