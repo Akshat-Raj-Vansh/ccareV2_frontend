@@ -205,12 +205,12 @@ class EcgInterperation {
 }
 
 class Advice {
-  final String ecg_repeat;
-  final YN trop_i_repeat;
-  final MedicineAdvice medicines;
-  final YN oxygen_inhalation;
-  final YN nebulization;
-  final BioChemistry bioChemistry;
+  String ecg_repeat;
+  YN trop_i_repeat;
+  MedicineAdvice medicines;
+  YN oxygen_inhalation;
+  YN nebulization;
+  BioChemistry bioChemistry;
   Advice({
     this.ecg_repeat,
     this.trop_i_repeat,
@@ -219,6 +219,15 @@ class Advice {
     this.nebulization,
     this.bioChemistry,
   });
+
+  Advice.initialize() {
+    this.ecg_repeat = "nill";
+    this.trop_i_repeat = YN.nill;
+    this.medicines = MedicineAdvice.initialize();
+    this.oxygen_inhalation = YN.nill;
+    this.nebulization = YN.nill;
+    this.bioChemistry = BioChemistry.initialize();
+  }
 
   Advice copyWith({
     String ecg_repeat,
@@ -654,13 +663,13 @@ class MedicineAdvice {
   med6String() => med6Map[this.med6];
   med7String() => med7Map[this.med7];
 
-  final dynamic med1;
-  final dynamic med2;
-  final dynamic med3;
-  final dynamic med4;
-  final dynamic med5;
-  final dynamic med6;
-  final dynamic med7;
+  dynamic med1;
+  dynamic med2;
+  dynamic med3;
+  dynamic med4;
+  dynamic med5;
+  dynamic med6;
+  dynamic med7;
   MedicineAdvice({
     this.med1,
     this.med2,
@@ -670,6 +679,26 @@ class MedicineAdvice {
     this.med6,
     this.med7,
   });
+
+  MedicineAdvice.initialize() {
+    this.med1 = {
+      'name': "Thrombolyse after ruling out contraindications",
+      'value': "YN.nill"
+    };
+    this.med2 = {
+      'name': "Give Loading dose of Clopedogrel and Aspirin",
+      'value': "YN.nill"
+    };
+    this.med3 = {
+      'name':
+          "Give Injection Enoxaparin 30 mg IV after 15 minutes of Thrombolytic therapy.",
+      'value': "YN.nill"
+    };
+    this.med4 = {'name': "Metoprolol ", 'value': "nill"};
+    this.med5 = {'name': "Ramipril", 'value': "nill"};
+    this.med6 = {'name': "Telmisartan", 'value': "nill"};
+    this.med7 = {'name': "Atorvastatin ", 'value': "nill"};
+  }
 
   MedicineAdvice copyWith({
     dynamic med1,
