@@ -4,7 +4,9 @@ import 'package:ccarev2_frontend/cache/local_store.dart';
 import 'package:ccarev2_frontend/main/domain/assessment.dart';
 import 'package:ccarev2_frontend/main/domain/edetails.dart';
 import 'package:ccarev2_frontend/main/domain/examination.dart';
+import 'package:ccarev2_frontend/main/domain/hubResponse.dart';
 import 'package:ccarev2_frontend/main/domain/mixReport.dart';
+import 'package:ccarev2_frontend/main/domain/spokeResponse.dart';
 import 'package:ccarev2_frontend/main/domain/treatment.dart' as treat;
 import 'package:ccarev2_frontend/pages/chat/components/message.dart';
 import 'package:ccarev2_frontend/services/Notifications/component/patient.dart';
@@ -33,6 +35,28 @@ class AcceptState extends MainState {
   AcceptState(this.patientID);
   @override
   List<Object> get props => [patientID];
+}
+
+class ResponsesLoaded extends MainState {
+  final HubResponse hubResponse;
+  final SpokeResponse spokeResponse;
+  ResponsesLoaded(this.hubResponse, this.spokeResponse);
+  @override
+  List<Object> get props => [hubResponse, spokeResponse];
+}
+
+class HubResponseUpdated extends MainState {
+  final String message;
+  HubResponseUpdated(this.message);
+  @override
+  List<Object> get props => [message];
+}
+
+class SpokeResponseUpdated extends MainState {
+  final String message;
+  SpokeResponseUpdated(this.message);
+  @override
+  List<Object> get props => [message];
 }
 
 class AssessmentLoaded extends MainState {

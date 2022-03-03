@@ -2,10 +2,13 @@ import 'dart:developer';
 
 import 'package:ccarev2_frontend/cache/ilocal_store.dart';
 import 'package:ccarev2_frontend/main/domain/examination.dart' as exam;
+import 'package:ccarev2_frontend/main/domain/hubResponse.dart';
 import 'package:ccarev2_frontend/main/domain/main_api_contract.dart';
 import 'package:ccarev2_frontend/main/domain/mixReport.dart';
 import 'package:ccarev2_frontend/main/domain/question.dart';
+import 'package:ccarev2_frontend/main/domain/spokeResponse.dart';
 import 'package:ccarev2_frontend/main/domain/treatment.dart' as treat;
+import 'package:ccarev2_frontend/main/domain/treatment.dart';
 import 'package:ccarev2_frontend/user/domain/location.dart' as loc;
 import 'package:ccarev2_frontend/user/domain/profile.dart';
 import 'package:ccarev2_frontend/user/domain/token.dart';
@@ -261,18 +264,23 @@ class MainCubit extends Cubit<MainState> {
   }
 
   imageClicked(XFile image, String type, String patID,
-      treat.TreatmentReport report) async {
+      treat.TreatmentReport report, int seq_no) async {
     // _startLoading("Image Clicked");
     final token = await localStore.fetch();
-    final result = await this.api.uploadImage(token, image, type, patID);
+    final result =
+        await this.api.uploadImage(token, image, type, patID, seq_no);
     if (result.isError) {
       emit(ErrorState(result.asError!.error as String));
       return;
     }
-
     emit(ImageCaptured("Image Clicked", result.asValue!.value.split('#')[1],
         result.asValue!.value.split('#')[2]));
-    report.ecg.ecg_file_id = result.asValue!.value.split('#')[1];
+    //#FIXME: ad all the images somehow
+    report.ecg.ecg_file_ids = [
+      ECGFile(
+          file_id: result.asValue!.value.split('#')[1],
+          seq_no: seq_no.toString())
+    ];
     report.ecg.ecg_time = result.asValue!.value.split('#')[2];
     final result2 =
         await api.savePatientReport(Token(token.value), report, patID);
@@ -316,6 +324,41 @@ class MainCubit extends Cubit<MainState> {
       return;
     }
     emit(PatientAdded());
+  }
+
+  fetchResponse(String patientID) async {
+    _startLoading("Fetch Response");
+    final token = await localStore.fetch();
+    final result = await api.getConsultationResponse(token, patientID);
+    if (result.isError) {
+      emit(ErrorState(result.asError!.error as String));
+      return;
+    }
+    emit(ResponsesLoaded(result.asValue!.value["hubResponse"],
+        result.asValue!.value["spokeResponse"]));
+  }
+
+  updateHubResponse(String patientID, HubResponse hubResponse) async {
+    _startLoading("Update Hub Response");
+    final token = await localStore.fetch();
+    final result = await api.updateHubResponse(token, patientID, hubResponse);
+    if (result.isError) {
+      emit(ErrorState(result.asError!.error as String));
+      return;
+    }
+    emit(HubResponseUpdated(result.asValue!.value));
+  }
+
+  updateSpokeResponse(String patientID, SpokeResponse spokeResponse) async {
+    _startLoading("Update Spoke Response");
+    final token = await localStore.fetch();
+    final result =
+        await api.updateSpokeResponse(token, patientID, spokeResponse);
+    if (result.isError) {
+      emit(ErrorState(result.asError!.error as String));
+      return;
+    }
+    emit(SpokeResponseUpdated(result.asValue!.value));
   }
 
   fetchImage(String patientID) async {

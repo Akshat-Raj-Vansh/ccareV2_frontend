@@ -106,33 +106,86 @@ class TreatmentReport {
   }
 }
 
+class ECGFile {
+  String file_id;
+  String seq_no;
+  ECGFile({
+    this.file_id,
+    this.seq_no,
+  });
+
+  ECGFile copyWith({
+    String file_id,
+    String seq_no,
+  }) {
+    return ECGFile(
+      file_id: file_id ?? this.file_id,
+      seq_no: seq_no ?? this.seq_no,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'file_id': file_id,
+      'seq_no': seq_no,
+    };
+  }
+
+  factory ECGFile.fromMap(Map<String, dynamic> map) {
+    return ECGFile(
+      file_id: map['file_id'] ?? '',
+      seq_no: map['seq_no'] ?? '',
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory ECGFile.fromJson(String source) =>
+      ECGFile.fromMap(json.decode(source));
+
+  @override
+  String toString() => 'ECGFile(file_id: $file_id, seq_no: $seq_no)';
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is ECGFile &&
+        other.file_id == file_id &&
+        other.seq_no == seq_no;
+  }
+
+  @override
+  int get hashCode => file_id.hashCode ^ seq_no.hashCode;
+}
+
 class ECG {
   String ecg_time;
   ECGType ecg_type;
-  String ecg_file_id;
+  List<ECGFile> ecg_file_ids;
   ECG({
     this.ecg_time,
     this.ecg_type,
-    this.ecg_file_id,
+    this.ecg_file_ids,
   });
   ECG.initialize() {
     this.ecg_time = "nill";
     this.ecg_type = ECGType.nill;
-    this.ecg_file_id = "nill";
+    this.ecg_file_ids = [];
   }
   set ecg_time_(String value) => this.ecg_time = value;
   set ecg_type_(ECGType value) => this.ecg_type = value;
-  set ecg_file_id_(String value) => this.ecg_file_id = value;
+  set ecg_file_ids_(List<ECGFile> value) => this.ecg_file_ids = value;
 
   ECG copyWith({
     String ecg_time,
     ECGType ecg_type,
-    String ecg_file_id,
+    List<ECGFile> ecg_file_ids,
   }) {
     return ECG(
       ecg_time: ecg_time ?? this.ecg_time,
       ecg_type: ecg_type ?? this.ecg_type,
-      ecg_file_id: ecg_file_id ?? this.ecg_file_id,
+      ecg_file_ids: ecg_file_ids ?? this.ecg_file_ids,
     );
   }
 
@@ -141,7 +194,7 @@ class ECG {
     return {
       'ecg_time': ecg_time == "" ? "nill" : ecg_time,
       'ecg_type': ecg_type.toString().split('.')[1],
-      'ecg_file_id': ecg_file_id,
+      'ecg_file_ids': ecg_file_ids.map((x) => x.toMap()).toList(),
     };
   }
 
@@ -150,7 +203,8 @@ class ECG {
       ecg_time: map['ecg_time'],
       ecg_type: ECGType.values.firstWhere(
           (element) => element.toString() == "ECGType." + map['ecg_type']),
-      ecg_file_id: map['ecg_file_id'],
+      ecg_file_ids: List<ECGFile>.from(
+          map['ecg_file_ids'].map((x) => ECGFile.fromMap(x))),
     );
   }
 
@@ -160,7 +214,7 @@ class ECG {
 
   @override
   String toString() =>
-      'ECG(ecg_time: $ecg_time, ecg_type: $ecg_type, ecg_file_id: $ecg_file_id)';
+      'ECG(ecg_time: $ecg_time, ecg_type: $ecg_type, ecg_file_id: ${ecg_file_ids.toString()})';
 
   @override
   bool operator ==(Object other) {
@@ -169,7 +223,7 @@ class ECG {
     return other is ECG &&
         other.ecg_time == ecg_time &&
         other.ecg_type == ecg_type &&
-        other.ecg_file_id == ecg_file_id;
+        other.ecg_file_ids == ecg_file_ids;
   }
 }
 

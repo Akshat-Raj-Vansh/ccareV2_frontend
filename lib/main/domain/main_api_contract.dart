@@ -2,6 +2,8 @@ import 'package:async/async.dart';
 import 'package:ccarev2_frontend/main/domain/assessment.dart';
 import 'package:ccarev2_frontend/main/domain/edetails.dart';
 import 'package:ccarev2_frontend/main/domain/examination.dart' as exam;
+import 'package:ccarev2_frontend/main/domain/hubResponse.dart';
+import 'package:ccarev2_frontend/main/domain/spokeResponse.dart';
 import 'package:ccarev2_frontend/main/domain/treatment.dart';
 import 'package:ccarev2_frontend/pages/chat/components/message.dart';
 import 'package:ccarev2_frontend/user/domain/doc_info.dart';
@@ -30,6 +32,8 @@ abstract class IMainAPI {
       {List<QuestionTree>? assessment});
 
   // Doctors Side APIs
+  Future<Result<dynamic>> getConsultationResponse(
+      Token token, String patientID);
   Future<Result<String>> uploadChatImage(Token token, XFile image);
   Future<Result<EDetails>> fetchEmergencyDetails(Token token,
       {String? patientID});
@@ -40,6 +44,8 @@ abstract class IMainAPI {
   Future<Result<List<Message>>> getAllMessages(Token token, String patientID);
 
   // Spoke Side APIs
+  Future<Result<String>> updateSpokeResponse(
+      Token token, String patientID, SpokeResponse spokeResponse);
   Future<Result<String>> addPatient(
       Token token, PatientProfile patientProfile, String phone_number);
   Future<Result<String>> caseClose(Token token, String patientID);
@@ -55,7 +61,7 @@ abstract class IMainAPI {
       Token token, String status, String? patientID);
   Future<Result<String>> consultHub(Token token, String docID, String patID);
   Future<Result<String>> uploadImage(
-      Token token, XFile image, String type, String patID);
+      Token token, XFile image, String type, String patID, int seq_no);
   Future<Result<XFile>> fetchImage(Token token, String patientID);
   Future<Result<String>> newReport(Token token, String patientID);
 
@@ -64,6 +70,8 @@ abstract class IMainAPI {
       Token token, Token patient);
 
   // Hub Side APIs
+  Future<Result<String>> updateHubResponse(
+      Token token, String patientID, HubResponse hubResponse);
   Future<Result<dynamic>> acceptPatientbyHub(Token token, Token patient);
   Future<Result<List<EDetails>>> fetchHubRequests(Token token);
 

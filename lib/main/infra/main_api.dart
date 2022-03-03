@@ -4,6 +4,8 @@ import 'dart:io';
 import 'package:ccarev2_frontend/main/domain/assessment.dart';
 import 'package:ccarev2_frontend/main/domain/edetails.dart';
 import 'package:ccarev2_frontend/main/domain/examination.dart';
+import 'package:ccarev2_frontend/main/domain/spokeResponse.dart';
+import 'package:ccarev2_frontend/main/domain/hubResponse.dart';
 import 'package:ccarev2_frontend/main/domain/treatment.dart' as treat;
 import 'package:ccarev2_frontend/pages/chat/components/message.dart';
 import 'package:ccarev2_frontend/user/domain/doc_info.dart';
@@ -594,7 +596,7 @@ class MainAPI extends IMainAPI {
 
   @override
   Future<Result<String>> uploadImage(
-      Token token, XFile image, String type, String patID) async {
+      Token token, XFile image, String type, String patID, int seq_no) async {
     //print("Upload Image");
     //print(image.name);
     String endpoint = baseUrl + "/treatment/spoke/uploadECG?patientID=$patID";
@@ -608,6 +610,7 @@ class MainAPI extends IMainAPI {
     var request = http.MultipartRequest('POST', Uri.parse(endpoint))
       ..headers["Authorization"] = token.value;
     request.fields['type'] = type;
+    request.fields['seq_no'] = seq_no.toString();
     request.files.add(file);
     var response = await request.send();
     if (response.statusCode != 200) {
@@ -617,6 +620,7 @@ class MainAPI extends IMainAPI {
     final respStr = await response.stream.bytesToString();
     var fileID = jsonDecode(respStr)['fileID'];
     var time = jsonDecode(respStr)['time'];
+    print(jsonDecode(respStr)['seq_no']);
     print("Image Uploaded#${fileID}#${time}");
     return Result.value("Image Uploaded#${fileID}#${time}");
   }
@@ -776,6 +780,74 @@ class MainAPI extends IMainAPI {
             "phoneNumber": phone_number
           }
         }));
+    if (response.statusCode != 200) {
+      Map map = jsonDecode(response.body);
+      //print(transformError(map));
+      return Result.error(transformError(map));
+    }
+    if (jsonDecode(response.body)["message"] == null)
+      return Result.error("error");
+    return Result.value(jsonDecode(response.body)["message"]);
+  }
+
+  @override
+  Future<Result> getConsultationResponse(Token token, String patientID) async {
+    String endpoint =
+        baseUrl + "/treatment/getConsultationResponse?patientID=$patientID";
+    var header = {
+      "Content-Type": "application/json",
+      "Authorization": token.value
+    };
+    var response = await _client.get(Uri.parse(endpoint), headers: header);
+    if (response.statusCode != 200) {
+      Map map = jsonDecode(response.body);
+      //print(transformError(map));
+      return Result.error(transformError(map));
+    }
+    if (jsonDecode(response.body)["hubResponses"] == null ||
+        jsonDecode(response.body)["spokeResponses"] == null)
+      //intialize both
+      return Result.error("error");
+    return Result.value({
+      "hubResponse":
+          HubResponse.fromJson(jsonDecode(response.body)["hubResponses"]),
+      "spokeResponse":
+          SpokeResponse.fromJson(jsonDecode(response.body)["spokeResponses"])
+    });
+  }
+
+  @override
+  Future<Result<String>> updateHubResponse(
+      Token token, String patientID, HubResponse hubResponse) async {
+    String endpoint =
+        baseUrl + "/treatment/hub/updateHubResponse?patientID=$patientID";
+    var header = {
+      "Content-Type": "application/json",
+      "Authorization": token.value
+    };
+    var response = await _client.post(Uri.parse(endpoint),
+        headers: header, body: hubResponse.toJson());
+    if (response.statusCode != 200) {
+      Map map = jsonDecode(response.body);
+      //print(transformError(map));
+      return Result.error(transformError(map));
+    }
+    if (jsonDecode(response.body)["message"] == null)
+      return Result.error("error");
+    return Result.value(jsonDecode(response.body)["message"]);
+  }
+
+  @override
+  Future<Result<String>> updateSpokeResponse(
+      Token token, String patientID, SpokeResponse spokeResponse) async {
+    String endpoint =
+        baseUrl + "/treatment/spoke/updateSpokeResponse?patientID=$patientID";
+    var header = {
+      "Content-Type": "application/json",
+      "Authorization": token.value
+    };
+    var response = await _client.post(Uri.parse(endpoint),
+        headers: header, body: spokeResponse.toJson());
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
       //print(transformError(map));

@@ -1078,18 +1078,20 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
             ),
             SizedBox(height: 1.h),
             // ECG Scan
+            //#FIXME add multiple scans
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('ECG Scan: '),
-                _treatmentReport.ecg.ecg_file_id != "nill"
+                _treatmentReport.ecg.ecg_file_ids != [] ||
+                        _treatmentReport.ecg.ecg_file_ids != null
                     ? GestureDetector(
                         onTap: () {
                           Navigator.push(context,
                               MaterialPageRoute(builder: (_) {
                             return FullScreenImage(
                               imageUrl:
-                                  "$BASEURL/treatment/fetchECG?fileID=${_treatmentReport.ecg.ecg_file_id}",
+                                  "$BASEURL/treatment/fetchECG?fileID=${_treatmentReport.ecg.ecg_file_ids[0].file_id}",
                               tag: "generate_a_unique_tag",
                             );
                           }));
@@ -1097,7 +1099,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                         child: Hero(
                           child: Image(
                               image: NetworkImage(
-                                  "$BASEURL/treatment/fetchECG?fileID=${_treatmentReport.ecg.ecg_file_id}",
+                                  "$BASEURL/treatment/fetchECG?fileID=${_treatmentReport.ecg.ecg_file_ids[0].file_id}",
                                   headers: {
                                     "Authorization":
                                         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjFhMWU5ZGNiYWI4MjZkZTk4NjBmNzkzIiwiaWF0IjoxNjM4MjY1MzkxLCJleHAiOjE2Mzg4NzAxOTEsImlzcyI6ImNvbS5jY2FyZW5pdGgifQ.K-_DprXx2ipOwWt17DODlMDqQSgtWdv8aARjlPdEuzA"
