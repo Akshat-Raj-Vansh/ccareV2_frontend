@@ -40,9 +40,9 @@ class MyApp extends StatelessWidget {
               accentColor: kAccentColor,
               primaryColor: kPrimaryColor,
               visualDensity: VisualDensity.adaptivePlatformDensity),
-          home: ChatScreen()
-          //  this.startPage
-          ),
+          home:
+              // ChatScreen()
+              this.startPage),
     );
   }
 }
