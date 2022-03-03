@@ -1,5 +1,5 @@
 //@dart=2.9
-import 'package:camera/camera.dart';
+// import 'package:camera/camera.dart';
 import 'package:ccarev2_frontend/pages/chat/components/camera_components/cameraScreen.dart';
 import 'package:ccarev2_frontend/pages/chat/components/chatModel.dart';
 import 'package:ccarev2_frontend/pages/chat/components/chat_ui/ownCardUI.dart';

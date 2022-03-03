@@ -1,5 +1,5 @@
 //@dart=2.9
-import 'package:camera/camera.dart';
+// import 'package:camera/camera.dart';
 import 'package:ccarev2_frontend/pages/chat/testChatScreen.dart';
 import 'package:flutter/services.dart';
 import 'package:sizer/sizer.dart';
@@ -40,9 +40,9 @@ class MyApp extends StatelessWidget {
               accentColor: kAccentColor,
               primaryColor: kPrimaryColor,
               visualDensity: VisualDensity.adaptivePlatformDensity),
-          home: this.startPage
-          //  this.startPage
-          ),
+          home:
+              // ChatScreen()
+              this.startPage),
     );
   }
 }
