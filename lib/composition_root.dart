@@ -1,6 +1,6 @@
 //@dart=2.9
 import 'package:ccarev2_frontend/pages/emergency/emergency_screen.dart';
-import 'package:ccarev2_frontend/pages/home/components/doctor_hub.dart';
+import 'package:ccarev2_frontend/pages/home/hub/doctor_hub.dart';
 import 'package:ccarev2_frontend/pages/home/spoke/doctor_spoke.dart';
 import 'package:ccarev2_frontend/services/Notifications/notificationContoller.dart';
 import 'package:ccarev2_frontend/user/domain/details.dart';

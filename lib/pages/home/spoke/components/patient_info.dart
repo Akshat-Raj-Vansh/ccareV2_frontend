@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:ccarev2_frontend/pages/home/home_page_adapter.dart';
 import 'package:ccarev2_frontend/pages/home/spoke/components/hub_list.dart';
+import 'package:ccarev2_frontend/pages/questionnare/assessment_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'package:ccarev2_frontend/main/domain/edetails.dart';
@@ -99,9 +100,9 @@ class _PatientInfoState extends State<PatientInfo> {
   }
 
   _hideLoader() {
-    if(loader){
-    Navigator.of(context, rootNavigator: true).pop();
-    loader=false;
+    if (loader) {
+      Navigator.of(context, rootNavigator: true).pop();
+      loader = false;
     }
   }
 
@@ -180,15 +181,17 @@ class _PatientInfoState extends State<PatientInfo> {
             //print("Loading State Called Patient Info");
             log('LOG > doctor_spoke.dart > 197 > state: ${state.toString()}');
             //  _showLoader();
-          } 
-          else if(state is NormalState){
+          } else if (state is NormalState) {
             _hideLoader();
-          }
-          else if (state is ErrorState) {
+          } else if (state is ErrorState) {
             // _hideLoader();
             log('LOG > doctor_spoke.dart > 204 > state: ${state.toString()}');
           } else if (state is TokenLoadedState) {
             token = state.token;
+          } else if (state is AssessmentLoaded) {
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+              return AssessmentScreen(state.assessments);
+            }));
           } else if (state is StatusFetched) {
             setState(() {});
           }
@@ -407,6 +410,7 @@ class _PatientInfoState extends State<PatientInfo> {
             if (_patientAccepted && _currentStatus == "ATH")
               _buildStartTreatmentButton(),
             if (_patientAccepted) _buildPatientDetails(),
+            if (_patientAccepted) _buildPatientAssessmentButton(),
             if (_patientAccepted && _ugt) _buildPatientReportButton(),
             if (_patientAccepted && _ugt) _buildPatientExamButton(),
             if (_patientAccepted && _ugt && !_hubAccepted) _buildHubList(),
@@ -491,6 +495,25 @@ class _PatientInfoState extends State<PatientInfo> {
           ),
         ),
       ]);
+
+  _buildPatientAssessmentButton() => InkWell(
+        onTap: () async {
+          CubitProvider.of<MainCubit>(context).getAssessments(widget.patientID);
+        },
+        child: Container(
+          width: SizeConfig.screenWidth,
+          margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          decoration: BoxDecoration(
+              color: kPrimaryLightColor,
+              borderRadius: BorderRadius.circular(5)),
+          child: Text(
+            "View Patient's Self-Assessment Report",
+            style: TextStyle(color: Colors.white, fontSize: 12.sp),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      );
 
   _buildStartTreatmentButton() => InkWell(
         onTap: () async {
