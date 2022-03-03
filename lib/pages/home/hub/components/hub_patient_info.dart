@@ -320,7 +320,8 @@ class _HubPatientInfoState extends State<HubPatientInfo> {
 
         _buildSpokeDetails(widget.details),
         //Needs to be conditional
-        _buildPatientAssessmentButton(),
+        if (widget.details.patientDetails.action == "QUESTIONNAIRE")
+          _buildPatientAssessmentButton(),
         _buildPatientReportButton(),
         _buildPatientExamButton(),
         _buildChatButton(),

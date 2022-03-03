@@ -410,7 +410,9 @@ class _PatientInfoState extends State<PatientInfo> {
             if (_patientAccepted && _currentStatus == "ATH")
               _buildStartTreatmentButton(),
             if (_patientAccepted) _buildPatientDetails(),
-            if (_patientAccepted) _buildPatientAssessmentButton(),
+            if (_patientAccepted &&
+                eDetails.patientDetails.action == "QUESTIONNAIRE")
+              _buildPatientAssessmentButton(),
             if (_patientAccepted && _ugt) _buildPatientReportButton(),
             if (_patientAccepted && _ugt) _buildPatientExamButton(),
             if (_patientAccepted && _ugt && !_hubAccepted) _buildHubList(),
