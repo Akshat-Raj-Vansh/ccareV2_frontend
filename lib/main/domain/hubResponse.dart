@@ -14,7 +14,7 @@ class HubResponse {
 
   HubResponse.initialize() {
     this.ecg = EcgInterperation.initialize();
-    // this.advice = Advice.initialize();
+    this.advice = Advice.initialize();
   }
   HubResponse copyWith({
     EcgInterperation ecg,

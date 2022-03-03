@@ -121,6 +121,7 @@ class _ResponseScreenState extends State<ResponseScreen>
     return CubitConsumer<MainCubit, MainState>(
       cubit: widget.mainCubit,
       builder: (_, state) {
+        print(state);
         if (state is ResponsesLoaded) {
           hubResponse = state.hubResponse;
           spokeResponse = state.spokeResponse;
@@ -606,7 +607,9 @@ class _ResponseScreenState extends State<ResponseScreen>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Thrombolyse after ruling out contraindications: '),
+                Flexible(
+                    child: Text(
+                        'Thrombolyse after ruling out contraindications: ')),
                 Text(advice.medicines.med1['value']),
               ],
             ),
@@ -614,7 +617,9 @@ class _ResponseScreenState extends State<ResponseScreen>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Give loading dose of Clopedogrel and Aspirin:'),
+                Flexible(
+                    child:
+                        Text('Give loading dose of Clopedogrel and Aspirin:')),
                 Text(advice.medicines.med2['value']),
               ],
             ),
@@ -622,8 +627,10 @@ class _ResponseScreenState extends State<ResponseScreen>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                    'Give Injection Enoxaparin 30 mg IV after 15 minutes of Thrombolytic therapy: '),
+                Flexible(
+                  child: Text(
+                      'Give Injection Enoxaparin 30 mg IV after 15 minutes of Thrombolytic therapy: '),
+                ),
                 Text(advice.medicines.med3['value']),
               ],
             ),
@@ -738,8 +745,10 @@ class _ResponseScreenState extends State<ResponseScreen>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('ECG Changes of ST Segment elevation from baseline: '),
-                Text(spokeResponse.st_elevation.toString().split('.')[1]),
+                Flexible(
+                    child: Text(
+                        'ECG Changes of ST Segment elevation from baseline: ')),
+                Text(spokeResponse.getSteString()),
               ],
             ),
 
@@ -1274,7 +1283,9 @@ class _ResponseScreenState extends State<ResponseScreen>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Thrombolyse after ruling out contraindications: '),
+                Flexible(
+                    child: Text(
+                        'Thrombolyse after ruling out contraindications: ')),
                 Container(
                   width: SizeConfig.screenWidth * 0.4,
                   child: DropdownButton<YN>(
@@ -1301,7 +1312,9 @@ class _ResponseScreenState extends State<ResponseScreen>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Give Loading dose of Clopedogrel and Aspirin: '),
+                Flexible(
+                    child:
+                        Text('Give Loading dose of Clopedogrel and Aspirin: ')),
                 Container(
                   width: SizeConfig.screenWidth * 0.4,
                   child: DropdownButton<YN>(
@@ -1327,8 +1340,10 @@ class _ResponseScreenState extends State<ResponseScreen>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                    'Give Injection Enoxaparin 30 mg IV after 15 minutes of Thrombolytic therapy: '),
+                Flexible(
+                  child: Text(
+                      'Give Injection Enoxaparin 30 mg IV after 15 minutes of Thrombolytic therapy: '),
+                ),
                 Container(
                   width: SizeConfig.screenWidth * 0.4,
                   child: DropdownButton<YN>(
@@ -1657,11 +1672,13 @@ class _ResponseScreenState extends State<ResponseScreen>
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('ECG Changes of ST Segment elevation from baseline: '),
+                  Flexible(
+                      child: Text(
+                          'ECG Changes of ST Segment elevation from baseline: ')),
                   Container(
                     width: SizeConfig.screenWidth * 0.4,
                     child: DropdownButton<STE>(
-                      value: spokeResponse.st_elevation,
+                      value: spokeResponse.getSteString(),
                       isDense: false,
                       onChanged: (STE newValue) {
                         setState(() {
@@ -1671,7 +1688,7 @@ class _ResponseScreenState extends State<ResponseScreen>
                       items: STE.values.map((STE value) {
                         return DropdownMenuItem<STE>(
                           value: value,
-                          child: Text(value.toString().split('.')[1]),
+                          child: Text(SpokeResponse.chestMapping[value]),
                         );
                       }).toList(),
                     ),
