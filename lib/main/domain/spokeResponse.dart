@@ -22,14 +22,20 @@ class SpokeResponse {
     return steMapping[this.st_elevation];
   }
 
-  final String note;
-  final ChestP chest_pain;
-  final STE st_elevation;
+  String note;
+  ChestP chest_pain;
+  STE st_elevation;
   SpokeResponse(
     this.note,
     this.chest_pain,
     this.st_elevation,
   );
+
+  SpokeResponse.initialize() {
+    this.note = "";
+    this.chest_pain = ChestP.nill;
+    this.st_elevation = STE.nill;
+  }
 
   Map<String, dynamic> toMap() {
     return {

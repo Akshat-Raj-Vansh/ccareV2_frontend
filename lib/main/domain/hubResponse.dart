@@ -1,16 +1,21 @@
 //@dart=2.9
 import 'dart:convert';
 
+import 'package:ccarev2_frontend/main/domain/treatment.dart';
 import 'package:collection/collection.dart';
 
 class HubResponse {
-  final EcgInterperation ecg;
-  final Advice advice;
+  EcgInterperation ecg;
+  Advice advice;
   HubResponse({
     this.ecg,
     this.advice,
   });
 
+  HubResponse.initialize() {
+    this.ecg = EcgInterperation.initialize();
+    this.advice = Advice.initialize();
+  }
   HubResponse copyWith({
     EcgInterperation ecg,
     Advice advice,
@@ -55,16 +60,16 @@ class HubResponse {
 }
 
 class EcgInterperation {
-  final Rythm rythm;
-  final STElevation st_elevation;
-  final STDepression st_depression;
-  final TInversion t_wave_inversion;
-  final BBBlock bbBlock;
-  final YN lvh;
-  final YN rvh;
-  final YN rae;
-  final YN lae;
-  final Diagonis diagonis;
+  Rythm rythm;
+  STElevation st_elevation;
+  STDepression st_depression;
+  TInversion t_wave_inversion;
+  BBBlock bbBlock;
+  YN lvh;
+  YN rvh;
+  YN rae;
+  YN lae;
+  Diagonis diagonis;
   EcgInterperation({
     this.rythm,
     this.st_elevation,
@@ -77,6 +82,19 @@ class EcgInterperation {
     this.lae,
     this.diagonis,
   });
+
+  EcgInterperation.initialize() {
+    this.rythm = Rythm.nill;
+    this.st_elevation = STElevation.initialize();
+    this.st_depression = STDepression.initialize();
+    this.t_wave_inversion = TInversion.initialize();
+    this.bbBlock = BBBlock.nill;
+    this.lvh = YN.nill;
+    this.rvh = YN.nill;
+    this.rae = YN.nill;
+    this.lae = YN.nill;
+    this.diagonis = Diagonis.nill;
+  }
 
   EcgInterperation copyWith({
     Rythm rythm,
@@ -187,12 +205,12 @@ class EcgInterperation {
 }
 
 class Advice {
-  final String ecg_repeat;
-  final YN trop_i_repeat;
-  final List<MedField> medicines;
-  final YN oxygen_inhalation;
-  final YN nebulization;
-  final BioChemistry bioChemistry;
+  String ecg_repeat;
+  YN trop_i_repeat;
+  List<MedField> medicines;
+  YN oxygen_inhalation;
+  YN nebulization;
+  BioChemistry bioChemistry;
   Advice({
     this.ecg_repeat,
     this.trop_i_repeat,
@@ -201,6 +219,15 @@ class Advice {
     this.nebulization,
     this.bioChemistry,
   });
+
+  Advice.initialize() {
+    this.ecg_repeat = "nill";
+    this.trop_i_repeat = YN.nill;
+    this.medicines = [];
+    this.oxygen_inhalation = YN.nill;
+    this.nebulization = YN.nill;
+    this.bioChemistry = BioChemistry.initialize();
+  }
 
   Advice copyWith({
     String ecg_repeat,
@@ -262,15 +289,6 @@ class Advice {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-    final listEquals = const DeepCollectionEquality().equals;
-
-    return other is Advice &&
-        other.ecg_repeat == ecg_repeat &&
-        other.trop_i_repeat == trop_i_repeat &&
-        listEquals(other.medicines, medicines) &&
-        other.oxygen_inhalation == oxygen_inhalation &&
-        other.nebulization == nebulization &&
-        other.bioChemistry == bioChemistry;
   }
 
   @override
@@ -285,11 +303,11 @@ class Advice {
 }
 
 class STElevation {
-  final YN anterior;
-  final YN posterior;
-  final YN lateral;
-  final YN inferior;
-  final YN rv;
+  YN anterior;
+  YN posterior;
+  YN lateral;
+  YN inferior;
+  YN rv;
   STElevation({
     this.anterior,
     this.posterior,
@@ -297,6 +315,14 @@ class STElevation {
     this.inferior,
     this.rv,
   });
+
+  STElevation.initialize() {
+    this.anterior = YN.nill;
+    this.posterior = YN.nill;
+    this.lateral = YN.nill;
+    this.inferior = YN.nill;
+    this.rv = YN.nill;
+  }
 
   STElevation copyWith({
     YN anterior,
@@ -374,15 +400,19 @@ class STElevation {
 }
 
 class STDepression {
-  final YN inferior_lead;
-  final YN lateral_lead;
-  final YN anterior_lead;
+  YN inferior_lead;
+  YN lateral_lead;
+  YN anterior_lead;
   STDepression({
     this.inferior_lead,
     this.lateral_lead,
     this.anterior_lead,
   });
-
+  STDepression.initialize() {
+    this.inferior_lead = YN.nill;
+    this.lateral_lead = YN.nill;
+    this.anterior_lead = YN.nill;
+  }
   STDepression copyWith({
     YN inferior_lead,
     YN lateral_lead,
@@ -443,15 +473,20 @@ class STDepression {
 }
 
 class TInversion {
-  final YN inferior_lead;
-  final YN lateral_lead;
-  final YN anterior_lead;
+  YN inferior_lead;
+  YN lateral_lead;
+  YN anterior_lead;
   TInversion({
     this.inferior_lead,
     this.lateral_lead,
     this.anterior_lead,
   });
 
+  TInversion.initialize() {
+    this.inferior_lead = YN.nill;
+    this.lateral_lead = YN.nill;
+    this.anterior_lead = YN.nill;
+  }
   TInversion copyWith({
     YN inferior_lead,
     YN lateral_lead,
@@ -512,10 +547,10 @@ class TInversion {
 }
 
 class BioChemistry {
-  final YN sugar;
-  final YN bu_creatinine;
-  final YN electrolytes;
-  final YN hemogram;
+  YN sugar;
+  YN bu_creatinine;
+  YN electrolytes;
+  YN hemogram;
 
   BioChemistry({
     this.sugar,
@@ -523,7 +558,12 @@ class BioChemistry {
     this.electrolytes,
     this.hemogram,
   });
-
+  BioChemistry.initialize() {
+    this.sugar = YN.nill;
+    this.bu_creatinine = YN.nill;
+    this.electrolytes = YN.nill;
+    this.hemogram = YN.nill;
+  }
   BioChemistry copyWith({
     YN sugar,
     YN bu_creatinine,
@@ -594,14 +634,18 @@ class BioChemistry {
 }
 
 class MedField {
-  final String name;
-  final YN value;
+  String name;
+  YN value;
 
   MedField({
     this.name,
     this.value,
   });
 
+  MedField.initialize() {
+    this.name = "nill";
+    this.value = YN.nill;
+  }
   MedField copyWith({
     String name,
     YN value,
@@ -654,5 +698,5 @@ class MedField {
 
 enum YN { nill, yes, no }
 enum BBBlock { No, LBBB, RBBB, nill }
-enum Diagonis { STEMI, NSTEMI, SACS, NCCP }
-enum Rythm { NSR, A_Fib, A, V_Block }
+enum Diagonis { nill, STEMI, NSTEMI, SACS, NCCP }
+enum Rythm { nill, NSR, A_Fib, A, V_Block }
