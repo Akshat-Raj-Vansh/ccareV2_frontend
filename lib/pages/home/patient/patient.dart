@@ -4,6 +4,8 @@ import 'dart:developer';
 import 'package:ccarev2_frontend/main/domain/edetails.dart';
 import 'package:ccarev2_frontend/main/domain/question.dart';
 import 'package:sizer/sizer.dart';
+
+import 'package:url_launcher/url_launcher.dart';
 import 'package:ccarev2_frontend/main/domain/treatment.dart';
 import 'package:ccarev2_frontend/pages/home/components/fullImage.dart';
 import 'package:ccarev2_frontend/pages/home/home_page_adapter.dart';
@@ -747,6 +749,12 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
           ),
         ),
       );
+
+  _makingPhoneCall() async {
+    String url = eDetails.doctorDetails.contactNumber;
+    await launch("tel:$url");
+  }
+
   _buildDoctorDetails() => Column(children: [
         Container(
           width: SizeConfig.screenWidth,
@@ -781,6 +789,22 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                 children: [
                   Text("Hospital: "),
                   Text(eDetails.doctorDetails.hospital),
+                ],
+              ),
+              SizedBox(
+                height: 1.h,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  TextButton.icon(
+                      onPressed: _makingPhoneCall,
+                      icon: Icon(Icons.phone),
+                      label: Text("CALL")),
+                  TextButton.icon(
+                      onPressed: () => {}, //print("CANCEL"),
+                      icon: Icon(Icons.cancel),
+                      label: Text("CANCEL"))
                 ],
               ),
               SizedBox(
