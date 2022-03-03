@@ -2,6 +2,7 @@
 import 'dart:developer';
 
 import 'package:ccarev2_frontend/pages/home/home_page_adapter.dart';
+import 'package:ccarev2_frontend/pages/home/hub/components/hub_response.dart';
 import 'package:ccarev2_frontend/pages/home/spoke/components/hub_list.dart';
 import 'package:ccarev2_frontend/pages/questionnare/assessment_screen.dart';
 import 'package:flutter/material.dart';
@@ -417,6 +418,7 @@ class _PatientInfoState extends State<PatientInfo> {
             if (_patientAccepted && _ugt) _buildPatientExamButton(),
             if (_patientAccepted && _ugt && !_hubAccepted) _buildHubList(),
             if (_hubAccepted) _buildChatButton(),
+            if (_hubAccepted) _buildResponseButton(),
             if (_patientAccepted && _ugt) _buildNewReportButton(),
             if (_patientAccepted && _ugt) _buildPatientReportHistoryButton(),
             if (_patientAccepted && _ugt) _buildEndTreatmentButton(),
@@ -534,6 +536,32 @@ class _PatientInfoState extends State<PatientInfo> {
           child: Text(
             "Start treatment of the Patient",
             style: TextStyle(color: kPrimaryColor, fontSize: 12.sp),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      );
+  _buildResponseButton() => InkWell(
+        onTap: () async {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (cTX) => ResponseScreen(
+                  mainCubit: widget.mainCubit,
+                  user: UserType.SPOKE,
+                  patientDetails: eDetails.patientDetails,
+                ),
+              ));
+        },
+        child: Container(
+          width: SizeConfig.screenWidth,
+          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          decoration: BoxDecoration(
+              color: kPrimaryLightColor,
+              borderRadius: BorderRadius.circular(20)),
+          child: Text(
+            "HUB Consulatation Response",
+            style: TextStyle(color: Colors.white, fontSize: 12.sp),
             textAlign: TextAlign.center,
           ),
         ),

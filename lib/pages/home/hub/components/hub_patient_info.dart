@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:ccarev2_frontend/main/domain/edetails.dart';
 import 'package:ccarev2_frontend/pages/chat/chatScreen.dart';
+import 'package:ccarev2_frontend/pages/home/hub/components/hub_response.dart';
 import 'package:ccarev2_frontend/pages/questionnare/assessment_screen.dart';
 import 'package:ccarev2_frontend/pages/spoke_form/patient_exam_screen.dart';
 import 'package:ccarev2_frontend/pages/spoke_form/patient_history_screen.dart';
@@ -323,10 +324,38 @@ class _HubPatientInfoState extends State<HubPatientInfo> {
         if (widget.details.patientDetails.action == "QUESTIONNAIRE")
           _buildPatientAssessmentButton(),
         _buildPatientReportButton(),
+        _buildResponseButton(),
         _buildPatientExamButton(),
         _buildChatButton(),
         _buildPatientReportHistoryButton(),
       ]);
+
+  _buildResponseButton() => InkWell(
+        onTap: () async {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (cTX) => ResponseScreen(
+                  mainCubit: widget.mainCubit,
+                  user: UserType.SPOKE,
+                  patientDetails: widget.details.patientDetails,
+                ),
+              ));
+        },
+        child: Container(
+          width: SizeConfig.screenWidth,
+          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          decoration: BoxDecoration(
+              color: kPrimaryLightColor,
+              borderRadius: BorderRadius.circular(20)),
+          child: Text(
+            "HUB Consulatation Response",
+            style: TextStyle(color: Colors.white, fontSize: 12.sp),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      );
 
   _buildPatientExamButton() => InkWell(
         onTap: () async {
