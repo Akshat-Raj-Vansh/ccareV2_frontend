@@ -189,7 +189,7 @@ class EcgInterperation {
 class Advice {
   final String ecg_repeat;
   final YN trop_i_repeat;
-  final List<MedField> medicines;
+  final MedicineAdvice medicines;
   final YN oxygen_inhalation;
   final YN nebulization;
   final BioChemistry bioChemistry;
@@ -205,7 +205,7 @@ class Advice {
   Advice copyWith({
     String ecg_repeat,
     YN trop_i_repeat,
-    List<MedField> medicines,
+    MedicineAdvice medicines,
     YN oxygen_inhalation,
     YN nebulization,
     BioChemistry bioChemistry,
@@ -224,7 +224,7 @@ class Advice {
     return {
       'ecg_repeat': ecg_repeat,
       'trop_i_repeat': trop_i_repeat.toString().split(".")[1],
-      'medicines': medicines.map((x) => x.toMap()).toList(),
+      'medicines': medicines.toMap(),
       'oxygen_inhalation': oxygen_inhalation.toString().split(".")[1],
       'nebulization': nebulization.toString().split(".")[1],
       'bioChemistry': bioChemistry.toMap(),
@@ -242,8 +242,7 @@ class Advice {
     return Advice(
       ecg_repeat: map['ecg_repeat'] ?? '',
       trop_i_repeat: ynCheck(map['trop_i_repeat']),
-      medicines: List<MedField>.from(
-          map['medicines']?.map((x) => MedField.fromMap(x))),
+      medicines: MedicineAdvice.fromMap(map['medicines']),
       oxygen_inhalation: ynCheck(map['oxygen_inhalation']),
       nebulization: ynCheck(map['nebulization']),
       bioChemistry: BioChemistry.fromMap(map['bioChemistry']),
@@ -593,66 +592,167 @@ class BioChemistry {
   }
 }
 
-class MedField {
-  final String name;
-  final YN value;
+class MedicineAdvice {
+  Map<MED4, String> med4Map = {
+    MED4.NO: "NO",
+    MED4.A: "25 mg once a day",
+    MED4.B: "50 mg once a day",
+    MED4.C: "50 mg twice a day",
+  };
 
-  MedField({
-    this.name,
-    this.value,
+  Map<MED5, String> med5Map = {
+    MED5.NO: "NO",
+    MED5.A: "2.5 mg once a day",
+    MED5.B: "5 mg once a day",
+    MED5.C: "10 mg once a day",
+  };
+  Map<MED6, String> med6Map = {
+    MED6.NO: "NO",
+    MED6.A: "40 mg once a day",
+    MED6.B: "50 mg twice a day",
+  };
+
+  Map<MED7, String> med7Map = {
+    MED7.A: "20 mg once a day",
+    MED7.B: "40 mg once a day",
+    MED7.C: "89 mg once a day",
+  };
+
+  med4String() => med4Map[this.med4];
+  med5String() => med5Map[this.med5];
+  med6String() => med6Map[this.med6];
+  med7String() => med7Map[this.med7];
+
+  final dynamic med1;
+  final dynamic med2;
+  final dynamic med3;
+  final dynamic med4;
+  final dynamic med5;
+  final dynamic med6;
+  final dynamic med7;
+  MedicineAdvice({
+    this.med1,
+    this.med2,
+    this.med3,
+    this.med4,
+    this.med5,
+    this.med6,
+    this.med7,
   });
 
-  MedField copyWith({
-    String name,
-    YN value,
+  MedicineAdvice copyWith({
+    dynamic med1,
+    dynamic med2,
+    dynamic med3,
+    dynamic med4,
+    dynamic med5,
+    dynamic med6,
+    dynamic med7,
   }) {
-    return MedField(
-      name: name ?? this.name,
-      value: value ?? this.value,
+    return MedicineAdvice(
+      med1: med1 ?? this.med1,
+      med2: med2 ?? this.med2,
+      med3: med3 ?? this.med3,
+      med4: med4 ?? this.med4,
+      med5: med5 ?? this.med5,
+      med6: med6 ?? this.med6,
+      med7: med7 ?? this.med7,
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
-      'name': name,
-      'value': value.toString().split(".")[1],
+      'med1': {'name': med1.name, "value": med1.value.toString().split('.')[1]},
+      'med2': {'name': med2.name, "value": med2.value.toString().split('.')[1]},
+      'med3': {'name': med3.name, "value": med3.value.toString().split('.')[1]},
+      'med4': {'name': med4.name, "value": med4.value.toString().split('.')[1]},
+      'med5': {'name': med5.name, "value": med5.value.toString().split('.')[1]},
+      'med6': {'name': med6.name, "value": med6.value.toString().split('.')[1]},
+      'med7': {'name': med7.name, "value": med7.value.toString().split('.')[1]},
     };
   }
 
-  factory MedField.fromMap(Map<String, dynamic> map) {
-    YN ynCheck(String value) {
-      if (value == "no")
-        return YN.no;
-      else if (value == "yes") return YN.yes;
-      return YN.nill;
-    }
-
-    return MedField(
-      name: map['name'] ?? '',
-      value: ynCheck(map['value']),
+  factory MedicineAdvice.fromMap(Map<String, dynamic> map) {
+    return MedicineAdvice(
+      med1: {
+        'name': map['med1']['name'],
+        "value": YN.values.firstWhere(
+            (element) => element.toString() == "YN." + map['med1']['value'])
+      },
+      med2: {
+        'name': map['med2']['name'],
+        "value": YN.values.firstWhere(
+            (element) => element.toString() == "YN." + map['med2']['value'])
+      },
+      med3: {
+        'name': map['med3']['name'],
+        "value": YN.values.firstWhere(
+            (element) => element.toString() == "YN." + map['med3']['value'])
+      },
+      med4: {
+        'name': map['med4']['name'],
+        "value": MED4.values.firstWhere(
+            (element) => element.toString() == "MED4." + map['med4']['value'])
+      },
+      med5: {
+        'name': map['med5']['name'],
+        "value": MED5.values.firstWhere(
+            (element) => element.toString() == "MED5." + map['med5']['value'])
+      },
+      med6: {
+        'name': map['med6']['name'],
+        "value": MED6.values.firstWhere(
+            (element) => element.toString() == "MED6." + map['med6']['value'])
+      },
+      med7: {
+        'name': map['med7']['name'],
+        "value": MED7.values.firstWhere(
+            (element) => element.toString() == "MED7." + map['med7']['value'])
+      },
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory MedField.fromJson(String source) =>
-      MedField.fromMap(json.decode(source));
+  factory MedicineAdvice.fromJson(String source) =>
+      MedicineAdvice.fromMap(json.decode(source));
 
   @override
-  String toString() => 'MedField(name: $name, value: $value)';
+  String toString() {
+    return 'MedicineAdvice(med1: $med1, med2: $med2, med3: $med3, med4: $med4, med5: $med5, med6: $med6, med7: $med7)';
+  }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is MedField && other.name == name && other.value == value;
+    return other is MedicineAdvice &&
+        other.med1 == med1 &&
+        other.med2 == med2 &&
+        other.med3 == med3 &&
+        other.med4 == med4 &&
+        other.med5 == med5 &&
+        other.med6 == med6 &&
+        other.med7 == med7;
   }
 
   @override
-  int get hashCode => name.hashCode ^ value.hashCode;
+  int get hashCode {
+    return med1.hashCode ^
+        med2.hashCode ^
+        med3.hashCode ^
+        med4.hashCode ^
+        med5.hashCode ^
+        med6.hashCode ^
+        med7.hashCode;
+  }
 }
 
 enum YN { nill, yes, no }
 enum BBBlock { No, LBBB, RBBB, nill }
 enum Diagonis { STEMI, NSTEMI, SACS, NCCP }
 enum Rythm { NSR, A_Fib, A, V_Block }
+enum MED4 { NO, nill, A, B, C }
+enum MED5 { NO, nill, A, B, C }
+enum MED6 { NO, nill, A, B }
+enum MED7 { A, B, C }
