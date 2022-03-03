@@ -293,10 +293,8 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (ctx) => CubitProvider<MainCubit>(
-                        create: (ctx) => CubitProvider.of<MainCubit>(context),
-                        child: AddPatientScreen(),
-                      ),
+                      builder: (ctx) => AddPatientScreen(
+                          CubitProvider.of<MainCubit>(context)),
                     ));
               },
             ),

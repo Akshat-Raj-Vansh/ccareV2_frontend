@@ -13,7 +13,8 @@ import '../../../../user/domain/profile.dart';
 import '../../../../utils/size_config.dart';
 
 class AddPatientScreen extends StatefulWidget {
-  const AddPatientScreen();
+  final MainCubit cubit;
+  AddPatientScreen(this.cubit);
 
   @override
   State<AddPatientScreen> createState() => _AddPatientScreenState();
@@ -35,6 +36,7 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
         title: Text('Add Patient'),
       ),
       body: CubitConsumer<MainCubit, MainState>(
+        cubit: widget.cubit,
         builder: (_, state) {
           return _buildUI(context);
         },
@@ -134,8 +136,7 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                         gender: gender.toString().split(".")[1],
                         age: age);
                     //print(profile.toString());
-                    CubitProvider.of<MainCubit>(context)
-                        .addPatient(profile, phone);
+                    widget.cubit.addPatient(profile, phone);
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                       content: Text("All Fields are required"),

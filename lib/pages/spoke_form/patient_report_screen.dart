@@ -630,7 +630,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
                 Text('ECG Scan: '),
                 //  ecgUploaded
                 //#FIXME add suport for multiple ecg scans viewing
-                treatmentReport.ecg.ecg_file_ids != []
+                treatmentReport.ecg.ecg_file_ids.length > 0 && !noReport
                     ? GestureDetector(
                         onTap: () {
                           Navigator.push(context,
