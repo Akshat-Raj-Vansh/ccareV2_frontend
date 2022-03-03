@@ -110,8 +110,7 @@ class _ResponseScreenState extends State<ResponseScreen>
 
   _fetchResponse() async {
     //print("Fetching patient report");
-    widget.mainCubit.fetchPatientReport(
-        widget.patientDetails == null ? '' : widget.patientDetails.id);
+    widget.mainCubit.fetchResponse(widget.patientDetails.id);
     // widget.mainCubit.fetchImage(widget.patientDetails.id);
   }
 
