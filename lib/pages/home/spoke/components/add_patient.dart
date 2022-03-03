@@ -1,5 +1,6 @@
 //@dart=2.9
 import 'package:ccarev2_frontend/state_management/profile/profile_state.dart';
+import 'package:ccarev2_frontend/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
@@ -28,7 +29,9 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: kPrimaryColor,
         title: Text('Add Patient'),
       ),
       body: CubitConsumer<MainCubit, MainState>(
@@ -48,7 +51,7 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
   _buildUI(BuildContext context) => Form(
         key: _formKeyPatient,
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(height: 2.h),
             TextFormField(
