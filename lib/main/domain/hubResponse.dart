@@ -14,7 +14,7 @@ class HubResponse {
 
   HubResponse.initialize() {
     this.ecg = EcgInterperation.initialize();
-    this.advice = Advice.initialize();
+    // this.advice = Advice.initialize();
   }
   HubResponse copyWith({
     EcgInterperation ecg,
@@ -633,26 +633,26 @@ class BioChemistry {
 }
 
 class MedicineAdvice {
-  Map<MED4, String> med4Map = {
+  static Map<MED4, String> med4Map = {
     MED4.NO: "NO",
     MED4.A: "25 mg once a day",
     MED4.B: "50 mg once a day",
     MED4.C: "50 mg twice a day",
   };
 
-  Map<MED5, String> med5Map = {
+  static Map<MED5, String> med5Map = {
     MED5.NO: "NO",
     MED5.A: "2.5 mg once a day",
     MED5.B: "5 mg once a day",
     MED5.C: "10 mg once a day",
   };
-  Map<MED6, String> med6Map = {
+  static Map<MED6, String> med6Map = {
     MED6.NO: "NO",
     MED6.A: "40 mg once a day",
     MED6.B: "50 mg twice a day",
   };
 
-  Map<MED7, String> med7Map = {
+  static Map<MED7, String> med7Map = {
     MED7.A: "20 mg once a day",
     MED7.B: "40 mg once a day",
     MED7.C: "89 mg once a day",
@@ -662,6 +662,10 @@ class MedicineAdvice {
   med5String() => med5Map[this.med5];
   med6String() => med6Map[this.med6];
   med7String() => med7Map[this.med7];
+  static _med4String(MED4 value) => med4Map[value];
+  static _med5String(MED5 value) => med5Map[value];
+  static _med6String(MED6 value) => med6Map[value];
+  static _med7String(MED7 value) => med7Map[value];
 
   dynamic med1;
   dynamic med2;
