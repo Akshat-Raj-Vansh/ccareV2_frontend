@@ -1357,19 +1357,19 @@ class _ResponseScreenState extends State<ResponseScreen>
                 Text('Metoprolol: '),
                 Container(
                   width: SizeConfig.screenWidth * 0.4,
-                  child: DropdownButton<YN>(
-                    value: hubResponse.advice.medicines.med4['value'],
+                  child: DropdownButton<MED4>(
+                    value: hubResponse.advice.medicines.med4String(),
                     isDense: false,
-                    onChanged: (YN newValue) {
+                    onChanged: (MED4 newValue) {
                       setState(() {
                         hubResponse.advice.medicines.med4['value'] =
                             newValue.toString().split('.')[1];
                       });
                     },
-                    items: YN.values.map((YN value) {
-                      return DropdownMenuItem<YN>(
+                    items: MED4.values.map((MED4 value) {
+                      return DropdownMenuItem<MED4>(
                         value: value,
-                        child: Text(value.toString().split('.')[1]),
+                        child: Text(MedicineAdvice.med4Map[value]),
                       );
                     }).toList(),
                   ),
@@ -1383,19 +1383,19 @@ class _ResponseScreenState extends State<ResponseScreen>
                 Text('Ramipril: '),
                 Container(
                   width: SizeConfig.screenWidth * 0.4,
-                  child: DropdownButton<YN>(
-                    value: hubResponse.advice.medicines.med5['value'],
+                  child: DropdownButton<MED5>(
+                    value: hubResponse.advice.medicines.med5String(),
                     isDense: false,
-                    onChanged: (YN newValue) {
+                    onChanged: (MED5 newValue) {
                       setState(() {
                         hubResponse.advice.medicines.med5['value'] =
                             newValue.toString().split('.')[1];
                       });
                     },
-                    items: YN.values.map((YN value) {
-                      return DropdownMenuItem<YN>(
+                    items: MED5.values.map((MED5 value) {
+                      return DropdownMenuItem<MED5>(
                         value: value,
-                        child: Text(value.toString().split('.')[1]),
+                        child: Text(MedicineAdvice.med5Map[value]),
                       );
                     }).toList(),
                   ),
@@ -1409,19 +1409,19 @@ class _ResponseScreenState extends State<ResponseScreen>
                 Text('Telmisartan: '),
                 Container(
                   width: SizeConfig.screenWidth * 0.4,
-                  child: DropdownButton<YN>(
-                    value: hubResponse.advice.medicines.med6['value'],
+                  child: DropdownButton<MED6>(
+                    value: hubResponse.advice.medicines.med6String(),
                     isDense: false,
-                    onChanged: (YN newValue) {
+                    onChanged: (MED6 newValue) {
                       setState(() {
                         hubResponse.advice.medicines.med6['value'] =
                             newValue.toString().split('.')[1];
                       });
                     },
-                    items: YN.values.map((YN value) {
-                      return DropdownMenuItem<YN>(
+                    items: MED6.values.map((MED6 value) {
+                      return DropdownMenuItem<MED6>(
                         value: value,
-                        child: Text(value.toString().split('.')[1]),
+                        child: Text(MedicineAdvice.med6Map[value]),
                       );
                     }).toList(),
                   ),
@@ -1435,19 +1435,19 @@ class _ResponseScreenState extends State<ResponseScreen>
                 Text('Atorvastatin: '),
                 Container(
                   width: SizeConfig.screenWidth * 0.4,
-                  child: DropdownButton<YN>(
-                    value: hubResponse.advice.medicines.med7['value'],
+                  child: DropdownButton<MED7>(
+                    value: hubResponse.advice.medicines.med7String(),
                     isDense: false,
-                    onChanged: (YN newValue) {
+                    onChanged: (MED7 newValue) {
                       setState(() {
                         hubResponse.advice.medicines.med7['value'] =
                             newValue.toString().split('.')[1];
                       });
                     },
-                    items: YN.values.map((YN value) {
-                      return DropdownMenuItem<YN>(
+                    items: MED7.values.map((MED7 value) {
+                      return DropdownMenuItem<MED7>(
                         value: value,
-                        child: Text(value.toString().split('.')[1]),
+                        child: Text(MedicineAdvice.med7Map[value]),
                       );
                     }).toList(),
                   ),
