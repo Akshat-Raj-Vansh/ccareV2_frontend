@@ -2,12 +2,14 @@
 import 'dart:convert';
 
 class SpokeResponse {
-  Map<ChestP, String> chestMapping = {
+  static Map<ChestP, String> chestMapping = {
+    ChestP.nill: "nill",
     ChestP.NC: "Not changed at all",
     ChestP.PD: "Partially decreased",
     ChestP.CD: "Completely disappeared",
   };
-  Map<STE, String> steMapping = {
+  static Map<STE, String> steMapping = {
+    STE.nill: "nill",
     STE.A: "Elevation normalized completely",
     STE.B: "Regressed by more than 70",
     STE.C: "Decreased by 50 to 70%",
@@ -20,6 +22,14 @@ class SpokeResponse {
 
   getSteString() {
     return steMapping[this.st_elevation];
+  }
+
+  static _getChestString(ChestP value) {
+    return chestMapping[value];
+  }
+
+  static _getSteString(STE value) {
+    return steMapping[value];
   }
 
   String note;
