@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:ccarev2_frontend/main/domain/edetails.dart';
 import 'package:ccarev2_frontend/pages/chat/chatScreen.dart';
+import 'package:ccarev2_frontend/pages/questionnare/assessment_screen.dart';
 import 'package:ccarev2_frontend/pages/spoke_form/patient_exam_screen.dart';
 import 'package:ccarev2_frontend/pages/spoke_form/patient_history_screen.dart';
 import 'package:ccarev2_frontend/pages/spoke_form/patient_report_screen.dart';
@@ -21,10 +22,7 @@ import 'package:flutter_cubit/flutter_cubit.dart';
 class HubPatientInfo extends StatefulWidget {
   final EDetails details;
   final MainCubit mainCubit;
-  const HubPatientInfo({
-    this.details,
-    this.mainCubit
-  });
+  const HubPatientInfo({this.details, this.mainCubit});
 
   @override
   _HubPatientInfoState createState() => _HubPatientInfoState();
@@ -38,8 +36,7 @@ class _HubPatientInfoState extends State<HubPatientInfo> {
     super.initState();
 
     widget.mainCubit.fetchToken();
-    NotificationController.configure(
-        widget.mainCubit, UserType.HUB, context);
+    NotificationController.configure(widget.mainCubit, UserType.HUB, context);
     NotificationController.fcmHandler();
   }
 
@@ -53,71 +50,77 @@ class _HubPatientInfoState extends State<HubPatientInfo> {
           backgroundColor: kPrimaryColor,
         ),
         body: CubitConsumer<MainCubit, MainState>(
-          cubit: widget.mainCubit,
-          builder: (_, state) {
-          print("state is $state");
-          if (state is TokenLoadedState) {
-            log('LOG > doctor_hub.dart > 153 > state: ${state.toString()}');
-            token = state.token;
-            //print("Inside TokensLoaded State");
-            //print(token);
-          }
+            cubit: widget.mainCubit,
+            builder: (_, state) {
+              print("state is $state");
+              if (state is TokenLoadedState) {
+                log('LOG > doctor_hub.dart > 153 > state: ${state.toString()}');
+                token = state.token;
+                //print("Inside TokensLoaded State");
+                //print(token);
+              }
 
-          return _buildPatientLoadedUI(context);
-        }, listener: (context, state) async {
-          log('LOG > doctor_hub.dart > 165 > state: ${state.toString()}');
-          print(" Listener state is $state");
-          if (state is ErrorState) {
-            //print("Error State Called HUB PATIENT");
-            // // _hideLoader();
-          } else if (state is TokenLoadedState) {
-            token = state.token;
-            //print("Inside TokensLoaded State");
-            //print(token);
-          } else if (state is AcceptState) {
-            // // _hideLoader();
-            //print("Accept State Called");
-            await showDialog(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                    title: Text(
-                      'Are you sure?',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 16.sp,
-                      ),
-                    ),
-                    content: Text(
-                      'Do you want to accept the patient?',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w300,
-                        fontSize: 12.sp,
-                      ),
-                    ),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.of(context).pop(false),
-                        child: Text(
-                          'Cancel',
+              return _buildPatientLoadedUI(context);
+            },
+            listener: (context, state) async {
+              log('LOG > doctor_hub.dart > 165 > state: ${state.toString()}');
+              print(" Listener state is $state");
+              if (state is ErrorState) {
+                //print("Error State Called HUB PATIENT");
+                // // _hideLoader();
+              } else if (state is TokenLoadedState) {
+                token = state.token;
+                //print("Inside TokensLoaded State");
+                //print(token);
+              } else if (state is AssessmentLoaded) {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) {
+                  return AssessmentScreen(state.assessments);
+                }));
+              } else if (state is AcceptState) {
+                // // _hideLoader();
+                //print("Accept State Called");
+                await showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: Text(
+                          'Are you sure?',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 16.sp,
+                          ),
                         ),
-                      ),
-                      TextButton(
-                        onPressed: () async {
-                          // make api for accept patient by Hub
-                          widget.mainCubit
-                              .acceptPatientByHub(state.patientID);
-                        },
-                        child: Text(
-                          'Yes',
+                        content: Text(
+                          'Do you want to accept the patient?',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w300,
+                            fontSize: 12.sp,
+                          ),
                         ),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.of(context).pop(false),
+                            child: Text(
+                              'Cancel',
+                            ),
+                          ),
+                          TextButton(
+                            onPressed: () async {
+                              // make api for accept patient by Hub
+                              widget.mainCubit
+                                  .acceptPatientByHub(state.patientID);
+                            },
+                            child: Text(
+                              'Yes',
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                ) ??
-                false;
-            //Create new state PatientAccepted by Hub
-          }
-        }));
+                    ) ??
+                    false;
+                //Create new state PatientAccepted by Hub
+              }
+            }));
   }
 
   _buildChatButton() => InkWell(
@@ -159,7 +162,25 @@ class _HubPatientInfoState extends State<HubPatientInfo> {
           ),
         ),
       );
-
+  _buildPatientAssessmentButton() => InkWell(
+        onTap: () async {
+          CubitProvider.of<MainCubit>(context)
+              .getAssessments(widget.details.patientDetails.id);
+        },
+        child: Container(
+          width: SizeConfig.screenWidth,
+          margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          decoration: BoxDecoration(
+              color: kPrimaryLightColor,
+              borderRadius: BorderRadius.circular(5)),
+          child: Text(
+            "View Patient's Self-Assessment Report",
+            style: TextStyle(color: Colors.white, fontSize: 12.sp),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      );
   _buildSpokeDetails(EDetails details) => Column(children: [
         // Container(
         //   width: SizeConfig.screenWidth,
@@ -299,6 +320,7 @@ class _HubPatientInfoState extends State<HubPatientInfo> {
 
         _buildSpokeDetails(widget.details),
         //Needs to be conditional
+        _buildPatientAssessmentButton(),
         _buildPatientReportButton(),
         _buildPatientExamButton(),
         _buildChatButton(),
@@ -338,7 +360,9 @@ class _HubPatientInfoState extends State<HubPatientInfo> {
               context,
               MaterialPageRoute(
                 builder: (_) => PatientReportHistoryScreen(
-                    mainCubit: widget.mainCubit,patientID: widget.details.patientDetails.id,),
+                  mainCubit: widget.mainCubit,
+                  patientID: widget.details.patientDetails.id,
+                ),
               ));
         },
         child: Container(

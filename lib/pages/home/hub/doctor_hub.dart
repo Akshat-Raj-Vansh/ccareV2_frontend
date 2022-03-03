@@ -3,9 +3,9 @@ import 'dart:developer';
 
 import 'package:ccarev2_frontend/main/domain/edetails.dart';
 import 'package:ccarev2_frontend/pages/chat/chatScreen.dart';
-import 'package:ccarev2_frontend/pages/home/components/hub/hub_patient_list.dart';
-import 'package:ccarev2_frontend/pages/home/components/hub/hub_request_list.dart';
 import 'package:ccarev2_frontend/pages/home/home_page_adapter.dart';
+import 'package:ccarev2_frontend/pages/home/hub/components/hub_patient_list.dart';
+import 'package:ccarev2_frontend/pages/home/hub/components/hub_request_list.dart';
 import 'package:ccarev2_frontend/pages/spoke_form/patient_exam_screen.dart';
 import 'package:ccarev2_frontend/pages/spoke_form/patient_history_screen.dart';
 import 'package:ccarev2_frontend/pages/spoke_form/patient_report_screen.dart';
@@ -22,6 +22,8 @@ import 'package:ccarev2_frontend/utils/size_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
+
+import '../../questionnare/assessment_screen.dart';
 
 class HomeScreenHub extends StatefulWidget {
   final MainCubit mainCubit;
@@ -197,12 +199,16 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
             currentState = state;
             rDetails = state.details;
             requestsLoaded = true;
+          } else if (state is AssessmentLoaded) {
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+              return AssessmentScreen(state.assessments);
+            }));
           } else if (state is PatientAcceptedHub) {
             // print('PatientAcceptedHUb state claled');
             // widget.mainCubit.fetchHubPatientDetails();
             // widget.mainCubit.fetchHubRequests();
             // setState(() {
-              
+
             // });
           } else if (state is TokenLoadedState) {
             token = state.token;

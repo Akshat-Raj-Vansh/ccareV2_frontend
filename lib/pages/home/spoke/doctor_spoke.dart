@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:ccarev2_frontend/main/domain/edetails.dart';
 import 'package:ccarev2_frontend/pages/chat/chatScreen.dart';
 import 'package:ccarev2_frontend/pages/chat/components/chatModel.dart';
+import 'package:ccarev2_frontend/pages/home/spoke/components/add_patient.dart';
 import 'package:ccarev2_frontend/pages/home/spoke/components/hub_list.dart';
 import 'package:sizer/sizer.dart';
 import 'package:ccarev2_frontend/pages/home/spoke/components/patient_info.dart';
@@ -25,6 +26,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
+
+import '../../questionnare/assessment_screen.dart';
 
 class HomeScreenSpoke extends StatefulWidget {
   final MainCubit mainCubit;
@@ -279,6 +282,24 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
                     ));
               },
             ),
+            ListTile(
+              leading: Icon(Icons.group),
+              title: Text(
+                'Add Patients',
+                style: TextStyle(color: Colors.black54),
+              ),
+              onTap: () {
+                //// _hideLoader();
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (ctx) => CubitProvider<MainCubit>(
+                        create: (ctx) => CubitProvider.of<MainCubit>(context),
+                        child: AddPatientScreen(),
+                      ),
+                    ));
+              },
+            ),
             // ListTile(
             //   leading: Icon(Icons.question_answer),
             //   title: Text(
@@ -351,7 +372,10 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
   }
 
   _buildUI(BuildContext context) => Column(
-        children: [_buildRequestsUI(), _buildPatientssUI()],
+        children: [
+          _buildRequestsUI(),
+          _buildPatientssUI(),
+        ],
       );
 
   _buildPatientssUI() => Column(
