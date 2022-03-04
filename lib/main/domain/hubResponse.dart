@@ -675,13 +675,13 @@ class MedicineAdvice {
   // _med6String(MED6 value) => med6Map[value];
   // _med7String(MED7 value) => med7Map[value];
   med4Enum() => MED4.values.firstWhere(
-      (element) => element.toString() == "MED4." + this.med4['value']);
+      (element) => element.toString() == this.med4['value'].toString());
   med5Enum() => MED5.values.firstWhere(
-      (element) => element.toString() == "MED5." + this.med5['value']);
+      (element) => element.toString() == this.med5['value'].toString());
   med6Enum() => MED6.values.firstWhere(
-      (element) => element.toString() == "MED6." + this.med6['value']);
+      (element) => element.toString() == this.med6['value'].toString());
   med7Enum() => MED7.values.firstWhere(
-      (element) => element.toString() == "MED7." + this.med7['value']);
+      (element) => element.toString() == this.med7['value'].toString());
   dynamic med1;
   dynamic med2;
   dynamic med3;
@@ -756,37 +756,37 @@ class MedicineAdvice {
       med1: {
         'name': map['med1']['name'],
         "value": YN.values.firstWhere(
-            (element) => element.toString() == "YN." + map['med1']['value'])
+            (element) => element.toString() == map['med1']['value'].toString())
       },
       med2: {
         'name': map['med2']['name'],
         "value": YN.values.firstWhere(
-            (element) => element.toString() == "YN." + map['med2']['value'])
+            (element) => element.toString() == map['med2']['value'].toString())
       },
       med3: {
         'name': map['med3']['name'],
         "value": YN.values.firstWhere(
-            (element) => element.toString() == "YN." + map['med3']['value'])
+            (element) => element.toString() == map['med3']['value'].toString())
       },
       med4: {
         'name': map['med4']['name'],
         "value": MED4.values.firstWhere(
-            (element) => element.toString() == "MED4." + map['med4']['value'])
+            (element) => element.toString() == map['med4']['value'].toString())
       },
       med5: {
         'name': map['med5']['name'],
         "value": MED5.values.firstWhere(
-            (element) => element.toString() == "MED5." + map['med5']['value'])
+            (element) => element.toString() == map['med5']['value'].toString())
       },
       med6: {
         'name': map['med6']['name'],
         "value": MED6.values.firstWhere(
-            (element) => element.toString() == "MED6." + map['med6']['value'])
+            (element) => element.toString() == map['med6']['value'].toString())
       },
       med7: {
         'name': map['med7']['name'],
-        "value": MED7.values.firstWhere(
-            (element) => element.toString() == "MED7." + map['med7']['value'])
+        "value": MED7.values
+            .firstWhere((element) => element.toString() == map['med7']['value'])
       },
     );
   }
