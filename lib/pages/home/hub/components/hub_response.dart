@@ -798,7 +798,7 @@ class _ResponseScreenState extends State<ResponseScreen>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Flexible(child: Text('Other Remarks')),
-                Text(spokeResponse.note),
+                Text(spokeResponse.note == "" ? "None" : spokeResponse.note),
               ],
             ),
             SizedBox(height: 3.h),
