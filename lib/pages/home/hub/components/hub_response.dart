@@ -792,7 +792,15 @@ class _ResponseScreenState extends State<ResponseScreen>
                 Text(spokeResponse.getSteString()),
               ],
             ),
-
+            SizedBox(height: 1.h),
+            // Onset
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Flexible(child: Text('Other Remarks')),
+                Text(spokeResponse.note),
+              ],
+            ),
             SizedBox(height: 3.h),
           ],
         ),
@@ -1857,7 +1865,7 @@ class _ResponseScreenState extends State<ResponseScreen>
                   Container(
                     width: SizeConfig.screenWidth * 0.4,
                     child: TextFormField(
-                      keyboardType: TextInputType.number,
+                      keyboardType: TextInputType.text,
                       focusNode: null,
                       initialValue: spokeResponse.note,
                       onChanged: (newValue) => spokeResponse.note = newValue,
