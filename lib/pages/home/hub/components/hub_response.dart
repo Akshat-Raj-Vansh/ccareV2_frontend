@@ -121,6 +121,7 @@ class _ResponseScreenState extends State<ResponseScreen>
           currentState = state;
           hubResponse = state.hubResponse;
           spokeResponse = state.spokeResponse;
+          currentState = state;
         }
 
         if (state is NoResponseState) {
@@ -646,7 +647,7 @@ class _ResponseScreenState extends State<ResponseScreen>
                 Flexible(
                     child:
                         Text('Give loading dose of Clopedogrel and Aspirin')),
-                Text(advice.medicines.med2['value']),
+                Text(advice.medicines.med2['value'].toString().split('.')[1]),
               ],
             ),
             SizedBox(height: 1.h),
@@ -657,7 +658,7 @@ class _ResponseScreenState extends State<ResponseScreen>
                   child: Text(
                       'Give Injection Enoxaparin 30 mg IV after 15 minutes of Thrombolytic therapy'),
                 ),
-                Text(advice.medicines.med3['value']),
+                Text(advice.medicines.med3['value'].toString().split('.')[1]),
               ],
             ),
             SizedBox(height: 1.h),
@@ -665,7 +666,7 @@ class _ResponseScreenState extends State<ResponseScreen>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('Metoprolol'),
-                Text(advice.medicines.med4['value']),
+                Text(advice.medicines.med4['value'].toString().split('.')[1]),
               ],
             ),
             SizedBox(height: 1.h),
@@ -673,7 +674,7 @@ class _ResponseScreenState extends State<ResponseScreen>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('Ramipril'),
-                Text(advice.medicines.med5['value']),
+                Text(advice.medicines.med5['value'].toString().split('.')[1]),
               ],
             ),
             SizedBox(height: 1.h),
@@ -682,7 +683,7 @@ class _ResponseScreenState extends State<ResponseScreen>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('Telmisartan'),
-                Text(advice.medicines.med6['value']),
+                Text(advice.medicines.med6['value'].toString().split('.')[1]),
               ],
             ),
             SizedBox(height: 1.h),
@@ -691,7 +692,7 @@ class _ResponseScreenState extends State<ResponseScreen>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('Atorvastatin'),
-                Text(advice.medicines.med7['value']),
+                Text(advice.medicines.med7['value'].toString().split('.')[1]),
               ],
             ),
             SizedBox(height: 4.h),
@@ -1802,7 +1803,8 @@ class _ResponseScreenState extends State<ResponseScreen>
                       items: ChestP.values.map((ChestP value) {
                         return DropdownMenuItem<ChestP>(
                           value: value,
-                          child: Text(value.toString().split('.')[1]),
+                          child: Flexible(
+                              child: Text(SpokeResponse.chestMapping[value])),
                         );
                       }).toList(),
                     ),
@@ -1820,7 +1822,7 @@ class _ResponseScreenState extends State<ResponseScreen>
                   Container(
                     width: SizeConfig.screenWidth * 0.4,
                     child: DropdownButton<STE>(
-                      value: spokeResponse.getSteString(),
+                      value: spokeResponse.st_elevation,
                       isDense: false,
                       onChanged: (STE newValue) {
                         setState(() {
@@ -1830,7 +1832,8 @@ class _ResponseScreenState extends State<ResponseScreen>
                       items: STE.values.map((STE value) {
                         return DropdownMenuItem<STE>(
                           value: value,
-                          child: Text(SpokeResponse.chestMapping[value]),
+                          child: Flexible(
+                              child: Text(SpokeResponse.steMapping[value])),
                         );
                       }).toList(),
                     ),
