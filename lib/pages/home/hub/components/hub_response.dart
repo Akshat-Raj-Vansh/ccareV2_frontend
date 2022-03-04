@@ -126,7 +126,7 @@ class _ResponseScreenState extends State<ResponseScreen>
           spokeResponse = state.spokeResponse;
         }
 
-        if (state is NoReportState) {
+        if (state is ErrorState) {
           //print('No Report State Called');
           log('LOG > patient_report_screen.dart > 201 > state: ${state.toString()}');
           currentState = state;
@@ -147,29 +147,21 @@ class _ResponseScreenState extends State<ResponseScreen>
         return buildUI();
       },
       listener: (context, state) {
-        if (state is HubResponseUpdated) {
-          // hub response updated
+        if (state is ResponsesLoaded) {
+          hubResponse = state.hubResponse;
+          spokeResponse = state.spokeResponse;
         }
 
-        if (state is EditPatientReport) {
-          // _hideLoader();
+        if (state is ResponseEdit) {
           editReport = true;
           log('LOG > patient_report_screen.dart > 222 > state: ${state.toString()}');
         }
-        if (state is ViewPatientReport) {
-          // _hideLoader();
-          editReport = false;
-          log('LOG > patient_report_screen.dart > 227 > state: ${state.toString()}');
-          //  widget.mainCubit.fetchPatientReport();
-        }
-        if (state is PatientReportSaved) {
-          //print("Patient Report Saved state Called");
-          //print(state.msg);
+
+        if (state is ResponseSaved) {
           log('LOG > patient_report_screen.dart > 239 > state: ${state.toString()}');
-          // _hideLoader();
           _showMessage('Report Saved');
           editReport = false;
-          widget.mainCubit.fetchPatientReport(widget.patientDetails.id);
+          widget.mainCubit.fetchResponse(widget.patientDetails.id);
         }
       },
     );
@@ -199,8 +191,7 @@ class _ResponseScreenState extends State<ResponseScreen>
                   )
                 : TextButton(
                     onPressed: () async {
-                      //print('Edit Report Button Pressed');
-                      // widget.mainCubit.editPatientReport();
+                      widget.mainCubit.editResponse();
                     },
                     child: Text(
                       'EDIT',
@@ -211,7 +202,6 @@ class _ResponseScreenState extends State<ResponseScreen>
                   ),
           IconButton(
             onPressed: () async {
-              //print('Refresh button pressed');
               _fetchResponse();
             },
             icon: Icon(Icons.refresh),
@@ -226,7 +216,7 @@ class _ResponseScreenState extends State<ResponseScreen>
         ),
       ),
       resizeToAvoidBottomInset: true,
-      body: noReport && widget.user == UserType.PATIENT
+      body: noReport
           ? Center(child: Text('No Response Found'))
           : _buildFormBody(),
       floatingActionButton: SpeedDial(
@@ -282,21 +272,21 @@ class _ResponseScreenState extends State<ResponseScreen>
             child: _buildResponseOverview(),
           ),
           Container(
-            child: editReport
+            child: editReport && widget.user == UserType.HUB
                 ? _buildECGResponseForm()
                 : _buildDetailsBody(
                     _buildECGResponseDetails(hubResponse.ecg),
                   ),
           ),
           Container(
-            child: editReport
+            child: editReport && widget.user == UserType.HUB
                 ? _buildAdviceForm()
                 : _buildDetailsBody(
                     _buildAdviceDetails(hubResponse.advice),
                   ),
           ),
           Container(
-            child: editReport
+            child: editReport && widget.user == UserType.SPOKE
                 ? _buildSpokeRespForm()
                 : _buildDetailsBody(
                     _buildSpokeRespDetails(spokeResponse),
@@ -368,22 +358,22 @@ class _ResponseScreenState extends State<ResponseScreen>
             ),
             SizedBox(height: 2.h),
             // Diabetic
-            Text('ST Segment Elevation: '),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Inferior Lead: '),
-                Text(hubResponse.ecg.st_elevation.inferior
-                    .toString()
-                    .split('.')[1]),
-              ],
+            Container(
+              width: double.infinity,
+              child: Center(
+                child: Text(
+                  'ST Segment Elevation',
+                  style: TextStyle(color: kPrimaryColor, fontSize: 8.sp),
+                ),
+              ),
             ),
+
             SizedBox(height: 1.h),
             // Hypertensive
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Anterior: '),
+                Text('Anterior Lead: '),
                 Text(
                   (hubResponse.ecg.st_elevation.anterior
                       .toString()
@@ -396,7 +386,7 @@ class _ResponseScreenState extends State<ResponseScreen>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Lateral: '),
+                Text('Lateral Lead: '),
                 Text(
                   (hubResponse.ecg.st_elevation.lateral
                       .toString()
@@ -443,7 +433,16 @@ class _ResponseScreenState extends State<ResponseScreen>
             ),
             SizedBox(height: 2.h),
             // Diabetic
-            Text('ST Segment Depression: '),
+            Container(
+              width: double.infinity,
+              child: Center(
+                child: Text(
+                  'ST Segment Depression',
+                  style: TextStyle(color: kPrimaryColor, fontSize: 8.sp),
+                ),
+              ),
+            ),
+            SizedBox(height: 1.h),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -481,7 +480,16 @@ class _ResponseScreenState extends State<ResponseScreen>
             ),
             SizedBox(height: 2.h),
             // Diabetic
-            Text('T Wave Inversion: '),
+            Container(
+              width: double.infinity,
+              child: Center(
+                child: Text(
+                  'T Wave Inversion: ',
+                  style: TextStyle(color: kPrimaryColor, fontSize: 8.sp),
+                ),
+              ),
+            ),
+            SizedBox(height: 1.h),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -602,7 +610,16 @@ class _ResponseScreenState extends State<ResponseScreen>
             ),
             SizedBox(height: 2.h),
             // Hypertensive
-            Text('Medicines '),
+            Container(
+              width: double.infinity,
+              child: Center(
+                child: Text(
+                  'Medicines ',
+                  style: TextStyle(color: kPrimaryColor, fontSize: 8.sp),
+                ),
+              ),
+            ),
+            SizedBox(height: 1.h),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -686,7 +703,16 @@ class _ResponseScreenState extends State<ResponseScreen>
             ),
             SizedBox(height: 2.h),
             // Hypertensive
-            Text('Do Blood biochemistry: '),
+            Container(
+              width: double.infinity,
+              child: Center(
+                child: Text(
+                  'Do Blood biochemistry',
+                  style: TextStyle(color: kPrimaryColor, fontSize: 8.sp),
+                ),
+              ),
+            ),
+            SizedBox(height: 1.h),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

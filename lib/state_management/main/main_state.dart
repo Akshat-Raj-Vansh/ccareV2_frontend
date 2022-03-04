@@ -374,6 +374,18 @@ class ChatLoadingState extends MainState {
   List<Object> get props => [];
 }
 
+class ResponseSaved extends MainState {
+  ResponseSaved() {}
+  @override
+  List<Object> get props => [];
+}
+
+class ResponseEdit extends MainState {
+  ResponseEdit() {}
+  @override
+  List<Object> get props => [];
+}
+
 class ErrorState extends MainState {
   final String error;
   ErrorState(this.error) {}

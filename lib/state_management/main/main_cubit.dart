@@ -104,6 +104,10 @@ class MainCubit extends Cubit<MainState> {
     emit(AssessmentLoaded(result.asValue!.value));
   }
 
+  editResponse() async {
+    emit(ResponseEdit());
+  }
+
   notify(String action, bool ambRequired, loc.Location location,
       {List<QuestionTree>? assessment}) async {
     //print("Inside Notify");
