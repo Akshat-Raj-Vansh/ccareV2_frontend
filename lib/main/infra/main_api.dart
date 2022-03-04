@@ -799,6 +799,7 @@ class MainAPI extends IMainAPI {
       "Authorization": token.value
     };
     var response = await _client.get(Uri.parse(endpoint), headers: header);
+
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
       //print(transformError(map));
@@ -827,6 +828,8 @@ class MainAPI extends IMainAPI {
     };
     var response = await _client.post(Uri.parse(endpoint),
         headers: header, body: hubResponse.toJson());
+    print(response.statusCode);
+    print(response.body);
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
       //print(transformError(map));

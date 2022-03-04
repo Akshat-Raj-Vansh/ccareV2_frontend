@@ -171,7 +171,7 @@ class _ResponseScreenState extends State<ResponseScreen>
         title: Text('Spoke & Hub'),
         backgroundColor: kPrimaryColor,
         actions: [
-          if (_currentIndex != 0 && widget.user == UserType.HUB)
+          if (_currentIndex != 0)
             editReport
                 ? TextButton(
                     onPressed: () async {

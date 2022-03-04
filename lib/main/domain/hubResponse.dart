@@ -726,13 +726,13 @@ class MedicineAdvice {
 
   Map<String, dynamic> toMap() {
     return {
-      'med1': {'name': med1.name, "value": med1.value.toString().split('.')[1]},
-      'med2': {'name': med2.name, "value": med2.value.toString().split('.')[1]},
-      'med3': {'name': med3.name, "value": med3.value.toString().split('.')[1]},
-      'med4': {'name': med4.name, "value": med4.value.toString().split('.')[1]},
-      'med5': {'name': med5.name, "value": med5.value.toString().split('.')[1]},
-      'med6': {'name': med6.name, "value": med6.value.toString().split('.')[1]},
-      'med7': {'name': med7.name, "value": med7.value.toString().split('.')[1]},
+      'med1': {'name': med1['name'], "value": med1['value'].toString()},
+      'med2': {'name': med2['name'], "value": med2['value'].toString()},
+      'med3': {'name': med3['name'], "value": med3['value'].toString()},
+      'med4': {'name': med4['name'], "value": med4['value'].toString()},
+      'med5': {'name': med5['name'], "value": med5['value'].toString()},
+      'med6': {'name': med6['name'], "value": med6['value'].toString()},
+      'med7': {'name': med7['name'], "value": med7['value'].toString()},
     };
   }
 
