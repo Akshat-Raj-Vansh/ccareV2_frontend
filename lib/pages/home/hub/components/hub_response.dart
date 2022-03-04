@@ -160,6 +160,12 @@ class _ResponseScreenState extends State<ResponseScreen>
           editReport = false;
           widget.mainCubit.fetchResponse(widget.patientDetails.id);
         }
+        if (state is HubResponseUpdated) {
+          log('LOG > patient_report_screen.dart > 239 > state: ${state.toString()}');
+          _showMessage('Report Saved');
+          editReport = false;
+          widget.mainCubit.fetchResponse(widget.patientDetails.id);
+        }
       },
     );
   }
@@ -1833,28 +1839,6 @@ class _ResponseScreenState extends State<ResponseScreen>
                           child: Text(SpokeResponse.chestMapping[value]),
                         );
                       }).toList(),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 1.h),
-              // Location
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text('Repeat ECG after: '),
-                  Container(
-                    width: SizeConfig.screenWidth * 0.4,
-                    child: TextFormField(
-                      keyboardType: TextInputType.number,
-                      focusNode: null,
-                      initialValue: hubResponse.advice.ecg_repeat,
-                      onChanged: (newValue) =>
-                          hubResponse.advice.ecg_repeat = newValue,
-                      decoration: const InputDecoration(
-                        hintText: "Enter duration in mins",
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
-                      ),
                     ),
                   ),
                 ],
