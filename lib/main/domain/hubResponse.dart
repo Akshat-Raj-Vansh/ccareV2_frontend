@@ -64,7 +64,7 @@ class EcgInterperation {
   STElevation st_elevation;
   STDepression st_depression;
   TInversion t_wave_inversion;
-  BBBlock bbBlock;
+  BBBlock bbblock;
   YN lvh;
   YN rvh;
   YN rae;
@@ -75,7 +75,7 @@ class EcgInterperation {
     this.st_elevation,
     this.st_depression,
     this.t_wave_inversion,
-    this.bbBlock,
+    this.bbblock,
     this.lvh,
     this.rvh,
     this.rae,
@@ -88,7 +88,7 @@ class EcgInterperation {
     this.st_elevation = STElevation.initialize();
     this.st_depression = STDepression.initialize();
     this.t_wave_inversion = TInversion.initialize();
-    this.bbBlock = BBBlock.nill;
+    this.bbblock = BBBlock.nill;
     this.lvh = YN.nill;
     this.rvh = YN.nill;
     this.rae = YN.nill;
@@ -101,7 +101,7 @@ class EcgInterperation {
     STElevation st_elevation,
     STDepression st_depression,
     TInversion t_wave_inversion,
-    BBBlock bbBlock,
+    BBBlock bbblock,
     YN lvh,
     YN rvh,
     YN rae,
@@ -113,7 +113,7 @@ class EcgInterperation {
       st_elevation: st_elevation ?? this.st_elevation,
       st_depression: st_depression ?? this.st_depression,
       t_wave_inversion: t_wave_inversion ?? this.t_wave_inversion,
-      bbBlock: bbBlock ?? this.bbBlock,
+      bbblock: bbblock ?? this.bbblock,
       lvh: lvh ?? this.lvh,
       rvh: rvh ?? this.rvh,
       rae: rae ?? this.rae,
@@ -128,7 +128,7 @@ class EcgInterperation {
       'st_elevation': st_elevation.toMap(),
       'st_depression': st_depression.toMap(),
       't_wave_inversion': t_wave_inversion.toMap(),
-      'bbBlock': bbBlock.toString().split(".")[1],
+      'bbblock': bbblock.toString().split(".")[1],
       'lvh': lvh.toString().split(".")[1],
       'rvh': rvh.toString().split(".")[1],
       'rae': rae.toString().split(".")[1],
@@ -151,7 +151,7 @@ class EcgInterperation {
       st_elevation: STElevation.fromMap(map['st_elevation']),
       st_depression: STDepression.fromMap(map['st_depression']),
       t_wave_inversion: TInversion.fromMap(map['t_wave_inversion']),
-      bbBlock: BBBlock.values.firstWhere(
+      bbblock: BBBlock.values.firstWhere(
           (element) => element.toString() == "BBBlock." + map['bbblock']),
       lvh: ynCheck(map['lvh']),
       rvh: ynCheck(map['rvh']),
@@ -169,7 +169,7 @@ class EcgInterperation {
 
   @override
   String toString() {
-    return 'EcgInterperation(rythm: $rythm, st_elevation: $st_elevation, st_depression: $st_depression, t_wave_inversion: $t_wave_inversion, bbBlock: $bbBlock, lvh: $lvh, rvh: $rvh, rae: $rae, lae: $lae, diagonis: $diagonis)';
+    return 'EcgInterperation(rythm: $rythm, st_elevation: $st_elevation, st_depression: $st_depression, t_wave_inversion: $t_wave_inversion, bbblock: $bbblock, lvh: $lvh, rvh: $rvh, rae: $rae, lae: $lae, diagonis: $diagonis)';
   }
 
   @override
@@ -181,7 +181,7 @@ class EcgInterperation {
         other.st_elevation == st_elevation &&
         other.st_depression == st_depression &&
         other.t_wave_inversion == t_wave_inversion &&
-        other.bbBlock == bbBlock &&
+        other.bbblock == bbblock &&
         other.lvh == lvh &&
         other.rvh == rvh &&
         other.rae == rae &&
@@ -195,7 +195,7 @@ class EcgInterperation {
         st_elevation.hashCode ^
         st_depression.hashCode ^
         t_wave_inversion.hashCode ^
-        bbBlock.hashCode ^
+        bbblock.hashCode ^
         lvh.hashCode ^
         rvh.hashCode ^
         rae.hashCode ^

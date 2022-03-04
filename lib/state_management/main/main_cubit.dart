@@ -104,10 +104,6 @@ class MainCubit extends Cubit<MainState> {
     emit(AssessmentLoaded(result.asValue!.value));
   }
 
-  editResponse() async {
-    emit(ResponseEdit());
-  }
-
   notify(String action, bool ambRequired, loc.Location location,
       {List<QuestionTree>? assessment}) async {
     //print("Inside Notify");
@@ -342,8 +338,17 @@ class MainCubit extends Cubit<MainState> {
         result.asValue!.value["spokeResponse"]));
   }
 
+  editResponse() async {
+    emit(ResponseEdit());
+  }
+
+  // viewResponse() async {
+  //   emit(ResponseView());
+  // }
+
   updateHubResponse(String patientID, HubResponse hubResponse) async {
     _startLoading("Update Hub Response");
+
     final token = await localStore.fetch();
     final result = await api.updateHubResponse(token, patientID, hubResponse);
     if (result.isError) {
