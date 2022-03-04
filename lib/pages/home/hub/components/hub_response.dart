@@ -1449,7 +1449,8 @@ class _ResponseScreenState extends State<ResponseScreen>
                   Container(
                     width: SizeConfig.screenWidth * 0.4,
                     child: DropdownButton<MED4>(
-                      value: hubResponse.advice.medicines.med4String(),
+                      value:
+                          hubResponse.advice.medicines.med4Enum() ?? MED4.nill,
                       isDense: false,
                       onChanged: (MED4 newValue) {
                         setState(() {
@@ -1478,7 +1479,8 @@ class _ResponseScreenState extends State<ResponseScreen>
                   Container(
                     width: SizeConfig.screenWidth * 0.4,
                     child: DropdownButton<MED5>(
-                      value: hubResponse.advice.medicines.med5String(),
+                      value:
+                          hubResponse.advice.medicines.med5Enum() ?? MED5.nill,
                       isDense: false,
                       onChanged: (MED5 newValue) {
                         setState(() {
@@ -1507,7 +1509,8 @@ class _ResponseScreenState extends State<ResponseScreen>
                   Container(
                     width: SizeConfig.screenWidth * 0.4,
                     child: DropdownButton<MED6>(
-                      value: hubResponse.advice.medicines.med6String(),
+                      value:
+                          hubResponse.advice.medicines.med6Enum() ?? MED6.nill,
                       isDense: false,
                       onChanged: (MED6 newValue) {
                         setState(() {
@@ -1536,7 +1539,8 @@ class _ResponseScreenState extends State<ResponseScreen>
                   Container(
                     width: SizeConfig.screenWidth * 0.4,
                     child: DropdownButton<MED7>(
-                      value: hubResponse.advice.medicines.med7String(),
+                      value:
+                          hubResponse.advice.medicines.med7Enum() ?? MED7.nill,
                       isDense: false,
                       onChanged: (MED7 newValue) {
                         setState(() {

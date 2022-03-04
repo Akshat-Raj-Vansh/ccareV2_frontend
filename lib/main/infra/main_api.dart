@@ -821,7 +821,7 @@ class MainAPI extends IMainAPI {
   Future<Result<String>> updateHubResponse(
       Token token, String patientID, HubResponse hubResponse) async {
     String endpoint =
-        baseUrl + "/treatment/hub/updateHubResponse?patientID=$patientID";
+        baseUrl + "/treatment/hub/uploadHubResponse?patientID=$patientID";
     var header = {
       "Content-Type": "application/json",
       "Authorization": token.value
