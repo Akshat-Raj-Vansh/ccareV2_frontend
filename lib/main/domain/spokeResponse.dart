@@ -59,10 +59,10 @@ class SpokeResponse {
     return SpokeResponse(
       map['note'] ?? '',
       ChestP.values.firstWhere((element) =>
-              element.toString() == "ChestP" + map['chest_pain']) ??
+              element.toString() == "ChestP." + map['chest_pain']) ??
           ChestP.nill,
-      STE.values.firstWhere(
-              (element) => element.toString() == "STE" + map['st_elevation']) ??
+      STE.values.firstWhere((element) =>
+              element.toString() == "STE." + map['st_elevation']) ??
           STE.nill,
     );
   }

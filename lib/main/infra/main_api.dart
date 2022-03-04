@@ -805,9 +805,9 @@ class MainAPI extends IMainAPI {
       //print(transformError(map));
       return Result.error(transformError(map));
     }
-    print(jsonDecode(response.body)["hubResponse"] == null);
-    print(jsonDecode(response.body)["spokeResponse"] == null);
-    if (jsonDecode(response.body)["hubResponse"]['rythm'] == null &&
+    print(jsonDecode(response.body)["hubResponse"]['ecg']['rythm']);
+    print(jsonDecode(response.body)["spokeResponse"]['chest_pain'] == null);
+    if (jsonDecode(response.body)["hubResponse"]['ecg']['rythm'] == null &&
         jsonDecode(response.body)["spokeResponse"]['chest_pain'] == null)
       //intialize both
       return Result.error("error");
@@ -816,10 +816,10 @@ class MainAPI extends IMainAPI {
     print('hub response' + hub.toString());
     dynamic spoke = jsonDecode(response.body)["spokeResponse"];
     return Result.value({
-      "hubResponse": hub == null
+      "hubResponse": hub['ecg']['rythm'] == null
           ? HubResponse.initialize()
           : HubResponse.fromJson(jsonEncode(hub)).toString(),
-      "spokeResponse": spoke == null
+      "spokeResponse": spoke['chest_pain'] == null
           ? SpokeResponse.initialize()
           : SpokeResponse.fromJson(jsonEncode(spoke))
     });

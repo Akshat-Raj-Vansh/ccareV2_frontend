@@ -327,7 +327,7 @@ class MainCubit extends Cubit<MainState> {
   }
 
   fetchResponse(String patientID) async {
-    // _startLoading("Fetch Response");
+    _startLoading("Fetch Response");
     final token = await localStore.fetch();
     final result = await api.getConsultationResponse(token, patientID);
     if (result.isError) {
@@ -348,7 +348,6 @@ class MainCubit extends Cubit<MainState> {
 
   updateHubResponse(String patientID, HubResponse hubResponse) async {
     _startLoading("Update Hub Response");
-
     final token = await localStore.fetch();
     final result = await api.updateHubResponse(token, patientID, hubResponse);
     if (result.isError) {
