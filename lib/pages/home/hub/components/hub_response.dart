@@ -1820,6 +1820,7 @@ class _ResponseScreenState extends State<ResponseScreen>
               ),
               SizedBox(height: 1.h),
               // Site
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -1845,6 +1846,25 @@ class _ResponseScreenState extends State<ResponseScreen>
                           ),
                         );
                       }).toList(),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Other remarks'),
+                  Container(
+                    width: SizeConfig.screenWidth * 0.4,
+                    child: TextFormField(
+                      keyboardType: TextInputType.number,
+                      focusNode: null,
+                      initialValue: spokeResponse.note,
+                      onChanged: (newValue) => spokeResponse.note = newValue,
+                      decoration: const InputDecoration(
+                        hintText: "",
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                      ),
                     ),
                   ),
                 ],
