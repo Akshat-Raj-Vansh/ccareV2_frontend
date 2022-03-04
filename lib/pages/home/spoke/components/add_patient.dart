@@ -50,103 +50,107 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
     );
   }
 
-  _buildUI(BuildContext context) => Form(
-        key: _formKeyPatient,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(height: 2.h),
-            TextFormField(
-              keyboardType: TextInputType.text,
-              onSaved: (newValue) => name = newValue,
-              validator: (value) => value.isEmpty ? "Name is required" : null,
-              decoration: const InputDecoration(
-                labelText: "Full Name",
-                hintText: "Enter your Full Name",
-                floatingLabelBehavior: FloatingLabelBehavior.always,
-              ),
-            ),
-            SizedBox(height: 1.h),
-            TextFormField(
-              keyboardType: TextInputType.number,
-              onSaved: (newValue) => age = int.parse(newValue),
-              validator: (value) => value.isEmpty
-                  ? "Age is required"
-                  : (int.parse(value) > 120 ? "Enter valid age" : null),
-              decoration: const InputDecoration(
-                labelText: "Age ",
-                hintText: "Enter your Age",
-                floatingLabelBehavior: FloatingLabelBehavior.always,
-              ),
-            ),
-            SizedBox(height: 1.h),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Gender: '),
-                Container(
-                  width: SizeConfig.screenWidth * 0.4,
-                  child: DropdownButton<Gender>(
-                    isDense: false,
-                    value: gender,
-                    onChanged: (Gender newValue) {
-                      setState(() {
-                        gender = newValue;
-                        //print(gender);
-                      });
-                    },
-                    items: Gender.values.map((Gender value) {
-                      return DropdownMenuItem<Gender>(
-                        value: value,
-                        child: Text(value.toString().split('.')[1]),
-                      );
-                    }).toList(),
-                  ),
+  _buildUI(BuildContext context) => Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Form(
+          key: _formKeyPatient,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(height: 2.h),
+              TextFormField(
+                keyboardType: TextInputType.text,
+                onSaved: (newValue) => name = newValue,
+                validator: (value) => value.isEmpty ? "Name is required" : null,
+                decoration: const InputDecoration(
+                  labelText: "Full Name",
+                  hintText: "Enter your Full Name",
+                  floatingLabelBehavior: FloatingLabelBehavior.always,
                 ),
-              ],
-            ),
-            SizedBox(height: 1.h),
-            TextFormField(
-              keyboardType: TextInputType.number,
-              onSaved: (newValue) =>
-                  {if (newValue.length <= 10) phone = newValue},
-              validator: (value) => value.isEmpty
-                  ? "Phone Number is required"
-                  : (value.length != 10 || value.contains(RegExp(r'[A-Z][a-z]'))
-                      ? "Enter a valid Phone Number"
-                      : null),
-              decoration: const InputDecoration(
-                labelText: "Phone Number ",
-                hintText: "Enter your Phone Number",
-                floatingLabelBehavior: FloatingLabelBehavior.always,
               ),
-            ),
-            //SizedBox(height : 1.h),
-            const Spacer(
-              flex: 1,
-            ),
-            Center(
-              child: DefaultButton(
-                text: "Save",
-                press: () {
-                  if (_formKeyPatient.currentState.validate()) {
-                    _formKeyPatient.currentState.save();
-                    var profile = PatientProfile(
-                        name: name,
-                        gender: gender.toString().split(".")[1],
-                        age: age);
-                    //print(profile.toString());
-                    widget.cubit.addPatient(profile, phone);
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      content: Text("All Fields are required"),
-                    ));
-                  }
-                },
+              SizedBox(height: 1.h),
+              TextFormField(
+                keyboardType: TextInputType.number,
+                onSaved: (newValue) => age = int.parse(newValue),
+                validator: (value) => value.isEmpty
+                    ? "Age is required"
+                    : (int.parse(value) > 120 ? "Enter valid age" : null),
+                decoration: const InputDecoration(
+                  labelText: "Age ",
+                  hintText: "Enter your Age",
+                  floatingLabelBehavior: FloatingLabelBehavior.always,
+                ),
               ),
-            ),
-            SizedBox(height: 5.h),
-          ],
+              SizedBox(height: 1.h),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Gender: '),
+                  Container(
+                    width: SizeConfig.screenWidth * 0.4,
+                    child: DropdownButton<Gender>(
+                      isDense: false,
+                      value: gender,
+                      onChanged: (Gender newValue) {
+                        setState(() {
+                          gender = newValue;
+                          //print(gender);
+                        });
+                      },
+                      items: Gender.values.map((Gender value) {
+                        return DropdownMenuItem<Gender>(
+                          value: value,
+                          child: Text(value.toString().split('.')[1]),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 1.h),
+              TextFormField(
+                keyboardType: TextInputType.number,
+                onSaved: (newValue) =>
+                    {if (newValue.length <= 10) phone = newValue},
+                validator: (value) => value.isEmpty
+                    ? "Phone Number is required"
+                    : (value.length != 10 ||
+                            value.contains(RegExp(r'[A-Z][a-z]'))
+                        ? "Enter a valid Phone Number"
+                        : null),
+                decoration: const InputDecoration(
+                  labelText: "Phone Number ",
+                  hintText: "Enter your Phone Number",
+                  floatingLabelBehavior: FloatingLabelBehavior.always,
+                ),
+              ),
+              //SizedBox(height : 1.h),
+              const Spacer(
+                flex: 1,
+              ),
+              Center(
+                child: DefaultButton(
+                  text: "Save",
+                  press: () {
+                    if (_formKeyPatient.currentState.validate()) {
+                      _formKeyPatient.currentState.save();
+                      var profile = PatientProfile(
+                          name: name,
+                          gender: gender.toString().split(".")[1],
+                          age: age);
+                      //print(profile.toString());
+                      widget.cubit.addPatient(profile, phone);
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text("All Fields are required"),
+                      ));
+                    }
+                  },
+                ),
+              ),
+              SizedBox(height: 5.h),
+            ],
+          ),
         ),
       );
 }
