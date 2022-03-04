@@ -337,7 +337,7 @@ class _HubPatientInfoState extends State<HubPatientInfo> {
               MaterialPageRoute(
                 builder: (cTX) => ResponseScreen(
                   mainCubit: widget.mainCubit,
-                  user: UserType.SPOKE,
+                  user: UserType.HUB,
                   patientDetails: widget.details.patientDetails,
                 ),
               ));

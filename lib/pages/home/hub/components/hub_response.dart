@@ -1,18 +1,14 @@
 //@dart=2.9
 import 'dart:developer';
-import 'dart:io';
 
 import 'package:ccarev2_frontend/main/domain/hubResponse.dart';
 import 'package:ccarev2_frontend/main/domain/spokeResponse.dart';
 import 'package:ccarev2_frontend/utils/constants.dart';
 import 'package:ccarev2_frontend/main/domain/edetails.dart';
-import 'package:ccarev2_frontend/pages/home/components/fullImage.dart';
 import 'package:ccarev2_frontend/utils/size_config.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
 import 'package:ccarev2_frontend/state_management/main/main_state.dart';
 import 'package:ccarev2_frontend/user/domain/credential.dart';
-import 'package:ccarev2_frontend/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
@@ -126,7 +122,7 @@ class _ResponseScreenState extends State<ResponseScreen>
           spokeResponse = state.spokeResponse;
         }
 
-        if (state is ErrorState) {
+        if (state is NoResponseState) {
           //print('No Report State Called');
           log('LOG > patient_report_screen.dart > 201 > state: ${state.toString()}');
           currentState = state;
@@ -172,7 +168,7 @@ class _ResponseScreenState extends State<ResponseScreen>
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('Spoke & Hub Consultation'),
+        title: Text('Spoke & Hub'),
         backgroundColor: kPrimaryColor,
         actions: [
           if (_currentIndex != 0 && widget.user == UserType.HUB)
@@ -216,9 +212,11 @@ class _ResponseScreenState extends State<ResponseScreen>
         ),
       ),
       resizeToAvoidBottomInset: true,
-      body: noReport
-          ? Center(child: Text('No Response Found'))
-          : _buildFormBody(),
+      body:
+          // noReport
+          //     ? Center(child: Text('No Response Found'))
+          //     :
+          _buildFormBody(),
       floatingActionButton: SpeedDial(
         animatedIcon: AnimatedIcons.menu_close,
         children: [
@@ -305,7 +303,7 @@ class _ResponseScreenState extends State<ResponseScreen>
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
               child: Text(
                 "ECG",
-                textAlign: TextAlign.left,
+                textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 14.sp, color: kPrimaryColor),
               ),
             ),
@@ -318,7 +316,7 @@ class _ResponseScreenState extends State<ResponseScreen>
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
               child: Text(
                 "Advice",
-                textAlign: TextAlign.left,
+                textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 14.sp, color: kPrimaryColor),
               ),
             ),
@@ -331,7 +329,7 @@ class _ResponseScreenState extends State<ResponseScreen>
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
               child: Text(
                 "Spoke Response",
-                textAlign: TextAlign.left,
+                textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 14.sp, color: kPrimaryColor),
               ),
             ),
@@ -352,18 +350,18 @@ class _ResponseScreenState extends State<ResponseScreen>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Rhythm: '),
+                Text('Rhythm'),
                 Text(hubResponse.ecg.rythm.toString().split('.')[1]),
               ],
             ),
-            SizedBox(height: 2.h),
+            SizedBox(height: 3.h),
             // Diabetic
             Container(
               width: double.infinity,
               child: Center(
                 child: Text(
                   'ST Segment Elevation',
-                  style: TextStyle(color: kPrimaryColor, fontSize: 8.sp),
+                  style: TextStyle(color: kPrimaryColor, fontSize: 10.sp),
                 ),
               ),
             ),
@@ -373,7 +371,7 @@ class _ResponseScreenState extends State<ResponseScreen>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Anterior Lead: '),
+                Text('Anterior Lead'),
                 Text(
                   (hubResponse.ecg.st_elevation.anterior
                       .toString()
@@ -386,7 +384,7 @@ class _ResponseScreenState extends State<ResponseScreen>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Lateral Lead: '),
+                Text('Lateral Lead'),
                 Text(
                   (hubResponse.ecg.st_elevation.lateral
                       .toString()
@@ -399,7 +397,7 @@ class _ResponseScreenState extends State<ResponseScreen>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Inferior: '),
+                Text('Inferior Lead'),
                 Text(
                   (hubResponse.ecg.st_elevation.inferior
                       .toString()
@@ -412,7 +410,7 @@ class _ResponseScreenState extends State<ResponseScreen>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('RV: '),
+                Text('RV'),
                 Text(
                   (hubResponse.ecg.st_elevation.rv.toString().split('.')[1]),
                 ),
@@ -423,7 +421,7 @@ class _ResponseScreenState extends State<ResponseScreen>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Posterior: '),
+                Text('Posterior'),
                 Text(
                   (hubResponse.ecg.st_elevation.posterior
                       .toString()
@@ -431,14 +429,14 @@ class _ResponseScreenState extends State<ResponseScreen>
                 ),
               ],
             ),
-            SizedBox(height: 2.h),
+            SizedBox(height: 3.h),
             // Diabetic
             Container(
               width: double.infinity,
               child: Center(
                 child: Text(
                   'ST Segment Depression',
-                  style: TextStyle(color: kPrimaryColor, fontSize: 8.sp),
+                  style: TextStyle(color: kPrimaryColor, fontSize: 10.sp),
                 ),
               ),
             ),
@@ -446,7 +444,7 @@ class _ResponseScreenState extends State<ResponseScreen>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Inferior Lead: '),
+                Text('Inferior Lead'),
                 Text(hubResponse.ecg.st_depression.inferior_lead
                     .toString()
                     .split('.')[1]),
@@ -457,7 +455,7 @@ class _ResponseScreenState extends State<ResponseScreen>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Lateral Lead: '),
+                Text('Lateral Lead'),
                 Text(
                   (hubResponse.ecg.st_depression.lateral_lead
                       .toString()
@@ -470,7 +468,7 @@ class _ResponseScreenState extends State<ResponseScreen>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Anterior Lead: '),
+                Text('Anterior Lead'),
                 Text(
                   (hubResponse.ecg.st_depression.anterior_lead
                       .toString()
@@ -478,14 +476,14 @@ class _ResponseScreenState extends State<ResponseScreen>
                 ),
               ],
             ),
-            SizedBox(height: 2.h),
+            SizedBox(height: 3.h),
             // Diabetic
             Container(
               width: double.infinity,
               child: Center(
                 child: Text(
-                  'T Wave Inversion: ',
-                  style: TextStyle(color: kPrimaryColor, fontSize: 8.sp),
+                  'T Wave Inversion',
+                  style: TextStyle(color: kPrimaryColor, fontSize: 10.sp),
                 ),
               ),
             ),
@@ -493,7 +491,7 @@ class _ResponseScreenState extends State<ResponseScreen>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Inferior Leads: '),
+                Text('Inferior Leads'),
                 Text(hubResponse.ecg.t_wave_inversion.inferior_lead
                     .toString()
                     .split('.')[1]),
@@ -504,7 +502,7 @@ class _ResponseScreenState extends State<ResponseScreen>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Lateral Leads: '),
+                Text('Lateral Leads'),
                 Text(
                   (hubResponse.ecg.t_wave_inversion.lateral_lead
                       .toString()
@@ -517,7 +515,7 @@ class _ResponseScreenState extends State<ResponseScreen>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Anterior Leads: '),
+                Text('Anterior Leads'),
                 Text(
                   (hubResponse.ecg.t_wave_inversion.anterior_lead
                       .toString()
@@ -525,12 +523,12 @@ class _ResponseScreenState extends State<ResponseScreen>
                 ),
               ],
             ),
-            SizedBox(height: 2.h),
+            SizedBox(height: 4.h),
             // Diabetic
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Bundle Branch Block: '),
+                Text('Bundle Branch Block'),
                 Text(hubResponse.ecg.bbBlock.toString().split('.')[1]),
               ],
             ),
@@ -539,7 +537,7 @@ class _ResponseScreenState extends State<ResponseScreen>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('LVH: '),
+                Text('LVH'),
                 Text(
                   (hubResponse.ecg.lvh.toString().split('.')[1]),
                 ),
@@ -550,7 +548,7 @@ class _ResponseScreenState extends State<ResponseScreen>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('RVH: '),
+                Text('RVH'),
                 Text(
                   (hubResponse.ecg.rvh.toString().split('.')[1]),
                 ),
@@ -561,7 +559,7 @@ class _ResponseScreenState extends State<ResponseScreen>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('RAE: '),
+                Text('RAE'),
                 Text(
                   (hubResponse.ecg.rae.toString().split('.')[1]),
                 ),
@@ -572,7 +570,7 @@ class _ResponseScreenState extends State<ResponseScreen>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('LAE: '),
+                Text('LAE'),
                 Text(
                   (hubResponse.ecg.lae.toString().split('.')[1]),
                 ),
@@ -595,8 +593,8 @@ class _ResponseScreenState extends State<ResponseScreen>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Repeat ECG After : '),
-                Text(advice.ecg_repeat + ' mins'),
+                Text('Repeat ECG After(mins)'),
+                Text(advice.ecg_repeat),
               ],
             ),
             SizedBox(height: 1.h),
@@ -604,18 +602,18 @@ class _ResponseScreenState extends State<ResponseScreen>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Do Trop T/I Test: '),
+                Text('Do Trop T/I Test'),
                 Text(advice.trop_i_repeat.toString().split('.')[1]),
               ],
             ),
-            SizedBox(height: 2.h),
+            SizedBox(height: 3.h),
             // Hypertensive
             Container(
               width: double.infinity,
               child: Center(
                 child: Text(
-                  'Medicines ',
-                  style: TextStyle(color: kPrimaryColor, fontSize: 8.sp),
+                  'Medicines',
+                  style: TextStyle(color: kPrimaryColor, fontSize: 10.sp),
                 ),
               ),
             ),
@@ -624,9 +622,9 @@ class _ResponseScreenState extends State<ResponseScreen>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Flexible(
-                    child: Text(
-                        'Thrombolyse after ruling out contraindications: ')),
-                Text(advice.medicines.med1['value']),
+                    child:
+                        Text('Thrombolyse after ruling out contraindications')),
+                Text(advice.medicines.med1['value'].split('.')[1]),
               ],
             ),
             SizedBox(height: 1.h),
@@ -635,8 +633,8 @@ class _ResponseScreenState extends State<ResponseScreen>
               children: [
                 Flexible(
                     child:
-                        Text('Give loading dose of Clopedogrel and Aspirin:')),
-                Text(advice.medicines.med2['value']),
+                        Text('Give loading dose of Clopedogrel and Aspirin')),
+                Text(advice.medicines.med2['value'].split('.')[1]),
               ],
             ),
             SizedBox(height: 1.h),
@@ -645,16 +643,16 @@ class _ResponseScreenState extends State<ResponseScreen>
               children: [
                 Flexible(
                   child: Text(
-                      'Give Injection Enoxaparin 30 mg IV after 15 minutes of Thrombolytic therapy: '),
+                      'Give Injection Enoxaparin 30 mg IV after 15 minutes of Thrombolytic therapy'),
                 ),
-                Text(advice.medicines.med3['value']),
+                Text(advice.medicines.med3['value'].split('.')[1]),
               ],
             ),
             SizedBox(height: 1.h),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Metoprolol : '),
+                Text('Metoprolol'),
                 Text(advice.medicines.med4['value']),
               ],
             ),
@@ -662,7 +660,7 @@ class _ResponseScreenState extends State<ResponseScreen>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Ramipril: '),
+                Text('Ramipril'),
                 Text(advice.medicines.med5['value']),
               ],
             ),
@@ -671,7 +669,7 @@ class _ResponseScreenState extends State<ResponseScreen>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Telmisartan: '),
+                Text('Telmisartan'),
                 Text(advice.medicines.med6['value']),
               ],
             ),
@@ -680,16 +678,16 @@ class _ResponseScreenState extends State<ResponseScreen>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Atorvastatin : '),
+                Text('Atorvastatin'),
                 Text(advice.medicines.med7['value']),
               ],
             ),
-            SizedBox(height: 1.h),
+            SizedBox(height: 4.h),
             // Old MI
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Oxygen inhalation: '),
+                Text('Oxygen inhalation'),
                 Text(advice.oxygen_inhalation.toString().split('.')[1]),
               ],
             ),
@@ -697,18 +695,18 @@ class _ResponseScreenState extends State<ResponseScreen>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Nebulization: '),
+                Text('Nebulization'),
                 Text(advice.nebulization.toString().split('.')[1]),
               ],
             ),
-            SizedBox(height: 2.h),
+            SizedBox(height: 3.h),
             // Hypertensive
             Container(
               width: double.infinity,
               child: Center(
                 child: Text(
                   'Do Blood biochemistry',
-                  style: TextStyle(color: kPrimaryColor, fontSize: 8.sp),
+                  style: TextStyle(color: kPrimaryColor, fontSize: 10.sp),
                 ),
               ),
             ),
@@ -716,7 +714,7 @@ class _ResponseScreenState extends State<ResponseScreen>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Sugar: '),
+                Text('Sugar'),
                 Text(advice.bioChemistry.sugar.toString().split('.')[1]),
               ],
             ),
@@ -724,7 +722,7 @@ class _ResponseScreenState extends State<ResponseScreen>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('BU/Creatinine:'),
+                Text('BU/Creatinine'),
                 Text(
                     advice.bioChemistry.bu_creatinine.toString().split('.')[1]),
               ],
@@ -733,7 +731,7 @@ class _ResponseScreenState extends State<ResponseScreen>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Electrolytes: '),
+                Text('Electrolytes'),
                 Text(advice.bioChemistry.electrolytes.toString().split('.')[1]),
               ],
             ),
@@ -741,7 +739,7 @@ class _ResponseScreenState extends State<ResponseScreen>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Hemogram: '),
+                Text('Hemogram'),
                 Text(advice.bioChemistry.hemogram.toString().split('.')[1]),
               ],
             ),
@@ -761,7 +759,7 @@ class _ResponseScreenState extends State<ResponseScreen>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Chest Pain: '),
+                Text('Chest Pain'),
                 Text(spokeResponse.chest_pain.toString().split('.')[1]),
               ],
             ),
@@ -772,7 +770,7 @@ class _ResponseScreenState extends State<ResponseScreen>
               children: [
                 Flexible(
                     child: Text(
-                        'ECG Changes of ST Segment elevation from baseline: ')),
+                        'ECG Changes of ST Segment elevation from baseline')),
                 Text(spokeResponse.getSteString()),
               ],
             ),
@@ -800,7 +798,7 @@ class _ResponseScreenState extends State<ResponseScreen>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Rhythm: '),
+                Text('Rhythm'),
                 Container(
                   width: SizeConfig.screenWidth * 0.4,
                   child: DropdownButton<Rythm>(
@@ -821,13 +819,22 @@ class _ResponseScreenState extends State<ResponseScreen>
                 ),
               ],
             ),
-            SizedBox(height: 2.h),
+            SizedBox(height: 3.h),
             // Diabetic
-            Text('ST Segment Elevation'),
+            Container(
+              width: double.infinity,
+              child: Center(
+                child: Text(
+                  'ST Segment Elevation',
+                  style: TextStyle(color: kPrimaryColor, fontSize: 10.sp),
+                ),
+              ),
+            ),
+
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Anterior: '),
+                Text('Anterior'),
                 Container(
                   width: SizeConfig.screenWidth * 0.4,
                   child: DropdownButton<YN>(
@@ -852,7 +859,7 @@ class _ResponseScreenState extends State<ResponseScreen>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Lateral: '),
+                Text('Lateral'),
                 Container(
                   width: SizeConfig.screenWidth * 0.4,
                   child: DropdownButton<YN>(
@@ -877,7 +884,7 @@ class _ResponseScreenState extends State<ResponseScreen>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Inferior: '),
+                Text('Inferior'),
                 Container(
                   width: SizeConfig.screenWidth * 0.4,
                   child: DropdownButton<YN>(
@@ -902,7 +909,7 @@ class _ResponseScreenState extends State<ResponseScreen>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('RV: '),
+                Text('RV'),
                 Container(
                   width: SizeConfig.screenWidth * 0.4,
                   child: DropdownButton<YN>(
@@ -927,7 +934,7 @@ class _ResponseScreenState extends State<ResponseScreen>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Posterior: '),
+                Text('Posterior'),
                 Container(
                   width: SizeConfig.screenWidth * 0.4,
                   child: DropdownButton<YN>(
@@ -948,16 +955,26 @@ class _ResponseScreenState extends State<ResponseScreen>
                 ),
               ],
             ),
-            SizedBox(height: 2.h),
+            SizedBox(height: 3.h),
             // Diabetic
-            Text('ST Segment Depression'),
+
+            Container(
+              width: double.infinity,
+              child: Center(
+                child: Text(
+                  'ST Segment Depression',
+                  style: TextStyle(color: kPrimaryColor, fontSize: 10.sp),
+                ),
+              ),
+            ),
+
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('Lateral Leads: '),
+                    Text('Lateral Leads'),
                     Container(
                       width: SizeConfig.screenWidth * 0.4,
                       child: DropdownButton<YN>(
@@ -983,7 +1000,7 @@ class _ResponseScreenState extends State<ResponseScreen>
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('Inferior Leads: '),
+                    Text('Inferior Leads'),
                     Container(
                       width: SizeConfig.screenWidth * 0.4,
                       child: DropdownButton<YN>(
@@ -1006,7 +1023,7 @@ class _ResponseScreenState extends State<ResponseScreen>
                   ],
                 ),
                 SizedBox(height: 1.h),
-                Text('Anterior Leads: '),
+                Text('Anterior Leads'),
                 Container(
                   width: SizeConfig.screenWidth * 0.4,
                   child: DropdownButton<YN>(
@@ -1028,13 +1045,22 @@ class _ResponseScreenState extends State<ResponseScreen>
               ],
             ),
 
-            SizedBox(height: 2.h),
+            SizedBox(height: 3.h),
             // Diabetic
-            Text('T Wave Inversion'),
+
+            Container(
+              width: double.infinity,
+              child: Center(
+                child: Text(
+                  'T Wave Inversion',
+                  style: TextStyle(color: kPrimaryColor, fontSize: 10.sp),
+                ),
+              ),
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Lateral Leads: '),
+                Text('Lateral Leads'),
                 Container(
                   width: SizeConfig.screenWidth * 0.4,
                   child: DropdownButton<YN>(
@@ -1060,7 +1086,7 @@ class _ResponseScreenState extends State<ResponseScreen>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Inferior Leads: '),
+                Text('Inferior Leads'),
                 Container(
                   width: SizeConfig.screenWidth * 0.4,
                   child: DropdownButton<YN>(
@@ -1086,7 +1112,7 @@ class _ResponseScreenState extends State<ResponseScreen>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Anterior Leads: '),
+                Text('Anterior Leads'),
                 Container(
                   width: SizeConfig.screenWidth * 0.4,
                   child: DropdownButton<YN>(
@@ -1108,11 +1134,11 @@ class _ResponseScreenState extends State<ResponseScreen>
                 ),
               ],
             ),
-            SizedBox(height: 1.h),
+            SizedBox(height: 4.h),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Bundle Branch Blocks: '),
+                Text('Bundle Branch Blocks'),
                 Container(
                   width: SizeConfig.screenWidth * 0.4,
                   child: DropdownButton<BBBlock>(
@@ -1138,7 +1164,7 @@ class _ResponseScreenState extends State<ResponseScreen>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('LVH: '),
+                Text('LVH'),
                 Container(
                   width: SizeConfig.screenWidth * 0.4,
                   child: DropdownButton<YN>(
@@ -1164,7 +1190,7 @@ class _ResponseScreenState extends State<ResponseScreen>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('RVH: '),
+                Text('RVH'),
                 Container(
                   width: SizeConfig.screenWidth * 0.4,
                   child: DropdownButton<YN>(
@@ -1190,7 +1216,7 @@ class _ResponseScreenState extends State<ResponseScreen>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('RAE: '),
+                Text('RAE'),
                 Container(
                   width: SizeConfig.screenWidth * 0.4,
                   child: DropdownButton<YN>(
@@ -1216,7 +1242,7 @@ class _ResponseScreenState extends State<ResponseScreen>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('LAE: '),
+                Text('LAE'),
                 Container(
                   width: SizeConfig.screenWidth * 0.4,
                   child: DropdownButton<YN>(
@@ -1259,7 +1285,7 @@ class _ResponseScreenState extends State<ResponseScreen>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Repeat ECG after: '),
+                Text('Repeat ECG after (mins)'),
                 Container(
                   width: SizeConfig.screenWidth * 0.4,
                   child: TextFormField(
@@ -1281,7 +1307,7 @@ class _ResponseScreenState extends State<ResponseScreen>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Do Trop T/I test: '),
+                Text('Do Trop T/I test'),
                 Container(
                   width: SizeConfig.screenWidth * 0.4,
                   child: DropdownButton<YN>(
@@ -1302,15 +1328,24 @@ class _ResponseScreenState extends State<ResponseScreen>
                 ),
               ],
             ),
-            SizedBox(height: 1.h),
+            SizedBox(height: 3.h),
             // Hypertensive
-            Text('Medicines'),
+
+            Container(
+              width: double.infinity,
+              child: Center(
+                child: Text(
+                  'Medicines',
+                  style: TextStyle(color: kPrimaryColor, fontSize: 10.sp),
+                ),
+              ),
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Flexible(
-                    child: Text(
-                        'Thrombolyse after ruling out contraindications: ')),
+                    child:
+                        Text('Thrombolyse after ruling out contraindications')),
                 Container(
                   width: SizeConfig.screenWidth * 0.4,
                   child: DropdownButton<YN>(
@@ -1339,7 +1374,7 @@ class _ResponseScreenState extends State<ResponseScreen>
               children: [
                 Flexible(
                     child:
-                        Text('Give Loading dose of Clopedogrel and Aspirin: ')),
+                        Text('Give Loading dose of Clopedogrel and Aspirin')),
                 Container(
                   width: SizeConfig.screenWidth * 0.4,
                   child: DropdownButton<YN>(
@@ -1367,7 +1402,7 @@ class _ResponseScreenState extends State<ResponseScreen>
               children: [
                 Flexible(
                   child: Text(
-                      'Give Injection Enoxaparin 30 mg IV after 15 minutes of Thrombolytic therapy: '),
+                      'Give Injection Enoxaparin 30 mg IV after 15 minutes of Thrombolytic therapy'),
                 ),
                 Container(
                   width: SizeConfig.screenWidth * 0.4,
@@ -1394,7 +1429,7 @@ class _ResponseScreenState extends State<ResponseScreen>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Metoprolol: '),
+                Text('Metoprolol'),
                 Container(
                   width: SizeConfig.screenWidth * 0.4,
                   child: DropdownButton<MED4>(
@@ -1420,7 +1455,7 @@ class _ResponseScreenState extends State<ResponseScreen>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Ramipril: '),
+                Text('Ramipril'),
                 Container(
                   width: SizeConfig.screenWidth * 0.4,
                   child: DropdownButton<MED5>(
@@ -1446,7 +1481,7 @@ class _ResponseScreenState extends State<ResponseScreen>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Telmisartan: '),
+                Text('Telmisartan'),
                 Container(
                   width: SizeConfig.screenWidth * 0.4,
                   child: DropdownButton<MED6>(
@@ -1472,7 +1507,7 @@ class _ResponseScreenState extends State<ResponseScreen>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Atorvastatin: '),
+                Text('Atorvastatin'),
                 Container(
                   width: SizeConfig.screenWidth * 0.4,
                   child: DropdownButton<MED7>(
@@ -1494,11 +1529,11 @@ class _ResponseScreenState extends State<ResponseScreen>
                 ),
               ],
             ),
-            SizedBox(height: 2.h),
+            SizedBox(height: 4.h),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Oxygen Inhalation: '),
+                Text('Oxygen Inhalation'),
                 Container(
                   width: SizeConfig.screenWidth * 0.4,
                   child: DropdownButton<YN>(
@@ -1523,7 +1558,7 @@ class _ResponseScreenState extends State<ResponseScreen>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Nebulization: '),
+                Text('Nebulization'),
                 Container(
                   width: SizeConfig.screenWidth * 0.4,
                   child: DropdownButton<YN>(
@@ -1544,13 +1579,23 @@ class _ResponseScreenState extends State<ResponseScreen>
                 ),
               ],
             ),
-            SizedBox(height: 2.h),
-            // Old MI
-            Text('Do Blood biochemistry '),
+
+            SizedBox(height: 3.h),
+            // Hypertensive
+
+            Container(
+              width: double.infinity,
+              child: Center(
+                child: Text(
+                  'Do Blood biochemistry',
+                  style: TextStyle(color: kPrimaryColor, fontSize: 10.sp),
+                ),
+              ),
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Sugar: '),
+                Text('Sugar'),
                 Container(
                   width: SizeConfig.screenWidth * 0.4,
                   child: DropdownButton<YN>(
@@ -1576,7 +1621,7 @@ class _ResponseScreenState extends State<ResponseScreen>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('BU/Creatinine: '),
+                Text('BU/Creatinine'),
                 Container(
                   width: SizeConfig.screenWidth * 0.4,
                   child: DropdownButton<YN>(
@@ -1602,7 +1647,7 @@ class _ResponseScreenState extends State<ResponseScreen>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Electrolytes: '),
+                Text('Electrolytes'),
                 Container(
                   width: SizeConfig.screenWidth * 0.4,
                   child: DropdownButton<YN>(
@@ -1627,7 +1672,7 @@ class _ResponseScreenState extends State<ResponseScreen>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Hemogram: '),
+                Text('Hemogram'),
                 Container(
                   width: SizeConfig.screenWidth * 0.4,
                   child: DropdownButton<YN>(
@@ -1671,7 +1716,7 @@ class _ResponseScreenState extends State<ResponseScreen>
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Chest Pain: '),
+                  Text('Chest Pain'),
                   Container(
                     width: SizeConfig.screenWidth * 0.4,
                     child: DropdownButton<ChestP>(
@@ -1699,7 +1744,7 @@ class _ResponseScreenState extends State<ResponseScreen>
                 children: [
                   Flexible(
                       child: Text(
-                          'ECG Changes of ST Segment elevation from baseline: ')),
+                          'ECG Changes of ST Segment elevation from baseline')),
                   Container(
                     width: SizeConfig.screenWidth * 0.4,
                     child: DropdownButton<STE>(

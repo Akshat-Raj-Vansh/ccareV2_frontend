@@ -386,6 +386,13 @@ class ResponseEdit extends MainState {
   List<Object> get props => [];
 }
 
+class NoResponseState extends MainState {
+  final String err;
+  NoResponseState(this.err) {}
+  @override
+  List<Object> get props => [];
+}
+
 class ErrorState extends MainState {
   final String error;
   ErrorState(this.error) {}

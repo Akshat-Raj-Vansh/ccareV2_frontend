@@ -280,7 +280,7 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
               child: Text(
                 "Patient Request List",
                 textAlign: TextAlign.left,
-                style: TextStyle(fontSize: 18.sp, color: kPrimaryColor),
+                style: TextStyle(fontSize: 14.sp, color: kPrimaryColor),
               ),
             ),
             requestsLoaded
@@ -301,7 +301,7 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
               child: Text(
                 "Patient Accepted List",
                 textAlign: TextAlign.left,
-                style: TextStyle(fontSize: 18.sp, color: kPrimaryColor),
+                style: TextStyle(fontSize: 14.sp, color: kPrimaryColor),
               ),
             ),
             patientsLoaded

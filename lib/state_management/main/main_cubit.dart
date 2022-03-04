@@ -98,7 +98,7 @@ class MainCubit extends Cubit<MainState> {
     final token = await localStore.fetch();
     final result = await api.getAssessments(token, patientID);
     if (result.isError) {
-      emit(ErrorState(result.asError!.error as String));
+      emit(NoResponseState(result.asError!.error as String));
       return;
     }
     emit(AssessmentLoaded(result.asValue!.value));
