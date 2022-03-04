@@ -1808,7 +1808,10 @@ class _ResponseScreenState extends State<ResponseScreen>
                       items: ChestP.values.map((ChestP value) {
                         return DropdownMenuItem<ChestP>(
                           value: value,
-                          child: Text(value.toString().split('.')[1]),
+                          child: Text(
+                            value.toString().split('.')[1],
+                            style: TextStyle(fontSize: 8.sp),
+                          ),
                         );
                       }).toList(),
                     ),
@@ -1836,7 +1839,10 @@ class _ResponseScreenState extends State<ResponseScreen>
                       items: STE.values.map((STE value) {
                         return DropdownMenuItem<STE>(
                           value: value,
-                          child: Text(SpokeResponse.chestMapping[value]),
+                          child: Text(
+                            SpokeResponse.chestMapping[value],
+                            style: TextStyle(fontSize: 8.sp),
+                          ),
                         );
                       }).toList(),
                     ),
