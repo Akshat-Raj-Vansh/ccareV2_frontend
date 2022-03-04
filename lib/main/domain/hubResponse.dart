@@ -702,16 +702,16 @@ class MedicineAdvice {
   MedicineAdvice.initialize() {
     this.med1 = {
       'name': "Thrombolyse after ruling out contraindications",
-      'value': "YN.nill"
+      'value': "nill"
     };
     this.med2 = {
       'name': "Give Loading dose of Clopedogrel and Aspirin",
-      'value': "YN.nill"
+      'value': "nill"
     };
     this.med3 = {
       'name':
           "Give Injection Enoxaparin 30 mg IV after 15 minutes of Thrombolytic therapy.",
-      'value': "YN.nill"
+      'value': "nill"
     };
     this.med4 = {'name': "Metoprolol ", 'value': "nill"};
     this.med5 = {'name': "Ramipril", 'value': "nill"};
