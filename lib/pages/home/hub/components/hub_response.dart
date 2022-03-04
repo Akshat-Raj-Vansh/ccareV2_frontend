@@ -161,6 +161,12 @@ class _ResponseScreenState extends State<ResponseScreen>
           editReport = false;
           widget.mainCubit.fetchResponse(widget.patientDetails.id);
         }
+        if (state is HubResponseUpdated) {
+          log('LOG > patient_report_screen.dart > 239 > state: ${state.toString()}');
+          _showMessage('Report Saved');
+          editReport = false;
+          widget.mainCubit.fetchResponse(widget.patientDetails.id);
+        }
       },
     );
   }
@@ -1786,59 +1792,53 @@ class _ResponseScreenState extends State<ResponseScreen>
             children: [
               SizedBox(height: 2.h),
               // Chest Pain
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text('Chest Pain'),
-                  Container(
-                    width: SizeConfig.screenWidth * 0.2,
-                    child: DropdownButton<ChestP>(
-                      value: spokeResponse.chest_pain,
-                      isDense: false,
-                      onChanged: (ChestP newValue) {
-                        setState(() {
-                          spokeResponse.chest_pain = newValue;
-                        });
-                      },
-                      items: ChestP.values.map((ChestP value) {
-                        return DropdownMenuItem<ChestP>(
-                          value: value,
-                          child: Flexible(
-                              child: Text(SpokeResponse.chestMapping[value])),
-                        );
-                      }).toList(),
-                    ),
-                  ),
-                ],
+              Text('Chest Pain'),
+
+              SizedBox(height: 1.h),
+              Container(
+                child: DropdownButton<ChestP>(
+                  value: spokeResponse.chest_pain,
+                  isDense: false,
+                  onChanged: (ChestP newValue) {
+                    setState(() {
+                      spokeResponse.chest_pain = newValue;
+                    });
+                  },
+                  items: ChestP.values.map((ChestP value) {
+                    return DropdownMenuItem<ChestP>(
+                      value: value,
+                      child: Text(
+                        SpokeResponse.chestMapping[value],
+                        // style: TextStyle(fontSize: 8.sp),
+                      ),
+                    );
+                  }).toList(),
+                ),
               ),
               SizedBox(height: 1.h),
               // Site
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Flexible(
+              Text('ECG Changes of ST Segment elevation from baseline'),
+
+              SizedBox(height: 1.h),
+              Container(
+                child: DropdownButton<STE>(
+                  value: spokeResponse.st_elevation,
+                  isDense: false,
+                  onChanged: (STE newValue) {
+                    setState(() {
+                      spokeResponse.st_elevation = newValue;
+                    });
+                  },
+                  items: STE.values.map((STE value) {
+                    return DropdownMenuItem<STE>(
+                      value: value,
                       child: Text(
-                          'ECG Changes of ST Segment elevation from baseline')),
-                  Container(
-                    width: SizeConfig.screenWidth * 0.4,
-                    child: DropdownButton<STE>(
-                      value: spokeResponse.st_elevation,
-                      isDense: false,
-                      onChanged: (STE newValue) {
-                        setState(() {
-                          spokeResponse.st_elevation = newValue;
-                        });
-                      },
-                      items: STE.values.map((STE value) {
-                        return DropdownMenuItem<STE>(
-                          value: value,
-                          child: Flexible(
-                              child: Text(SpokeResponse.steMapping[value])),
-                        );
-                      }).toList(),
-                    ),
-                  ),
-                ],
+                        SpokeResponse.steMapping[value],
+                        // style: TextStyle(fontSize: 8.sp),
+                      ),
+                    );
+                  }).toList(),
+                ),
               ),
               SizedBox(height: 1.h),
               // Location
@@ -1846,7 +1846,7 @@ class _ResponseScreenState extends State<ResponseScreen>
               //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
               //   children: [
               //     Text('Repeat ECG after: '),
-              //     Container(
+              //     Container(R
               //       width: SizeConfig.screenWidth * 0.4,
               //       child: TextFormField(
               //         keyboardType: TextInputType.number,
