@@ -45,7 +45,7 @@ class _ResponseScreenState extends State<ResponseScreen>
       child: Text('Response'),
     ),
     Tab(
-      child: Text('Advice from Spoke'),
+      child: Text('Response from Spoke'),
     ),
   ];
   bool noReport = true;
@@ -255,7 +255,7 @@ class _ResponseScreenState extends State<ResponseScreen>
             height: 20,
           ),
           Text(
-            "Current Report",
+            "Current",
             textAlign: TextAlign.left,
             style: TextStyle(fontSize: 14.sp, color: kPrimaryColor),
           ),
@@ -780,921 +780,951 @@ class _ResponseScreenState extends State<ResponseScreen>
         ),
       );
 
-  _buildECGResponseForm() => Container(
-        width: SizeConfig.screenWidth,
-        margin: EdgeInsets.only(
-          left: 20,
-          right: 20,
-          top: 0,
-          // bottom: MediaQuery.of(context).viewInsets.bottom,
-        ),
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(height: 2.h),
+  _buildECGResponseForm() => SingleChildScrollView(
+        child: Container(
+          width: SizeConfig.screenWidth,
+          margin: EdgeInsets.only(
+            left: 20,
+            right: 20,
+            top: 0,
+            // bottom: MediaQuery.of(context).viewInsets.bottom,
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 2.h),
 
-            // Smoker
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Rhythm'),
-                Container(
-                  width: SizeConfig.screenWidth * 0.4,
-                  child: DropdownButton<Rythm>(
-                    value: hubResponse.ecg.rythm,
-                    isDense: false,
-                    onChanged: (Rythm newValue) {
-                      setState(() {
-                        hubResponse.ecg.rythm = newValue;
-                      });
-                    },
-                    items: Rythm.values.map((Rythm value) {
-                      return DropdownMenuItem<Rythm>(
-                        value: value,
-                        child: Text(value.toString().split('.')[1]),
-                      );
-                    }).toList(),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 3.h),
-            // Diabetic
-            Container(
-              width: double.infinity,
-              child: Center(
-                child: Text(
-                  'ST Segment Elevation',
-                  style: TextStyle(color: kPrimaryColor, fontSize: 10.sp),
-                ),
-              ),
-            ),
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Anterior'),
-                Container(
-                  width: SizeConfig.screenWidth * 0.4,
-                  child: DropdownButton<YN>(
-                    value: hubResponse.ecg.st_elevation.anterior,
-                    isDense: false,
-                    onChanged: (YN newValue) {
-                      setState(() {
-                        hubResponse.ecg.st_elevation.anterior = newValue;
-                      });
-                    },
-                    items: YN.values.map((YN value) {
-                      return DropdownMenuItem<YN>(
-                        value: value,
-                        child: Text(value.toString().split('.')[1]),
-                      );
-                    }).toList(),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 1.h),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Lateral'),
-                Container(
-                  width: SizeConfig.screenWidth * 0.4,
-                  child: DropdownButton<YN>(
-                    value: hubResponse.ecg.st_elevation.lateral,
-                    isDense: false,
-                    onChanged: (YN newValue) {
-                      setState(() {
-                        hubResponse.ecg.st_elevation.lateral = newValue;
-                      });
-                    },
-                    items: YN.values.map((YN value) {
-                      return DropdownMenuItem<YN>(
-                        value: value,
-                        child: Text(value.toString().split('.')[1]),
-                      );
-                    }).toList(),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 1.h),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Inferior'),
-                Container(
-                  width: SizeConfig.screenWidth * 0.4,
-                  child: DropdownButton<YN>(
-                    value: hubResponse.ecg.st_elevation.inferior,
-                    isDense: false,
-                    onChanged: (YN newValue) {
-                      setState(() {
-                        hubResponse.ecg.st_elevation.inferior = newValue;
-                      });
-                    },
-                    items: YN.values.map((YN value) {
-                      return DropdownMenuItem<YN>(
-                        value: value,
-                        child: Text(value.toString().split('.')[1]),
-                      );
-                    }).toList(),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 1.h),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('RV'),
-                Container(
-                  width: SizeConfig.screenWidth * 0.4,
-                  child: DropdownButton<YN>(
-                    value: hubResponse.ecg.st_elevation.rv,
-                    isDense: false,
-                    onChanged: (YN newValue) {
-                      setState(() {
-                        hubResponse.ecg.st_elevation.rv = newValue;
-                      });
-                    },
-                    items: YN.values.map((YN value) {
-                      return DropdownMenuItem<YN>(
-                        value: value,
-                        child: Text(value.toString().split('.')[1]),
-                      );
-                    }).toList(),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 1.h),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Posterior'),
-                Container(
-                  width: SizeConfig.screenWidth * 0.4,
-                  child: DropdownButton<YN>(
-                    value: hubResponse.ecg.st_elevation.posterior,
-                    isDense: false,
-                    onChanged: (YN newValue) {
-                      setState(() {
-                        hubResponse.ecg.st_elevation.posterior = newValue;
-                      });
-                    },
-                    items: YN.values.map((YN value) {
-                      return DropdownMenuItem<YN>(
-                        value: value,
-                        child: Text(value.toString().split('.')[1]),
-                      );
-                    }).toList(),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 3.h),
-            // Diabetic
-
-            Container(
-              width: double.infinity,
-              child: Center(
-                child: Text(
-                  'ST Segment Depression',
-                  style: TextStyle(color: kPrimaryColor, fontSize: 10.sp),
-                ),
-              ),
-            ),
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text('Lateral Leads'),
-                    Container(
-                      width: SizeConfig.screenWidth * 0.4,
-                      child: DropdownButton<YN>(
-                        value: hubResponse.ecg.st_depression.lateral_lead,
-                        isDense: false,
-                        onChanged: (YN newValue) {
-                          setState(() {
-                            hubResponse.ecg.st_depression.lateral_lead =
-                                newValue;
-                          });
-                        },
-                        items: YN.values.map((YN value) {
-                          return DropdownMenuItem<YN>(
-                            value: value,
-                            child: Text(value.toString().split('.')[1]),
-                          );
-                        }).toList(),
-                      ),
+              // Smoker
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Rhythm'),
+                  Container(
+                    width: SizeConfig.screenWidth * 0.4,
+                    child: DropdownButton<Rythm>(
+                      value: hubResponse.ecg.rythm,
+                      isDense: false,
+                      onChanged: (Rythm newValue) {
+                        setState(() {
+                          hubResponse.ecg.rythm = newValue;
+                        });
+                      },
+                      items: Rythm.values.map((Rythm value) {
+                        return DropdownMenuItem<Rythm>(
+                          value: value,
+                          child: Text(value.toString().split('.')[1]),
+                        );
+                      }).toList(),
                     ),
-                  ],
-                ),
-                SizedBox(height: 1.h),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text('Inferior Leads'),
-                    Container(
-                      width: SizeConfig.screenWidth * 0.4,
-                      child: DropdownButton<YN>(
-                        value: hubResponse.ecg.st_depression.inferior_lead,
-                        isDense: false,
-                        onChanged: (YN newValue) {
-                          setState(() {
-                            hubResponse.ecg.st_depression.inferior_lead =
-                                newValue;
-                          });
-                        },
-                        items: YN.values.map((YN value) {
-                          return DropdownMenuItem<YN>(
-                            value: value,
-                            child: Text(value.toString().split('.')[1]),
-                          );
-                        }).toList(),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 1.h),
-                Text('Anterior Leads'),
-                Container(
-                  width: SizeConfig.screenWidth * 0.4,
-                  child: DropdownButton<YN>(
-                    value: hubResponse.ecg.st_elevation.anterior,
-                    isDense: false,
-                    onChanged: (YN newValue) {
-                      setState(() {
-                        hubResponse.ecg.st_elevation.anterior = newValue;
-                      });
-                    },
-                    items: YN.values.map((YN value) {
-                      return DropdownMenuItem<YN>(
-                        value: value,
-                        child: Text(value.toString().split('.')[1]),
-                      );
-                    }).toList(),
                   ),
-                ),
-              ],
-            ),
-
-            SizedBox(height: 3.h),
-            // Diabetic
-
-            Container(
-              width: double.infinity,
-              child: Center(
-                child: Text(
-                  'T Wave Inversion',
-                  style: TextStyle(color: kPrimaryColor, fontSize: 10.sp),
+                ],
+              ),
+              SizedBox(height: 3.h),
+              // Diabetic
+              Container(
+                width: double.infinity,
+                child: Center(
+                  child: Text(
+                    'ST Segment Elevation',
+                    style: TextStyle(color: kPrimaryColor, fontSize: 10.sp),
+                  ),
                 ),
               ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Lateral Leads'),
-                Container(
-                  width: SizeConfig.screenWidth * 0.4,
-                  child: DropdownButton<YN>(
-                    value: hubResponse.ecg.t_wave_inversion.lateral_lead,
-                    isDense: false,
-                    onChanged: (YN newValue) {
-                      setState(() {
-                        hubResponse.ecg.t_wave_inversion.lateral_lead =
-                            newValue;
-                      });
-                    },
-                    items: YN.values.map((YN value) {
-                      return DropdownMenuItem<YN>(
-                        value: value,
-                        child: Text(value.toString().split('.')[1]),
-                      );
-                    }).toList(),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Anterior'),
+                  Container(
+                    width: SizeConfig.screenWidth * 0.4,
+                    child: DropdownButton<YN>(
+                      value: hubResponse.ecg.st_elevation.anterior,
+                      isDense: false,
+                      onChanged: (YN newValue) {
+                        setState(() {
+                          hubResponse.ecg.st_elevation.anterior = newValue;
+                        });
+                      },
+                      items: YN.values.map((YN value) {
+                        return DropdownMenuItem<YN>(
+                          value: value,
+                          child: Text(value.toString().split('.')[1]),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 1.h),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Lateral'),
+                  Container(
+                    width: SizeConfig.screenWidth * 0.4,
+                    child: DropdownButton<YN>(
+                      value: hubResponse.ecg.st_elevation.lateral,
+                      isDense: false,
+                      onChanged: (YN newValue) {
+                        setState(() {
+                          hubResponse.ecg.st_elevation.lateral = newValue;
+                        });
+                      },
+                      items: YN.values.map((YN value) {
+                        return DropdownMenuItem<YN>(
+                          value: value,
+                          child: Text(value.toString().split('.')[1]),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 1.h),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Inferior'),
+                  Container(
+                    width: SizeConfig.screenWidth * 0.4,
+                    child: DropdownButton<YN>(
+                      value: hubResponse.ecg.st_elevation.inferior,
+                      isDense: false,
+                      onChanged: (YN newValue) {
+                        setState(() {
+                          hubResponse.ecg.st_elevation.inferior = newValue;
+                        });
+                      },
+                      items: YN.values.map((YN value) {
+                        return DropdownMenuItem<YN>(
+                          value: value,
+                          child: Text(value.toString().split('.')[1]),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 1.h),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('RV'),
+                  Container(
+                    width: SizeConfig.screenWidth * 0.4,
+                    child: DropdownButton<YN>(
+                      value: hubResponse.ecg.st_elevation.rv,
+                      isDense: false,
+                      onChanged: (YN newValue) {
+                        setState(() {
+                          hubResponse.ecg.st_elevation.rv = newValue;
+                        });
+                      },
+                      items: YN.values.map((YN value) {
+                        return DropdownMenuItem<YN>(
+                          value: value,
+                          child: Text(value.toString().split('.')[1]),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 1.h),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Posterior'),
+                  Container(
+                    width: SizeConfig.screenWidth * 0.4,
+                    child: DropdownButton<YN>(
+                      value: hubResponse.ecg.st_elevation.posterior,
+                      isDense: false,
+                      onChanged: (YN newValue) {
+                        setState(() {
+                          hubResponse.ecg.st_elevation.posterior = newValue;
+                        });
+                      },
+                      items: YN.values.map((YN value) {
+                        return DropdownMenuItem<YN>(
+                          value: value,
+                          child: Text(value.toString().split('.')[1]),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 3.h),
+              // Diabetic
+
+              SizedBox(height: 3.h),
+              // Diabetic
+
+              Container(
+                width: double.infinity,
+                child: Center(
+                  child: Text(
+                    'ST Segment Depression',
+                    style: TextStyle(color: kPrimaryColor, fontSize: 10.sp),
                   ),
                 ),
-              ],
-            ),
-            SizedBox(height: 1.h),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Inferior Leads'),
-                Container(
-                  width: SizeConfig.screenWidth * 0.4,
-                  child: DropdownButton<YN>(
-                    value: hubResponse.ecg.t_wave_inversion.inferior_lead,
-                    isDense: false,
-                    onChanged: (YN newValue) {
-                      setState(() {
-                        hubResponse.ecg.t_wave_inversion.inferior_lead =
-                            newValue;
-                      });
-                    },
-                    items: YN.values.map((YN value) {
-                      return DropdownMenuItem<YN>(
-                        value: value,
-                        child: Text(value.toString().split('.')[1]),
-                      );
-                    }).toList(),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Lateral Leads'),
+                  Container(
+                    width: SizeConfig.screenWidth * 0.4,
+                    child: DropdownButton<YN>(
+                      value: hubResponse.ecg.st_depression.lateral_lead,
+                      isDense: false,
+                      onChanged: (YN newValue) {
+                        setState(() {
+                          hubResponse.ecg.st_depression.lateral_lead = newValue;
+                        });
+                      },
+                      items: YN.values.map((YN value) {
+                        return DropdownMenuItem<YN>(
+                          value: value,
+                          child: Text(value.toString().split('.')[1]),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 1.h),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Inferior Leads'),
+                  Container(
+                    width: SizeConfig.screenWidth * 0.4,
+                    child: DropdownButton<YN>(
+                      value: hubResponse.ecg.st_depression.inferior_lead,
+                      isDense: false,
+                      onChanged: (YN newValue) {
+                        setState(() {
+                          hubResponse.ecg.st_depression.inferior_lead =
+                              newValue;
+                        });
+                      },
+                      items: YN.values.map((YN value) {
+                        return DropdownMenuItem<YN>(
+                          value: value,
+                          child: Text(value.toString().split('.')[1]),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ],
+              ), // Hypertensive
+              SizedBox(height: 1.h),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Anterior Leads'),
+                  Container(
+                    width: SizeConfig.screenWidth * 0.4,
+                    child: DropdownButton<YN>(
+                      value: hubResponse.ecg.st_depression.anterior_lead,
+                      isDense: false,
+                      onChanged: (YN newValue) {
+                        setState(() {
+                          hubResponse.ecg.st_depression.anterior_lead =
+                              newValue;
+                        });
+                      },
+                      items: YN.values.map((YN value) {
+                        return DropdownMenuItem<YN>(
+                          value: value,
+                          child: Text(value.toString().split('.')[1]),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 3.h),
+              // Diabetic
+
+              Container(
+                width: double.infinity,
+                child: Center(
+                  child: Text(
+                    'T Wave Inversion',
+                    style: TextStyle(color: kPrimaryColor, fontSize: 10.sp),
                   ),
                 ),
-              ],
-            ), // Hypertensive
-            SizedBox(height: 1.h),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Anterior Leads'),
-                Container(
-                  width: SizeConfig.screenWidth * 0.4,
-                  child: DropdownButton<YN>(
-                    value: hubResponse.ecg.t_wave_inversion.anterior_lead,
-                    isDense: false,
-                    onChanged: (YN newValue) {
-                      setState(() {
-                        hubResponse.ecg.t_wave_inversion.anterior_lead =
-                            newValue;
-                      });
-                    },
-                    items: YN.values.map((YN value) {
-                      return DropdownMenuItem<YN>(
-                        value: value,
-                        child: Text(value.toString().split('.')[1]),
-                      );
-                    }).toList(),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Lateral Leads'),
+                  Container(
+                    width: SizeConfig.screenWidth * 0.4,
+                    child: DropdownButton<YN>(
+                      value: hubResponse.ecg.t_wave_inversion.lateral_lead,
+                      isDense: false,
+                      onChanged: (YN newValue) {
+                        setState(() {
+                          hubResponse.ecg.t_wave_inversion.lateral_lead =
+                              newValue;
+                        });
+                      },
+                      items: YN.values.map((YN value) {
+                        return DropdownMenuItem<YN>(
+                          value: value,
+                          child: Text(value.toString().split('.')[1]),
+                        );
+                      }).toList(),
+                    ),
                   ),
-                ),
-              ],
-            ),
-            SizedBox(height: 4.h),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Bundle Branch Blocks'),
-                Container(
-                  width: SizeConfig.screenWidth * 0.4,
-                  child: DropdownButton<BBBlock>(
-                    value: hubResponse.ecg.bbBlock,
-                    isDense: false,
-                    onChanged: (BBBlock newValue) {
-                      setState(() {
-                        hubResponse.ecg.bbBlock = newValue;
-                      });
-                    },
-                    items: BBBlock.values.map((BBBlock value) {
-                      return DropdownMenuItem<BBBlock>(
-                        value: value,
-                        child: Text(value.toString().split('.')[1]),
-                      );
-                    }).toList(),
+                ],
+              ),
+              SizedBox(height: 1.h),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Inferior Leads'),
+                  Container(
+                    width: SizeConfig.screenWidth * 0.4,
+                    child: DropdownButton<YN>(
+                      value: hubResponse.ecg.t_wave_inversion.inferior_lead,
+                      isDense: false,
+                      onChanged: (YN newValue) {
+                        setState(() {
+                          hubResponse.ecg.t_wave_inversion.inferior_lead =
+                              newValue;
+                        });
+                      },
+                      items: YN.values.map((YN value) {
+                        return DropdownMenuItem<YN>(
+                          value: value,
+                          child: Text(value.toString().split('.')[1]),
+                        );
+                      }).toList(),
+                    ),
                   ),
-                ),
-              ],
-            ),
-            SizedBox(height: 1.h),
-            // Dyslipidaemia
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('LVH'),
-                Container(
-                  width: SizeConfig.screenWidth * 0.4,
-                  child: DropdownButton<YN>(
-                    value: hubResponse.ecg.lvh,
-                    isDense: false,
-                    onChanged: (YN newValue) {
-                      setState(() {
-                        hubResponse.ecg.lvh = newValue;
-                      });
-                    },
-                    items: YN.values.map((YN value) {
-                      return DropdownMenuItem<YN>(
-                        value: value,
-                        child: Text(value.toString().split('.')[1]),
-                      );
-                    }).toList(),
+                ],
+              ), // Hypertensive
+              SizedBox(height: 1.h),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Anterior Leads'),
+                  Container(
+                    width: SizeConfig.screenWidth * 0.4,
+                    child: DropdownButton<YN>(
+                      value: hubResponse.ecg.t_wave_inversion.anterior_lead,
+                      isDense: false,
+                      onChanged: (YN newValue) {
+                        setState(() {
+                          hubResponse.ecg.t_wave_inversion.anterior_lead =
+                              newValue;
+                        });
+                      },
+                      items: YN.values.map((YN value) {
+                        return DropdownMenuItem<YN>(
+                          value: value,
+                          child: Text(value.toString().split('.')[1]),
+                        );
+                      }).toList(),
+                    ),
                   ),
-                ),
-              ],
-            ),
-            SizedBox(height: 1.h),
-            // Dyslipidaemia
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('RVH'),
-                Container(
-                  width: SizeConfig.screenWidth * 0.4,
-                  child: DropdownButton<YN>(
-                    value: hubResponse.ecg.rvh,
-                    isDense: false,
-                    onChanged: (YN newValue) {
-                      setState(() {
-                        hubResponse.ecg.rvh = newValue;
-                      });
-                    },
-                    items: YN.values.map((YN value) {
-                      return DropdownMenuItem<YN>(
-                        value: value,
-                        child: Text(value.toString().split('.')[1]),
-                      );
-                    }).toList(),
+                ],
+              ),
+              SizedBox(height: 4.h),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Bundle Branch Blocks'),
+                  Container(
+                    width: SizeConfig.screenWidth * 0.4,
+                    child: DropdownButton<BBBlock>(
+                      value: hubResponse.ecg.bbBlock,
+                      isDense: false,
+                      onChanged: (BBBlock newValue) {
+                        setState(() {
+                          hubResponse.ecg.bbBlock = newValue;
+                        });
+                      },
+                      items: BBBlock.values.map((BBBlock value) {
+                        return DropdownMenuItem<BBBlock>(
+                          value: value,
+                          child: Text(value.toString().split('.')[1]),
+                        );
+                      }).toList(),
+                    ),
                   ),
-                ),
-              ],
-            ),
-            SizedBox(height: 1.h),
-            // Dyslipidaemia
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('RAE'),
-                Container(
-                  width: SizeConfig.screenWidth * 0.4,
-                  child: DropdownButton<YN>(
-                    value: hubResponse.ecg.rae,
-                    isDense: false,
-                    onChanged: (YN newValue) {
-                      setState(() {
-                        hubResponse.ecg.rae = newValue;
-                      });
-                    },
-                    items: YN.values.map((YN value) {
-                      return DropdownMenuItem<YN>(
-                        value: value,
-                        child: Text(value.toString().split('.')[1]),
-                      );
-                    }).toList(),
+                ],
+              ),
+              SizedBox(height: 1.h),
+              // Dyslipidaemia
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('LVH'),
+                  Container(
+                    width: SizeConfig.screenWidth * 0.4,
+                    child: DropdownButton<YN>(
+                      value: hubResponse.ecg.lvh,
+                      isDense: false,
+                      onChanged: (YN newValue) {
+                        setState(() {
+                          hubResponse.ecg.lvh = newValue;
+                        });
+                      },
+                      items: YN.values.map((YN value) {
+                        return DropdownMenuItem<YN>(
+                          value: value,
+                          child: Text(value.toString().split('.')[1]),
+                        );
+                      }).toList(),
+                    ),
                   ),
-                ),
-              ],
-            ),
-            SizedBox(height: 1.h),
-            // Dyslipidaemia
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('LAE'),
-                Container(
-                  width: SizeConfig.screenWidth * 0.4,
-                  child: DropdownButton<YN>(
-                    value: hubResponse.ecg.lae,
-                    isDense: false,
-                    onChanged: (YN newValue) {
-                      setState(() {
-                        hubResponse.ecg.lae = newValue;
-                      });
-                    },
-                    items: YN.values.map((YN value) {
-                      return DropdownMenuItem<YN>(
-                        value: value,
-                        child: Text(value.toString().split('.')[1]),
-                      );
-                    }).toList(),
+                ],
+              ),
+              SizedBox(height: 1.h),
+              // Dyslipidaemia
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('RVH'),
+                  Container(
+                    width: SizeConfig.screenWidth * 0.4,
+                    child: DropdownButton<YN>(
+                      value: hubResponse.ecg.rvh,
+                      isDense: false,
+                      onChanged: (YN newValue) {
+                        setState(() {
+                          hubResponse.ecg.rvh = newValue;
+                        });
+                      },
+                      items: YN.values.map((YN value) {
+                        return DropdownMenuItem<YN>(
+                          value: value,
+                          child: Text(value.toString().split('.')[1]),
+                        );
+                      }).toList(),
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ],
+                ],
+              ),
+              SizedBox(height: 1.h),
+              // Dyslipidaemia
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('RAE'),
+                  Container(
+                    width: SizeConfig.screenWidth * 0.4,
+                    child: DropdownButton<YN>(
+                      value: hubResponse.ecg.rae,
+                      isDense: false,
+                      onChanged: (YN newValue) {
+                        setState(() {
+                          hubResponse.ecg.rae = newValue;
+                        });
+                      },
+                      items: YN.values.map((YN value) {
+                        return DropdownMenuItem<YN>(
+                          value: value,
+                          child: Text(value.toString().split('.')[1]),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 1.h),
+              // Dyslipidaemia
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('LAE'),
+                  Container(
+                    width: SizeConfig.screenWidth * 0.4,
+                    child: DropdownButton<YN>(
+                      value: hubResponse.ecg.lae,
+                      isDense: false,
+                      onChanged: (YN newValue) {
+                        setState(() {
+                          hubResponse.ecg.lae = newValue;
+                        });
+                      },
+                      items: YN.values.map((YN value) {
+                        return DropdownMenuItem<YN>(
+                          value: value,
+                          child: Text(value.toString().split('.')[1]),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       );
 
-  _buildAdviceForm() => Container(
-        width: SizeConfig.screenWidth,
-        margin: EdgeInsets.only(
-          left: 20,
-          right: 20,
-          top: 0,
-          // bottom: MediaQuery.of(context).viewInsets.bottom,
-        ),
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(height: 2.h),
+  _buildAdviceForm() => SingleChildScrollView(
+        child: Container(
+          width: SizeConfig.screenWidth,
+          margin: EdgeInsets.only(
+            left: 20,
+            right: 20,
+            top: 0,
+            // bottom: MediaQuery.of(context).viewInsets.bottom,
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 2.h),
 
-            // Smoker
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Repeat ECG after (mins)'),
-                Container(
-                  width: SizeConfig.screenWidth * 0.4,
-                  child: TextFormField(
-                    keyboardType: TextInputType.number,
-                    focusNode: null,
-                    initialValue: hubResponse.advice.ecg_repeat,
-                    onChanged: (newValue) =>
-                        hubResponse.advice.ecg_repeat = newValue,
-                    decoration: const InputDecoration(
-                      hintText: "Enter duration in mins",
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
+              // Smoker
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Repeat ECG after (mins)'),
+                  Container(
+                    width: SizeConfig.screenWidth * 0.4,
+                    child: TextFormField(
+                      keyboardType: TextInputType.number,
+                      focusNode: null,
+                      initialValue: hubResponse.advice.ecg_repeat,
+                      onChanged: (newValue) =>
+                          hubResponse.advice.ecg_repeat = newValue,
+                      decoration: const InputDecoration(
+                        hintText: "Enter duration in mins",
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            SizedBox(height: 1.h),
-            // Diabetic
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Do Trop T/I test'),
-                Container(
-                  width: SizeConfig.screenWidth * 0.4,
-                  child: DropdownButton<YN>(
-                    value: hubResponse.advice.trop_i_repeat,
-                    isDense: false,
-                    onChanged: (YN newValue) {
-                      setState(() {
-                        hubResponse.advice.trop_i_repeat = newValue;
-                      });
-                    },
-                    items: YN.values.map((YN value) {
-                      return DropdownMenuItem<YN>(
-                        value: value,
-                        child: Text(value.toString().split('.')[1]),
-                      );
-                    }).toList(),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 3.h),
-            // Hypertensive
-
-            Container(
-              width: double.infinity,
-              child: Center(
-                child: Text(
-                  'Medicines',
-                  style: TextStyle(color: kPrimaryColor, fontSize: 10.sp),
-                ),
+                ],
               ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Flexible(
-                    child:
-                        Text('Thrombolyse after ruling out contraindications')),
-                Container(
-                  width: SizeConfig.screenWidth * 0.4,
-                  child: DropdownButton<YN>(
-                    value: hubResponse.advice.medicines.med1['value'],
-                    isDense: false,
-                    onChanged: (YN newValue) {
-                      setState(() {
-                        hubResponse.advice.medicines.med1['value'] =
-                            newValue.toString().split('.')[1];
-                      });
-                    },
-                    items: YN.values.map((YN value) {
-                      return DropdownMenuItem<YN>(
-                        value: value,
-                        child: Text(value.toString().split('.')[1]),
-                      );
-                    }).toList(),
+              SizedBox(height: 1.h),
+              // Diabetic
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Do Trop T/I test'),
+                  Container(
+                    width: SizeConfig.screenWidth * 0.4,
+                    child: DropdownButton<YN>(
+                      value: hubResponse.advice.trop_i_repeat,
+                      isDense: false,
+                      onChanged: (YN newValue) {
+                        setState(() {
+                          hubResponse.advice.trop_i_repeat = newValue;
+                        });
+                      },
+                      items: YN.values.map((YN value) {
+                        return DropdownMenuItem<YN>(
+                          value: value,
+                          child: Text(value.toString().split('.')[1]),
+                        );
+                      }).toList(),
+                    ),
                   ),
-                ),
-              ],
-            ),
-            SizedBox(height: 1.h),
-            // Dyslipidaemia
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Flexible(
-                    child:
-                        Text('Give Loading dose of Clopedogrel and Aspirin')),
-                Container(
-                  width: SizeConfig.screenWidth * 0.4,
-                  child: DropdownButton<YN>(
-                    value: hubResponse.advice.medicines.med2['value'],
-                    isDense: false,
-                    onChanged: (YN newValue) {
-                      setState(() {
-                        hubResponse.advice.medicines.med2['value'] =
-                            newValue.toString().split('.')[1];
-                      });
-                    },
-                    items: YN.values.map((YN value) {
-                      return DropdownMenuItem<YN>(
-                        value: value,
-                        child: Text(value.toString().split('.')[1]),
-                      );
-                    }).toList(),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 1.h),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Flexible(
+                ],
+              ),
+              SizedBox(height: 3.h),
+              // Hypertensive
+
+              Container(
+                width: double.infinity,
+                child: Center(
                   child: Text(
-                      'Give Injection Enoxaparin 30 mg IV after 15 minutes of Thrombolytic therapy'),
-                ),
-                Container(
-                  width: SizeConfig.screenWidth * 0.4,
-                  child: DropdownButton<YN>(
-                    value: hubResponse.advice.medicines.med3['value'],
-                    isDense: false,
-                    onChanged: (YN newValue) {
-                      setState(() {
-                        hubResponse.advice.medicines.med3['value'] =
-                            newValue.toString().split('.')[1];
-                      });
-                    },
-                    items: YN.values.map((YN value) {
-                      return DropdownMenuItem<YN>(
-                        value: value,
-                        child: Text(value.toString().split('.')[1]),
-                      );
-                    }).toList(),
+                    'Medicines',
+                    style: TextStyle(color: kPrimaryColor, fontSize: 10.sp),
                   ),
-                ),
-              ],
-            ),
-            SizedBox(height: 1.h),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Metoprolol'),
-                Container(
-                  width: SizeConfig.screenWidth * 0.4,
-                  child: DropdownButton<MED4>(
-                    value: hubResponse.advice.medicines.med4String(),
-                    isDense: false,
-                    onChanged: (MED4 newValue) {
-                      setState(() {
-                        hubResponse.advice.medicines.med4['value'] =
-                            newValue.toString().split('.')[1];
-                      });
-                    },
-                    items: MED4.values.map((MED4 value) {
-                      return DropdownMenuItem<MED4>(
-                        value: value,
-                        child: Text(MedicineAdvice.med4Map[value]),
-                      );
-                    }).toList(),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 1.h),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Ramipril'),
-                Container(
-                  width: SizeConfig.screenWidth * 0.4,
-                  child: DropdownButton<MED5>(
-                    value: hubResponse.advice.medicines.med5String(),
-                    isDense: false,
-                    onChanged: (MED5 newValue) {
-                      setState(() {
-                        hubResponse.advice.medicines.med5['value'] =
-                            newValue.toString().split('.')[1];
-                      });
-                    },
-                    items: MED5.values.map((MED5 value) {
-                      return DropdownMenuItem<MED5>(
-                        value: value,
-                        child: Text(MedicineAdvice.med5Map[value]),
-                      );
-                    }).toList(),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 1.h),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Telmisartan'),
-                Container(
-                  width: SizeConfig.screenWidth * 0.4,
-                  child: DropdownButton<MED6>(
-                    value: hubResponse.advice.medicines.med6String(),
-                    isDense: false,
-                    onChanged: (MED6 newValue) {
-                      setState(() {
-                        hubResponse.advice.medicines.med6['value'] =
-                            newValue.toString().split('.')[1];
-                      });
-                    },
-                    items: MED6.values.map((MED6 value) {
-                      return DropdownMenuItem<MED6>(
-                        value: value,
-                        child: Text(MedicineAdvice.med6Map[value]),
-                      );
-                    }).toList(),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 1.h),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Atorvastatin'),
-                Container(
-                  width: SizeConfig.screenWidth * 0.4,
-                  child: DropdownButton<MED7>(
-                    value: hubResponse.advice.medicines.med7String(),
-                    isDense: false,
-                    onChanged: (MED7 newValue) {
-                      setState(() {
-                        hubResponse.advice.medicines.med7['value'] =
-                            newValue.toString().split('.')[1];
-                      });
-                    },
-                    items: MED7.values.map((MED7 value) {
-                      return DropdownMenuItem<MED7>(
-                        value: value,
-                        child: Text(MedicineAdvice.med7Map[value]),
-                      );
-                    }).toList(),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 4.h),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Oxygen Inhalation'),
-                Container(
-                  width: SizeConfig.screenWidth * 0.4,
-                  child: DropdownButton<YN>(
-                    value: hubResponse.advice.oxygen_inhalation,
-                    isDense: false,
-                    onChanged: (YN newValue) {
-                      setState(() {
-                        hubResponse.advice.oxygen_inhalation = newValue;
-                      });
-                    },
-                    items: YN.values.map((YN value) {
-                      return DropdownMenuItem<YN>(
-                        value: value,
-                        child: Text(value.toString().split('.')[1]),
-                      );
-                    }).toList(),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 1.h),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Nebulization'),
-                Container(
-                  width: SizeConfig.screenWidth * 0.4,
-                  child: DropdownButton<YN>(
-                    value: hubResponse.advice.nebulization,
-                    isDense: false,
-                    onChanged: (YN newValue) {
-                      setState(() {
-                        hubResponse.advice.nebulization = newValue;
-                      });
-                    },
-                    items: YN.values.map((YN value) {
-                      return DropdownMenuItem<YN>(
-                        value: value,
-                        child: Text(value.toString().split('.')[1]),
-                      );
-                    }).toList(),
-                  ),
-                ),
-              ],
-            ),
-
-            SizedBox(height: 3.h),
-            // Hypertensive
-
-            Container(
-              width: double.infinity,
-              child: Center(
-                child: Text(
-                  'Do Blood biochemistry',
-                  style: TextStyle(color: kPrimaryColor, fontSize: 10.sp),
                 ),
               ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Sugar'),
-                Container(
-                  width: SizeConfig.screenWidth * 0.4,
-                  child: DropdownButton<YN>(
-                    value: hubResponse.advice.bioChemistry.sugar,
-                    isDense: false,
-                    onChanged: (YN newValue) {
-                      setState(() {
-                        hubResponse.advice.bioChemistry.sugar = newValue;
-                      });
-                    },
-                    items: YN.values.map((YN value) {
-                      return DropdownMenuItem<YN>(
-                        value: value,
-                        child: Text(value.toString().split('.')[1]),
-                      );
-                    }).toList(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Flexible(
+                      child: Text(
+                          'Thrombolyse after ruling out contraindications')),
+                  Container(
+                    width: SizeConfig.screenWidth * 0.4,
+                    child: DropdownButton<YN>(
+                      value: hubResponse.advice.medicines.med1['value'] == 'yes'
+                          ? YN.yes
+                          : hubResponse.advice.medicines.med1['value'] == 'nill'
+                              ? YN.nill
+                              : YN.no,
+                      isDense: false,
+                      onChanged: (YN newValue) {
+                        setState(() {
+                          hubResponse.advice.medicines.med1['value'] =
+                              newValue.toString().split('.')[1];
+                        });
+                      },
+                      items: YN.values.map((YN value) {
+                        return DropdownMenuItem<YN>(
+                          value: value,
+                          child: Text(value.toString().split('.')[1]),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 1.h),
+              // Dyslipidaemia
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Flexible(
+                      child:
+                          Text('Give Loading dose of Clopedogrel and Aspirin')),
+                  Container(
+                    width: SizeConfig.screenWidth * 0.4,
+                    child: DropdownButton<YN>(
+                      value: hubResponse.advice.medicines.med2['value'] == 'yes'
+                          ? YN.yes
+                          : hubResponse.advice.medicines.med2['value'] == 'nill'
+                              ? YN.nill
+                              : YN.no,
+                      isDense: false,
+                      onChanged: (YN newValue) {
+                        setState(() {
+                          hubResponse.advice.medicines.med2['value'] =
+                              newValue.toString().split('.')[1];
+                        });
+                      },
+                      items: YN.values.map((YN value) {
+                        return DropdownMenuItem<YN>(
+                          value: value,
+                          child: Text(value.toString().split('.')[1]),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 1.h),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Flexible(
+                    child: Text(
+                        'Give Injection Enoxaparin 30 mg IV after 15 minutes of Thrombolytic therapy'),
+                  ),
+                  Container(
+                    width: SizeConfig.screenWidth * 0.4,
+                    child: DropdownButton<YN>(
+                      value: hubResponse.advice.medicines.med3['value'] == 'yes'
+                          ? YN.yes
+                          : hubResponse.advice.medicines.med3['value'] == 'nill'
+                              ? YN.nill
+                              : YN.no,
+                      isDense: false,
+                      onChanged: (YN newValue) {
+                        setState(() {
+                          hubResponse.advice.medicines.med3['value'] =
+                              newValue.toString().split('.')[1];
+                        });
+                      },
+                      items: YN.values.map((YN value) {
+                        return DropdownMenuItem<YN>(
+                          value: value,
+                          child: Text(value.toString().split('.')[1]),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 1.h),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Metoprolol'),
+                  Container(
+                    width: SizeConfig.screenWidth * 0.4,
+                    child: DropdownButton<MED4>(
+                      value: hubResponse.advice.medicines.med4String(),
+                      isDense: false,
+                      onChanged: (MED4 newValue) {
+                        setState(() {
+                          hubResponse.advice.medicines.med4['value'] =
+                              newValue.toString().split('.')[1];
+                        });
+                      },
+                      items: MED4.values.map((MED4 value) {
+                        return DropdownMenuItem<MED4>(
+                          value: value,
+                          child: Text(
+                            MedicineAdvice.med4Map[value] ?? "nill",
+                            style: TextStyle(fontSize: 8.sp),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 1.h),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Ramipril'),
+                  Container(
+                    width: SizeConfig.screenWidth * 0.4,
+                    child: DropdownButton<MED5>(
+                      value: hubResponse.advice.medicines.med5String(),
+                      isDense: false,
+                      onChanged: (MED5 newValue) {
+                        setState(() {
+                          hubResponse.advice.medicines.med5['value'] =
+                              newValue.toString().split('.')[1];
+                        });
+                      },
+                      items: MED5.values.map((MED5 value) {
+                        return DropdownMenuItem<MED5>(
+                          value: value,
+                          child: Text(
+                            MedicineAdvice.med5Map[value] ?? "nill",
+                            style: TextStyle(fontSize: 8.sp),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 1.h),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Telmisartan'),
+                  Container(
+                    width: SizeConfig.screenWidth * 0.4,
+                    child: DropdownButton<MED6>(
+                      value: hubResponse.advice.medicines.med6String(),
+                      isDense: false,
+                      onChanged: (MED6 newValue) {
+                        setState(() {
+                          hubResponse.advice.medicines.med6['value'] =
+                              newValue.toString().split('.')[1];
+                        });
+                      },
+                      items: MED6.values.map((MED6 value) {
+                        return DropdownMenuItem<MED6>(
+                          value: value,
+                          child: Text(
+                            MedicineAdvice.med6Map[value] ?? "nill",
+                            style: TextStyle(fontSize: 8.sp),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 1.h),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Atorvastatin'),
+                  Container(
+                    width: SizeConfig.screenWidth * 0.4,
+                    child: DropdownButton<MED7>(
+                      value: hubResponse.advice.medicines.med7String(),
+                      isDense: false,
+                      onChanged: (MED7 newValue) {
+                        setState(() {
+                          hubResponse.advice.medicines.med7['value'] =
+                              newValue.toString().split('.')[1];
+                        });
+                      },
+                      items: MED7.values.map((MED7 value) {
+                        return DropdownMenuItem<MED7>(
+                          value: value,
+                          child: Text(
+                            MedicineAdvice.med7Map[value] ?? "nill",
+                            style: TextStyle(fontSize: 8.sp),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 4.h),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Oxygen Inhalation'),
+                  Container(
+                    width: SizeConfig.screenWidth * 0.4,
+                    child: DropdownButton<YN>(
+                      value: hubResponse.advice.oxygen_inhalation,
+                      isDense: false,
+                      onChanged: (YN newValue) {
+                        setState(() {
+                          hubResponse.advice.oxygen_inhalation = newValue;
+                        });
+                      },
+                      items: YN.values.map((YN value) {
+                        return DropdownMenuItem<YN>(
+                          value: value,
+                          child: Text(value.toString().split('.')[1]),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 1.h),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Nebulization'),
+                  Container(
+                    width: SizeConfig.screenWidth * 0.4,
+                    child: DropdownButton<YN>(
+                      value: hubResponse.advice.nebulization,
+                      isDense: false,
+                      onChanged: (YN newValue) {
+                        setState(() {
+                          hubResponse.advice.nebulization = newValue;
+                        });
+                      },
+                      items: YN.values.map((YN value) {
+                        return DropdownMenuItem<YN>(
+                          value: value,
+                          child: Text(value.toString().split('.')[1]),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ],
+              ),
+
+              SizedBox(height: 3.h),
+              // Hypertensive
+
+              Container(
+                width: double.infinity,
+                child: Center(
+                  child: Text(
+                    'Do Blood biochemistry',
+                    style: TextStyle(color: kPrimaryColor, fontSize: 10.sp),
                   ),
                 ),
-              ],
-            ),
-            SizedBox(height: 1.h),
-            // Trop I
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('BU/Creatinine'),
-                Container(
-                  width: SizeConfig.screenWidth * 0.4,
-                  child: DropdownButton<YN>(
-                    value: hubResponse.advice.bioChemistry.bu_creatinine,
-                    isDense: false,
-                    onChanged: (YN newValue) {
-                      setState(() {
-                        hubResponse.advice.bioChemistry.bu_creatinine =
-                            newValue;
-                      });
-                    },
-                    items: YN.values.map((YN value) {
-                      return DropdownMenuItem<YN>(
-                        value: value,
-                        child: Text(value.toString().split('.')[1]),
-                      );
-                    }).toList(),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Sugar'),
+                  Container(
+                    width: SizeConfig.screenWidth * 0.4,
+                    child: DropdownButton<YN>(
+                      value: hubResponse.advice.bioChemistry.sugar,
+                      isDense: false,
+                      onChanged: (YN newValue) {
+                        setState(() {
+                          hubResponse.advice.bioChemistry.sugar = newValue;
+                        });
+                      },
+                      items: YN.values.map((YN value) {
+                        return DropdownMenuItem<YN>(
+                          value: value,
+                          child: Text(value.toString().split('.')[1]),
+                        );
+                      }).toList(),
+                    ),
                   ),
-                ),
-              ],
-            ),
-            SizedBox(height: 1.h),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Electrolytes'),
-                Container(
-                  width: SizeConfig.screenWidth * 0.4,
-                  child: DropdownButton<YN>(
-                    value: hubResponse.advice.bioChemistry.electrolytes,
-                    isDense: false,
-                    onChanged: (YN newValue) {
-                      setState(() {
-                        hubResponse.advice.bioChemistry.electrolytes = newValue;
-                      });
-                    },
-                    items: YN.values.map((YN value) {
-                      return DropdownMenuItem<YN>(
-                        value: value,
-                        child: Text(value.toString().split('.')[1]),
-                      );
-                    }).toList(),
+                ],
+              ),
+              SizedBox(height: 1.h),
+              // Trop I
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('BU/Creatinine'),
+                  Container(
+                    width: SizeConfig.screenWidth * 0.4,
+                    child: DropdownButton<YN>(
+                      value: hubResponse.advice.bioChemistry.bu_creatinine,
+                      isDense: false,
+                      onChanged: (YN newValue) {
+                        setState(() {
+                          hubResponse.advice.bioChemistry.bu_creatinine =
+                              newValue;
+                        });
+                      },
+                      items: YN.values.map((YN value) {
+                        return DropdownMenuItem<YN>(
+                          value: value,
+                          child: Text(value.toString().split('.')[1]),
+                        );
+                      }).toList(),
+                    ),
                   ),
-                ),
-              ],
-            ),
-            SizedBox(height: 1.h),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Hemogram'),
-                Container(
-                  width: SizeConfig.screenWidth * 0.4,
-                  child: DropdownButton<YN>(
-                    value: hubResponse.advice.bioChemistry.hemogram,
-                    isDense: false,
-                    onChanged: (YN newValue) {
-                      setState(() {
-                        hubResponse.advice.bioChemistry.hemogram = newValue;
-                      });
-                    },
-                    items: YN.values.map((YN value) {
-                      return DropdownMenuItem<YN>(
-                        value: value,
-                        child: Text(value.toString().split('.')[1]),
-                      );
-                    }).toList(),
+                ],
+              ),
+              SizedBox(height: 1.h),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Electrolytes'),
+                  Container(
+                    width: SizeConfig.screenWidth * 0.4,
+                    child: DropdownButton<YN>(
+                      value: hubResponse.advice.bioChemistry.electrolytes,
+                      isDense: false,
+                      onChanged: (YN newValue) {
+                        setState(() {
+                          hubResponse.advice.bioChemistry.electrolytes =
+                              newValue;
+                        });
+                      },
+                      items: YN.values.map((YN value) {
+                        return DropdownMenuItem<YN>(
+                          value: value,
+                          child: Text(value.toString().split('.')[1]),
+                        );
+                      }).toList(),
+                    ),
                   ),
-                ),
-              ],
-            ),
-            SizedBox(height: 1.h),
-          ],
+                ],
+              ),
+              SizedBox(height: 1.h),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Hemogram'),
+                  Container(
+                    width: SizeConfig.screenWidth * 0.4,
+                    child: DropdownButton<YN>(
+                      value: hubResponse.advice.bioChemistry.hemogram,
+                      isDense: false,
+                      onChanged: (YN newValue) {
+                        setState(() {
+                          hubResponse.advice.bioChemistry.hemogram = newValue;
+                        });
+                      },
+                      items: YN.values.map((YN value) {
+                        return DropdownMenuItem<YN>(
+                          value: value,
+                          child: Text(value.toString().split('.')[1]),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 1.h),
+            ],
+          ),
         ),
       );
 
