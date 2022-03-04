@@ -166,6 +166,12 @@ class _ResponseScreenState extends State<ResponseScreen>
           editReport = false;
           widget.mainCubit.fetchResponse(widget.patientDetails.id);
         }
+        if (state is SpokeResponseUpdated) {
+          log('LOG > patient_report_screen.dart > 239 > state: ${state.toString()}');
+          _showMessage('Report Saved');
+          editReport = false;
+          widget.mainCubit.fetchResponse(widget.patientDetails.id);
+        }
       },
     );
   }
@@ -182,8 +188,11 @@ class _ResponseScreenState extends State<ResponseScreen>
             editReport
                 ? TextButton(
                     onPressed: () async {
-                      widget.mainCubit.updateHubResponse(
-                          widget.patientDetails.id, hubResponse);
+                      widget.user == UserType.HUB
+                          ? widget.mainCubit.updateHubResponse(
+                              widget.patientDetails.id, hubResponse)
+                          : widget.mainCubit.updateSpokeResponse(
+                              widget.patientDetails.id, spokeResponse);
                     },
                     child: Text(
                       'SAVE',
