@@ -134,7 +134,7 @@ class ECGFile {
   factory ECGFile.fromMap(Map<String, dynamic> map) {
     return ECGFile(
       file_id: map['file_id'] ?? '',
-      seq_no: map['seq_no'] ?? '',
+      seq_no: map['seq_no'].toString() ?? '',
     );
   }
 
@@ -162,30 +162,30 @@ class ECGFile {
 class ECG {
   String ecg_time;
   ECGType ecg_type;
-  List<ECGFile> ecg_file_ids;
+  List<ECGFile> ecg_file_id;
   ECG({
     this.ecg_time,
     this.ecg_type,
-    this.ecg_file_ids,
+    this.ecg_file_id,
   });
   ECG.initialize() {
     this.ecg_time = "nill";
     this.ecg_type = ECGType.nill;
-    this.ecg_file_ids = [];
+    this.ecg_file_id = [];
   }
   set ecg_time_(String value) => this.ecg_time = value;
   set ecg_type_(ECGType value) => this.ecg_type = value;
-  set ecg_file_ids_(List<ECGFile> value) => this.ecg_file_ids = value;
+  set ecg_file_ids_(List<ECGFile> value) => this.ecg_file_id = value;
 
   ECG copyWith({
     String ecg_time,
     ECGType ecg_type,
-    List<ECGFile> ecg_file_ids,
+    List<ECGFile> ecg_file_id,
   }) {
     return ECG(
       ecg_time: ecg_time ?? this.ecg_time,
       ecg_type: ecg_type ?? this.ecg_type,
-      ecg_file_ids: ecg_file_ids ?? this.ecg_file_ids,
+      ecg_file_id: ecg_file_id ?? this.ecg_file_id,
     );
   }
 
@@ -194,7 +194,7 @@ class ECG {
     return {
       'ecg_time': ecg_time == "" ? "nill" : ecg_time,
       'ecg_type': ecg_type.toString().split('.')[1],
-      'ecg_file_ids': ecg_file_ids.map((x) => x.toMap()).toList(),
+      'ecg_file_id': ecg_file_id.map((x) => x.toMap()).toList(),
     };
   }
 
@@ -203,8 +203,8 @@ class ECG {
       ecg_time: map['ecg_time'],
       ecg_type: ECGType.values.firstWhere(
           (element) => element.toString() == "ECGType." + map['ecg_type']),
-      ecg_file_ids: List<ECGFile>.from(
-          map['ecg_file_ids'].map((x) => ECGFile.fromMap(x))),
+      ecg_file_id:
+          List<ECGFile>.from(map['ecg_file_id'].map((x) => ECGFile.fromMap(x))),
     );
   }
 
@@ -214,7 +214,7 @@ class ECG {
 
   @override
   String toString() =>
-      'ECG(ecg_time: $ecg_time, ecg_type: $ecg_type, ecg_file_id: ${ecg_file_ids.toString()})';
+      'ECG(ecg_time: $ecg_time, ecg_type: $ecg_type, ecg_file_id: ${ecg_file_id.toString()})';
 
   @override
   bool operator ==(Object other) {
@@ -223,7 +223,7 @@ class ECG {
     return other is ECG &&
         other.ecg_time == ecg_time &&
         other.ecg_type == ecg_type &&
-        other.ecg_file_ids == ecg_file_ids;
+        other.ecg_file_id == ecg_file_id;
   }
 }
 

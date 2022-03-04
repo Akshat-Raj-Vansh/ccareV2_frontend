@@ -135,8 +135,8 @@ class _PatientReportScreenState extends State<PatientReportScreen>
                       leading: new Icon(Icons.photo_library),
                       title: new Text('Photo Library'),
                       onTap: () {
-                        // _imgFromGallery();
-                        _imgmultipleFromGallery();
+                        _imgFromGallery();
+                        // _imgmultipleFromGallery();
                         Navigator.of(context).pop();
                       }),
                   new ListTile(
@@ -206,7 +206,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
           print(
               'LOG > patient_report_screen.dart > 182 > editedReport: ${editedReport.ecg.ecg_time.toString() == "nill"}');
           print(
-              'LOG > patient_report_screen.dart > 182 > ecg id: ${editedReport.ecg.ecg_file_ids.toString()}');
+              'LOG > patient_report_screen.dart > 182 > ecg id: ${editedReport.ecg.ecg_file_id.toString()}');
           if (state.mixReport.previousTreatment != null)
             previousReport = state.mixReport.previousTreatment;
           //print(editedReport.toString());
@@ -216,8 +216,8 @@ class _PatientReportScreenState extends State<PatientReportScreen>
           }
           noReport = false;
           currentState = state;
-          if (editedReport.ecg.ecg_file_ids != null ||
-              editedReport.ecg.ecg_file_ids.length > 0) {
+          if (editedReport.ecg.ecg_file_id != null ||
+              editedReport.ecg.ecg_file_id.length > 0) {
             ecgUploaded = true;
           }
           // widget.mainCubit
@@ -255,7 +255,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
           print(
               'LOG > patient_report_screen.dart > 182 > editedReport: ${editedReport}');
           print(
-              'LOG > patient_report_screen.dart > 182 > editedReport: ${editedReport.ecg.ecg_file_ids}');
+              'LOG > patient_report_screen.dart > 182 > editedReport: ${editedReport.ecg.ecg_file_id}');
           if (state.mixReport.previousTreatment != null)
             previousReport = state.mixReport.previousTreatment;
           //print(editedReport.toString());
@@ -265,8 +265,8 @@ class _PatientReportScreenState extends State<PatientReportScreen>
           }
           noReport = false;
           currentState = state;
-          if (editedReport.ecg.ecg_file_ids != null ||
-              editedReport.ecg.ecg_file_ids.length > 0) {
+          if (editedReport.ecg.ecg_file_id != null ||
+              editedReport.ecg.ecg_file_id.length > 0) {
             ecgUploaded = true;
           }
         }
@@ -286,7 +286,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
           clickImage = true;
           log('LOG > patient_report_screen.dart > 233 > state: ${state.toString()}');
           _showMessage("Image Uploaded");
-          editedReport.ecg.ecg_file_ids
+          editedReport.ecg.ecg_file_id
               .add(ECGFile(file_id: state.id, seq_no: "SEQNO"));
           editedReport.ecg.ecg_time = state.time;
 
@@ -630,14 +630,14 @@ class _PatientReportScreenState extends State<PatientReportScreen>
                 Text('ECG Scan: '),
                 //  ecgUploaded
                 //#FIXME add suport for multiple ecg scans viewing
-                treatmentReport.ecg.ecg_file_ids.length > 0 && !noReport
+                treatmentReport.ecg.ecg_file_id.length > 0 && !noReport
                     ? GestureDetector(
                         onTap: () {
                           Navigator.push(context,
                               MaterialPageRoute(builder: (_) {
                             return FullScreenImage(
                               imageUrl:
-                                  "$BASEURL/treatment/fetchECG?fileID=${treatmentReport.ecg.ecg_file_ids[0].file_id}",
+                                  "$BASEURL/treatment/fetchECG?fileID=${treatmentReport.ecg.ecg_file_id[0].file_id}",
                               tag: "generate_a_unique_tag",
                             );
                           }));
@@ -645,7 +645,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
                         child: Hero(
                           child: Image(
                               image: NetworkImage(
-                                  "$BASEURL/treatment/fetchECG?fileID=${treatmentReport.ecg.ecg_file_ids[0].file_id}",
+                                  "$BASEURL/treatment/fetchECG?fileID=${treatmentReport.ecg.ecg_file_id[0].file_id}",
                                   headers: {
                                     "Authorization":
                                         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjFiOWNmNGNjNzUxNjMwZWFjOTI2MmY4IiwiaWF0IjoxNjM5NTY3MTgxLCJleHAiOjE2NDAxNzE5ODEsImlzcyI6ImNvbS5jY2FyZW5pdGgifQ.-LlsoqD5xKwUlm16-PBZzdO-kKBC9VK-otDoKwdWL00"
@@ -1030,14 +1030,14 @@ class _PatientReportScreenState extends State<PatientReportScreen>
             ),
             InkWell(
                 onTap: () async {
-                  for (int i = 0; i < _images.length; i++) {
-                    widget.mainCubit.imageClicked(
-                        _image,
-                        editedReport.ecg.ecg_type.toString().split(".")[1],
-                        widget.patientDetails.id,
-                        editedReport,
-                        i);
-                  }
+                  // for (int i = 0; i < _images.length; i++) {
+                  widget.mainCubit.imageClicked(
+                      _image,
+                      editedReport.ecg.ecg_type.toString().split(".")[1],
+                      widget.patientDetails.id,
+                      editedReport,
+                      1);
+                  // }
                 },
                 child: Container(
                   width: SizeConfig.screenWidth,

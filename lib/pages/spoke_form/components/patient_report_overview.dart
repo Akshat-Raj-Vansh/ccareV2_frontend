@@ -129,15 +129,15 @@ class _ReportOverviewState extends State<ReportOverview> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('ECG Scan: '),
-                widget.report.ecg.ecg_file_ids != [] ||
-                        widget.report.ecg.ecg_file_ids != null
+                widget.report.ecg.ecg_file_id != [] ||
+                        widget.report.ecg.ecg_file_id != null
                     ? GestureDetector(
                         onTap: () {
                           Navigator.push(context,
                               MaterialPageRoute(builder: (_) {
                             return FullScreenImage(
                               imageUrl:
-                                  "$BASEURL/treatment/fetchECG?fileID=${widget.report.ecg.ecg_file_ids[0].file_id}",
+                                  "$BASEURL/treatment/fetchECG?fileID=${widget.report.ecg.ecg_file_id[0].file_id}",
                               tag: "generate_a_unique_tag",
                             );
                           }));
@@ -145,7 +145,7 @@ class _ReportOverviewState extends State<ReportOverview> {
                         child: Hero(
                           child: Image(
                               image: NetworkImage(
-                                  "$BASEURL/treatment/fetchECG?fileID=${widget.report.ecg.ecg_file_ids[0].file_id}",
+                                  "$BASEURL/treatment/fetchECG?fileID=${widget.report.ecg.ecg_file_id[0].file_id}",
                                   headers: {
                                     "Authorization":
                                         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjFhMWU5ZGNiYWI4MjZkZTk4NjBmNzkzIiwiaWF0IjoxNjM4MjY1MzkxLCJleHAiOjE2Mzg4NzAxOTEsImlzcyI6ImNvbS5jY2FyZW5pdGgifQ.K-_DprXx2ipOwWt17DODlMDqQSgtWdv8aARjlPdEuzA"

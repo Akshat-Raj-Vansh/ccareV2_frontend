@@ -150,6 +150,7 @@ class _PatientInfoState extends State<PatientInfo> {
             //       _hideLoader();
             currentState = DetailsLoaded;
             eDetails = state.eDetails;
+            print(eDetails);
             if (eDetails.patientDetails != null) {
               _patientAccepted = true;
               _emergency = true;

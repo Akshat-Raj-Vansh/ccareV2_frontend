@@ -280,7 +280,7 @@ class MainCubit extends Cubit<MainState> {
     emit(ImageCaptured("Image Clicked", result.asValue!.value.split('#')[1],
         result.asValue!.value.split('#')[2]));
     //#FIXME: ad all the images somehow
-    report.ecg.ecg_file_ids = [
+    report.ecg.ecg_file_id = [
       ECGFile(
           file_id: result.asValue!.value.split('#')[1],
           seq_no: seq_no.toString())
@@ -331,7 +331,7 @@ class MainCubit extends Cubit<MainState> {
   }
 
   fetchResponse(String patientID) async {
-    _startLoading("Fetch Response");
+    // _startLoading("Fetch Response");
     final token = await localStore.fetch();
     final result = await api.getConsultationResponse(token, patientID);
     if (result.isError) {
