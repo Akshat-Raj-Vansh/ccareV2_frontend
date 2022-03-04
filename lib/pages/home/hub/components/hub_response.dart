@@ -783,12 +783,16 @@ class _ResponseScreenState extends State<ResponseScreen>
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Text(
+              spokeResponse.note == "" ? "None" : spokeResponse.note,
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
             SizedBox(height: 2.h),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('Chest Pain'),
-                Text(spokeResponse.chest_pain.toString().split('.')[1]),
+                Text(spokeResponse.getChestString()),
               ],
             ),
             SizedBox(height: 1.h),
@@ -804,14 +808,6 @@ class _ResponseScreenState extends State<ResponseScreen>
             ),
             SizedBox(height: 1.h),
             // Onset
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Flexible(child: Text('Other Remarks')),
-                Text(spokeResponse.note == "" ? "None" : spokeResponse.note),
-              ],
-            ),
-            SizedBox(height: 3.h),
           ],
         ),
       );

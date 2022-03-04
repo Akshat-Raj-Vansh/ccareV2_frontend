@@ -853,7 +853,7 @@ class MainAPI extends IMainAPI {
   Future<Result<String>> updateSpokeResponse(
       Token token, String patientID, SpokeResponse spokeResponse) async {
     String endpoint =
-        baseUrl + "/treatment/spoke/updateSpokeResponse?patientID=$patientID";
+        baseUrl + "/treatment/spoke/uploadSpokeResponse?patientID=$patientID";
     var header = {
       "Content-Type": "application/json",
       "Authorization": token.value

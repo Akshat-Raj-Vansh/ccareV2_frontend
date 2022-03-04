@@ -42,7 +42,8 @@ class SpokeResponse {
   );
 
   SpokeResponse.initialize() {
-    this.note = "";
+    this.note =
+        "Data to be shared by doctors at spoke centre after one hour of initiating thrombolytic treatment as advised from hub centre.";
     this.chest_pain = ChestP.nill;
     this.st_elevation = STE.nill;
   }
