@@ -1775,8 +1775,8 @@ class _ResponseScreenState extends State<ResponseScreen>
         child: Container(
           width: SizeConfig.screenWidth,
           margin: EdgeInsets.only(
-            left: 20,
-            right: 20,
+            left: 10,
+            right: 10,
             top: 0,
             // bottom: MediaQuery.of(context).viewInsets.bottom,
           ),
@@ -1791,7 +1791,7 @@ class _ResponseScreenState extends State<ResponseScreen>
                 children: [
                   Text('Chest Pain'),
                   Container(
-                    width: SizeConfig.screenWidth * 0.4,
+                    width: SizeConfig.screenWidth * 0.2,
                     child: DropdownButton<ChestP>(
                       value: spokeResponse.chest_pain,
                       isDense: false,
@@ -1814,7 +1814,7 @@ class _ResponseScreenState extends State<ResponseScreen>
               SizedBox(height: 1.h),
               // Site
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Flexible(
                       child: Text(
@@ -1842,26 +1842,26 @@ class _ResponseScreenState extends State<ResponseScreen>
               ),
               SizedBox(height: 1.h),
               // Location
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text('Repeat ECG after: '),
-                  Container(
-                    width: SizeConfig.screenWidth * 0.4,
-                    child: TextFormField(
-                      keyboardType: TextInputType.number,
-                      focusNode: null,
-                      initialValue: hubResponse.advice.ecg_repeat,
-                      onChanged: (newValue) =>
-                          hubResponse.advice.ecg_repeat = newValue,
-                      decoration: const InputDecoration(
-                        hintText: "Enter duration in mins",
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   children: [
+              //     Text('Repeat ECG after: '),
+              //     Container(
+              //       width: SizeConfig.screenWidth * 0.4,
+              //       child: TextFormField(
+              //         keyboardType: TextInputType.number,
+              //         focusNode: null,
+              //         initialValue: hubResponse.advice.ecg_repeat,
+              //         onChanged: (newValue) =>
+              //             hubResponse.advice.ecg_repeat = newValue,
+              //         decoration: const InputDecoration(
+              //           hintText: "Enter duration in mins",
+              //           floatingLabelBehavior: FloatingLabelBehavior.always,
+              //         ),
+              //       ),
+              //     ),
+              //   ],
+              // ),
             ],
           ),
         ),
