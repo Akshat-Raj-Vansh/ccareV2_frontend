@@ -529,7 +529,7 @@ class _ResponseScreenState extends State<ResponseScreen>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('Bundle Branch Block'),
-                Text(hubResponse.ecg.bbBlock.toString().split('.')[1]),
+                Text(hubResponse.ecg.bbblock.toString().split('.')[1]),
               ],
             ),
             SizedBox(height: 1.h),
@@ -1144,11 +1144,11 @@ class _ResponseScreenState extends State<ResponseScreen>
                   Container(
                     width: SizeConfig.screenWidth * 0.4,
                     child: DropdownButton<BBBlock>(
-                      value: hubResponse.ecg.bbBlock,
+                      value: hubResponse.ecg.bbblock,
                       isDense: false,
                       onChanged: (BBBlock newValue) {
                         setState(() {
-                          hubResponse.ecg.bbBlock = newValue;
+                          hubResponse.ecg.bbblock = newValue;
                         });
                       },
                       items: BBBlock.values.map((BBBlock value) {

@@ -805,15 +805,17 @@ class MainAPI extends IMainAPI {
       //print(transformError(map));
       return Result.error(transformError(map));
     }
-    if (jsonDecode(response.body)["hubResponses"] == null ||
-        jsonDecode(response.body)["spokeResponses"] == null)
+    if (jsonDecode(response.body)["hubResponse"] == null ||
+        jsonDecode(response.body)["spokeResponse"] == null)
       //intialize both
       return Result.error("error");
+
+    dynamic hub = jsonDecode(response.body)["hubResponse"];
+    print(hub);
+    dynamic spoke = jsonDecode(response.body)["spokeResponse"];
     return Result.value({
-      "hubResponse":
-          HubResponse.fromJson(jsonDecode(response.body)["hubResponses"]),
-      "spokeResponse":
-          SpokeResponse.fromJson(jsonDecode(response.body)["spokeResponses"])
+      "hubResponse": HubResponse.fromJson(jsonEncode(hub)).toString(),
+      "spokeResponse": SpokeResponse.fromJson(jsonEncode(spoke))
     });
   }
 
