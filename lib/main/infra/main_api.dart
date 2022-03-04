@@ -818,7 +818,7 @@ class MainAPI extends IMainAPI {
     return Result.value({
       "hubResponse": hub['ecg']['rythm'] == null
           ? HubResponse.initialize()
-          : HubResponse.fromJson(jsonEncode(hub)).toString(),
+          : HubResponse.fromJson(jsonEncode(hub)),
       "spokeResponse": spoke['chest_pain'] == null
           ? SpokeResponse.initialize()
           : SpokeResponse.fromJson(jsonEncode(spoke))

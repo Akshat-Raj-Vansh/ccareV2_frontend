@@ -327,15 +327,15 @@ class MainCubit extends Cubit<MainState> {
   }
 
   fetchResponse(String patientID) async {
-    _startLoading("Fetch Response");
     final token = await localStore.fetch();
     final result = await api.getConsultationResponse(token, patientID);
     if (result.isError) {
       emit(NoResponseState(result.asError!.error as String));
       return;
     }
-    emit(ResponsesLoaded(result.asValue!.value["hubResponse"],
-        result.asValue!.value["spokeResponse"]));
+    HubResponse hub = result.asValue!.value["hubResponse"];
+    SpokeResponse spoke = result.asValue!.value["spokeResponse"];
+    emit(ResponsesLoaded(hub, spoke));
   }
 
   editResponse() async {
@@ -347,7 +347,6 @@ class MainCubit extends Cubit<MainState> {
   // }
 
   updateHubResponse(String patientID, HubResponse hubResponse) async {
-    _startLoading("Update Hub Response");
     final token = await localStore.fetch();
     final result = await api.updateHubResponse(token, patientID, hubResponse);
     if (result.isError) {
@@ -358,7 +357,6 @@ class MainCubit extends Cubit<MainState> {
   }
 
   updateSpokeResponse(String patientID, SpokeResponse spokeResponse) async {
-    _startLoading("Update Spoke Response");
     final token = await localStore.fetch();
     final result =
         await api.updateSpokeResponse(token, patientID, spokeResponse);
