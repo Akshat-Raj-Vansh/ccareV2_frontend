@@ -805,9 +805,9 @@ class MainAPI extends IMainAPI {
       //print(transformError(map));
       return Result.error(transformError(map));
     }
-    print(jsonDecode(response.body)["hubResponse"] == null);
+    // print(jsonDecode(response.body)["hubResponse"].ecg.rythm);
     print(jsonDecode(response.body)["spokeResponse"] == null);
-    if (jsonDecode(response.body)["hubResponse"]['rythm'] == null &&
+    if (jsonDecode(response.body)["hubResponse"]['ecg']['rythm'] == null &&
         jsonDecode(response.body)["spokeResponse"]['chest_pain'] == null)
       //intialize both
       return Result.error("error");
