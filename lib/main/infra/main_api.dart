@@ -799,23 +799,29 @@ class MainAPI extends IMainAPI {
       "Authorization": token.value
     };
     var response = await _client.get(Uri.parse(endpoint), headers: header);
-
+    print('response.body' + response.body);
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
       //print(transformError(map));
       return Result.error(transformError(map));
     }
-    if (jsonDecode(response.body)["hubResponse"] == null ||
-        jsonDecode(response.body)["spokeResponse"] == null)
+    print(jsonDecode(response.body)["hubResponse"] == null);
+    print(jsonDecode(response.body)["spokeResponse"] == null);
+    if (jsonDecode(response.body)["hubResponse"]['rythm'] == null &&
+        jsonDecode(response.body)["spokeResponse"]['chest_pain'] == null)
       //intialize both
       return Result.error("error");
 
     dynamic hub = jsonDecode(response.body)["hubResponse"];
-    print(hub);
+    print('hub response' + hub.toString());
     dynamic spoke = jsonDecode(response.body)["spokeResponse"];
     return Result.value({
-      "hubResponse": HubResponse.fromJson(jsonEncode(hub)).toString(),
-      "spokeResponse": SpokeResponse.fromJson(jsonEncode(spoke))
+      "hubResponse": hub == null
+          ? HubResponse.initialize()
+          : HubResponse.fromJson(jsonEncode(hub)).toString(),
+      "spokeResponse": spoke == null
+          ? SpokeResponse.initialize()
+          : SpokeResponse.fromJson(jsonEncode(spoke))
     });
   }
 

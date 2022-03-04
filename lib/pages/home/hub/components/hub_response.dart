@@ -123,7 +123,7 @@ class _ResponseScreenState extends State<ResponseScreen>
         }
 
         if (state is NoResponseState) {
-          //print('No Report State Called');
+          print('No Response State Called');
           log('LOG > patient_report_screen.dart > 201 > state: ${state.toString()}');
           currentState = state;
           noReport = true;
@@ -573,6 +573,17 @@ class _ResponseScreenState extends State<ResponseScreen>
                 Text('LAE'),
                 Text(
                   (hubResponse.ecg.lae.toString().split('.')[1]),
+                ),
+              ],
+            ),
+            SizedBox(height: 1.h),
+            // Hypertensive
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Diagnosis'),
+                Text(
+                  (hubResponse.ecg.diagnosis.toString().split('.')[1]),
                 ),
               ],
             ),
@@ -1257,6 +1268,32 @@ class _ResponseScreenState extends State<ResponseScreen>
                       },
                       items: YN.values.map((YN value) {
                         return DropdownMenuItem<YN>(
+                          value: value,
+                          child: Text(value.toString().split('.')[1]),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 1.h),
+              // Dyslipidaemia
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Diagnosis'),
+                  Container(
+                    width: SizeConfig.screenWidth * 0.4,
+                    child: DropdownButton<Diagonis>(
+                      value: hubResponse.ecg.diagnosis,
+                      isDense: false,
+                      onChanged: (Diagonis newValue) {
+                        setState(() {
+                          hubResponse.ecg.diagnosis = newValue;
+                        });
+                      },
+                      items: Diagonis.values.map((Diagonis value) {
+                        return DropdownMenuItem<Diagonis>(
                           value: value,
                           child: Text(value.toString().split('.')[1]),
                         );

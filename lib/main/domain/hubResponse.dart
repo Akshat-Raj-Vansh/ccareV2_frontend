@@ -69,7 +69,7 @@ class EcgInterperation {
   YN rvh;
   YN rae;
   YN lae;
-  Diagonis diagonis;
+  Diagonis diagnosis;
   EcgInterperation({
     this.rythm,
     this.st_elevation,
@@ -80,7 +80,7 @@ class EcgInterperation {
     this.rvh,
     this.rae,
     this.lae,
-    this.diagonis,
+    this.diagnosis,
   });
 
   EcgInterperation.initialize() {
@@ -93,7 +93,7 @@ class EcgInterperation {
     this.rvh = YN.nill;
     this.rae = YN.nill;
     this.lae = YN.nill;
-    this.diagonis = Diagonis.nill;
+    this.diagnosis = Diagonis.nill;
   }
 
   EcgInterperation copyWith({
@@ -106,7 +106,7 @@ class EcgInterperation {
     YN rvh,
     YN rae,
     YN lae,
-    Diagonis diagonis,
+    Diagonis diagnosis,
   }) {
     return EcgInterperation(
       rythm: rythm ?? this.rythm,
@@ -118,7 +118,7 @@ class EcgInterperation {
       rvh: rvh ?? this.rvh,
       rae: rae ?? this.rae,
       lae: lae ?? this.lae,
-      diagonis: diagonis ?? this.diagonis,
+      diagnosis: diagnosis ?? this.diagnosis,
     );
   }
 
@@ -133,7 +133,7 @@ class EcgInterperation {
       'rvh': rvh.toString().split(".")[1],
       'rae': rae.toString().split(".")[1],
       'lae': lae.toString().split(".")[1],
-      'diagonis': diagonis.toString().split(".")[1],
+      'diagnosis': diagnosis.toString().split(".")[1],
     };
   }
 
@@ -157,8 +157,8 @@ class EcgInterperation {
       rvh: ynCheck(map['rvh']),
       rae: ynCheck(map['rae']),
       lae: ynCheck(map['lae']),
-      diagonis: Diagonis.values.firstWhere(
-          (element) => element.toString() == "Diagonis." + map['diagonis']),
+      diagnosis: Diagonis.values.firstWhere(
+          (element) => element.toString() == "Diagonis." + map['diagnosis']),
     );
   }
 
@@ -169,7 +169,7 @@ class EcgInterperation {
 
   @override
   String toString() {
-    return 'EcgInterperation(rythm: $rythm, st_elevation: $st_elevation, st_depression: $st_depression, t_wave_inversion: $t_wave_inversion, bbblock: $bbblock, lvh: $lvh, rvh: $rvh, rae: $rae, lae: $lae, diagonis: $diagonis)';
+    return 'EcgInterperation(rythm: $rythm, st_elevation: $st_elevation, st_depression: $st_depression, t_wave_inversion: $t_wave_inversion, bbblock: $bbblock, lvh: $lvh, rvh: $rvh, rae: $rae, lae: $lae, diagnosis: $diagnosis)';
   }
 
   @override
@@ -186,7 +186,7 @@ class EcgInterperation {
         other.rvh == rvh &&
         other.rae == rae &&
         other.lae == lae &&
-        other.diagonis == diagonis;
+        other.diagnosis == diagnosis;
   }
 
   @override
@@ -200,7 +200,7 @@ class EcgInterperation {
         rvh.hashCode ^
         rae.hashCode ^
         lae.hashCode ^
-        diagonis.hashCode;
+        diagnosis.hashCode;
   }
 }
 
