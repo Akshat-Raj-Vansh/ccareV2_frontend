@@ -118,6 +118,7 @@ class _ResponseScreenState extends State<ResponseScreen>
       builder: (_, state) {
         print(state);
         if (state is ResponsesLoaded) {
+          currentState = state;
           hubResponse = state.hubResponse;
           spokeResponse = state.spokeResponse;
         }
@@ -635,7 +636,7 @@ class _ResponseScreenState extends State<ResponseScreen>
                 Flexible(
                     child:
                         Text('Thrombolyse after ruling out contraindications')),
-                Text(advice.medicines.med1['value'].split('.')[1]),
+                Text(advice.medicines.med1['value'].toString().split('.')[1]),
               ],
             ),
             SizedBox(height: 1.h),
@@ -645,7 +646,7 @@ class _ResponseScreenState extends State<ResponseScreen>
                 Flexible(
                     child:
                         Text('Give loading dose of Clopedogrel and Aspirin')),
-                Text(advice.medicines.med2['value'].split('.')[1]),
+                Text(advice.medicines.med2['value']),
               ],
             ),
             SizedBox(height: 1.h),
@@ -656,7 +657,7 @@ class _ResponseScreenState extends State<ResponseScreen>
                   child: Text(
                       'Give Injection Enoxaparin 30 mg IV after 15 minutes of Thrombolytic therapy'),
                 ),
-                Text(advice.medicines.med3['value'].split('.')[1]),
+                Text(advice.medicines.med3['value']),
               ],
             ),
             SizedBox(height: 1.h),

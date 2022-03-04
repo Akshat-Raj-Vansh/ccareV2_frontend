@@ -791,7 +791,8 @@ class MainAPI extends IMainAPI {
   }
 
   @override
-  Future<Result> getConsultationResponse(Token token, String patientID) async {
+  Future<Result<dynamic>> getConsultationResponse(
+      Token token, String patientID) async {
     String endpoint =
         baseUrl + "/treatment/getConsultationResponse?patientID=$patientID";
     var header = {
@@ -805,8 +806,8 @@ class MainAPI extends IMainAPI {
       //print(transformError(map));
       return Result.error(transformError(map));
     }
-    // print(jsonDecode(response.body)["hubResponse"].ecg.rythm);
-    print(jsonDecode(response.body)["spokeResponse"] == null);
+    print(jsonDecode(response.body)["hubResponse"]['ecg']['rythm']);
+    print(jsonDecode(response.body)["spokeResponse"]['chest_pain'] == null);
     if (jsonDecode(response.body)["hubResponse"]['ecg']['rythm'] == null &&
         jsonDecode(response.body)["spokeResponse"]['chest_pain'] == null)
       //intialize both
@@ -816,10 +817,10 @@ class MainAPI extends IMainAPI {
     print('hub response' + hub.toString());
     dynamic spoke = jsonDecode(response.body)["spokeResponse"];
     return Result.value({
-      "hubResponse": hub == null
+      "hubResponse": hub['ecg']['rythm'] == null
           ? HubResponse.initialize()
-          : HubResponse.fromJson(jsonEncode(hub)).toString(),
-      "spokeResponse": spoke == null
+          : HubResponse.fromJson(jsonEncode(hub)),
+      "spokeResponse": spoke['chest_pain'] == null
           ? SpokeResponse.initialize()
           : SpokeResponse.fromJson(jsonEncode(spoke))
     });

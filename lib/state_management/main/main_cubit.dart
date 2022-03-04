@@ -334,7 +334,8 @@ class MainCubit extends Cubit<MainState> {
       emit(NoResponseState(result.asError!.error as String));
       return;
     }
-    emit(ResponsesLoaded(result.asValue!.value["hubResponse"],
+
+    emit(ResponsesLoaded(result.asValue!.value['hubResponse'],
         result.asValue!.value["spokeResponse"]));
   }
 
@@ -348,7 +349,6 @@ class MainCubit extends Cubit<MainState> {
 
   updateHubResponse(String patientID, HubResponse hubResponse) async {
     _startLoading("Update Hub Response");
-
     final token = await localStore.fetch();
     final result = await api.updateHubResponse(token, patientID, hubResponse);
     if (result.isError) {
