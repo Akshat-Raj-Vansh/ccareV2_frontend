@@ -663,13 +663,13 @@ class MedicineAdvice {
   };
 
   med4String() => med4Map[MED4.values.firstWhere(
-      (element) => element.toString() == "MED4." + this.med4['value'])];
+      (element) => element.toString() == this.med4['value'].toString())];
   med5String() => med5Map[MED5.values.firstWhere(
-      (element) => element.toString() == "MED5." + this.med5['value'])];
+      (element) => element.toString() == this.med5['value'].toString())];
   med6String() => med6Map[MED6.values.firstWhere(
-      (element) => element.toString() == "MED6." + this.med6['value'])];
+      (element) => element.toString() == this.med6['value'].toString())];
   med7String() => med7Map[MED7.values.firstWhere(
-      (element) => element.toString() == "MED7." + this.med7['value'])];
+      (element) => element.toString() == this.med7['value'].toString())];
   // _med4String(MED4 value) => med4Map[value];
   // _med5String(MED5 value) => med5Map[value];
   // _med6String(MED6 value) => med6Map[value];
@@ -702,21 +702,21 @@ class MedicineAdvice {
   MedicineAdvice.initialize() {
     this.med1 = {
       'name': "Thrombolyse after ruling out contraindications",
-      'value': "nill"
+      'value': "YN.nill"
     };
     this.med2 = {
       'name': "Give Loading dose of Clopedogrel and Aspirin",
-      'value': "nill"
+      'value': "YN.nill"
     };
     this.med3 = {
       'name':
           "Give Injection Enoxaparin 30 mg IV after 15 minutes of Thrombolytic therapy.",
-      'value': "nill"
+      'value': "YN.nill"
     };
-    this.med4 = {'name': "Metoprolol ", 'value': "nill"};
-    this.med5 = {'name': "Ramipril", 'value': "nill"};
-    this.med6 = {'name': "Telmisartan", 'value': "nill"};
-    this.med7 = {'name': "Atorvastatin ", 'value': "nill"};
+    this.med4 = {'name': "Metoprolol ", 'value': "MED4.nill"};
+    this.med5 = {'name': "Ramipril", 'value': "MED5.nill"};
+    this.med6 = {'name': "Telmisartan", 'value': "MED6.nill"};
+    this.med7 = {'name': "Atorvastatin ", 'value': "MED7.nill"};
   }
 
   MedicineAdvice copyWith({
