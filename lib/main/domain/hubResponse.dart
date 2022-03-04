@@ -634,6 +634,7 @@ class BioChemistry {
 
 class MedicineAdvice {
   static const Map<MED4, String> med4Map = {
+    MED4.nill: "nill",
     MED4.NO: "NO",
     MED4.A: "25 mg once a day",
     MED4.B: "50 mg once a day",
@@ -641,32 +642,46 @@ class MedicineAdvice {
   };
 
   static const Map<MED5, String> med5Map = {
+    MED5.nill: "nill",
     MED5.NO: "NO",
     MED5.A: "2.5 mg once a day",
     MED5.B: "5 mg once a day",
     MED5.C: "10 mg once a day",
   };
   static const Map<MED6, String> med6Map = {
+    MED6.nill: "nill",
     MED6.NO: "NO",
     MED6.A: "40 mg once a day",
     MED6.B: "50 mg twice a day",
   };
 
   static const Map<MED7, String> med7Map = {
+    MED7.nill: "nill",
     MED7.A: "20 mg once a day",
     MED7.B: "40 mg once a day",
     MED7.C: "89 mg once a day",
   };
 
-  med4String() => med4Map[this.med4];
-  med5String() => med5Map[this.med5];
-  med6String() => med6Map[this.med6];
-  med7String() => med7Map[this.med7];
+  med4String() => med4Map[MED4.values.firstWhere(
+      (element) => element.toString() == "MED4." + this.med4['value'])];
+  med5String() => med5Map[MED5.values.firstWhere(
+      (element) => element.toString() == "MED5." + this.med5['value'])];
+  med6String() => med6Map[MED6.values.firstWhere(
+      (element) => element.toString() == "MED6." + this.med6['value'])];
+  med7String() => med7Map[MED7.values.firstWhere(
+      (element) => element.toString() == "MED7." + this.med7['value'])];
   // _med4String(MED4 value) => med4Map[value];
   // _med5String(MED5 value) => med5Map[value];
   // _med6String(MED6 value) => med6Map[value];
   // _med7String(MED7 value) => med7Map[value];
-
+  med4Enum() => MED4.values.firstWhere(
+      (element) => element.toString() == "MED4." + this.med4['value']);
+  med5Enum() => MED5.values.firstWhere(
+      (element) => element.toString() == "MED5." + this.med5['value']);
+  med6Enum() => MED6.values.firstWhere(
+      (element) => element.toString() == "MED6." + this.med6['value']);
+  med7Enum() => MED7.values.firstWhere(
+      (element) => element.toString() == "MED7." + this.med7['value']);
   dynamic med1;
   dynamic med2;
   dynamic med3;
@@ -726,13 +741,13 @@ class MedicineAdvice {
 
   Map<String, dynamic> toMap() {
     return {
-      'med1': {'name': med1.name, "value": med1.value.toString().split('.')[1]},
-      'med2': {'name': med2.name, "value": med2.value.toString().split('.')[1]},
-      'med3': {'name': med3.name, "value": med3.value.toString().split('.')[1]},
-      'med4': {'name': med4.name, "value": med4.value.toString().split('.')[1]},
-      'med5': {'name': med5.name, "value": med5.value.toString().split('.')[1]},
-      'med6': {'name': med6.name, "value": med6.value.toString().split('.')[1]},
-      'med7': {'name': med7.name, "value": med7.value.toString().split('.')[1]},
+      'med1': {'name': med1['name'], "value": med1['value'].toString()},
+      'med2': {'name': med2['name'], "value": med2['value'].toString()},
+      'med3': {'name': med3['name'], "value": med3['value'].toString()},
+      'med4': {'name': med4['name'], "value": med4['value'].toString()},
+      'med5': {'name': med5['name'], "value": med5['value'].toString()},
+      'med6': {'name': med6['name'], "value": med6['value'].toString()},
+      'med7': {'name': med7['name'], "value": med7['value'].toString()},
     };
   }
 
@@ -813,10 +828,10 @@ class MedicineAdvice {
 }
 
 enum YN { nill, yes, no }
-enum BBBlock { No, LBBB, RBBB, nill }
-enum Diagonis { STEMI, NSTEMI, SACS, NCCP, nill }
+enum BBBlock { nill, No, LBBB, RBBB }
+enum Diagonis { nill, STEMI, NSTEMI, SACS, NCCP }
 enum Rythm { nill, NSR, A_Fib, A, V_Block }
-enum MED4 { NO, nill, A, B, C }
-enum MED5 { NO, nill, A, B, C }
-enum MED6 { NO, nill, A, B }
-enum MED7 { A, B, C }
+enum MED4 { nill, NO, A, B, C }
+enum MED5 { nill, NO, A, B, C }
+enum MED6 { nill, NO, A, B }
+enum MED7 { nill, A, B, C }

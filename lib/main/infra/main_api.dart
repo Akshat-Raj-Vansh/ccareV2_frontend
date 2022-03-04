@@ -799,6 +799,7 @@ class MainAPI extends IMainAPI {
       "Authorization": token.value
     };
     var response = await _client.get(Uri.parse(endpoint), headers: header);
+
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
       //print(transformError(map));
@@ -820,13 +821,15 @@ class MainAPI extends IMainAPI {
   Future<Result<String>> updateHubResponse(
       Token token, String patientID, HubResponse hubResponse) async {
     String endpoint =
-        baseUrl + "/treatment/hub/updateHubResponse?patientID=$patientID";
+        baseUrl + "/treatment/hub/uploadHubResponse?patientID=$patientID";
     var header = {
       "Content-Type": "application/json",
       "Authorization": token.value
     };
     var response = await _client.post(Uri.parse(endpoint),
         headers: header, body: hubResponse.toJson());
+    print(response.statusCode);
+    print(response.body);
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
       //print(transformError(map));
