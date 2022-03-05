@@ -160,6 +160,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
         },
         listener: (context, state) async {
           print("Auth Page State $state");
+
           if (state is NormalState) {
             _hideLoader();
             // currentState = NormalState;
