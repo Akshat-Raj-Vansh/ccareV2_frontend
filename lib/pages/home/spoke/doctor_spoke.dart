@@ -175,6 +175,8 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
             _hideLoader();
           } else if (state is TokenLoadedState) {
             token = state.token;
+          } else if (state is AssessmentLoaded) {
+            _hideLoader();
           } else if (state is AcceptState) {
             _hideLoader();
             log('LOG > doctor_spoke.dart > 237 > state: ${state.toString()}',

@@ -1,8 +1,10 @@
 import 'dart:convert';
 
+import 'package:collection/collection.dart';
+
 class PatientAssessment {
   final String question;
-  final String answer;
+  final List<String> answer;
   PatientAssessment({
     required this.question,
     required this.answer,
@@ -10,7 +12,7 @@ class PatientAssessment {
 
   PatientAssessment copyWith({
     String? question,
-    String? answer,
+    List<String>? answer,
   }) {
     return PatientAssessment(
       question: question ?? this.question,
@@ -28,7 +30,7 @@ class PatientAssessment {
   factory PatientAssessment.fromMap(Map<String, dynamic> map) {
     return PatientAssessment(
       question: map['question'] ?? '',
-      answer: map['answer'] ?? '',
+      answer: List<String>.from(map['answer']),
     );
   }
 
@@ -44,10 +46,11 @@ class PatientAssessment {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
+    final listEquals = const DeepCollectionEquality().equals;
 
     return other is PatientAssessment &&
         other.question == question &&
-        other.answer == answer;
+        listEquals(other.answer, answer);
   }
 
   @override

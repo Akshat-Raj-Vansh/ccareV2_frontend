@@ -96,12 +96,17 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
                       Align(
                         alignment: Alignment.bottomRight,
                         child: Container(
-                          padding: pad,
-                          decoration: decB,
-                          margin: EdgeInsets.only(right: 10, top: 10),
-                          child: Text(widget.assessment[index].answer,
-                              style: styles),
-                        ),
+                            padding: pad,
+                            decoration: decB,
+                            margin: EdgeInsets.only(right: 10, top: 10),
+                            child: Wrap(
+                              children: List<Widget>.generate(
+                                widget.assessment[index].answer.length,
+                                (ind) => Text(
+                                    widget.assessment[index].answer[ind],
+                                    style: styles),
+                              ),
+                            )),
                       ),
                     ]);
                   }),
