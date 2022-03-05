@@ -191,6 +191,7 @@ class _PatientInfoState extends State<PatientInfo> {
           } else if (state is TokenLoadedState) {
             token = state.token;
           } else if (state is AssessmentLoaded) {
+            // _hideLoader();
             Navigator.of(context).push(MaterialPageRoute(builder: (context) {
               return AssessmentScreen(state.assessments);
             }));
@@ -503,7 +504,7 @@ class _PatientInfoState extends State<PatientInfo> {
 
   _buildPatientAssessmentButton() => InkWell(
         onTap: () async {
-          CubitProvider.of<MainCubit>(context).getAssessments(widget.patientID);
+          widget.mainCubit.getAssessments(widget.patientID);
         },
         child: Container(
           width: SizeConfig.screenWidth,

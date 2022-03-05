@@ -715,8 +715,7 @@ class MainAPI extends IMainAPI {
   @override
   Future<Result<List<PatientAssessment>>> getAssessments(
       Token token, String patientID) async {
-    String endpoint =
-        baseUrl + "/emergency/getAssessments?patientID=$patientID";
+    String endpoint = baseUrl + "/emergency/getAssessment?patientID=$patientID";
     var header = {
       "Content-Type": "application/json",
       "Authorization": token.value
