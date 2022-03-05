@@ -26,6 +26,18 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
   int age;
   Gender gender = Gender.MALE;
   String phone;
+  _showMessage(String msg) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      backgroundColor: Theme.of(context).accentColor,
+      content: Text(
+        msg,
+        style: Theme.of(context)
+            .textTheme
+            .caption
+            .copyWith(color: Colors.white, fontSize: 12.sp),
+      ),
+    ));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +56,7 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
           print("Add Patient State $state");
           if (state is PatientAdded) {
             Navigator.pop(context);
+            _showMessage("Patient Added Successfully");
             widget.cubit.getAllPatients();
           }
         },
