@@ -927,6 +927,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
         ),
         TextButton(
           onPressed: () async {
+            // print(display);
             loc.Location location = await _getLocation();
             Navigator.of(context).pop(false);
             await widget.mainCubit.notify(action, false, location,

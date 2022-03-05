@@ -165,7 +165,7 @@ class MainAPI extends IMainAPI {
     var ans = assessment
         ?.map((e) => {"question": e.question, "answer": e.answers})
         .toList();
-    //print(ans);
+    print(ans);
     var body = {
       "latitude": location.latitude,
       'longitude': location.longitude,
