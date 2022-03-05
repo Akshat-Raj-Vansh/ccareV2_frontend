@@ -165,8 +165,7 @@ class _HubPatientInfoState extends State<HubPatientInfo> {
       );
   _buildPatientAssessmentButton() => InkWell(
         onTap: () async {
-          CubitProvider.of<MainCubit>(context)
-              .getAssessments(widget.details.patientDetails.id);
+          widget.mainCubit.getAssessments(widget.details.patientDetails.id);
         },
         child: Container(
           width: SizeConfig.screenWidth,

@@ -200,9 +200,10 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
             rDetails = state.details;
             requestsLoaded = true;
           } else if (state is AssessmentLoaded) {
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-              return AssessmentScreen(state.assessments);
-            }));
+            _hideLoader();
+            // Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+            //   return AssessmentScreen(state.assessments);
+            // }));
           } else if (state is PatientAcceptedHub) {
             // print('PatientAcceptedHUb state claled');
             // widget.mainCubit.fetchHubPatientDetails();
