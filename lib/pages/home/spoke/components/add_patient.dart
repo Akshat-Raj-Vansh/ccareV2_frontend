@@ -44,6 +44,7 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
           print("Add Patient State $state");
           if (state is PatientAdded) {
             Navigator.pop(context);
+            widget.cubit.getAllPatients();
           }
         },
       ),
