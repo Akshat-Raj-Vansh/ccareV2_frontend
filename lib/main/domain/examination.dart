@@ -70,17 +70,21 @@ class Examination {
 class NTreatment {
   YN aspirin_loading;
   YN c_p_t_loading;
-  String lmwh;
-  String statins;
-  String beta_blockers;
-  String nitrates;
-  String diuretics;
-  String acei_arb;
+  YN lmwh;
+  YN ivbolus;
+  Statins statins;
+  String statins_dose;
+  YN beta_blockers;
+  YN nitrates;
+  YN diuretics;
+  YN acei_arb;
   NTreatment({
     this.aspirin_loading,
     this.c_p_t_loading,
     this.lmwh,
+    this.ivbolus,
     this.statins,
+    this.statins_dose,
     this.beta_blockers,
     this.nitrates,
     this.diuretics,
@@ -90,29 +94,35 @@ class NTreatment {
   NTreatment.initialize() {
     this.aspirin_loading = YN.nill;
     this.c_p_t_loading = YN.nill;
-    this.lmwh = "nill";
-    this.statins = "nill";
-    this.beta_blockers = "nill";
-    this.nitrates = "nill";
-    this.diuretics = "nill";
-    this.acei_arb = "nill";
+    this.lmwh = YN.nill;
+    this.ivbolus = YN.nill;
+    this.statins = Statins.nill;
+    this.statins_dose = 'nill';
+    this.beta_blockers = YN.nill;
+    this.nitrates = YN.nill;
+    this.diuretics = YN.nill;
+    this.acei_arb = YN.nill;
   }
 
   NTreatment copyWith({
     YN aspirin_loading,
     YN c_p_t_loading,
-    String lmwh,
-    String statins,
-    String beta_blockers,
-    String nitrates,
-    String diuretics,
-    String acei_arb,
+    YN lmwh,
+    YN ivbolus,
+    Statins statins,
+    String statins_dose,
+    YN beta_blockers,
+    YN nitrates,
+    YN diuretics,
+    YN acei_arb,
   }) {
     return NTreatment(
       aspirin_loading: aspirin_loading ?? this.aspirin_loading,
       c_p_t_loading: c_p_t_loading ?? this.c_p_t_loading,
       lmwh: lmwh ?? this.lmwh,
+      ivbolus: ivbolus ?? this.ivbolus,
       statins: statins ?? this.statins,
+      statins_dose: statins_dose ?? this.statins_dose,
       beta_blockers: beta_blockers ?? this.beta_blockers,
       nitrates: nitrates ?? this.nitrates,
       diuretics: diuretics ?? this.diuretics,
@@ -124,12 +134,14 @@ class NTreatment {
     return {
       'aspirin_loading': aspirin_loading.toString().split('.')[1],
       'c_p_t_loading': c_p_t_loading.toString().split('.')[1],
-      'lmwh': lmwh == "" ? "nill" : lmwh,
-      'statins': statins == "" ? "nill" : statins,
-      'beta_blockers': beta_blockers == "" ? "nill" : beta_blockers,
-      'nitrates': nitrates == "" ? "nill" : nitrates,
-      'diuretics': diuretics == "" ? "nill" : diuretics,
-      'acei_arb': acei_arb == "" ? "nill" : acei_arb,
+      'lmwh': lmwh.toString().split('.')[1],
+      'ivbolus': ivbolus.toString().split('.')[1],
+      'statins': statins.toString().split('.')[1],
+      'statins_dose': statins_dose == "" ? "nill" : statins_dose,
+      'beta_blockers': beta_blockers.toString().split('.')[1],
+      'nitrates': nitrates.toString().split('.')[1],
+      'diuretics': diuretics.toString().split('.')[1],
+      'acei_arb': acei_arb.toString().split('.')[1],
     };
   }
 
@@ -144,12 +156,15 @@ class NTreatment {
     return NTreatment(
       aspirin_loading: ynCheck(map['aspirin_loading']),
       c_p_t_loading: ynCheck(map['c_p_t_loading']),
-      lmwh: map['lmwh'],
-      statins: map['statins'],
-      beta_blockers: map['beta_blockers'],
-      nitrates: map['nitrates'],
-      diuretics: map['diuretics'],
-      acei_arb: map['acei_arb'],
+      lmwh: ynCheck(map['lmwh']),
+      ivbolus: ynCheck(map['ivbolus']),
+      statins: Statins.values.firstWhere(
+          (element) => element.toString() == "Statins." + map['statins']),
+      statins_dose: map['statins_dose'],
+      beta_blockers: ynCheck(map['beta_blockers']),
+      nitrates: ynCheck(map['nitrates']),
+      diuretics: ynCheck(map['diuretics']),
+      acei_arb: ynCheck(map['acei_arb']),
     );
   }
 
@@ -171,7 +186,9 @@ class NTreatment {
         other.aspirin_loading == aspirin_loading &&
         other.c_p_t_loading == c_p_t_loading &&
         other.lmwh == lmwh &&
+        other.ivbolus == ivbolus &&
         other.statins == statins &&
+        other.statins_dose == statins_dose &&
         other.beta_blockers == beta_blockers &&
         other.nitrates == nitrates &&
         other.diuretics == diuretics &&
@@ -192,33 +209,42 @@ class NTreatment {
 }
 
 class Thrombolysis {
-  YN tnk_alu_stk_successful;
+  YN thrombolysis;
+  YN tnk_stk_ret;
+  YN discharged;
   YN death;
   YN referral;
   String reason_for_referral;
   Thrombolysis({
-    this.tnk_alu_stk_successful,
+    this.thrombolysis,
+    this.tnk_stk_ret,
+    this.discharged,
     this.death,
     this.referral,
     this.reason_for_referral,
   });
 
   Thrombolysis.initialize() {
-    this.tnk_alu_stk_successful = YN.nill;
+    this.thrombolysis = YN.nill;
+    this.tnk_stk_ret = YN.nill;
+    this.discharged = YN.nill;
     this.death = YN.nill;
     this.referral = YN.nill;
     this.reason_for_referral = "nill";
   }
 
   Thrombolysis copyWith({
-    YN tnk_alu_stk_successful,
+    YN thrombolysis,
+    YN tnk_stk_ret,
+    YN discharged,
     YN death,
     YN referral,
     String reason_for_referral,
   }) {
     return Thrombolysis(
-      tnk_alu_stk_successful:
-          tnk_alu_stk_successful ?? this.tnk_alu_stk_successful,
+      thrombolysis: thrombolysis ?? this.thrombolysis,
+      tnk_stk_ret: tnk_stk_ret ?? this.tnk_stk_ret,
+      discharged: discharged ?? this.discharged,
       death: death ?? this.death,
       referral: referral ?? this.referral,
       reason_for_referral: reason_for_referral ?? this.reason_for_referral,
@@ -227,7 +253,9 @@ class Thrombolysis {
 
   Map<String, dynamic> toMap() {
     return {
-      'tnk_alu_stk_successful': tnk_alu_stk_successful.toString().split('.')[1],
+      'thrombolysis': thrombolysis.toString().split('.')[1],
+      'tnk_stk_ret': tnk_stk_ret.toString().split('.')[1],
+      'discharged': discharged.toString().split('.')[1],
       'death': death.toString().split('.')[1],
       'referral': referral.toString().split('.')[1],
       'reason_for_referral':
@@ -244,7 +272,9 @@ class Thrombolysis {
     }
 
     return Thrombolysis(
-      tnk_alu_stk_successful: ynCheck(map['tnk_alu_stk_successful']),
+      thrombolysis: ynCheck(map['thrombolysis']),
+      tnk_stk_ret: ynCheck(map['tnk_stk_ret']),
+      discharged: ynCheck(map['discharged']),
       death: ynCheck(map['death']),
       referral: ynCheck(map['referral']),
       reason_for_referral: map['reason_for_referral'],
@@ -258,7 +288,7 @@ class Thrombolysis {
 
   @override
   String toString() {
-    return 'Thrombolysis(tnk_alu_stk_successful: $tnk_alu_stk_successful, death: $death, referral: $referral, reason_for_referral: $reason_for_referral)';
+    return 'Thrombolysis(thrombolysis: $thrombolysis, death: $death, referral: $referral, reason_for_referral: $reason_for_referral)';
   }
 
   @override
@@ -266,7 +296,9 @@ class Thrombolysis {
     if (identical(this, other)) return true;
 
     return other is Thrombolysis &&
-        other.tnk_alu_stk_successful == tnk_alu_stk_successful &&
+        other.thrombolysis == thrombolysis &&
+        other.tnk_stk_ret == tnk_stk_ret &&
+        other.discharged == discharged &&
         other.death == death &&
         other.referral == referral &&
         other.reason_for_referral == reason_for_referral;
@@ -274,7 +306,7 @@ class Thrombolysis {
 
   @override
   int get hashCode {
-    return tnk_alu_stk_successful.hashCode ^
+    return thrombolysis.hashCode ^
         death.hashCode ^
         referral.hashCode ^
         reason_for_referral.hashCode;

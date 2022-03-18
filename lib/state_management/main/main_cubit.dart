@@ -491,9 +491,9 @@ class MainCubit extends Cubit<MainState> {
     emit(AllHubDoctorsState(result.asValue!.value));
   }
 
-  spokeStatusFetched() async {
+  spokeStatusFetched(String status) async {
     //_startLoading("Hub Accepted");
-    emit(StatusFetched(''));
+    emit(StatusFetched(status));
   }
 
   consultHub(String uid, String patientID) async {

@@ -196,6 +196,7 @@ class _PatientInfoState extends State<PatientInfo> {
               return AssessmentScreen(state.assessments);
             }));
           } else if (state is StatusFetched) {
+            print("Status Fetched");
             setState(() {});
           }
 

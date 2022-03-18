@@ -25,7 +25,7 @@ class SpokeNotificationHandler {
     //   await mainCubit.hubAccepted();
     // }
     if (message.data['type'] == 'EmergencyStatus') {
-      await mainCubit.spokeStatusFetched();
+      await mainCubit.spokeStatusFetched(message.data['status']);
     }
     if (message.data['type'] == 'Emergency') {
       if (message.data["user"] == "PATIENT") {
@@ -66,7 +66,7 @@ class SpokeNotificationHandler {
       await mainCubit.acceptRequest(message.data["_patientID"]);
     }
     if (message.data['type'] == 'EmergencyStatus') {
-      await mainCubit.spokeStatusFetched();
+      await mainCubit.spokeStatusFetched(message.data['status']);
     }
     // if(message.data["type"]=="Consultation" && message.data["user"]=="HUB"){
     //   await mainCubit.hubAccepted();

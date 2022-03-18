@@ -3,6 +3,7 @@ import 'dart:convert';
 
 class TreatmentReport {
   String report_time;
+  District district;
   ECG ecg;
   MedicalHist medicalHist;
   ChestReport chestReport;
@@ -10,6 +11,7 @@ class TreatmentReport {
   Examination examination;
   TreatmentReport({
     this.report_time,
+    this.district,
     this.ecg,
     this.medicalHist,
     this.chestReport,
@@ -18,6 +20,7 @@ class TreatmentReport {
   });
 
   TreatmentReport.initialize() {
+    this.district = District.nill;
     this.ecg = ECG.initialize();
     this.medicalHist = MedicalHist.initialize();
     this.chestReport = ChestReport.initialize();
@@ -34,6 +37,7 @@ class TreatmentReport {
 
   TreatmentReport copyWith({
     String report_time,
+    District district,
     ECG ecg,
     MedicalHist medicalHist,
     ChestReport chestReport,
@@ -42,6 +46,7 @@ class TreatmentReport {
   }) {
     return TreatmentReport(
       report_time: report_time ?? this.report_time,
+      district: district ?? this.district,
       ecg: ecg ?? this.ecg,
       medicalHist: medicalHist ?? this.medicalHist,
       chestReport: chestReport ?? this.chestReport,
@@ -53,6 +58,7 @@ class TreatmentReport {
   Map<String, dynamic> toMap() {
     return {
       'report_time': report_time,
+      'district': district.toString().split(".")[1],
       'ecg': ecg.toMap(),
       'medical_hist': medicalHist.toMap(),
       'chest_report': chestReport.toMap(),
@@ -64,6 +70,8 @@ class TreatmentReport {
   factory TreatmentReport.fromMap(Map<String, dynamic> map) {
     return TreatmentReport(
       report_time: map['report_time'].toString(),
+      district: District.values.firstWhere((element) =>
+          element.toString() == "District." + map['district'].toString()),
       ecg: ECG.fromMap(map['ecg']),
       medicalHist: MedicalHist.fromMap(map['medical_hist']),
       chestReport: ChestReport.fromMap(map['chest_report']),
@@ -88,6 +96,7 @@ class TreatmentReport {
 
     return other is TreatmentReport &&
         other.report_time == report_time &&
+        other.district == district &&
         other.ecg == ecg &&
         other.medicalHist == medicalHist &&
         other.chestReport == chestReport &&
@@ -349,7 +358,7 @@ class ChestReport {
   YN chest_pain;
   Site site;
   Location location;
-  Intensity intensity;
+  // Intensity intensity;
   Severity severity;
   Radiation radiation;
   String duration;
@@ -357,7 +366,7 @@ class ChestReport {
     this.chest_pain,
     this.site,
     this.location,
-    this.intensity,
+    // this.intensity,
     this.severity,
     this.radiation,
     this.duration,
@@ -367,7 +376,7 @@ class ChestReport {
     this.chest_pain = YN.nill;
     this.site = Site.nill;
     this.location = Location.nill;
-    this.intensity = Intensity.nill;
+    // this.intensity = Intensity.nill;
     this.severity = Severity.nill;
     this.radiation = Radiation.nill;
     this.duration = "nill";
@@ -376,7 +385,7 @@ class ChestReport {
   set chest_pain_(YN value) => this.chest_pain = value;
   set site_(Site value) => this.site = value;
   set location_(Location value) => this.location = value;
-  set intensity_(Intensity value) => this.intensity = value;
+  // set intensity_(Intensity value) => this.intensity = value;
   set severity_(Severity value) => this.severity = value;
   set radiation_(Radiation value) => this.radiation = value;
   set duration_(String value) => this.duration = value;
@@ -385,7 +394,7 @@ class ChestReport {
     YN chest_pain,
     Site site,
     Location location,
-    Intensity intensity,
+    // Intensity intensity,
     Severity severity,
     Radiation radiation,
     String duration,
@@ -394,7 +403,7 @@ class ChestReport {
       chest_pain: chest_pain ?? this.chest_pain,
       site: site ?? this.site,
       location: location ?? this.location,
-      intensity: intensity ?? this.intensity,
+      // intensity: intensity ?? this.intensity,
       severity: severity ?? this.severity,
       radiation: radiation ?? this.radiation,
       duration: duration ?? this.duration,
@@ -406,7 +415,7 @@ class ChestReport {
       'chest_pain': chest_pain.toString().split('.')[1],
       'site': site.toString().split('.')[1],
       'location': location.toString().split('.')[1],
-      'intensity': intensity.toString().split('.')[1],
+      // 'intensity': intensity.toString().split('.')[1],
       'severity': severity.toString().split('.')[1],
       'radiation': radiation.toString().split('.')[1],
       'duration': duration == "" ? "nill" : duration,
@@ -421,8 +430,8 @@ class ChestReport {
           .firstWhere((element) => element.toString() == "Site." + map['site']),
       location: Location.values.firstWhere(
           (element) => element.toString() == "Location." + map['location']),
-      intensity: Intensity.values.firstWhere(
-          (element) => element.toString() == "Intensity." + map['intensity']),
+      // intensity: Intensity.values.firstWhere(
+      // (element) => element.toString() == "Intensity." + map['intensity']),
       severity: Severity.values.firstWhere(
           (element) => element.toString() == "Severity." + map['severity']),
       radiation: Radiation.values.firstWhere(
@@ -438,7 +447,7 @@ class ChestReport {
 
   @override
   String toString() {
-    return 'ChestReport(chest_pain: $chest_pain, site: $site, location: $location, intensity: $intensity, severity: $severity, radiation: $radiation, duration: $duration)';
+    return 'ChestReport(chest_pain: $chest_pain, site: $site, location: $location, severity: $severity, radiation: $radiation, duration: $duration)';
   }
 
   @override
@@ -449,7 +458,7 @@ class ChestReport {
         other.chest_pain == chest_pain &&
         other.site == site &&
         other.location == location &&
-        other.intensity == intensity &&
+        // other.intensity == intensity &&
         other.severity == severity &&
         other.radiation == radiation &&
         other.duration == duration;
@@ -460,7 +469,7 @@ class ChestReport {
     return chest_pain.hashCode ^
         site.hashCode ^
         location.hashCode ^
-        intensity.hashCode ^
+        // intensity.hashCode ^
         severity.hashCode ^
         radiation.hashCode ^
         duration.hashCode;
@@ -469,62 +478,62 @@ class ChestReport {
 
 class Symptoms {
   YN postural_black_out;
-  YN light_headedness;
+  // YN light_headedness;
   YN sweating;
   YN nausea;
   YN shortness_of_breath;
-  YN loss_of_consciousness;
+  // YN loss_of_consciousness;
   Symptoms({
     this.postural_black_out,
-    this.light_headedness,
+    // this.light_headedness,
     this.sweating,
     this.nausea,
     this.shortness_of_breath,
-    this.loss_of_consciousness,
+    // this.loss_of_consciousness,
   });
   Symptoms.initialize() {
     this.postural_black_out = YN.nill;
-    this.light_headedness = YN.nill;
+    // this.light_headedness = YN.nill;
     this.sweating = YN.nill;
     this.nausea = YN.nill;
     this.shortness_of_breath = YN.nill;
-    this.loss_of_consciousness = YN.nill;
+    // this.loss_of_consciousness = YN.nill;
   }
 
   set postural_black_out_(YN value) => this.postural_black_out = value;
-  set light_headedness_(YN value) => this.light_headedness = value;
+  // set light_headedness_(YN value) => this.light_headedness = value;
   set sweating_(YN value) => this.sweating = value;
   set nausea_(YN value) => this.nausea = value;
   set shortness_of_breath_(YN value) => this.shortness_of_breath = value;
-  set loss_of_consciousness_(YN value) => this.loss_of_consciousness = value;
+  // set loss_of_consciousness_(YN value) => this.loss_of_consciousness = value;
 
   Symptoms copyWith({
     YN postural_black_out,
-    YN light_headedness,
+    // YN light_headedness,
     YN sweating,
     YN nausea,
     YN shortness_of_breath,
-    YN loss_of_consciousness,
+    // YN loss_of_consciousness,
   }) {
     return Symptoms(
       postural_black_out: postural_black_out ?? this.postural_black_out,
-      light_headedness: light_headedness ?? this.light_headedness,
+      // light_headedness: light_headedness ?? this.light_headedness,
       sweating: sweating ?? this.sweating,
       nausea: nausea ?? this.nausea,
       shortness_of_breath: shortness_of_breath ?? this.shortness_of_breath,
-      loss_of_consciousness:
-          loss_of_consciousness ?? this.loss_of_consciousness,
+      // loss_of_consciousness:
+      // loss_of_consciousness ?? this.loss_of_consciousness,
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
       'postural_black_out': postural_black_out.toString().split('.')[1],
-      'light_headedness': light_headedness.toString().split('.')[1],
+      // 'light_headedness': light_headedness.toString().split('.')[1],
       'sweating': sweating.toString().split('.')[1],
       'nausea': nausea.toString().split('.')[1],
       'shortness_of_breath': shortness_of_breath.toString().split('.')[1],
-      'loss_of_consciousness': loss_of_consciousness.toString().split('.')[1],
+      // 'loss_of_consciousness': loss_of_consciousness.toString().split('.')[1],
     };
   }
 
@@ -538,11 +547,11 @@ class Symptoms {
 
     return Symptoms(
       postural_black_out: ynCheck(map['postural_black_out']),
-      light_headedness: ynCheck(map['light_headedness']),
+      // light_headedness: ynCheck(map['light_headedness']),
       sweating: ynCheck(map['sweating']),
       nausea: ynCheck(map['nausea']),
       shortness_of_breath: ynCheck(map['shortness_of_breath']),
-      loss_of_consciousness: ynCheck(map['loss_of_consciousness']),
+      // loss_of_consciousness: ynCheck(map['loss_of_consciousness']),
     );
   }
 
@@ -553,7 +562,7 @@ class Symptoms {
 
   @override
   String toString() {
-    return 'Symptoms(postural_black_out: $postural_black_out, light_headedness: $light_headedness, sweating: $sweating, nausea: $nausea, shortness_of_breath: $shortness_of_breath, loss_of_consciousness: $loss_of_consciousness)';
+    return 'Symptoms(postural_black_out: $postural_black_out,  sweating: $sweating, nausea: $nausea, shortness_of_breath: $shortness_of_breath)';
   }
 
   @override
@@ -562,21 +571,21 @@ class Symptoms {
 
     return other is Symptoms &&
         other.postural_black_out == postural_black_out &&
-        other.light_headedness == light_headedness &&
+        // other.light_headedness == light_headedness &&
         other.sweating == sweating &&
         other.nausea == nausea &&
-        other.shortness_of_breath == shortness_of_breath &&
-        other.loss_of_consciousness == loss_of_consciousness;
+        other.shortness_of_breath == shortness_of_breath;
+    // other.loss_of_consciousness == loss_of_consciousness;
   }
 
   @override
   int get hashCode {
     return postural_black_out.hashCode ^
-        light_headedness.hashCode ^
+        // light_headedness.hashCode ^
         sweating.hashCode ^
         nausea.hashCode ^
-        shortness_of_breath.hashCode ^
-        loss_of_consciousness.hashCode;
+        shortness_of_breath.hashCode;
+    // loss_of_consciousness.hashCode;
   }
 }
 
@@ -584,34 +593,39 @@ class Examination {
   String pulse_rate;
   String dbp;
   String sbp;
-  String local_tenderness;
+  String spo2;
+  YN local_tenderness;
   Examination({
     this.pulse_rate,
     this.dbp,
     this.sbp,
+    this.spo2,
     this.local_tenderness,
   });
   Examination.initialize() {
     this.pulse_rate = "nill";
     this.dbp = "nill";
     this.sbp = "nill";
-    this.local_tenderness = "nill";
+    this.spo2 = "nill";
+    this.local_tenderness = YN.nill;
   }
   set pulse_rate_(String value) => this.pulse_rate = value;
   set dbp_(String value) => this.dbp = value;
   set sbp_(String value) => this.sbp = value;
-  set local_tenderness_(String value) => this.local_tenderness = value;
+  // set local_tenderness_(String value) => this.local_tenderness = value;
 
   Examination copyWith({
     String pulse_rate,
     String dbp,
     String sbp,
-    String local_tenderness,
+    String spo2,
+    YN local_tenderness,
   }) {
     return Examination(
       pulse_rate: pulse_rate ?? this.pulse_rate,
       dbp: dbp ?? this.dbp,
       sbp: sbp ?? this.sbp,
+      spo2: spo2 ?? this.spo2,
       local_tenderness: local_tenderness ?? this.local_tenderness,
     );
   }
@@ -621,16 +635,25 @@ class Examination {
       'pulse_rate': pulse_rate == "" ? "nill" : pulse_rate,
       'dbp': dbp == "" ? "nill" : dbp,
       'sbp': sbp == "" ? "nill" : sbp,
-      'local_tenderness': local_tenderness == "" ? "nill" : local_tenderness,
+      'spo2': spo2 == "" ? "nill" : spo2,
+      'local_tenderness': local_tenderness.toString().split(".")[1],
     };
   }
 
   factory Examination.fromMap(Map<String, dynamic> map) {
+    YN ynCheck(String value) {
+      if (value == "no")
+        return YN.no;
+      else if (value == "yes") return YN.yes;
+      return YN.nill;
+    }
+
     return Examination(
       pulse_rate: map['pulse_rate'],
       dbp: map['dbp'],
       sbp: map['sbp'],
-      local_tenderness: map['local_tenderness'],
+      spo2: map['spo2'],
+      local_tenderness: ynCheck(map['local_tenderness']),
     );
   }
 
@@ -664,9 +687,25 @@ class Examination {
 
 enum ECGType { nill, STEMI, NSTEMI }
 enum YN { nill, yes, no }
-enum Site { nill, Left, Right }
+enum Site { nill, Left_Precordium, Right_Precordium, Epigastric_region }
 enum Location { nill, Localized, Diffuse }
 enum Intensity { nill, Mild, Severe }
 enum Severity { nill, Mild, Moderate, Severe }
-enum Radiation { nill, Substernal, Epigastric, Arm, Jaw, Neck }
+enum Radiation { nill, Shoulder, back, Arm, Jaw, Neck }
 enum PN { nill, positive, negative }
+enum Statins { nill, Atorbastatin, Rozuastatin, NotGiven }
+enum District {
+  nill,
+  Chamba,
+  Solan,
+  Shimla,
+  LahulSpiti,
+  Hamirpur,
+  Kangra,
+  Kullu,
+  Mandi,
+  Kinnaur,
+  Sirmaur,
+  Bilaspur,
+  Una
+}

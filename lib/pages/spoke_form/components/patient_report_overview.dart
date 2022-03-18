@@ -284,13 +284,13 @@ class _ReportOverviewState extends State<ReportOverview> {
                     .split('.')[1]),
               ],
             ),
-            SizedBox(height: 1.h),
-            // Intensity
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-              Text('Intensity: '),
-              Text(
-                  widget.report.chestReport.intensity.toString().split('.')[1]),
-            ]),
+            // SizedBox(height: 1.h),
+            // // Intensity
+            // Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            //   Text('Intensity: '),
+            //   Text(
+            //       widget.report.chestReport.intensity.toString().split('.')[1]),
+            // ]),
             SizedBox(height: 1.h),
             // Severity
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
@@ -341,17 +341,17 @@ class _ReportOverviewState extends State<ReportOverview> {
                     .split('.')[1]),
               ],
             ),
-            SizedBox(height: 1.h),
+            // SizedBox(height: 1.h),
             // Palpitations
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Light Headedness: '),
-                Text(widget.report.symptoms.light_headedness
-                    .toString()
-                    .split('.')[1]),
-              ],
-            ),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //   children: [
+            //     Text('Light Headedness: '),
+            //     Text(widget.report.symptoms.light_headedness
+            //         .toString()
+            //         .split('.')[1]),
+            //   ],
+            // ),
             SizedBox(height: 1.h),
             //Sweating
             Row(
@@ -381,17 +381,17 @@ class _ReportOverviewState extends State<ReportOverview> {
                     .split('.')[1]),
               ],
             ),
-            SizedBox(height: 1.h),
-            // Loss of conciousness
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Loss of Consciousness: '),
-                Text(widget.report.symptoms.loss_of_consciousness
-                    .toString()
-                    .split('.')[1]),
-              ],
-            ),
+            // SizedBox(height: 1.h),
+            // // Loss of conciousness
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //   children: [
+            //     Text('Loss of Consciousness: '),
+            //     Text(widget.report.symptoms.loss_of_consciousness
+            //         .toString()
+            //         .split('.')[1]),
+            //   ],
+            // ),
 
             SizedBox(height: 3.h),
           ],
@@ -420,7 +420,7 @@ class _ReportOverviewState extends State<ReportOverview> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Diastolic: '),
+                Text('DBP: '),
                 Text(widget.report.examination.dbp),
               ],
             ),
@@ -428,8 +428,16 @@ class _ReportOverviewState extends State<ReportOverview> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Szstolic: '),
+                Text('SBP: '),
                 Text(widget.report.examination.sbp),
+              ],
+            ),
+            SizedBox(height: 1.h),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('SpO2: '),
+                Text(widget.report.examination.spo2),
               ],
             ),
             SizedBox(height: 1.h),
@@ -438,7 +446,9 @@ class _ReportOverviewState extends State<ReportOverview> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('Local Tederness: '),
-                Text(widget.report.examination.local_tenderness),
+                Text(widget.report.examination.local_tenderness
+                    .toString()
+                    .split('.')[1]),
               ],
             ),
 

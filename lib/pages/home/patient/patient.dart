@@ -1270,14 +1270,14 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                     .split('.')[1]),
               ],
             ),
-            SizedBox(height: 1.h),
-            // Intensity
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-              Text('Intensity: '),
-              Text(_treatmentReport.chestReport.intensity
-                  .toString()
-                  .split('.')[1]),
-            ]),
+            // SizedBox(height: 1.h),
+            // // Intensity
+            // Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            //   Text('Intensity: '),
+            //   Text(_treatmentReport.chestReport.intensity
+            //       .toString()
+            //       .split('.')[1]),
+            // ]),
             SizedBox(height: 1.h),
             // Severity
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
@@ -1330,17 +1330,17 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                     .split('.')[1]),
               ],
             ),
-            SizedBox(height: 1.h),
-            // Palpitations
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Light Headedness: '),
-                Text(_treatmentReport.symptoms.light_headedness
-                    .toString()
-                    .split('.')[1]),
-              ],
-            ),
+            // SizedBox(height: 1.h),
+            // // Palpitations
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //   children: [
+            //     Text('Light Headedness: '),
+            //     Text(_treatmentReport.symptoms.light_headedness
+            //         .toString()
+            //         .split('.')[1]),
+            //   ],
+            // ),
             SizedBox(height: 1.h),
             //Sweating
             Row(
@@ -1372,17 +1372,17 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                     .split('.')[1]),
               ],
             ),
-            SizedBox(height: 1.h),
-            // Loss of conciousness
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Loss of Consciousness: '),
-                Text(_treatmentReport.symptoms.loss_of_consciousness
-                    .toString()
-                    .split('.')[1]),
-              ],
-            ),
+            // SizedBox(height: 1.h),
+            // // Loss of conciousness
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //   children: [
+            //     Text('Loss of Consciousness: '),
+            //     Text(_treatmentReport.symptoms.loss_of_consciousness
+            //         .toString()
+            //         .split('.')[1]),
+            //   ],
+            // ),
 
             SizedBox(height: 3.h),
           ],
@@ -1411,7 +1411,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Diastolic: '),
+                Text('DBP: '),
                 Text(_treatmentReport.examination.dbp),
               ],
             ),
@@ -1420,8 +1420,16 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Systolic: '),
+                Text('SBP: '),
                 Text(_treatmentReport.examination.sbp),
+              ],
+            ),
+            SizedBox(height: 1.h),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('SpO2: '),
+                Text(_treatmentReport.examination.spo2),
               ],
             ),
             SizedBox(height: 1.h),
@@ -1430,7 +1438,9 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('Local Tederness: '),
-                Text(_treatmentReport.examination.local_tenderness),
+                Text(_treatmentReport.examination.local_tenderness
+                    .toString()
+                    .split(".")[1]),
               ],
             ),
 

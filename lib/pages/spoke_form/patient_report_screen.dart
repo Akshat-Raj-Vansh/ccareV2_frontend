@@ -767,15 +767,22 @@ class _PatientReportScreenState extends State<PatientReportScreen>
                     .split('.')[1]),
               ],
             ),
-            SizedBox(height: 1.h),
+
             // Onset
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Site: '),
-                Text(treatmentReport.chestReport.site.toString().split('.')[1]),
-              ],
-            ),
+            treatmentReport.chestReport.chest_pain == YN.yes
+                ? [
+                    SizedBox(height: 1.h),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Site: '),
+                        Text(treatmentReport.chestReport.site
+                            .toString()
+                            .split('.')[1]),
+                      ],
+                    )
+                  ]
+                : SizedBox(),
             SizedBox(height: 1.h),
             // Pain Location
             Row(
@@ -787,14 +794,14 @@ class _PatientReportScreenState extends State<PatientReportScreen>
                     .split('.')[1]),
               ],
             ),
-            SizedBox(height: 1.h),
-            // Intensity
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-              Text('Intensity: '),
-              Text(treatmentReport.chestReport.intensity
-                  .toString()
-                  .split('.')[1]),
-            ]),
+            // SizedBox(height: 1.h),
+            // // Intensity
+            // Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            //   Text('Intensity: '),
+            //   Text(treatmentReport.chestReport.intensity
+            //       .toString()
+            //       .split('.')[1]),
+            // ]),
             SizedBox(height: 1.h),
             // Severity
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
@@ -845,17 +852,17 @@ class _PatientReportScreenState extends State<PatientReportScreen>
                     .split('.')[1]),
               ],
             ),
-            SizedBox(height: 1.h),
-            // Palpitations
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Light Headedness: '),
-                Text(treatmentReport.symptoms.light_headedness
-                    .toString()
-                    .split('.')[1]),
-              ],
-            ),
+            // SizedBox(height: 1.h),
+            // // Palpitations
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //   children: [
+            //     Text('Light Headedness: '),
+            //     Text(treatmentReport.symptoms.light_headedness
+            //         .toString()
+            //         .split('.')[1]),
+            //   ],
+            // ),
             SizedBox(height: 1.h),
             //Sweating
             Row(
@@ -886,17 +893,17 @@ class _PatientReportScreenState extends State<PatientReportScreen>
                     .split('.')[1]),
               ],
             ),
-            SizedBox(height: 1.h),
-            // Loss of conciousness
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Loss of Consciousness: '),
-                Text(treatmentReport.symptoms.loss_of_consciousness
-                    .toString()
-                    .split('.')[1]),
-              ],
-            ),
+            // SizedBox(height: 1.h),
+            // // Loss of conciousness
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //   children: [
+            //     Text('Loss of Consciousness: '),
+            //     Text(treatmentReport.symptoms.loss_of_consciousness
+            //         .toString()
+            //         .split('.')[1]),
+            //   ],
+            // ),
             SizedBox(height: 3.h),
           ],
         ),
@@ -922,7 +929,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Diastolic: '),
+                Text('DBP: '),
                 Text(treatmentReport.examination.dbp),
               ],
             ),
@@ -930,8 +937,17 @@ class _PatientReportScreenState extends State<PatientReportScreen>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Systolic: '),
+                Text('SBP: '),
                 Text(treatmentReport.examination.sbp),
+              ],
+            ),
+            SizedBox(height: 1.h),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('SPO2: '),
+                Text(treatmentReport.examination.spo2),
               ],
             ),
             SizedBox(height: 1.h),
@@ -940,7 +956,9 @@ class _PatientReportScreenState extends State<PatientReportScreen>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('Local Tederness: '),
-                Text(treatmentReport.examination.local_tenderness),
+                Text(treatmentReport.examination.local_tenderness
+                    .toString()
+                    .split('.')[1]),
               ],
             ),
             SizedBox(height: getProportionateScreenHeight(100)),
@@ -1279,32 +1297,36 @@ class _PatientReportScreenState extends State<PatientReportScreen>
                   ),
                 ],
               ),
-              SizedBox(height: 1.h),
-              // Site
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text('Site: '),
-                  Container(
-                    width: SizeConfig.screenWidth * 0.4,
-                    child: DropdownButton<Site>(
-                      value: editedReport.chestReport.site,
-                      isDense: false,
-                      onChanged: (Site newValue) {
-                        setState(() {
-                          editedReport.chestReport.site = newValue;
-                        });
-                      },
-                      items: Site.values.map((Site value) {
-                        return DropdownMenuItem<Site>(
-                          value: value,
-                          child: Text(value.toString().split('.')[1]),
-                        );
-                      }).toList(),
-                    ),
-                  ),
-                ],
-              ),
+              editedReport.chestReport.chest_pain == YN.yes
+                  ? [
+                      SizedBox(height: 1.h),
+                      // Site
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text('Site: '),
+                          Container(
+                            width: SizeConfig.screenWidth * 0.4,
+                            child: DropdownButton<Site>(
+                              value: editedReport.chestReport.site,
+                              isDense: false,
+                              onChanged: (Site newValue) {
+                                setState(() {
+                                  editedReport.chestReport.site = newValue;
+                                });
+                              },
+                              items: Site.values.map((Site value) {
+                                return DropdownMenuItem<Site>(
+                                  value: value,
+                                  child: Text(value.toString().split('.')[1]),
+                                );
+                              }).toList(),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ]
+                  : SizedBox(),
               SizedBox(height: 1.h),
               // Location
               Row(
@@ -1331,29 +1353,29 @@ class _PatientReportScreenState extends State<PatientReportScreen>
                   ),
                 ],
               ),
-              SizedBox(height: 1.h),
-              // Intensity
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                Text('Intensity: '),
-                Container(
-                  width: SizeConfig.screenWidth * 0.4,
-                  child: DropdownButton<Intensity>(
-                    value: editedReport.chestReport.intensity,
-                    isDense: false,
-                    onChanged: (Intensity newValue) {
-                      setState(() {
-                        editedReport.chestReport.intensity = newValue;
-                      });
-                    },
-                    items: Intensity.values.map((Intensity value) {
-                      return DropdownMenuItem<Intensity>(
-                        value: value,
-                        child: Text(value.toString().split('.')[1]),
-                      );
-                    }).toList(),
-                  ),
-                ),
-              ]),
+              // SizedBox(height: 1.h),
+              // // Intensity
+              // Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              //   Text('Intensity: '),
+              //   Container(
+              //     width: SizeConfig.screenWidth * 0.4,
+              //     child: DropdownButton<Intensity>(
+              //       value: editedReport.chestReport.intensity,
+              //       isDense: false,
+              //       onChanged: (Intensity newValue) {
+              //         setState(() {
+              //           editedReport.chestReport.intensity = newValue;
+              //         });
+              //       },
+              //       items: Intensity.values.map((Intensity value) {
+              //         return DropdownMenuItem<Intensity>(
+              //           value: value,
+              //           child: Text(value.toString().split('.')[1]),
+              //         );
+              //       }).toList(),
+              //     ),
+              //   ),
+              // ]),
 
               SizedBox(height: 1.h),
               // Severity
@@ -1468,32 +1490,32 @@ class _PatientReportScreenState extends State<PatientReportScreen>
                 ),
               ],
             ),
-            SizedBox(height: 1.h),
-            // Light Headedness
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Light Headedness: '),
-                Container(
-                  width: SizeConfig.screenWidth * 0.4,
-                  child: DropdownButton<YN>(
-                    value: editedReport.symptoms.light_headedness,
-                    isDense: false,
-                    onChanged: (YN newValue) {
-                      setState(() {
-                        editedReport.symptoms.light_headedness = newValue;
-                      });
-                    },
-                    items: YN.values.map((YN value) {
-                      return DropdownMenuItem<YN>(
-                        value: value,
-                        child: Text(value.toString().split('.')[1]),
-                      );
-                    }).toList(),
-                  ),
-                ),
-              ],
-            ),
+            // SizedBox(height: 1.h),
+            // // Light Headedness
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //   children: [
+            //     Text('Light Headedness: '),
+            //     Container(
+            //       width: SizeConfig.screenWidth * 0.4,
+            //       child: DropdownButton<YN>(
+            //         value: editedReport.symptoms.light_headedness,
+            //         isDense: false,
+            //         onChanged: (YN newValue) {
+            //           setState(() {
+            //             editedReport.symptoms.light_headedness = newValue;
+            //           });
+            //         },
+            //         items: YN.values.map((YN value) {
+            //           return DropdownMenuItem<YN>(
+            //             value: value,
+            //             child: Text(value.toString().split('.')[1]),
+            //           );
+            //         }).toList(),
+            //       ),
+            //     ),
+            //   ],
+            // ),
             SizedBox(height: 1.h),
             // Sweating
             Row(
@@ -1572,32 +1594,32 @@ class _PatientReportScreenState extends State<PatientReportScreen>
                 ),
               ],
             ),
-            SizedBox(height: 1.h),
-            // Loss of conciousness
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Loss of Conciousness: '),
-                Container(
-                  width: SizeConfig.screenWidth * 0.4,
-                  child: DropdownButton<YN>(
-                    value: editedReport.symptoms.loss_of_consciousness,
-                    isDense: false,
-                    onChanged: (YN newValue) {
-                      setState(() {
-                        editedReport.symptoms.loss_of_consciousness = newValue;
-                      });
-                    },
-                    items: YN.values.map((YN value) {
-                      return DropdownMenuItem<YN>(
-                        value: value,
-                        child: Text(value.toString().split('.')[1]),
-                      );
-                    }).toList(),
-                  ),
-                ),
-              ],
-            ),
+            // SizedBox(height: 1.h),
+            // // Loss of conciousness
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //   children: [
+            //     Text('Loss of Conciousness: '),
+            //     Container(
+            //       width: SizeConfig.screenWidth * 0.4,
+            //       child: DropdownButton<YN>(
+            //         value: editedReport.symptoms.loss_of_consciousness,
+            //         isDense: false,
+            //         onChanged: (YN newValue) {
+            //           setState(() {
+            //             editedReport.symptoms.loss_of_consciousness = newValue;
+            //           });
+            //         },
+            //         items: YN.values.map((YN value) {
+            //           return DropdownMenuItem<YN>(
+            //             value: value,
+            //             child: Text(value.toString().split('.')[1]),
+            //           );
+            //         }).toList(),
+            //       ),
+            //     ),
+            //   ],
+            // ),
           ],
         ),
       );
@@ -1640,7 +1662,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Diastolic: '),
+                Text('DBP: '),
                 Container(
                   width: SizeConfig.screenWidth * 0.4,
                   child: TextFormField(
@@ -1650,7 +1672,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
                         editedReport.examination.dbp = newValue,
                     initialValue: editedReport.examination.dbp,
                     decoration: const InputDecoration(
-                      hintText: "Enter Diastolic",
+                      hintText: "Enter DBP",
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                     ),
                   ),
@@ -1661,7 +1683,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Systolic: '),
+                Text('SBP: '),
                 Container(
                   width: SizeConfig.screenWidth * 0.4,
                   child: TextFormField(
@@ -1671,7 +1693,28 @@ class _PatientReportScreenState extends State<PatientReportScreen>
                         editedReport.examination.sbp = newValue,
                     initialValue: editedReport.examination.sbp,
                     decoration: const InputDecoration(
-                      hintText: "Enter Systolic",
+                      hintText: "Enter SBP",
+                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 1.h),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('SpO2: '),
+                Container(
+                  width: SizeConfig.screenWidth * 0.4,
+                  child: TextFormField(
+                    keyboardType: TextInputType.text,
+                    focusNode: null,
+                    onChanged: (newValue) =>
+                        editedReport.examination.sbp = newValue,
+                    initialValue: editedReport.examination.sbp,
+                    decoration: const InputDecoration(
+                      hintText: "Enter SpO2",
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                     ),
                   ),
@@ -1686,16 +1729,20 @@ class _PatientReportScreenState extends State<PatientReportScreen>
                 Text('Local Tenderness: '),
                 Container(
                   width: SizeConfig.screenWidth * 0.4,
-                  child: TextFormField(
-                    keyboardType: TextInputType.text,
-                    focusNode: null,
-                    onChanged: (newValue) =>
-                        editedReport.examination.local_tenderness = newValue,
-                    initialValue: editedReport.examination.local_tenderness,
-                    decoration: const InputDecoration(
-                      hintText: "Enter local tenderness",
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
-                    ),
+                  child: DropdownButton<YN>(
+                    value: editedReport.examination.local_tenderness,
+                    isDense: false,
+                    onChanged: (YN newValue) {
+                      setState(() {
+                        editedReport.examination.local_tenderness = newValue;
+                      });
+                    },
+                    items: YN.values.map((YN value) {
+                      return DropdownMenuItem<YN>(
+                        value: value,
+                        child: Text(value.toString().split('.')[1]),
+                      );
+                    }).toList(),
                   ),
                 ),
               ],
