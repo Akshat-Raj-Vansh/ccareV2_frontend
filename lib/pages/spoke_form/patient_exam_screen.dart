@@ -33,7 +33,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
   bool editReport = false;
   // ScrollController scrollView;
   // ScrollView scrollView;
-
+  FocusNode focusNode;
   final List<Tab> _myTabs = [
     Tab(
       child: Text('Patient Details'),
@@ -55,6 +55,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
     _tabController = new TabController(vsync: this, length: _myTabs.length);
     _tabController.addListener(_handleTabSelection);
     _fetchReport();
+    focusNode = FocusNode();
     // scrollView=ScrollController();
   }
 
@@ -410,10 +411,9 @@ class _PatientExamScreenState extends State<PatientExamScreen>
               ],
             ),
             editedReport.nTreatment.lmwh == YN.yes
-                ? [
-                    SizedBox(height: 1.h),
-                    //  LMWH
-                    Row(
+                ? Container(
+                    margin: EdgeInsets.only(top: 1.h),
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text('IVBolus: '),
@@ -422,7 +422,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
                             .split('.')[1]),
                       ],
                     ),
-                  ]
+                  )
                 : SizedBox(),
             SizedBox(height: 1.h),
             // Statins
@@ -433,19 +433,20 @@ class _PatientExamScreenState extends State<PatientExamScreen>
                 Text(editedReport.nTreatment.statins.toString().split('.')[1]),
               ],
             ),
-            (editedReport.nTreatment.statins == Statins.NotGiven ||
-                    editedReport.nTreatment.statins == Statins.nill)
-                ? [
-                    SizedBox(height: 1.h),
-                    // Statins
-                    Row(
+            (editedReport.nTreatment.statins != Statins.NotGiven &&
+                    editedReport.nTreatment.statins != Statins.nill)
+                ?
+                // Statins
+                Container(
+                    margin: EdgeInsets.only(top: 1.h),
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text('Statins Dose: '),
                         Text(editedReport.nTreatment.statins_dose),
                       ],
                     ),
-                  ]
+                  )
                 : SizedBox(),
             SizedBox(height: 1.h),
             // Beta_Blockers
@@ -510,10 +511,9 @@ class _PatientExamScreenState extends State<PatientExamScreen>
               ],
             ),
             editedReport.thrombolysis.thrombolysis == YN.yes
-                ? [
-                    SizedBox(height: 2.h),
-                    // TNK ALU STK Successful
-                    Row(
+                ? Container(
+                    margin: EdgeInsets.only(top: 2.h),
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text('TNK/STK/Retiplase '),
@@ -522,7 +522,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
                             .split('.')[1]),
                       ],
                     ),
-                  ]
+                  )
                 : SizedBox(),
             SizedBox(height: 1.h),
             // Death
@@ -545,17 +545,16 @@ class _PatientExamScreenState extends State<PatientExamScreen>
               ],
             ),
             editedReport.thrombolysis.referral == YN.yes
-                ? [
-                    SizedBox(height: 1.h),
-                    // Reason for Referral
-                    Row(
+                ? Container(
+                    margin: EdgeInsets.only(top: 1.h),
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text('Reason for Referral: '),
                         Text(editedReport.thrombolysis.reason_for_referral),
                       ],
                     ),
-                  ]
+                  )
                 : SizedBox(),
             SizedBox(height: 1.h),
             // Reason for Referral
@@ -665,10 +664,9 @@ class _PatientExamScreenState extends State<PatientExamScreen>
                 ],
               ),
               editedReport.nTreatment.lmwh == YN.yes
-                  ? [
-                      SizedBox(height: 1.h),
-                      // LMWH
-                      Row(
+                  ? Container(
+                      margin: EdgeInsets.only(top: 1.h),
+                      child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text('IVBolus: '),
@@ -692,7 +690,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
                           )
                         ],
                       ),
-                    ]
+                    )
                   : SizedBox(),
               // Statins
 
@@ -722,11 +720,11 @@ class _PatientExamScreenState extends State<PatientExamScreen>
                 ],
               ),
 
-              (editedReport.nTreatment.statins == Statins.NotGiven ||
-                      editedReport.nTreatment.statins == Statins.nill)
-                  ? [
-                      SizedBox(height: 1.h),
-                      Row(
+              (editedReport.nTreatment.statins != Statins.NotGiven &&
+                      editedReport.nTreatment.statins != Statins.nill)
+                  ? Container(
+                      margin: EdgeInsets.only(top: 1.h),
+                      child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text('Statins Dose: '),
@@ -734,7 +732,8 @@ class _PatientExamScreenState extends State<PatientExamScreen>
                             width: SizeConfig.screenWidth * 0.4,
                             child: TextFormField(
                               keyboardType: TextInputType.number,
-                              focusNode: null,
+                              focusNode: focusNode,
+                              onSaved: (newValue) => focusNode.unfocus(),
                               initialValue:
                                   editedReport.nTreatment.statins_dose,
                               onChanged: (newValue) => editedReport.nTreatment
@@ -748,7 +747,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
                           ),
                         ],
                       ),
-                    ]
+                    )
                   : SizedBox(),
               SizedBox(height: 1.h),
               // Beta Blockers
@@ -898,10 +897,9 @@ class _PatientExamScreenState extends State<PatientExamScreen>
               ],
             ),
             editedReport.thrombolysis.thrombolysis == YN.yes
-                ? [
-                    SizedBox(height: 2.h),
-                    // TNK ALU STK Successful
-                    Row(
+                ? Container(
+                    margin: EdgeInsets.only(top: 1.h),
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text('TNK/STL/Retoplase: '),
@@ -926,9 +924,8 @@ class _PatientExamScreenState extends State<PatientExamScreen>
                         ),
                       ],
                     ),
-                  ]
-                : SizedBox(),
-            SizedBox(height: 1.h),
+                  )
+                : SizedBox(height: 1.h),
             // Death
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -982,10 +979,9 @@ class _PatientExamScreenState extends State<PatientExamScreen>
             ),
 
             editedReport.thrombolysis.referral == YN.yes
-                ? [
-                    SizedBox(height: 1.h),
-                    // Reason for Referral
-                    Row(
+                ? Container(
+                    margin: EdgeInsets.only(top: 1.h),
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text('Reason for Referral: '),
@@ -1007,7 +1003,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
                         ),
                       ],
                     ),
-                  ]
+                  )
                 : SizedBox(),
             SizedBox(height: 1.h),
             // Referral

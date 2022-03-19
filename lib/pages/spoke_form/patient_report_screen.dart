@@ -770,9 +770,9 @@ class _PatientReportScreenState extends State<PatientReportScreen>
 
             // Onset
             treatmentReport.chestReport.chest_pain == YN.yes
-                ? [
-                    SizedBox(height: 1.h),
-                    Row(
+                ? Container(
+                    margin: EdgeInsets.only(top: 1.h),
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text('Site: '),
@@ -780,8 +780,8 @@ class _PatientReportScreenState extends State<PatientReportScreen>
                             .toString()
                             .split('.')[1]),
                       ],
-                    )
-                  ]
+                    ),
+                  )
                 : SizedBox(),
             SizedBox(height: 1.h),
             // Pain Location
@@ -987,7 +987,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
             //     Container(
             //       width: SizeConfig.screenWidth * 0.4,
             //       child: TextFormField(
-            //         keyboardType: TextInputType.text,
+            //         keyboardType: TextInputType.number,
             //         focusNode: null,
             //         initialValue: editedReport.ecg.ecg_time,
             //         onChanged: (newValue) =>
@@ -1278,7 +1278,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
                 children: [
                   Text('Chest Pain: '),
                   Container(
-                    width: SizeConfig.screenWidth * 0.4,
+                    width: SizeConfig.screenWidth * 0.45,
                     child: DropdownButton<YN>(
                       value: editedReport.chestReport.chest_pain,
                       isDense: false,
@@ -1298,15 +1298,16 @@ class _PatientReportScreenState extends State<PatientReportScreen>
                 ],
               ),
               editedReport.chestReport.chest_pain == YN.yes
-                  ? [
-                      SizedBox(height: 1.h),
-                      // Site
-                      Row(
+                  ?
+                  // Site
+                  Container(
+                      margin: EdgeInsets.only(top: 1.h),
+                      child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text('Site: '),
                           Container(
-                            width: SizeConfig.screenWidth * 0.4,
+                            width: SizeConfig.screenWidth * 0.45,
                             child: DropdownButton<Site>(
                               value: editedReport.chestReport.site,
                               isDense: false,
@@ -1325,7 +1326,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
                           ),
                         ],
                       ),
-                    ]
+                    )
                   : SizedBox(),
               SizedBox(height: 1.h),
               // Location
@@ -1334,7 +1335,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
                 children: [
                   Text('Location: '),
                   Container(
-                    width: SizeConfig.screenWidth * 0.4,
+                    width: SizeConfig.screenWidth * 0.45,
                     child: DropdownButton<Location>(
                       value: editedReport.chestReport.location,
                       isDense: false,
@@ -1382,7 +1383,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                 Text('Severity: '),
                 Container(
-                  width: SizeConfig.screenWidth * 0.4,
+                  width: SizeConfig.screenWidth * 0.45,
                   child: DropdownButton<Severity>(
                     value: editedReport.chestReport.severity,
                     isDense: false,
@@ -1407,7 +1408,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
                 children: [
                   Text('Radiation: '),
                   Container(
-                    width: SizeConfig.screenWidth * 0.4,
+                    width: SizeConfig.screenWidth * 0.45,
                     child: DropdownButton<Radiation>(
                       value: editedReport.chestReport.radiation,
                       isDense: false,
@@ -1433,13 +1434,13 @@ class _PatientReportScreenState extends State<PatientReportScreen>
                 children: [
                   Text('Duration (in mins): '),
                   Container(
-                    width: SizeConfig.screenWidth * 0.4,
+                    width: SizeConfig.screenWidth * 0.45,
                     child: TextFormField(
-                      keyboardType: TextInputType.text,
+                      keyboardType: TextInputType.number,
                       focusNode: null,
                       initialValue: editedReport.chestReport.duration,
-                      onChanged: (newValue) =>
-                          editedReport.chestReport.duration = newValue,
+                      onChanged: (newValue) => editedReport
+                          .chestReport.duration = newValue.toString(),
                       decoration: const InputDecoration(
                         hintText: "Enter duration",
                         floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -1666,10 +1667,10 @@ class _PatientReportScreenState extends State<PatientReportScreen>
                 Container(
                   width: SizeConfig.screenWidth * 0.4,
                   child: TextFormField(
-                    keyboardType: TextInputType.text,
+                    keyboardType: TextInputType.number,
                     focusNode: null,
                     onChanged: (newValue) =>
-                        editedReport.examination.dbp = newValue,
+                        editedReport.examination.dbp = newValue.toString(),
                     initialValue: editedReport.examination.dbp,
                     decoration: const InputDecoration(
                       hintText: "Enter DBP",
@@ -1687,7 +1688,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
                 Container(
                   width: SizeConfig.screenWidth * 0.4,
                   child: TextFormField(
-                    keyboardType: TextInputType.text,
+                    keyboardType: TextInputType.number,
                     focusNode: null,
                     onChanged: (newValue) =>
                         editedReport.examination.sbp = newValue,
@@ -1708,7 +1709,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
                 Container(
                   width: SizeConfig.screenWidth * 0.4,
                   child: TextFormField(
-                    keyboardType: TextInputType.text,
+                    keyboardType: TextInputType.number,
                     focusNode: null,
                     onChanged: (newValue) =>
                         editedReport.examination.sbp = newValue,
