@@ -807,6 +807,13 @@ class _ResponseScreenState extends State<ResponseScreen>
               ],
             ),
             SizedBox(height: 1.h),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Flexible(child: Text('ST Segment resolution')),
+                Text(spokeResponse.getSResString()),
+              ],
+            ),
             // Onset
           ],
         ),
@@ -1861,6 +1868,29 @@ class _ResponseScreenState extends State<ResponseScreen>
                       value: value,
                       child: Text(
                         SpokeResponse.steMapping[value],
+                        // style: TextStyle(fontSize: 8.sp),
+                      ),
+                    );
+                  }).toList(),
+                ),
+              ),
+              SizedBox(height: 1.h),
+              Text('ST Segment resolution'),
+
+              Container(
+                child: DropdownButton<SRes>(
+                  value: spokeResponse.st_segment_res,
+                  isDense: false,
+                  onChanged: (SRes newValue) {
+                    setState(() {
+                      spokeResponse.st_segment_res = newValue;
+                    });
+                  },
+                  items: SRes.values.map((SRes value) {
+                    return DropdownMenuItem<SRes>(
+                      value: value,
+                      child: Text(
+                        SpokeResponse.steResMapping[value],
                         // style: TextStyle(fontSize: 8.sp),
                       ),
                     );

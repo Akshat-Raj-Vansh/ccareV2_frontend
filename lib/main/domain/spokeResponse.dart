@@ -15,6 +15,12 @@ class SpokeResponse {
     STE.C: "Decreased by 50 to 70%",
     STE.D: "regressed by less than 50% from "
   };
+  static Map<SRes, String> steResMapping = {
+    SRes.nill: "nill",
+    SRes.A: "No resolution",
+    SRes.B: "Partial resolution",
+    SRes.C: "Complete resolution",
+  };
 
   getChestString() {
     return chestMapping[this.chest_pain];
@@ -22,6 +28,14 @@ class SpokeResponse {
 
   getSteString() {
     return steMapping[this.st_elevation];
+  }
+
+  getSResString() {
+    return steResMapping[this.st_segment_res];
+  }
+
+  static _getSResString(SRes sRes) {
+    return steResMapping[sRes];
   }
 
   static _getChestString(ChestP value) {
@@ -35,10 +49,12 @@ class SpokeResponse {
   String note;
   ChestP chest_pain;
   STE st_elevation;
+  SRes st_segment_res;
   SpokeResponse(
     this.note,
     this.chest_pain,
     this.st_elevation,
+    this.st_segment_res,
   );
 
   SpokeResponse.initialize() {
@@ -46,6 +62,7 @@ class SpokeResponse {
         "Data to be shared by doctors at spoke centre after one hour of initiating thrombolytic treatment as advised from hub centre.";
     this.chest_pain = ChestP.nill;
     this.st_elevation = STE.nill;
+    this.st_segment_res = SRes.nill;
   }
 
   Map<String, dynamic> toMap() {
@@ -53,19 +70,22 @@ class SpokeResponse {
       'note': note,
       'chest_pain': chest_pain.toString().split(".")[1],
       'st_elevation': st_elevation.toString().split(".")[1],
+      'st_segment_res': st_segment_res.toString().split(".")[1],
     };
   }
 
   factory SpokeResponse.fromMap(Map<String, dynamic> map) {
     return SpokeResponse(
-      map['note'] ?? '',
-      ChestP.values.firstWhere((element) =>
-              element.toString() == "ChestP." + map['chest_pain']) ??
-          ChestP.nill,
-      STE.values.firstWhere((element) =>
-              element.toString() == "STE." + map['st_elevation']) ??
-          STE.nill,
-    );
+        map['note'] ?? '',
+        ChestP.values.firstWhere((element) =>
+                element.toString() == "ChestP." + map['chest_pain']) ??
+            ChestP.nill,
+        STE.values.firstWhere((element) =>
+                element.toString() == "STE." + map['st_elevation']) ??
+            STE.nill,
+        SRes.values.firstWhere((element) =>
+                element.toString() == "SRes." + map['st_segment_res']) ??
+            SRes.nill);
   }
 
   String toJson() => json.encode(toMap());
@@ -94,3 +114,4 @@ class SpokeResponse {
 
 enum ChestP { NC, PD, CD, nill }
 enum STE { A, B, C, D, nill }
+enum SRes { A, B, C, nill }

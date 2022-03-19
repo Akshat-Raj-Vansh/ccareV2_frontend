@@ -189,6 +189,8 @@ class MainAPI extends IMainAPI {
       return Result.error(transformError(map));
     }
     dynamic json = jsonDecode(response.body);
+    print(json[
+        'nearestDoc']); // USE THIS WHEN NO DOCTOR HAS ACCEPTED YOUR REQUEST
     return Result.value(json['message']);
   }
 
