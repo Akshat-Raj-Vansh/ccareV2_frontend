@@ -2,22 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
 class Loaders {
+  static bool loading = false;
   static showLoader(BuildContext context) {
-    var alert = const AlertDialog(
-      backgroundColor: Colors.transparent,
-      elevation: 0,
-      content: Center(
-          child: CircularProgressIndicator(
-        backgroundColor: Colors.green,
-      )),
-    );
+    if (!loading) {
+      var alert = const AlertDialog(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        content: Center(
+            child: CircularProgressIndicator(
+          backgroundColor: Colors.green,
+        )),
+      );
 
-    showDialog(
-        context: context, barrierDismissible: true, builder: (_) => alert);
+      showDialog(
+          context: context, barrierDismissible: true, builder: (_) => alert);
+    }
   }
 
   static hideLoader(BuildContext context) {
-    Navigator.pop(context);
+    if (loading) Navigator.pop(context);
   }
 
   static showSnackbar(BuildContext context, String msg) {
