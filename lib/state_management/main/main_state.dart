@@ -276,7 +276,7 @@ class AllPatientsState extends MainState {
 }
 
 class AllHubDoctorsState extends MainState {
-  final List<HubInfo> docs;
+  final List<String> docs;
   AllHubDoctorsState(this.docs);
   @override
   List<Object> get props => [docs];

@@ -485,7 +485,7 @@ class MainAPI extends IMainAPI {
   }
 
   @override
-  Future<Result<List<HubInfo>>> getAllHubDoctors(Token token) async {
+  Future<Result<List<String>>> getAllHubDoctors(Token token) async {
     String endpoint = baseUrl + "/user/fetchHubDoctors";
     var header = {
       "Content-Type": "application/json",
@@ -497,14 +497,14 @@ class MainAPI extends IMainAPI {
       //print(transformError(map));
       return Result.error(transformError(map));
     }
-    dynamic json = jsonDecode(response.body)["doctors"] as List;
+    dynamic json = jsonDecode(response.body)["hospitals"] as List;
 
-    List<HubInfo> hubDoctors = json.map<HubInfo>((data) {
-      //print(data);
-      return HubInfo.fromJson(jsonEncode(data));
-    }).toList();
+    // List<HubInfo> hubDoctors = json.map<HubInfo>((data) {
+    //   //print(data);
+    //   return HubInfo.fromJson(jsonEncode(data));
+    // }).toList();
 
-    return Result.value(hubDoctors);
+    return Result.value(json);
   }
 
   @override
@@ -577,14 +577,14 @@ class MainAPI extends IMainAPI {
 
   @override
   Future<Result<String>> consultHub(
-      Token token, String docID, String patID) async {
+      Token token, String hospitalName, String patID) async {
     String endpoint = baseUrl + "/treatment/spoke/consult?patientID=$patID";
     var header = {
       "Content-Type": "application/json",
       "Authorization": token.value
     };
     var response = await _client.post(Uri.parse(endpoint),
-        headers: header, body: jsonEncode({'hubDocID': docID}));
+        headers: header, body: jsonEncode({'hospital': hospitalName}));
     //print(response.statusCode);
     //print(response.body);
     if (response.statusCode != 200) {
