@@ -107,6 +107,7 @@ class _BodyState extends State<Body> {
                                         style: TextStyle(
                                           fontWeight: FontWeight.w600,
                                           fontSize: 16.sp,
+                                          color: kPrimaryColor,
                                         ),
                                       ),
                                       content: Text(
@@ -117,20 +118,54 @@ class _BodyState extends State<Body> {
                                         ),
                                       ),
                                       actions: [
-                                        TextButton(
-                                          onPressed: () => widget.pageAdapter
-                                              .onSplashScreenComplete(
-                                                  context, UserType.SPOKE),
-                                          child: Text(
-                                            'SPOKE',
+                                        Container(
+                                          margin: const EdgeInsets.all(8.0),
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(40),
+                                            ),
+                                            border: Border.all(
+                                              color: kPrimaryColor,
+                                              width: 1,
+                                            ),
+                                          ),
+                                          child: TextButton(
+                                            onPressed: () => widget.pageAdapter
+                                                .onSplashScreenComplete(
+                                                    context, UserType.SPOKE),
+                                            child: Text(
+                                              'SPOKE',
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 12.sp,
+                                                color: kPrimaryColor,
+                                              ),
+                                            ),
                                           ),
                                         ),
-                                        TextButton(
-                                          onPressed: () => widget.pageAdapter
-                                              .onSplashScreenComplete(
-                                                  context, UserType.HUB),
-                                          child: Text(
-                                            'HUB',
+                                        Container(
+                                          margin: const EdgeInsets.all(8.0),
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(40),
+                                            ),
+                                            border: Border.all(
+                                              color: kPrimaryColor,
+                                              width: 1,
+                                            ),
+                                          ),
+                                          child: TextButton(
+                                            onPressed: () => widget.pageAdapter
+                                                .onSplashScreenComplete(
+                                                    context, UserType.HUB),
+                                            child: Text(
+                                              'HUB',
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 12.sp,
+                                                color: kPrimaryColor,
+                                              ),
+                                            ),
                                           ),
                                         ),
                                       ],
