@@ -43,4 +43,4 @@ class Credential {
       Credential.fromMap(json.decode(source));
 }
 
-enum UserType { DOCTOR, PATIENT, DRIVER, SPOKE, HUB }
+enum UserType { PATIENT, DRIVER, SPOKE, HUB }

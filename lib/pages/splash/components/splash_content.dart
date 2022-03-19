@@ -20,7 +20,7 @@ class SplashContent extends StatelessWidget {
         Text(
           "CardioCare",
           style: TextStyle(
-            fontSize :24.sp,
+            fontSize: 24.sp,
             color: kPrimaryColor,
             fontWeight: FontWeight.bold,
           ),
@@ -30,8 +30,7 @@ class SplashContent extends StatelessWidget {
           text,
           textAlign: TextAlign.center,
           style: TextStyle(
-            fontSize :12.sp,
-            
+            fontSize: 12.sp,
           ),
         ),
         Spacer(flex: 1),

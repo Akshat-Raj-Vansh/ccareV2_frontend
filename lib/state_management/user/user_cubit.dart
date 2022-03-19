@@ -7,6 +7,7 @@ import 'package:ccarev2_frontend/user/domain/doc_info.dart';
 import 'package:ccarev2_frontend/user/domain/token.dart';
 import 'package:ccarev2_frontend/user/infra/user_api.dart';
 import 'package:cubit/cubit.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../user/domain/credential.dart';
 import '../../state_management/user/user_state.dart';
@@ -45,6 +46,7 @@ class UserCubit extends Cubit<UserState> {
 
   void signOut() async {
     await this.localStore.delete();
+    await FirebaseAuth.instance.signOut();
     emit(SignOutSuccessState());
   }
 

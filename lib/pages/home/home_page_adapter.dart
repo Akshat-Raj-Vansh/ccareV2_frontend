@@ -32,8 +32,6 @@ class HomePageAdapter extends IHomePageAdapter {
       this.emergencyScreen,
       this.splashScreen);
 
-
-
   @override
   void loadHomeUI(BuildContext context, UserType userType) {
     //print('HOME PAGE ADAPTER/LOAD HOME UI');
@@ -74,12 +72,10 @@ class HomePageAdapter extends IHomePageAdapter {
   @override
   void onLogout(BuildContext context, UserCubit userCubit) {
     userCubit.signOut();
-    // Navigator.pushAndRemoveUntil(
-    //     context,
-    //     MaterialPageRoute(builder: (context) => splashScreen()),
-    //     (Route<dynamic> route) => false);
-    SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+    Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => splashScreen()),
+        (Route<dynamic> route) => false);
+    // SystemChannels.platform.invokeMethod('SystemNavigator.pop');
   }
-
-  
 }
