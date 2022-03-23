@@ -4,7 +4,7 @@ import 'package:sizer/sizer.dart';
 import 'package:flutter/material.dart';
 
 class HubDoctorsList extends StatelessWidget {
-  final List<HubInfo> hubDocs;
+  final List<String> hubDocs;
   final MainCubit cubit;
   final String patientID;
   const HubDoctorsList(this.hubDocs, this.cubit, this.patientID);
@@ -17,16 +17,17 @@ class HubDoctorsList extends StatelessWidget {
         itemBuilder: (BuildContext context, int index) {
           return InkWell(
             onTap: () => cubit.consultHub(
-              hubDocs[index].id,
+              hubDocs[index],
               patientID,
             ),
             child: ListTile(
-                leading: Icon(Icons.person),
-                trailing: Text(
-                  hubDocs[index].hospitalName,
-                  style: TextStyle(color: Colors.green, fontSize: 12.sp),
-                ),
-                title: Text(hubDocs[index].name)),
+              leading: Icon(Icons.local_hospital),
+              title: Text(
+                hubDocs[index],
+                style: TextStyle(color: Colors.green, fontSize: 12.sp),
+              ),
+              // title: Text(hubDocs[index].name)
+            ),
           );
         });
   }

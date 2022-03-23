@@ -52,14 +52,15 @@ abstract class IMainAPI {
   Future<Result<loc.Location>> acceptPatientbySpoke(Token token, Token patient);
   Future<Result<List<PatientListInfo>>> getAllPatientRequests(Token token);
   Future<Result<List<PatientListInfo>>> getAllPatients(Token token);
-  Future<Result<List<HubInfo>>> getAllHubDoctors(Token token);
+  Future<Result<List<String>>> getAllHubDoctors(Token token);
   Future<Result<String>> savePatientReport(
       Token token, TreatmentReport report, String? patID);
   Future<Result<String>> savePatientExamReport(
       Token token, exam.Examination examination, String patID);
   Future<Result<String>> updateStatus(
       Token token, String status, String? patientID);
-  Future<Result<String>> consultHub(Token token, String docID, String patID);
+  Future<Result<String>> consultHub(
+      Token token, String hopitalName, String patID);
   Future<Result<String>> uploadImage(
       Token token, XFile image, String type, String patID, int seq_no);
   Future<Result<XFile>> fetchImage(Token token, String patientID);
