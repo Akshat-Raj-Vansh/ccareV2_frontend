@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'dart:io';
 import 'package:ccarev2_frontend/main/domain/assessment.dart';
 import 'package:ccarev2_frontend/main/domain/edetails.dart';
 import 'package:ccarev2_frontend/main/domain/examination.dart';
@@ -8,13 +7,11 @@ import 'package:ccarev2_frontend/main/domain/spokeResponse.dart';
 import 'package:ccarev2_frontend/main/domain/hubResponse.dart';
 import 'package:ccarev2_frontend/main/domain/treatment.dart' as treat;
 import 'package:ccarev2_frontend/pages/chat/components/message.dart';
-import 'package:ccarev2_frontend/user/domain/doc_info.dart';
 import 'package:ccarev2_frontend/user/domain/emergency.dart';
 import 'package:ccarev2_frontend/user/domain/hub_doc_info.dart';
 import 'package:ccarev2_frontend/user/domain/location.dart';
 import 'package:ccarev2_frontend/user/domain/patient_list_info.dart';
 import 'package:ccarev2_frontend/user/domain/profile.dart';
-import 'package:ccarev2_frontend/utils/constants.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:http/http.dart' as http;
 import 'package:async/src/result/result.dart';
@@ -22,6 +19,7 @@ import 'package:async/src/result/result.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../user/domain/token.dart';
+import '../../utils/crypto.dart';
 import '../domain/question.dart';
 import '../domain/main_api_contract.dart';
 
@@ -53,14 +51,14 @@ class MainAPI extends IMainAPI {
       "Authorization": token.value
     };
     var response = await _client.get(Uri.parse(endpoint), headers: header);
-    log('DATA > main_api.dart > FUNCTION_NAME > 52 > response.statusCode: ${response.statusCode}');
-    log('DATA > main_api.dart > FUNCTION_NAME > 53 > response.body: ${response.body}');
+
     if (response.statusCode != 200) {
-      Map map = jsonDecode(response.body);
+      Map map = jsonDecode(Crypto.decryptData(
+          Crypto.decryptData(response.body, token.value), token.value));
       //print(transformError(map));
       return Result.error(transformError(map));
     }
-    dynamic json = jsonDecode(response.body);
+    dynamic json = jsonDecode(Crypto.decryptData(response.body, token.value));
     //print('@main_api.dart/getStatus json: $json');
     var result = json["message"] as String;
     return Result.value(result);
@@ -75,14 +73,12 @@ class MainAPI extends IMainAPI {
       "Authorization": token.value
     };
     var response = await _client.get(Uri.parse(endpoint), headers: header);
-    log('LOG > main_api.dart > fetchPatientReportingTime > 73 > response.statusCode: ${response.statusCode}');
-    log('LOG > main_api.dart > fetchPatientReportingTime > 74 > response.body: ${response.body}');
     if (response.statusCode != 200) {
-      Map map = jsonDecode(response.body);
+      Map map = jsonDecode(Crypto.decryptData(response.body, token.value));
       //print(transformError(map));
       return Result.error(transformError(map));
     }
-    dynamic json = jsonDecode(response.body);
+    dynamic json = jsonDecode(Crypto.decryptData(response.body, token.value));
     //print('@main_api.dart/getStatus json: $json');
     var result = json["msg"] as String;
     return Result.value(result);
@@ -99,11 +95,12 @@ class MainAPI extends IMainAPI {
     };
     var response = await _client.get(Uri.parse(endpoint), headers: header);
     if (response.statusCode != 200) {
-      Map map = jsonDecode(response.body);
+      Map map = jsonDecode(Crypto.decryptData(response.body, token.value));
       //print(transformError(map));
       return Result.error(transformError(map));
     }
-    dynamic report = jsonDecode(response.body)['report'];
+    dynamic report =
+        jsonDecode(Crypto.decryptData(response.body, token.value))['report'];
 
     return Result.value(treat.TreatmentReport.fromJson(jsonEncode(report)));
   }
@@ -117,11 +114,11 @@ class MainAPI extends IMainAPI {
     };
     var response = await _client.get(Uri.parse(endpoint), headers: header);
     if (response.statusCode != 200) {
-      Map map = jsonDecode(response.body);
+      Map map = jsonDecode(Crypto.decryptData(response.body, token.value));
       //print(transformError(map));
       return Result.error(transformError(map));
     }
-    dynamic json = jsonDecode(response.body);
+    dynamic json = jsonDecode(Crypto.decryptData(response.body, token.value));
     //print(json);
     var result = json["questions"] as List;
 
@@ -144,15 +141,15 @@ class MainAPI extends IMainAPI {
     var response = await _client.post(
       Uri.parse(endpoint),
       headers: header,
-      body: emergency.toJson(),
+      body: Crypto.encryptData(emergency.toJson(), token.value),
     );
     if (response.statusCode != 200) {
       //print("error");
-      Map map = jsonDecode(response.body);
+      Map map = jsonDecode(Crypto.decryptData(response.body, token.value));
       //print(transformError(map));
       return Result.error(transformError(map));
     }
-    dynamic json = jsonDecode(response.body);
+    dynamic json = jsonDecode(Crypto.decryptData(response.body, token.value));
     return Result.value(json['message']);
   }
 
@@ -180,15 +177,15 @@ class MainAPI extends IMainAPI {
     var response = await _client.post(
       Uri.parse(endpoint),
       headers: header,
-      body: jsonEncode(body),
+      body: Crypto.encryptData(jsonEncode(body), token.value),
     );
     if (response.statusCode != 200) {
       //print("error");
-      Map map = jsonDecode(response.body);
+      Map map = jsonDecode(Crypto.decryptData(response.body, token.value));
       //print(transformError(map));
       return Result.error(transformError(map));
     }
-    dynamic json = jsonDecode(response.body);
+    dynamic json = jsonDecode(Crypto.decryptData(response.body, token.value));
     return Result.value(json['message']);
   }
 
@@ -206,13 +203,13 @@ class MainAPI extends IMainAPI {
     };
     var response = await _client.get(Uri.parse(endpoint), headers: header);
     //print(response.statusCode);
-    //print(response.body);
+    //print(Crypto.decryptData(response.body, token.value));
     if (response.statusCode != 200) {
-      Map map = jsonDecode(response.body);
+      Map map = jsonDecode(Crypto.decryptData(response.body, token.value));
       //print(transformError(map));
       return Result.error(transformError(map));
     }
-    dynamic json = jsonDecode(response.body);
+    dynamic json = jsonDecode(Crypto.decryptData(response.body, token.value));
     return Result.value(EDetails.fromJson(jsonEncode(json)));
   }
 
@@ -226,17 +223,19 @@ class MainAPI extends IMainAPI {
     var response = await _client.get(Uri.parse(endpoint), headers: header);
 
     if (response.statusCode != 200) {
-      Map map = jsonDecode(response.body);
+      Map map = jsonDecode(Crypto.decryptData(response.body, token.value));
       //print(transformError(map));
       return Result.error(transformError(map));
     }
-    if (response.body == null)
+    if (Crypto.decryptData(response.body, token.value) == null)
       return Result.error('No report available currently!');
 
-    dynamic currentReport = jsonDecode(response.body)['currentReport'];
+    dynamic currentReport = jsonDecode(
+        Crypto.decryptData(response.body, token.value))['currentReport'];
     //print("Report $currentReport");
     if (currentReport == null) return currentReport;
-    dynamic previousReport = jsonDecode(response.body)['previousReports'];
+    dynamic previousReport = jsonDecode(
+        Crypto.decryptData(response.body, token.value))['previousReports'];
     if (previousReport == null)
       return Result.value({
         "currentReport": currentReport['ecg'] != null
@@ -271,17 +270,19 @@ class MainAPI extends IMainAPI {
     };
     var response = await _client.get(Uri.parse(endpoint), headers: header);
     log('DATA > main_api.dart > FUNCTION_NAME > 269 > response.statusCode: ${response.statusCode}');
-    log('DATA > main_api.dart > FUNCTION_NAME > 270 > response.body: ${response.body}');
+    log('DATA > main_api.dart > FUNCTION_NAME > 270 > Crypto.decryptData(response.body, token.value): ${Crypto.decryptData(response.body, token.value)}');
     if (response.statusCode != 200) {
-      Map map = jsonDecode(response.body);
+      Map map = jsonDecode(Crypto.decryptData(response.body, token.value));
       //print(transformError(map));
       return Result.error(transformError(map));
     }
-    print(jsonDecode(response.body));
-    if (jsonDecode(response.body)['history'].length == 0)
-      return Result.error("No history in records");
+    print(jsonDecode(Crypto.decryptData(response.body, token.value)));
+    if (jsonDecode(Crypto.decryptData(response.body, token.value))['history']
+            .length ==
+        0) return Result.error("No history in records");
     List<treat.TreatmentReport> report =
-        (jsonDecode(response.body)['history'] as List)
+        (jsonDecode(Crypto.decryptData(response.body, token.value))['history']
+                as List)
             .map((data) => treat.TreatmentReport.fromJson(jsonEncode(data)))
             .toList();
     //print(report);
@@ -300,13 +301,14 @@ class MainAPI extends IMainAPI {
     print(
         'LOG > main_api.dart > fetchPatientExamReport > 269 > response.statusCode: ${response.statusCode}');
     print(
-        'LOG > main_api.dart > fetchPatientExamReport > 270 > response.body: ${response.body}');
+        'LOG > main_api.dart > fetchPatientExamReport > 270 > Crypto.decryptData(response.body, token.value): ${Crypto.decryptData(response.body, token.value)}');
     if (response.statusCode != 200) {
-      Map map = jsonDecode(response.body);
+      Map map = jsonDecode(Crypto.decryptData(response.body, token.value));
       //print(transformError(map));
       return Result.error(transformError(map));
     }
-    dynamic report = jsonDecode(response.body)['treatment'];
+    dynamic report =
+        jsonDecode(Crypto.decryptData(response.body, token.value))['treatment'];
     log('LOG > main_api.dart > fetchPatientExamReport > 277 > report: ${report}');
     var init = Examination.initialize();
     //print('NTR REPORT');
@@ -336,13 +338,15 @@ class MainAPI extends IMainAPI {
       "Authorization": token.value
     };
     var response = await _client.post(Uri.parse(endpoint),
-        headers: header, body: jsonEncode({"patID": patient.value}));
+        headers: header,
+        body: Crypto.encryptData(
+            jsonEncode({"patID": patient.value}), token.value));
     if (response.statusCode != 200) {
-      Map map = jsonDecode(response.body);
+      Map map = jsonDecode(Crypto.decryptData(response.body, token.value));
       //print(transformError(map));
       return Result.error(transformError(map));
     }
-    dynamic json = jsonDecode(response.body);
+    dynamic json = jsonDecode(Crypto.decryptData(response.body, token.value));
     return Result.value(json);
   }
 
@@ -355,11 +359,13 @@ class MainAPI extends IMainAPI {
     };
     var response = await _client.get(Uri.parse(endpoint), headers: header);
     if (response.statusCode != 200) {
-      Map map = jsonDecode(response.body);
+      Map map = jsonDecode(Crypto.decryptData(response.body, token.value));
       //print(transformError(map));
       return Result.error(transformError(map));
     }
-    dynamic json = jsonDecode(response.body)["details"] as List;
+    dynamic json =
+        jsonDecode(Crypto.decryptData(response.body, token.value))["details"]
+            as List;
     if (json.length == 0) return Result.error("No patients found");
     //print(json);
     return Result.value(
@@ -375,11 +381,13 @@ class MainAPI extends IMainAPI {
     };
     var response = await _client.get(Uri.parse(endpoint), headers: header);
     if (response.statusCode != 200) {
-      Map map = jsonDecode(response.body);
+      Map map = jsonDecode(Crypto.decryptData(response.body, token.value));
       //print(transformError(map));
       return Result.error(transformError(map));
     }
-    dynamic json = jsonDecode(response.body)["details"] as List;
+    dynamic json =
+        jsonDecode(Crypto.decryptData(response.body, token.value))["details"]
+            as List;
     if (json.length == 0) return Result.error("No patients found");
     //print(json);
     return Result.value(
@@ -397,15 +405,17 @@ class MainAPI extends IMainAPI {
       "Authorization": token.value
     };
     var response = await _client.post(Uri.parse(endpoint),
-        headers: header, body: jsonEncode({"patID": patient.value}));
-    //print("Response: " + response.body);
+        headers: header,
+        body: Crypto.encryptData(
+            jsonEncode({"patID": patient.value}), token.value));
+    //print("Response: " + Crypto.decryptData(response.body, token.value));
     if (response.statusCode != 200) {
       //print("error");
-      Map map = jsonDecode(response.body);
+      Map map = jsonDecode(Crypto.decryptData(response.body, token.value));
       //print(transformError(map));
       return Result.error(transformError(map));
     }
-    dynamic json = jsonDecode(response.body);
+    dynamic json = jsonDecode(Crypto.decryptData(response.body, token.value));
     return Result.value(
         Location(longitude: json['longitude'], latitude: json["latitude"]));
   }
@@ -421,15 +431,17 @@ class MainAPI extends IMainAPI {
       "Authorization": token.value
     };
     var response = await _client.post(Uri.parse(endpoint),
-        headers: header, body: jsonEncode({"patID": patient.value}));
+        headers: header,
+        body: Crypto.encryptData(
+            jsonEncode({"patID": patient.value}), token.value));
     log('LOG > main_api.dart > 360 > response.statusCode: ${response.statusCode}');
-    log('LOG > main_api.dart > 361 > response.body: ${response.body}');
+    log('LOG > main_api.dart > 361 > Crypto.decryptData(response.body, token.value): ${Crypto.decryptData(response.body, token.value)}');
     if (response.statusCode != 200) {
-      Map map = jsonDecode(response.body);
+      Map map = jsonDecode(Crypto.decryptData(response.body, token.value));
       //print(transformError(map));
       return Result.error(transformError(map));
     }
-    dynamic json = jsonDecode(response.body);
+    dynamic json = jsonDecode(Crypto.decryptData(response.body, token.value));
     return Result.value(
         Location(longitude: json['longtitude'], latitude: json["latitude"]));
   }
@@ -443,12 +455,13 @@ class MainAPI extends IMainAPI {
     };
     var response = await _client.post(Uri.parse(endpoint), headers: header);
     if (response.statusCode != 200) {
-      Map map = jsonDecode(response.body);
+      Map map = jsonDecode(Crypto.decryptData(response.body, token.value));
       //print(transformError(map));
       return Result.error(transformError(map));
     }
 
-    dynamic json = jsonDecode(response.body)['patients'];
+    dynamic json =
+        jsonDecode(Crypto.decryptData(response.body, token.value))['patients'];
     return Result.value(json
         .map<PatientListInfo>(
             (element) => PatientListInfo.fromJson(jsonEncode(element)))
@@ -466,14 +479,15 @@ class MainAPI extends IMainAPI {
     var response = await _client.get(Uri.parse(endpoint), headers: header);
     ////print the name of the function
     //print("getAllPatientRequests");
-    //print(response.body);
+    //print(Crypto.decryptData(response.body, token.value));
     //print(response.statusCode);
     if (response.statusCode != 200) {
-      Map map = jsonDecode(response.body);
+      Map map = jsonDecode(Crypto.decryptData(response.body, token.value));
       //print(transformError(map));
       return Result.error(transformError(map));
     }
-    dynamic json = jsonDecode(response.body)['patients'];
+    dynamic json =
+        jsonDecode(Crypto.decryptData(response.body, token.value))['patients'];
     //print(json.toString());
     if (json == null) return Result.error('No requests');
     return Result.value(json
@@ -491,11 +505,13 @@ class MainAPI extends IMainAPI {
     };
     var response = await _client.get(Uri.parse(endpoint), headers: header);
     if (response.statusCode != 200) {
-      Map map = jsonDecode(response.body);
+      Map map = jsonDecode(Crypto.decryptData(response.body, token.value));
       //print(transformError(map));
       return Result.error(transformError(map));
     }
-    dynamic json = jsonDecode(response.body)["hospitals"] as List;
+    dynamic json =
+        jsonDecode(Crypto.decryptData(response.body, token.value))["hospitals"]
+            as List;
 
     // List<HubInfo> hubDoctors = json.map<HubInfo>((data) {
     //   //print(data);
@@ -516,15 +532,16 @@ class MainAPI extends IMainAPI {
       "Authorization": token.value
     };
     var response = await _client.post(Uri.parse(endpoint),
-        headers: header, body: report.toJson());
+        headers: header,
+        body: Crypto.encryptData(report.toJson(), token.value));
 
-    //print(response.body);
+    //print(Crypto.decryptData(response.body, token.value));
     if (response.statusCode != 200) {
-      Map map = jsonDecode(response.body);
+      Map map = jsonDecode(Crypto.decryptData(response.body, token.value));
       //print(transformError(map));
       return Result.error(transformError(map));
     }
-    dynamic json = jsonDecode(response.body);
+    dynamic json = jsonDecode(Crypto.decryptData(response.body, token.value));
     return Result.value(json["message"]);
   }
 
@@ -539,15 +556,17 @@ class MainAPI extends IMainAPI {
       "Authorization": token.value
     };
     var response = await _client.post(Uri.parse(endpoint),
-        headers: header, body: examination.toJson());
+        headers: header,
+        body: Crypto.encryptData(examination.toJson(), token.value));
     print('Response Status: ' + response.statusCode.toString());
-    print('Response Body: ' + response.body.toString());
+    print('Response Body: ' +
+        Crypto.decryptData(response.body, token.value).toString());
     if (response.statusCode != 200) {
-      Map map = jsonDecode(response.body);
+      Map map = jsonDecode(Crypto.decryptData(response.body, token.value));
       //print(transformError(map));
       return Result.error(transformError(map));
     }
-    dynamic json = jsonDecode(response.body);
+    dynamic json = jsonDecode(Crypto.decryptData(response.body, token.value));
     return Result.value(json["message"]);
   }
 
@@ -561,36 +580,40 @@ class MainAPI extends IMainAPI {
     };
     var response = await _client.post(Uri.parse(endpoint),
         headers: header,
-        body: jsonEncode({'status': status, 'patientID': patientID}));
+        body: Crypto.encryptData(
+            jsonEncode({'status': status, 'patientID': patientID}),
+            token.value));
     //print(response.statusCode);
-    //print(response.body);
+    //print(Crypto.decryptData(response.body, token.value));
     if (response.statusCode != 200) {
-      Map map = jsonDecode(response.body);
+      Map map = jsonDecode(Crypto.decryptData(response.body, token.value));
       //print(transformError(map));
       return Result.error(transformError(map));
     }
-    dynamic json = jsonDecode(response.body);
+    dynamic json = jsonDecode(Crypto.decryptData(response.body, token.value));
     return Result.value(json["message"]);
   }
 
   @override
   Future<Result<String>> consultHub(
-      Token token, String docID, String patID) async {
+      Token token, String hospitalName, String patID) async {
     String endpoint = baseUrl + "/treatment/spoke/consult?patientID=$patID";
     var header = {
       "Content-Type": "application/json",
       "Authorization": token.value
     };
     var response = await _client.post(Uri.parse(endpoint),
-        headers: header, body: jsonEncode({'hubDocID': docID}));
+        headers: header,
+        body: Crypto.encryptData(
+            jsonEncode({'hospital': hospitalName}), token.value));
     //print(response.statusCode);
-    //print(response.body);
+    //print(Crypto.decryptData(response.body, token.value));
     if (response.statusCode != 200) {
-      Map map = jsonDecode(response.body);
+      Map map = jsonDecode(Crypto.decryptData(response.body, token.value));
       //print(transformError(map));
       return Result.error(transformError(map));
     }
-    dynamic json = jsonDecode(response.body);
+    dynamic json = jsonDecode(Crypto.decryptData(response.body, token.value));
     return Result.value(json["message"]);
   }
 
@@ -633,11 +656,13 @@ class MainAPI extends IMainAPI {
       "Authorization": token.value
     };
     var response = await _client.post(Uri.parse(endpoint),
-        headers: header, body: jsonEncode({'patientID': patientID}));
+        headers: header,
+        body: Crypto.encryptData(
+            jsonEncode({'patientID': patientID}), token.value));
     //print(response.statusCode);
-    //print(response.bodyBytes);
+    //print(Crypto.decryptData(response.body, token.value)Bytes);
     if (response.statusCode != 200) {
-      Map map = jsonDecode(response.body);
+      Map map = jsonDecode(Crypto.decryptData(response.body, token.value));
       //print(transformError(map));
       return Result.error(transformError(map));
     }
@@ -653,15 +678,15 @@ class MainAPI extends IMainAPI {
       "Authorization": token.value
     };
     var response = await _client.post(Uri.parse(endpoint),
-        headers: header, body: jsonEncode({}));
+        headers: header, body: Crypto.encryptData(jsonEncode({}), token.value));
     //print('@main_api.dart/newReport response status: ${response.statusCode}');
-    //print('@main_api.dart/newReport response body: ${response.body}');
+    //print('@main_api.dart/newReport response body: ${Crypto.decryptData(response.body, token.value)}');
     if (response.statusCode != 200) {
-      Map map = jsonDecode(response.body);
+      Map map = jsonDecode(Crypto.decryptData(response.body, token.value));
       //print(transformError(map));
       return Result.error(transformError(map));
     }
-    dynamic json = jsonDecode(response.body);
+    dynamic json = jsonDecode(Crypto.decryptData(response.body, token.value));
     return Result.value(json["message"]);
   }
 
@@ -673,15 +698,18 @@ class MainAPI extends IMainAPI {
       "Authorization": token.value
     };
     var response = await _client.post(Uri.parse(endpoint),
-        headers: header, body: jsonEncode({'patientID': patientID}));
+        headers: header,
+        body: Crypto.encryptData(
+            jsonEncode({'patientID': patientID}), token.value));
     if (response.statusCode != 200) {
-      Map map = jsonDecode(response.body);
+      Map map = jsonDecode(Crypto.decryptData(response.body, token.value));
       //print(transformError(map));
       return Result.error(transformError(map));
     }
-    if (jsonDecode(response.body)["message"] == null)
-      return Result.error("error");
-    return Result.value(jsonDecode(response.body)["message"]);
+    if (jsonDecode(Crypto.decryptData(response.body, token.value))["message"] ==
+        null) return Result.error("error");
+    return Result.value(
+        jsonDecode(Crypto.decryptData(response.body, token.value))["message"]);
   }
 
   @override
@@ -695,17 +723,23 @@ class MainAPI extends IMainAPI {
     var response = await _client.get(Uri.parse(endpoint), headers: header);
     print(
         '@main_api.dart/getAllMessages response status: ${response.statusCode}');
-    print('@main_api.dart/getAllMessages response body: ${response.body}');
+    print(
+        '@main_api.dart/getAllMessages response body: ${Crypto.decryptData(response.body, token.value)}');
     //print(response.statusCode);
     if (response.statusCode != 200) {
-      Map map = jsonDecode(response.body);
+      Map map = jsonDecode(Crypto.decryptData(response.body, token.value));
       //print(transformError(map));
       return Result.error(transformError(map));
     }
-    if (jsonDecode(response.body)["messages"] == null ||
-        jsonDecode(response.body)["messages"].length == 0)
-      return Result.error("error");
-    dynamic json = jsonDecode(response.body)["messages"] as List;
+    if (jsonDecode(
+                Crypto.decryptData(response.body, token.value))["messages"] ==
+            null ||
+        jsonDecode(Crypto.decryptData(response.body, token.value))["messages"]
+                .length ==
+            0) return Result.error("error");
+    dynamic json =
+        jsonDecode(Crypto.decryptData(response.body, token.value))["messages"]
+            as List;
     //print(json.last);
     return Result.value(json
         .map<Message>((message) => Message.fromJson(jsonEncode(message)))
@@ -723,16 +757,22 @@ class MainAPI extends IMainAPI {
     var response = await _client.get(Uri.parse(endpoint), headers: header);
     print(
         '@main_api.dart/getAssessments response status: ${response.statusCode}');
-    print('@main_api.dart/getAssessments response body: ${response.body}');
+    print(
+        '@main_api.dart/getAssessments response body: ${Crypto.decryptData(response.body, token.value)}');
     if (response.statusCode != 200) {
-      Map map = jsonDecode(response.body);
+      Map map = jsonDecode(Crypto.decryptData(response.body, token.value));
       //print(transformError(map));
       return Result.error(transformError(map));
     }
-    if (jsonDecode(response.body)["assessments"] == null ||
-        jsonDecode(response.body)["assessments"].length == 0)
-      return Result.error("error");
-    dynamic json = jsonDecode(response.body)["assessments"] as List;
+    if (jsonDecode(Crypto.decryptData(response.body, token.value))[
+                "assessments"] ==
+            null ||
+        jsonDecode(Crypto.decryptData(response.body, token.value))[
+                    "assessments"]
+                .length ==
+            0) return Result.error("error");
+    dynamic json = jsonDecode(
+        Crypto.decryptData(response.body, token.value))["assessments"] as List;
     //print(json.last);
     return Result.value(json
         .map<PatientAssessment>(
@@ -771,22 +811,25 @@ class MainAPI extends IMainAPI {
     };
     var response = await _client.post(Uri.parse(endpoint),
         headers: header,
-        body: jsonEncode({
-          "profile": {
-            "name": patientProfile.name,
-            "age": patientProfile.age,
-            "gender": patientProfile.gender,
-            "phoneNumber": phone_number
-          }
-        }));
+        body: Crypto.encryptData(
+            jsonEncode({
+              "profile": {
+                "name": patientProfile.name,
+                "age": patientProfile.age,
+                "gender": patientProfile.gender,
+                "phoneNumber": phone_number
+              }
+            }),
+            token.value));
     if (response.statusCode != 200) {
-      Map map = jsonDecode(response.body);
+      Map map = jsonDecode(Crypto.decryptData(response.body, token.value));
       //print(transformError(map));
       return Result.error(transformError(map));
     }
-    if (jsonDecode(response.body)["message"] == null)
-      return Result.error("error");
-    return Result.value(jsonDecode(response.body)["message"]);
+    if (jsonDecode(Crypto.decryptData(response.body, token.value))["message"] ==
+        null) return Result.error("error");
+    return Result.value(
+        jsonDecode(Crypto.decryptData(response.body, token.value))["message"]);
   }
 
   @override
@@ -799,22 +842,32 @@ class MainAPI extends IMainAPI {
       "Authorization": token.value
     };
     var response = await _client.get(Uri.parse(endpoint), headers: header);
-    print('response.body' + response.body);
+    print('Crypto.decryptData(response.body, token.value)' +
+        Crypto.decryptData(response.body, token.value));
     if (response.statusCode != 200) {
-      Map map = jsonDecode(response.body);
+      Map map = jsonDecode(Crypto.decryptData(response.body, token.value));
       //print(transformError(map));
       return Result.error(transformError(map));
     }
-    print(jsonDecode(response.body)["hubResponse"]['ecg']['rythm']);
-    print(jsonDecode(response.body)["spokeResponse"]['chest_pain'] == null);
-    if (jsonDecode(response.body)["hubResponse"]['ecg']['rythm'] == null &&
-        jsonDecode(response.body)["spokeResponse"]['chest_pain'] == null)
+    print(jsonDecode(Crypto.decryptData(response.body, token.value))[
+        "hubResponse"]['ecg']['rythm']);
+    print(jsonDecode(Crypto.decryptData(response.body, token.value))[
+            "spokeResponse"]['chest_pain'] ==
+        null);
+    if (jsonDecode(Crypto.decryptData(response.body, token.value))[
+                "hubResponse"]['ecg']['rythm'] ==
+            null &&
+        jsonDecode(Crypto.decryptData(response.body, token.value))[
+                "spokeResponse"]['chest_pain'] ==
+            null)
       //intialize both
       return Result.error("error");
 
-    dynamic hub = jsonDecode(response.body)["hubResponse"];
+    dynamic hub = jsonDecode(
+        Crypto.decryptData(response.body, token.value))["hubResponse"];
     print('hub response' + hub.toString());
-    dynamic spoke = jsonDecode(response.body)["spokeResponse"];
+    dynamic spoke = jsonDecode(
+        Crypto.decryptData(response.body, token.value))["spokeResponse"];
     return Result.value({
       "hubResponse": hub['ecg']['rythm'] == null
           ? HubResponse.initialize()
@@ -835,17 +888,19 @@ class MainAPI extends IMainAPI {
       "Authorization": token.value
     };
     var response = await _client.post(Uri.parse(endpoint),
-        headers: header, body: hubResponse.toJson());
+        headers: header,
+        body: Crypto.encryptData(hubResponse.toJson(), token.value));
     print(response.statusCode);
-    print(response.body);
+    print(Crypto.decryptData(response.body, token.value));
     if (response.statusCode != 200) {
-      Map map = jsonDecode(response.body);
+      Map map = jsonDecode(Crypto.decryptData(response.body, token.value));
       //print(transformError(map));
       return Result.error(transformError(map));
     }
-    if (jsonDecode(response.body)["message"] == null)
-      return Result.error("error");
-    return Result.value(jsonDecode(response.body)["message"]);
+    if (jsonDecode(Crypto.decryptData(response.body, token.value))["message"] ==
+        null) return Result.error("error");
+    return Result.value(
+        jsonDecode(Crypto.decryptData(response.body, token.value))["message"]);
   }
 
   @override
@@ -858,14 +913,16 @@ class MainAPI extends IMainAPI {
       "Authorization": token.value
     };
     var response = await _client.post(Uri.parse(endpoint),
-        headers: header, body: spokeResponse.toJson());
+        headers: header,
+        body: Crypto.encryptData(spokeResponse.toJson(), token.value));
     if (response.statusCode != 200) {
-      Map map = jsonDecode(response.body);
+      Map map = jsonDecode(Crypto.decryptData(response.body, token.value));
       //print(transformError(map));
       return Result.error(transformError(map));
     }
-    if (jsonDecode(response.body)["message"] == null)
-      return Result.error("error");
-    return Result.value(jsonDecode(response.body)["message"]);
+    if (jsonDecode(Crypto.decryptData(response.body, token.value))["message"] ==
+        null) return Result.error("error");
+    return Result.value(
+        jsonDecode(Crypto.decryptData(response.body, token.value))["message"]);
   }
 }

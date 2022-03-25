@@ -68,7 +68,14 @@ class _TypeFormState extends State<TypeForm> {
                   ),
                 ],
               ),
-              SizedBox(height: 5.h),
+              SizedBox(height: 2.h),
+              Text(
+                '(Choose from the following)',
+                textAlign: TextAlign.center,
+                style:
+                    TextStyle(fontSize: 12.sp, fontWeight: FontWeight.normal),
+              ),
+              SizedBox(height: 2.h),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

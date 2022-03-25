@@ -231,6 +231,7 @@ class _AuthPageState extends State<AuthPage> {
     print("AuthPage: $_phone");
     String _msg = "VERIFICATION INCOMPLETE";
     _verificationCode = "";
+    verified = false;
     try {
       await FirebaseAuth.instance.verifyPhoneNumber(
           phoneNumber: "+91" + _phone,
@@ -251,6 +252,7 @@ class _AuthPageState extends State<AuthPage> {
             _msg = "VERIFICATION FAILED " + e.toString();
             //    // _hideLoader();
             Loaders.showSnackbar(context, _msg);
+            Loaders.hideLoader(context);
           },
           codeSent: (String verificationID, int resendToken) {
             if (!verified) {
