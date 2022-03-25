@@ -2,25 +2,31 @@ import 'package:ccarev2_frontend/customBuilds/customtextformfield.dart';
 import 'package:ccarev2_frontend/state_management/user/user_cubit.dart';
 import 'package:ccarev2_frontend/utils/constants.dart';
 import 'package:ccarev2_frontend/utils/size_config.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
 import 'package:flutter_cubit/flutter_cubit.dart';
 
+import '../../../utils/loaders.dart';
+
 class PhoneForm extends StatefulWidget {
+  final PageController controller;
   final UserCubit cubit;
   final Function verifyPhone;
+  final Function phoneVerificationState;
   final Function backPressed;
   // final BuildContext context;
-  const PhoneForm(this.cubit, this.verifyPhone, this.backPressed);
+  const PhoneForm(this.controller, this.cubit, this.verifyPhone,
+      this.phoneVerificationState, this.backPressed);
 
   @override
-  _PhoneFormState createState() => _PhoneFormState();
+  phoneFormState createState() => phoneFormState();
 }
 
-class _PhoneFormState extends State<PhoneForm> {
+class phoneFormState extends State<PhoneForm> {
   final _formKey = GlobalKey<FormState>();
-  String _phone = "";
+  String phone = "";
 
   @override
   void initState() {
@@ -47,12 +53,11 @@ class _PhoneFormState extends State<PhoneForm> {
                 Row(
                   children: [
                     IconButton(
-                      onPressed: () {
-                        FocusManager.instance.primaryFocus?.unfocus();
-                        widget.backPressed(context);
-                      },
+                      onPressed: () => widget.controller.previousPage(
+                          duration: const Duration(microseconds: 1000),
+                          curve: Curves.elasticIn),
                       icon: const Icon(
-                        Icons.close,
+                        Icons.arrow_back_ios,
                         color: Colors.black,
                       ),
                     ),
@@ -86,7 +91,7 @@ class _PhoneFormState extends State<PhoneForm> {
                         onChanged: (value) {
                           if (value.length > 10)
                             _formKey.currentState!.validate();
-                          _phone = value;
+                          phone = value;
                         },
                         validator: (phone) => phone.isEmpty
                             ? "Please enter a Phone Number"
@@ -102,8 +107,9 @@ class _PhoneFormState extends State<PhoneForm> {
                     FocusManager.instance.primaryFocus?.unfocus();
                     if (_formKey.currentState!.validate()) {
                       print('NOT COMING INSIDE');
-                      widget.cubit.verifyPhone(_phone);
-                      // CubitProvider.of<UserCubit>(widget.context).verifyPhone(_phone);
+                      widget.phoneVerificationState(phone);
+                      // widget.cubit.verifyPhone(phone);
+                      // CubitProvider.of<UserCubit>(widget.context).verifyPhone(phone);
                     }
                   },
                   shape: RoundedRectangleBorder(

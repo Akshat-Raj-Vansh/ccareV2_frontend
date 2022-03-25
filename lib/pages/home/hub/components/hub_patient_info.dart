@@ -280,7 +280,7 @@ class _HubPatientInfoState extends State<HubPatientInfo> {
               MaterialPageRoute(
                 builder: (_) => PatientReportScreen(
                   mainCubit: widget.mainCubit,
-                  user: UserType.DOCTOR,
+                  user: UserType.SPOKE,
                   patientDetails: widget.details.patientDetails,
                 ),
               ));

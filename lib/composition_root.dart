@@ -29,7 +29,7 @@ import '../cache/ilocal_store.dart';
 import '../cache/local_store.dart';
 import 'pages/auth/auth_page_adapter.dart';
 import '../services/secure_client.dart';
-import '../pages/splash/splash_screen.dart';
+import 'pages/splash/splash_screen.dart';
 import '../user/domain/user_service_contract.dart';
 import '../user/infra/user_api.dart';
 
@@ -93,7 +93,7 @@ class CompositionRoot {
     return SplashScreen(authPageAdapter);
   }
 
-  static Widget createLoginScreen(UserType userType) {
+  static Widget createLoginScreen() {
     ProfileCubit profileCubit = ProfileCubit(localStore, userAPI);
     return MultiCubitProvider(
       providers: [
@@ -101,7 +101,6 @@ class CompositionRoot {
         CubitProvider<ProfileCubit>(create: (context) => profileCubit),
       ],
       child: AuthPage(
-        userType: userType,
         pageAdatper: authPageAdapter,
       ),
     );

@@ -7,7 +7,7 @@ import 'package:flutter/painting.dart';
 import 'package:location/location.dart';
 import 'package:sizer/sizer.dart';
 // This is the best practice
-import '../components/splash_content.dart';
+import 'splash_content.dart';
 import '../../../components/default_button.dart';
 
 import '../../auth/auth_page_adapter.dart';
@@ -76,115 +76,7 @@ class _BodyState extends State<Body> {
               flex: 2,
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 5.w),
-                child: Column(
-                  children: <Widget>[
-                    const Spacer(flex: 1),
-                    Text(
-                      "I'm a",
-                      style: TextStyle(
-                          fontSize: 18.sp,
-                          fontWeight: FontWeight.w700,
-                          color: kPrimaryColor),
-                    ),
-                    SizedBox(height: 3.h),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        _button(
-                          text: "Patient",
-                          press: () => widget.pageAdapter
-                              .onSplashScreenComplete(
-                                  context, UserType.PATIENT),
-                        ),
-                        _button(
-                            text: "Doctor",
-                            press: () async {
-                              await showDialog(
-                                    context: context,
-                                    builder: (context) => AlertDialog(
-                                      title: Text(
-                                        'Doctor Type',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 16.sp,
-                                          color: kPrimaryColor,
-                                        ),
-                                      ),
-                                      content: Text(
-                                        'Choose the type of doctor-',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w300,
-                                          fontSize: 12.sp,
-                                        ),
-                                      ),
-                                      actions: [
-                                        Container(
-                                          margin: const EdgeInsets.all(8.0),
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.all(
-                                              Radius.circular(40),
-                                            ),
-                                            border: Border.all(
-                                              color: kPrimaryColor,
-                                              width: 1,
-                                            ),
-                                          ),
-                                          child: TextButton(
-                                            onPressed: () => widget.pageAdapter
-                                                .onSplashScreenComplete(
-                                                    context, UserType.SPOKE),
-                                            child: Text(
-                                              'SPOKE',
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 12.sp,
-                                                color: kPrimaryColor,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        Container(
-                                          margin: const EdgeInsets.all(8.0),
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.all(
-                                              Radius.circular(40),
-                                            ),
-                                            border: Border.all(
-                                              color: kPrimaryColor,
-                                              width: 1,
-                                            ),
-                                          ),
-                                          child: TextButton(
-                                            onPressed: () => widget.pageAdapter
-                                                .onSplashScreenComplete(
-                                                    context, UserType.HUB),
-                                            child: Text(
-                                              'HUB',
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 12.sp,
-                                                color: kPrimaryColor,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ) ??
-                                  false;
-                              // widget.pageAdapter.onSplashScreenComplete(
-                              //     context, UserType.DOCTOR);
-                            }),
-                        _button(
-                          text: "Driver",
-                          press: () => widget.pageAdapter
-                              .onSplashScreenComplete(context, UserType.DRIVER),
-                        ),
-                      ],
-                    ),
-                    const Spacer(),
-                  ],
-                ),
+                child: _buildLoginButton(),
               ),
             ),
           ],
@@ -194,7 +86,7 @@ class _BodyState extends State<Body> {
   }
 
   _button({String text, Function press}) => SizedBox(
-        width: 25.w,
+        width: 65.w,
         height: 5.h,
         child: FlatButton(
           shape:
@@ -209,5 +101,134 @@ class _BodyState extends State<Body> {
             ),
           ),
         ),
+      );
+
+  _buildTypeBody() => Column(
+        children: <Widget>[
+          const Spacer(flex: 1),
+          Text(
+            "I'm a",
+            style: TextStyle(
+                fontSize: 18.sp,
+                fontWeight: FontWeight.w700,
+                color: kPrimaryColor),
+          ),
+          SizedBox(height: 3.h),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              _button(
+                text: "Patient",
+                press: () => widget.pageAdapter.onLoginButtonPressed(context),
+              ),
+              _button(
+                  text: "Doctor",
+                  press: () async {
+                    await showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: Text(
+                              'Doctor Type',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 16.sp,
+                                color: kPrimaryColor,
+                              ),
+                            ),
+                            content: Text(
+                              'Choose the type of doctor-',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w300,
+                                fontSize: 12.sp,
+                              ),
+                            ),
+                            actions: [
+                              Container(
+                                margin: const EdgeInsets.all(8.0),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(40),
+                                  ),
+                                  border: Border.all(
+                                    color: kPrimaryColor,
+                                    width: 1,
+                                  ),
+                                ),
+                                child: TextButton(
+                                  onPressed: () => widget.pageAdapter
+                                      .onLoginButtonPressed(context),
+                                  child: Text(
+                                    'SPOKE',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 12.sp,
+                                      color: kPrimaryColor,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                margin: const EdgeInsets.all(8.0),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(40),
+                                  ),
+                                  border: Border.all(
+                                    color: kPrimaryColor,
+                                    width: 1,
+                                  ),
+                                ),
+                                child: TextButton(
+                                  onPressed: () => widget.pageAdapter
+                                      .onLoginButtonPressed(context),
+                                  child: Text(
+                                    'HUB',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 12.sp,
+                                      color: kPrimaryColor,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ) ??
+                        false;
+                    // widget.pageAdapter.onSplashScreenComplete(
+                    //     context, UserType.DOCTOR);
+                  }),
+              _button(
+                text: "Driver",
+                press: () => widget.pageAdapter.onLoginButtonPressed(context),
+              ),
+            ],
+          ),
+          const Spacer(),
+        ],
+      );
+
+  _buildLoginButton() => Column(
+        children: <Widget>[
+          const Spacer(flex: 1),
+          Text(
+            "Let's get started",
+            style: TextStyle(
+                fontSize: 18.sp,
+                fontWeight: FontWeight.w700,
+                color: kPrimaryColor),
+          ),
+          SizedBox(height: 3.h),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              _button(
+                text: "Login",
+                press: () => widget.pageAdapter.onLoginButtonPressed(context),
+              ),
+            ],
+          ),
+          const Spacer(),
+        ],
       );
 }

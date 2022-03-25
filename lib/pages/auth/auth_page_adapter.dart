@@ -8,14 +8,14 @@ import 'package:flutter/material.dart';
 abstract class IAuthPageAdapter {
   void onAuthSuccess(BuildContext context, UserType userType);
   void onLoginSuccess(BuildContext context, UserType userType);
-  void onSplashScreenComplete(BuildContext context, UserType userType);
+  void onLoginButtonPressed(BuildContext context);
 }
 
 class AuthPageAdapter extends IAuthPageAdapter {
   // final Widget Function(UserType userType)
   //     onUserAuthenticated; //UserService userService
   final ProfilePageAdapter profilePageAdapter;
-  final Widget Function(UserType userType) authPage;
+  final Widget Function() authPage;
 
   AuthPageAdapter(this.profilePageAdapter, this.authPage);
   @override
@@ -40,14 +40,14 @@ class AuthPageAdapter extends IAuthPageAdapter {
   }
 
   @override
-  void onSplashScreenComplete(BuildContext context, UserType userType) {
+  void onLoginButtonPressed(BuildContext context) {
     //print('AUTH PAGE ADAPTER/ON SPLASH SCREEN COMPLETE');
     //print("USERTYPE:");
     //print(userType);
     print(context);
     Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => authPage(userType)),
+        MaterialPageRoute(builder: (context) => authPage()),
         (Route<dynamic> route) => false);
     // Navigator.push(context, MaterialPageRoute(builder: (context) => authPage(userType)));
   }

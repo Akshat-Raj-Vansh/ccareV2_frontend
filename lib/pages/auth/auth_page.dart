@@ -1,6 +1,7 @@
 //@dart=2.9
 import 'package:ccarev2_frontend/pages/auth/components/otp_form.dart';
 import 'package:ccarev2_frontend/pages/auth/components/phone_form.dart';
+import 'package:ccarev2_frontend/pages/auth/components/type_form.dart';
 import 'package:ccarev2_frontend/pages/splash/splash_screen.dart';
 import 'package:ccarev2_frontend/utils/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -14,6 +15,7 @@ import '../../state_management/user/user_state.dart';
 import '../../user/domain/credential.dart';
 import '../../user/domain/token.dart';
 import '../../state_management/user/user_cubit.dart';
+import '../../utils/loaders.dart';
 import 'auth_page_adapter.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
 import '../../utils/size_config.dart';
@@ -21,16 +23,15 @@ import 'package:flutter/material.dart';
 
 class AuthPage extends StatefulWidget {
   final IAuthPageAdapter pageAdatper;
-  final UserType userType;
   AuthPage({
     this.pageAdatper,
-    this.userType,
   });
   @override
   _AuthPageState createState() => _AuthPageState();
 }
 
 class _AuthPageState extends State<AuthPage> {
+  UserType _userType;
   String _verificationCode = "";
   String _otp = "";
   String _phone = "";
@@ -90,26 +91,26 @@ class _AuthPageState extends State<AuthPage> {
                         print('Inside Loading State in Auth Page');
                       }
                       if (state is LoginInProcessState) {
-                        _showLoader();
+                        Loaders.showLoader(context);
                         print('Inside Loading State in Auth Page');
                       } else if (state is LoginSuccessState) {
                         print("Login Success State Called");
-                        _hideLoader();
-                        print(widget.userType);
+                        Loaders.hideLoader(context);
+                        print(_userType);
                         state.details.newUser
                             ? widget.pageAdatper
-                                .onAuthSuccess(context, widget.userType)
+                                .onAuthSuccess(context, _userType)
                             : widget.pageAdatper
-                                .onLoginSuccess(context, widget.userType);
+                                .onLoginSuccess(context, _userType);
                         print(state.details.toString());
                       } else if (state is PhoneVerificationState) {
-                        _showLoader();
+                        Loaders.showLoader(context);
                         print("Phone Verification State Called");
                         _phone = state.phone;
                         _verifyPhone(_phone);
                       } else if (state is OTPVerificationState) {
                         //print("OTP State Called");
-                        _hideLoader();
+                        Loaders.hideLoader(context);
 
                         _controller.nextPage(
                             duration: const Duration(microseconds: 1000),
@@ -119,7 +120,7 @@ class _AuthPageState extends State<AuthPage> {
                         if (state is ErrorState) {
                           //print("Error State Called");
                           //print(state.error);
-                          _showMessage(state.error);
+                          Loaders.showSnackbar(context, state.error);
                         }
                       }
                     },
@@ -132,8 +133,7 @@ class _AuthPageState extends State<AuthPage> {
                       //print("LoadingStateCalled");
                       //  _showLoader();
                     } else if (state is profileState.AddProfileState) {
-                      widget.pageAdatper
-                          .onLoginSuccess(context, widget.userType);
+                      widget.pageAdatper.onLoginSuccess(context, _userType);
                     } else {
                       //   // _hideLoader();
                       if (state is profileState.ErrorState) {
@@ -167,37 +167,6 @@ class _AuthPageState extends State<AuthPage> {
               builder: (context) => SplashScreen(widget.pageAdatper)),
           (Route<dynamic> route) => false);
 
-  _showLoader() {
-    var alert = const AlertDialog(
-      backgroundColor: Colors.transparent,
-      elevation: 0,
-      content: Center(
-          child: CircularProgressIndicator(
-        backgroundColor: Colors.green,
-      )),
-    );
-
-    showDialog(
-        context: context, barrierDismissible: true, builder: (_) => alert);
-  }
-
-  _hideLoader() {
-    Navigator.of(context, rootNavigator: true).pop();
-  }
-
-  _showMessage(String msg) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      backgroundColor: Theme.of(context).accentColor,
-      content: Text(
-        msg,
-        style: Theme.of(context)
-            .textTheme
-            .caption
-            .copyWith(color: Colors.white, fontSize: 8.sp),
-      ),
-    ));
-  }
-
   _showBackground(BuildContext context) => Container(
         alignment: Alignment.center,
         child: Column(
@@ -225,6 +194,19 @@ class _AuthPageState extends State<AuthPage> {
         ),
       );
 
+  _launchPhoneForm(UserType userType) {
+    _controller.nextPage(
+        duration: const Duration(microseconds: 1000), curve: Curves.elasticIn);
+    _userType = userType;
+  }
+
+  _launchPhoneVerificationState(String phone) {
+    Loaders.showLoader(context);
+    print("Phone Verification State Called");
+    _phone = phone;
+    _verifyPhone(_phone);
+  }
+
   _buildUI() => Container(
         height: 40.h + SizeConfig.bottomInsets,
         margin:
@@ -235,10 +217,11 @@ class _AuthPageState extends State<AuthPage> {
           controller: _controller,
           physics: NeverScrollableScrollPhysics(),
           children: [
-            PhoneForm(CubitProvider.of<UserCubit>(context), _verifyPhone,
-                _onBackPressed),
+            TypeForm(_launchPhoneForm, _onBackPressed),
+            PhoneForm(_controller, CubitProvider.of<UserCubit>(context),
+                _verifyPhone, _launchPhoneVerificationState, _onBackPressed),
             OTPForm(_controller, CubitProvider.of<UserCubit>(context),
-                _verifyOTP, _phone)
+                _verifyOTP, _phone),
           ],
         ),
       );
@@ -247,6 +230,7 @@ class _AuthPageState extends State<AuthPage> {
     print('INSIDE VERIFY PHONE');
     print("AuthPage: $_phone");
     String _msg = "VERIFICATION INCOMPLETE";
+    _verificationCode = "";
     try {
       await FirebaseAuth.instance.verifyPhoneNumber(
           phoneNumber: "+91" + _phone,
@@ -258,18 +242,15 @@ class _AuthPageState extends State<AuthPage> {
                 verified = true;
                 _msg = "VERIFICATION SUCCESSFUL " + value.user.uid;
                 print('auth_page.dart : ' + _msg);
-                CubitProvider.of<UserCubit>(context).login(Credential(
-                    _phone,
-                    widget.userType,
-                    _fcmToken,
-                    Token(value.user.uid.toString())));
+                CubitProvider.of<UserCubit>(context).login(Credential(_phone,
+                    _userType, _fcmToken, Token(value.user.uid.toString())));
               }
             });
           },
           verificationFailed: (FirebaseAuthException e) {
             _msg = "VERIFICATION FAILED " + e.toString();
             //    // _hideLoader();
-            _showMessage(_msg);
+            Loaders.showSnackbar(context, _msg);
           },
           codeSent: (String verificationID, int resendToken) {
             if (!verified) {
@@ -280,12 +261,14 @@ class _AuthPageState extends State<AuthPage> {
               });
             }
           },
-          codeAutoRetrievalTimeout: (String verificationID) {},
-          timeout: const Duration(seconds: 30));
+          codeAutoRetrievalTimeout: (String verificationID) {
+            print('Auto Timeout Reached');
+          },
+          timeout: const Duration(seconds: 5));
     } catch (e) {
       _msg = "VERIFICATION FAILED " + e.toString();
       //  // _hideLoader();
-      _showMessage(_msg);
+      Loaders.showSnackbar(context, _msg);
     }
   }
 
@@ -293,8 +276,6 @@ class _AuthPageState extends State<AuthPage> {
     // _showLoader();
     String _msg = "OTP VERIFICATION INCOMPLETE";
     print('INSIDE VERIFY OTP');
-    print('USERTYPE:');
-    print(widget.userType);
 
     try {
       await FirebaseAuth.instance
@@ -304,24 +285,24 @@ class _AuthPageState extends State<AuthPage> {
         if (value.user != null) {
           _msg = "VERIFICATION SUCCESSFUL OTP " + value.user.uid;
           print('auth_page.dart : ' + _msg);
-          CubitProvider.of<UserCubit>(context).login(Credential(_phone,
-              widget.userType, _fcmToken, Token(value.user.uid.toString())));
+          CubitProvider.of<UserCubit>(context).login(Credential(
+              _phone, _userType, _fcmToken, Token(value.user.uid.toString())));
         } else {
           _msg = "VERIFICATION FAILED. INVALID OTP.";
           print('INVALID OTP');
           // _hideLoader();
-          _showMessage(_msg);
+          Loaders.showSnackbar(context, _msg);
         }
       }).catchError((err) {
         print(err);
         //print("INVALID OTP 2");
         print('ERROR: ' + err.toString());
-        _showMessage('WRONG OTP ENTERED');
+        Loaders.showSnackbar(context, 'WRONG OTP ENTERED');
       });
     } catch (e) {
       _msg = "VERIFICATION FAILED " + e.toString();
       // _hideLoader();
-      _showMessage(_msg);
+      Loaders.showSnackbar(context, _msg);
     }
     // _hideLoader();
   }
