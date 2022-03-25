@@ -264,7 +264,7 @@ class _AuthPageState extends State<AuthPage> {
           codeAutoRetrievalTimeout: (String verificationID) {
             print('Auto Timeout Reached');
           },
-          timeout: const Duration(seconds: 10));
+          timeout: const Duration(seconds: 5));
     } catch (e) {
       _msg = "VERIFICATION FAILED " + e.toString();
       //  // _hideLoader();

@@ -20,7 +20,7 @@ class Loaders {
   }
 
   static hideLoader(BuildContext context) {
-    if (loading) Navigator.pop(context);
+    Navigator.pop(context);
   }
 
   static showSnackbar(BuildContext context, String msg) {
