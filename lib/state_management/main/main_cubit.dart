@@ -496,11 +496,11 @@ class MainCubit extends Cubit<MainState> {
     emit(StatusFetched(status));
   }
 
-  consultHub(String uid, String patientID) async {
+  consultHub(String hosptialName, String patientID) async {
     _startLoading("CONSULT HUB LOADING STATE");
     //print("MAIN CUBIT/CONSULT HUB DOCTORS");
     final token = await localStore.fetch();
-    final result = await api.consultHub(token, uid, patientID);
+    final result = await api.consultHub(token, hosptialName, patientID);
 
     if (result.isError) {
       emit(ErrorState(result.asError!.error as String));

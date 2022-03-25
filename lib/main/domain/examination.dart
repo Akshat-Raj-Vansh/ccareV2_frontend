@@ -72,6 +72,7 @@ class NTreatment {
   YN c_p_t_loading;
   YN lmwh;
   YN ivbolus;
+  YN inj_eno;
   Statins statins;
   String statins_dose;
   YN beta_blockers;
@@ -83,6 +84,7 @@ class NTreatment {
     this.c_p_t_loading,
     this.lmwh,
     this.ivbolus,
+    this.inj_eno,
     this.statins,
     this.statins_dose,
     this.beta_blockers,
@@ -96,6 +98,7 @@ class NTreatment {
     this.c_p_t_loading = YN.nill;
     this.lmwh = YN.nill;
     this.ivbolus = YN.nill;
+    this.inj_eno = YN.nill;
     this.statins = Statins.nill;
     this.statins_dose = 'nill';
     this.beta_blockers = YN.nill;
@@ -109,6 +112,7 @@ class NTreatment {
     YN c_p_t_loading,
     YN lmwh,
     YN ivbolus,
+    YN inj_eno,
     Statins statins,
     String statins_dose,
     YN beta_blockers,
@@ -121,6 +125,7 @@ class NTreatment {
       c_p_t_loading: c_p_t_loading ?? this.c_p_t_loading,
       lmwh: lmwh ?? this.lmwh,
       ivbolus: ivbolus ?? this.ivbolus,
+      inj_eno: inj_eno ?? this.inj_eno,
       statins: statins ?? this.statins,
       statins_dose: statins_dose ?? this.statins_dose,
       beta_blockers: beta_blockers ?? this.beta_blockers,
@@ -136,6 +141,7 @@ class NTreatment {
       'c_p_t_loading': c_p_t_loading.toString().split('.')[1],
       'lmwh': lmwh.toString().split('.')[1],
       'ivbolus': ivbolus.toString().split('.')[1],
+      'inj_eno': inj_eno.toString().split('.')[1],
       'statins': statins.toString().split('.')[1],
       'statins_dose': statins_dose == "" ? "nill" : statins_dose,
       'beta_blockers': beta_blockers.toString().split('.')[1],
@@ -158,6 +164,7 @@ class NTreatment {
       c_p_t_loading: ynCheck(map['c_p_t_loading']),
       lmwh: ynCheck(map['lmwh']),
       ivbolus: ynCheck(map['ivbolus']),
+      inj_eno: ynCheck(map['inj_eno']),
       statins: Statins.values.firstWhere(
           (element) => element.toString() == "Statins." + map['statins']),
       statins_dose: map['statins_dose'],

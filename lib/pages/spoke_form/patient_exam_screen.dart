@@ -380,11 +380,11 @@ class _PatientExamScreenState extends State<PatientExamScreen>
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(height: 2.h),
-            // Aspirin Loading
+            // Aspirin–Loading dose (300 mg)
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Aspirin Loading: '),
+                Text('Aspirin–Loading dose (300 mg) : '),
                 Text(editedReport.nTreatment.aspirin_loading
                     .toString()
                     .split('.')[1]),
@@ -395,18 +395,18 @@ class _PatientExamScreenState extends State<PatientExamScreen>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('CPT Loading: '),
+                Text('Clopidogrel Loading(300 mg) : '),
                 Text(editedReport.nTreatment.c_p_t_loading
                     .toString()
                     .split('.')[1]),
               ],
             ),
             SizedBox(height: 1.h),
-            //  LMWH
+            //  LMWH(Enoxaparin)
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('LMWH: '),
+                Text('LMWH(Enoxaparin): '),
                 Text(editedReport.nTreatment.lmwh.toString().split('.')[1]),
               ],
             ),
@@ -416,7 +416,23 @@ class _PatientExamScreenState extends State<PatientExamScreen>
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('IVBolus: '),
+                        Text('IV bolus of 30mg given: '),
+                        Text(editedReport.nTreatment.ivbolus
+                            .toString()
+                            .split('.')[1]),
+                      ],
+                    ),
+                  )
+                : SizedBox(),
+            editedReport.nTreatment.lmwh == YN.yes
+                ? Container(
+                    margin: EdgeInsets.only(top: 1.h),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'InJ.Enoxaparin(1mg/kg)\nscub cutaneously given:',
+                        ),
                         Text(editedReport.nTreatment.ivbolus
                             .toString()
                             .split('.')[1]),
@@ -586,11 +602,11 @@ class _PatientExamScreenState extends State<PatientExamScreen>
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: 2.h),
-              // Aspirin Loading
+              // Aspirin–Loading dose (300 mg)
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Aspirin Loading: '),
+                  Text('Aspirin–Loading : \ndose (300 mg) '),
                   Container(
                     width: SizeConfig.screenWidth * 0.4,
                     child: DropdownButton<YN>(
@@ -612,11 +628,11 @@ class _PatientExamScreenState extends State<PatientExamScreen>
                 ],
               ),
               SizedBox(height: 1.h),
-              // CPT loading
+              // Clopidogrel Loading(300 mg)
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('CPT Loading: '),
+                  Text('Clopidogrel Loading:\n(300 mg)  '),
                   Container(
                     width: SizeConfig.screenWidth * 0.4,
                     child: DropdownButton<YN>(
@@ -638,11 +654,11 @@ class _PatientExamScreenState extends State<PatientExamScreen>
                 ],
               ),
               SizedBox(height: 1.h),
-              // LMWH
+              // LMWH(Enoxaparin)
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('LMWH: '),
+                  Text('LMWH(Enoxaparin): '),
                   Container(
                     width: SizeConfig.screenWidth * 0.4,
                     child: DropdownButton<YN>(
@@ -669,7 +685,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('IVBolus: '),
+                          Text('IVBolus :\n30mg given '),
                           Container(
                             width: SizeConfig.screenWidth * 0.4,
                             child: DropdownButton<YN>(
@@ -693,7 +709,38 @@ class _PatientExamScreenState extends State<PatientExamScreen>
                     )
                   : SizedBox(),
               // Statins
-
+              editedReport.nTreatment.lmwh == YN.yes
+                  ? Container(
+                      margin: EdgeInsets.only(top: 1.h),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'InJ. Enoxaparin (1mg/kg) \nscub cutaneously given:',
+                            style: TextStyle(fontSize: 10.sp),
+                          ),
+                          Container(
+                            width: SizeConfig.screenWidth * 0.4,
+                            child: DropdownButton<YN>(
+                              value: editedReport.nTreatment.inj_eno,
+                              isDense: false,
+                              onChanged: (YN newValue) {
+                                setState(() {
+                                  editedReport.nTreatment.inj_eno = newValue;
+                                });
+                              },
+                              items: YN.values.map((YN value) {
+                                return DropdownMenuItem<YN>(
+                                  value: value,
+                                  child: Text(value.toString().split('.')[1]),
+                                );
+                              }).toList(),
+                            ),
+                          )
+                        ],
+                      ),
+                    )
+                  : SizedBox(),
               SizedBox(height: 1.h),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
