@@ -601,6 +601,36 @@ class _PatientReportScreenState extends State<PatientReportScreen>
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              Text("Spoke Doctor's Name: "),
+              Text(editedReport.spokeName),
+            ],
+          ),
+          SizedBox(
+            height: 1.h,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text("Spoke Hospital's Name: "),
+              Text(editedReport.spokeHospitalName),
+            ],
+          ),
+          SizedBox(
+            height: 1.h,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text("District: "),
+              Text(editedReport.district.toString()),
+            ],
+          ),
+          SizedBox(
+            height: 1.h,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
               Text("Patient's Name: "),
               Text(widget.patientDetails.name),
             ],
