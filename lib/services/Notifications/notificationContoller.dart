@@ -14,7 +14,8 @@ class NotificationController {
       AndroidNotificationChannel(
           'high_importance_channel', // id
           'Emergency5', // title
-          'This channel is used for important notifications.', // description
+          description:
+              'This channel is used for important notifications.', // description
           importance: Importance.max);
 
   static FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =

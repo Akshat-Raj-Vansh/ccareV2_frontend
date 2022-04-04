@@ -51,6 +51,21 @@ class _BodyState extends State<Body> {
     }
     _permissionGranted = await location.hasPermission();
     if (_permissionGranted == PermissionStatus.denied) {
+      var alert = AlertDialog(
+        title: Text("Location Permission"),
+        content: Text(
+            "This app uses location services to help you find nearby doctors."),
+        actions: <Widget>[
+          FlatButton(
+            child: Text("OK"),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          )
+        ],
+      );
+      showDialog(
+          context: context, barrierDismissible: true, builder: (_) => alert);
       _permissionGranted = await location.requestPermission();
       if (_permissionGranted != PermissionStatus.granted) {
         return;
