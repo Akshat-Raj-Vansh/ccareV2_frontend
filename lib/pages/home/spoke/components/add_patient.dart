@@ -55,8 +55,8 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
         listener: (context, state) async {
           print("Add Patient State $state");
           if (state is PatientAdded) {
-            Navigator.pop(context);
             _showMessage("Patient Added Successfully");
+            Navigator.pop(context);
             widget.cubit.getAllPatients();
           }
         },

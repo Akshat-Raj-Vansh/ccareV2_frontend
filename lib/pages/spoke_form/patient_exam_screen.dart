@@ -949,7 +949,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('TNK/STL/Retoplase: '),
+                        Text('TNK/STL/Retiplase: '),
                         Container(
                           width: SizeConfig.screenWidth * 0.4,
                           child: DropdownButton<YN>(

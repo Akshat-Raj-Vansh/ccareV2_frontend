@@ -595,6 +595,36 @@ class _PatientReportScreenState extends State<PatientReportScreen>
                   .split(' ')[1]),
             ],
           ),
+          SizedBox(
+            height: 1.h,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text("Patient's Name: "),
+              Text(widget.patientDetails.name),
+            ],
+          ),
+          SizedBox(
+            height: 1.h,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text("Patient's Contact Number: "),
+              Text(widget.patientDetails.contactNumber),
+            ],
+          ),
+          SizedBox(
+            height: 1.h,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text("Patient's Age: "),
+              Text(widget.patientDetails.age.toString()),
+            ],
+          ),
         ],
       ),
     );

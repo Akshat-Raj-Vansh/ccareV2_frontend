@@ -501,8 +501,10 @@ class MainAPI extends IMainAPI {
     //   //print(data);
     //   return HubInfo.fromJson(jsonEncode(data));
     // }).toList();
-
-    return Result.value(json);
+    print(json);
+    List<String> hospitalNames = json.map<String>((e) => e.toString()).toList();
+    print(hospitalNames);
+    return Result.value(hospitalNames);
   }
 
   @override
