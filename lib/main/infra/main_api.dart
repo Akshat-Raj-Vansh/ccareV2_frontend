@@ -577,14 +577,14 @@ class MainAPI extends IMainAPI {
 
   @override
   Future<Result<String>> consultHub(
-      Token token, String docID, String patID) async {
+      Token token, String hospitalName, String patID) async {
     String endpoint = baseUrl + "/treatment/spoke/consult?patientID=$patID";
     var header = {
       "Content-Type": "application/json",
       "Authorization": token.value
     };
     var response = await _client.post(Uri.parse(endpoint),
-        headers: header, body: jsonEncode({'hubDocID': docID}));
+        headers: header, body: jsonEncode({'hospital': hospitalName}));
     //print(response.statusCode);
     //print(response.body);
     if (response.statusCode != 200) {
