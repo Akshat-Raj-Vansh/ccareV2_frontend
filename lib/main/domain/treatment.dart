@@ -4,6 +4,8 @@ import 'dart:convert';
 class TreatmentReport {
   String report_time;
   District district;
+  String spokeHospitalName;
+  String spokeName;
   ECG ecg;
   MedicalHist medicalHist;
   ChestReport chestReport;
@@ -12,6 +14,8 @@ class TreatmentReport {
   TreatmentReport({
     this.report_time,
     this.district,
+    this.spokeHospitalName,
+    this.spokeName,
     this.ecg,
     this.medicalHist,
     this.chestReport,
@@ -29,6 +33,9 @@ class TreatmentReport {
   }
 
   set report_time_(String report_time) => this.report_time = report_time;
+  set spoke_name_(String spoke_name) => this.spokeName = spoke_name;
+  set spoke_hospital_name(String spoke_hospital_name) =>
+      this.spokeHospitalName = spoke_hospital_name;
   set ecg_(ECG value) => this.ecg = value;
   set medicalHist_(MedicalHist value) => this.medicalHist = value;
   set chestReport_(ChestReport value) => this.chestReport = value;
@@ -38,6 +45,8 @@ class TreatmentReport {
   TreatmentReport copyWith({
     String report_time,
     District district,
+    String spokeName,
+    String spokeHospitalName,
     ECG ecg,
     MedicalHist medicalHist,
     ChestReport chestReport,
@@ -47,6 +56,8 @@ class TreatmentReport {
     return TreatmentReport(
       report_time: report_time ?? this.report_time,
       district: district ?? this.district,
+      spokeName: spokeName ?? this.spokeName,
+      spokeHospitalName: spokeHospitalName ?? this.spokeHospitalName,
       ecg: ecg ?? this.ecg,
       medicalHist: medicalHist ?? this.medicalHist,
       chestReport: chestReport ?? this.chestReport,
@@ -59,6 +70,8 @@ class TreatmentReport {
     return {
       'report_time': report_time,
       'district': district.toString().split(".")[1],
+      'spokeName': spokeName,
+      'spokeHospitalName': spokeHospitalName,
       'ecg': ecg.toMap(),
       'medical_hist': medicalHist.toMap(),
       'chest_report': chestReport.toMap(),
@@ -72,6 +85,8 @@ class TreatmentReport {
       report_time: map['report_time'].toString(),
       district: District.values.firstWhere((element) =>
           element.toString() == "District." + map['district'].toString()),
+      spokeName: map['spokeName'],
+      spokeHospitalName: map['spokeHospitalName'],
       ecg: ECG.fromMap(map['ecg']),
       medicalHist: MedicalHist.fromMap(map['medical_hist']),
       chestReport: ChestReport.fromMap(map['chest_report']),
@@ -87,7 +102,7 @@ class TreatmentReport {
 
   @override
   String toString() {
-    return 'TreatmentReport(report_time: $report_time ecg: $ecg, medicalHist: $medicalHist, chestReport: $chestReport, symptoms: $symptoms, examination: $examination)';
+    return 'TreatmentReport(report_time: $report_time district: $district spokeName: $spokeName spokeHospitalName: $spokeHospitalName ecg: $ecg, medicalHist: $medicalHist, chestReport: $chestReport, symptoms: $symptoms, examination: $examination)';
   }
 
   @override
@@ -97,6 +112,8 @@ class TreatmentReport {
     return other is TreatmentReport &&
         other.report_time == report_time &&
         other.district == district &&
+        other.spokeName == other.spokeName &&
+        other.spokeHospitalName == other.spokeHospitalName &&
         other.ecg == ecg &&
         other.medicalHist == medicalHist &&
         other.chestReport == chestReport &&
@@ -108,6 +125,8 @@ class TreatmentReport {
   int get hashCode {
     return report_time.hashCode ^
         ecg.hashCode ^
+        spokeName.hashCode ^
+        spokeHospitalName.hashCode ^
         medicalHist.hashCode ^
         chestReport.hashCode ^
         symptoms.hashCode ^
