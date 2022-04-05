@@ -7,6 +7,7 @@ class TreatmentReport {
   String spokeHospitalName;
   String spokeName;
   ECG ecg;
+  bool ecg_av;
   MedicalHist medicalHist;
   ChestReport chestReport;
   Symptoms symptoms;
@@ -17,6 +18,7 @@ class TreatmentReport {
     this.spokeHospitalName,
     this.spokeName,
     this.ecg,
+    this.ecg_av,
     this.medicalHist,
     this.chestReport,
     this.symptoms,
@@ -37,6 +39,7 @@ class TreatmentReport {
   set spoke_hospital_name(String spoke_hospital_name) =>
       this.spokeHospitalName = spoke_hospital_name;
   set ecg_(ECG value) => this.ecg = value;
+  set ecg_av_(bool value) => this.ecg_av = value;
   set medicalHist_(MedicalHist value) => this.medicalHist = value;
   set chestReport_(ChestReport value) => this.chestReport = value;
   set symptoms_(Symptoms value) => this.symptoms = value;
@@ -48,6 +51,7 @@ class TreatmentReport {
     String spokeName,
     String spokeHospitalName,
     ECG ecg,
+    bool ecg_av,
     MedicalHist medicalHist,
     ChestReport chestReport,
     Symptoms symptoms,
@@ -73,6 +77,7 @@ class TreatmentReport {
       'spokeName': spokeName,
       'spokeHospitalName': spokeHospitalName,
       'ecg': ecg.toMap(),
+      'ecg_av': ecg_av,
       'medical_hist': medicalHist.toMap(),
       'chest_report': chestReport.toMap(),
       'symptoms': symptoms.toMap(),
@@ -88,6 +93,7 @@ class TreatmentReport {
       spokeName: map['spokeName'],
       spokeHospitalName: map['spokeHospitalName'],
       ecg: ECG.fromMap(map['ecg']),
+      ecg_av: map['ecg_av'],
       medicalHist: MedicalHist.fromMap(map['medical_hist']),
       chestReport: ChestReport.fromMap(map['chest_report']),
       symptoms: Symptoms.fromMap(map['symptoms']),
