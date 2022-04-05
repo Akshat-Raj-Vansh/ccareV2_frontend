@@ -17,6 +17,12 @@ class ReportOverview extends StatefulWidget {
 
 class _ReportOverviewState extends State<ReportOverview> {
   @override
+  void initState() {
+    print(widget.report.ecg_av);
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
@@ -129,8 +135,9 @@ class _ReportOverviewState extends State<ReportOverview> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('ECG Scan: '),
-                widget.report.ecg.ecg_file_id != [] ||
-                        widget.report.ecg.ecg_file_id != null
+                // widget.report.ecg_av != null ||
+                //         widget.report.ecg_av != true ||
+                widget.report.ecg.ecg_file_id.length != 0
                     ? GestureDetector(
                         onTap: () {
                           Navigator.push(context,

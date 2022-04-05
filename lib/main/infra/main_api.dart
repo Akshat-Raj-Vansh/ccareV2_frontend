@@ -161,11 +161,10 @@ class MainAPI extends IMainAPI {
       Token token, Location location, String action, bool ambRequired,
       {List<QuestionTree>? assessment}) async {
     String endpoint = baseUrl + "/emergency/patient/notify";
-    assessment?.removeLast();
+    //assessment?.removeLast();
     var ans = assessment
         ?.map((e) => {"question": e.question, "answer": e.answers})
         .toList();
-    print(ans);
     var body = {
       "latitude": location.latitude,
       'longitude': location.longitude,
@@ -232,8 +231,6 @@ class MainAPI extends IMainAPI {
     }
     if (response.body == null)
       return Result.error('No report available currently!');
-    print('``````````````````````````````````````````````');
-    print(jsonDecode(response.body));
     dynamic currentReport = jsonDecode(response.body)['currentReport'];
     //print("Report $currentReport");
     if (currentReport == null) return currentReport;
@@ -242,8 +239,8 @@ class MainAPI extends IMainAPI {
       return Result.value({
         "currentReport": currentReport['newReport'] == false
             ? treat.TreatmentReport.fromJson(jsonEncode(currentReport))
-            : treat.TreatmentReport.initialize(
-                currentReport['spokeName'], currentReport['spokeHospitalName']),
+            : treat.TreatmentReport.initialize(currentReport['spokeName'],
+                currentReport['spokeHospitalName'], currentReport['ecg_av']),
         "previousReport": null
       });
     // if (currentReport['ecg'] == null) {
@@ -256,8 +253,8 @@ class MainAPI extends IMainAPI {
     // }
     return Result.value({
       "currentReport": currentReport["ecg"] == null
-          ? treat.TreatmentReport.initialize(
-              currentReport['spokeName'], currentReport['spokeHospitalName'])
+          ? treat.TreatmentReport.initialize(currentReport['spokeName'],
+              currentReport['spokeHospitalName'], currentReport['ecg_av'])
           : treat.TreatmentReport.fromJson(jsonEncode(currentReport)),
       "previousReport":
           treat.TreatmentReport.fromJson(jsonEncode(previousReport))
@@ -280,7 +277,6 @@ class MainAPI extends IMainAPI {
       //print(transformError(map));
       return Result.error(transformError(map));
     }
-    print(jsonDecode(response.body));
     if (jsonDecode(response.body)['history'].length == 0)
       return Result.error("No history in records");
     List<treat.TreatmentReport> report =
@@ -300,10 +296,6 @@ class MainAPI extends IMainAPI {
       "Authorization": token.value
     };
     var response = await _client.get(Uri.parse(endpoint), headers: header);
-    print(
-        'LOG > main_api.dart > fetchPatientExamReport > 269 > response.statusCode: ${response.statusCode}');
-    print(
-        'LOG > main_api.dart > fetchPatientExamReport > 270 > response.body: ${response.body}');
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
       //print(transformError(map));
@@ -504,18 +496,19 @@ class MainAPI extends IMainAPI {
     //   //print(data);
     //   return HubInfo.fromJson(jsonEncode(data));
     // }).toList();
-    print(json);
+
     List<String> hospitalNames = json.map<String>((e) => e.toString()).toList();
-    print(hospitalNames);
+
     return Result.value(hospitalNames);
   }
 
   @override
   Future<Result<String>> savePatientReport(
       Token token, treat.TreatmentReport report, String? patID) async {
-    //print("Update Patient Report");
+    print("====================Update Patient Report===================");
     String endpoint =
         baseUrl + "/treatment/spoke/updateReport?patientID=$patID";
+    print(report.ecg_av);
     var header = {
       "Content-Type": "application/json",
       "Authorization": token.value
@@ -536,7 +529,6 @@ class MainAPI extends IMainAPI {
   @override
   Future<Result<String>> savePatientExamReport(
       Token token, Examination examination, String patID) async {
-    print('Examination Report: ' + examination.toString());
     String endpoint =
         baseUrl + "/treatment/spoke/updateTreatment?patientID=$patID";
     var header = {
@@ -545,8 +537,7 @@ class MainAPI extends IMainAPI {
     };
     var response = await _client.post(Uri.parse(endpoint),
         headers: header, body: examination.toJson());
-    print('Response Status: ' + response.statusCode.toString());
-    print('Response Body: ' + response.body.toString());
+
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
       //print(transformError(map));
@@ -625,8 +616,7 @@ class MainAPI extends IMainAPI {
     final respStr = await response.stream.bytesToString();
     var fileID = jsonDecode(respStr)['fileID'];
     var time = jsonDecode(respStr)['time'];
-    print(jsonDecode(respStr)['seq_no']);
-    print("Image Uploaded#${fileID}#${time}");
+
     return Result.value("Image Uploaded#${fileID}#${time}");
   }
 
@@ -698,10 +688,7 @@ class MainAPI extends IMainAPI {
       "Authorization": token.value
     };
     var response = await _client.get(Uri.parse(endpoint), headers: header);
-    print(
-        '@main_api.dart/getAllMessages response status: ${response.statusCode}');
-    print('@main_api.dart/getAllMessages response body: ${response.body}');
-    //print(response.statusCode);
+
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
       //print(transformError(map));
@@ -726,9 +713,7 @@ class MainAPI extends IMainAPI {
       "Authorization": token.value
     };
     var response = await _client.get(Uri.parse(endpoint), headers: header);
-    print(
-        '@main_api.dart/getAssessments response status: ${response.statusCode}');
-    print('@main_api.dart/getAssessments response body: ${response.body}');
+
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
       //print(transformError(map));
@@ -804,21 +789,20 @@ class MainAPI extends IMainAPI {
       "Authorization": token.value
     };
     var response = await _client.get(Uri.parse(endpoint), headers: header);
-    print('response.body' + response.body);
+
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
       //print(transformError(map));
       return Result.error(transformError(map));
     }
-    print(jsonDecode(response.body)["hubResponse"]['ecg']['rythm']);
-    print(jsonDecode(response.body)["spokeResponse"]['chest_pain'] == null);
+
     if (jsonDecode(response.body)["hubResponse"]['ecg']['rythm'] == null &&
         jsonDecode(response.body)["spokeResponse"]['chest_pain'] == null)
       //intialize both
       return Result.error("error");
 
     dynamic hub = jsonDecode(response.body)["hubResponse"];
-    print('hub response' + hub.toString());
+
     dynamic spoke = jsonDecode(response.body)["spokeResponse"];
     return Result.value({
       "hubResponse": hub['ecg']['rythm'] == null
@@ -841,8 +825,7 @@ class MainAPI extends IMainAPI {
     };
     var response = await _client.post(Uri.parse(endpoint),
         headers: header, body: hubResponse.toJson());
-    print(response.statusCode);
-    print(response.body);
+
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
       //print(transformError(map));

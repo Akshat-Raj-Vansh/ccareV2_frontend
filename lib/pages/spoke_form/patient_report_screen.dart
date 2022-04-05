@@ -66,8 +66,10 @@ class _PatientReportScreenState extends State<PatientReportScreen>
   bool ecgUploaded = false;
   bool noReport = true;
   int _currentIndex = 0;
-  TreatmentReport editedReport = TreatmentReport.initialize('nill', 'nill');
-  TreatmentReport previousReport = TreatmentReport.initialize('nill', 'nill');
+  TreatmentReport editedReport =
+      TreatmentReport.initialize('nill', 'nill', true);
+  TreatmentReport previousReport =
+      TreatmentReport.initialize('nill', 'nill', true);
   bool previousReportExists = false;
   @override
   void initState() {
@@ -630,12 +632,8 @@ class _PatientReportScreenState extends State<PatientReportScreen>
 
   _buildPatientCentreDetails() {
     return Container(
-      decoration: BoxDecoration(
-        color: Colors.green[100],
-        borderRadius: BorderRadius.circular(20),
-      ),
       width: SizeConfig.screenWidth,
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: Column(
         children: [
@@ -663,7 +661,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text("District: "),
-              Text(editedReport.district.toString()),
+              Text(editedReport.district.toString().split('.')[1]),
             ],
           ),
           SizedBox(

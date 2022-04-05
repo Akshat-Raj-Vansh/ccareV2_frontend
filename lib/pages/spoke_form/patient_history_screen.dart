@@ -104,12 +104,10 @@ class _PatientReportHistoryScreenState
       },
       listener: (context, state) {
         if (state is PatientReportHistoryFetched) {
-          //print("Patient TreatmentReport History Fetched state Called");
+          print("Patient TreatmentReport History Fetched state Called");
           reports = state.reports;
           reports = reports.reversed.toList();
-          // _hideLoader();
         }
-
         if (state is NoReportState) {
           //print('No Treatment Report State Called');
           // _hideLoader();

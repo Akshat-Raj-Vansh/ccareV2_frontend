@@ -538,11 +538,28 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                                       .toList();
                                   //print(answers.join(','));
                                   try {
-                                    display.add(_questions.firstWhere(
-                                        (element) =>
-                                            element.parent ==
-                                                display[index].question &&
-                                            element.when == answers.join(',')));
+                                    // display.add(_questions.firstWhere(
+                                    //     (element) =>
+                                    //         element.parent ==
+                                    //             display[index].question &&
+                                    //         element.when == answers.join(',')));
+                                    print('3333333333333333');
+                                    print(display);
+                                    _showAmbRequired("QUESTIONNAIRE");
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(SnackBar(
+                                      backgroundColor:
+                                          Theme.of(context).accentColor,
+                                      content: Text(
+                                        "Emergency Notifications Sent",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .caption
+                                            .copyWith(
+                                                color: Colors.white,
+                                                fontSize: 12.sp),
+                                      ),
+                                    ));
                                   } catch (e) {
                                     //print(e);
                                   } //think about the when logic incase
@@ -558,7 +575,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                                   }
                                 }
 
-                                if (display.last.node_type == "RESULT") {
+                                if (display.last.node_type == NodeType.RESULT) {
                                   if (display.last.options[0] == "EMERGENCY") {
                                     _showAmbRequired("QUESTIONNAIRE");
                                     ScaffoldMessenger.of(context)

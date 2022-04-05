@@ -260,6 +260,7 @@ class _SelfAssessmentState extends State<SelfAssessment> {
 
                                 if (display.last.node_type == "RESULT") {
                                   if (display.last.options[0] == "EMERGENCY") {
+                                    print('11111111111111111111');
                                     _showAmbRequired();
                                     ScaffoldMessenger.of(context)
                                         .showSnackBar(SnackBar(
@@ -296,7 +297,7 @@ class _SelfAssessmentState extends State<SelfAssessment> {
                                     //print("INSIDE");
                                     if (display.last.options[0] ==
                                         "EMERGENCY") {
-                                      //print("Inside");
+                                      print("2222222222222222222");
                                       _showAmbRequired();
                                     }
                                   }

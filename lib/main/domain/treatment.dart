@@ -20,7 +20,7 @@ class TreatmentReport {
     this.spokeHospitalName,
     this.spokeName,
     this.ecg,
-    this.ecg_av,
+    this.ecg_av = false,
     this.medicalHist,
     this.chestReport,
     this.symptoms,
@@ -31,7 +31,7 @@ class TreatmentReport {
     this.newReport = true;
     this.district = District.nill;
     this.spokeName = sname;
-    this.ecg_av = ecg_av;
+    this.ecg_av = false;
     this.spokeHospitalName = shname;
     this.ecg = ECG.initialize();
     this.medicalHist = MedicalHist.initialize();
@@ -98,7 +98,6 @@ class TreatmentReport {
 
   factory TreatmentReport.fromMap(Map<String, dynamic> map) {
     var check = map['ecg']['ecg_file_id'] as List;
-    print(map['ecg']['ecg_file_id']);
     return TreatmentReport(
       newReport: map['newReport'],
       report_time: map['report_time'].toString(),
@@ -734,7 +733,7 @@ class Examination {
       local_tenderness.hashCode;
 }
 
-enum ECGType { nill, STEMI, NSTEMI }
+enum ECGType { nill, STEMI, NSTEMI, Normal, NotSure }
 enum YN { nill, yes, no }
 enum Site { nill, Left_Precordium, Right_Precordium, Epigastric_region }
 enum Location { nill, Localized, Diffuse }
