@@ -45,6 +45,9 @@ class _PatientReportScreenState extends State<PatientReportScreen>
       child: Text('Overview'),
     ),
     Tab(
+      child: Text('Patient-Centre Indentification'),
+    ),
+    Tab(
       child: Text('ECG Report'),
     ),
     Tab(
@@ -63,8 +66,8 @@ class _PatientReportScreenState extends State<PatientReportScreen>
   bool ecgUploaded = false;
   bool noReport = true;
   int _currentIndex = 0;
-  TreatmentReport editedReport = TreatmentReport.initialize();
-  TreatmentReport previousReport = TreatmentReport.initialize();
+  TreatmentReport editedReport = TreatmentReport.initialize('nill', 'nill');
+  TreatmentReport previousReport = TreatmentReport.initialize('nill', 'nill');
   bool previousReportExists = false;
   @override
   void initState() {
@@ -363,33 +366,39 @@ class _PatientReportScreenState extends State<PatientReportScreen>
       floatingActionButton: SpeedDial(
         animatedIcon: AnimatedIcons.menu_close,
         children: [
-          if (_currentIndex != 5)
+          if (_currentIndex != 6)
             SpeedDialChild(
                 label: 'Examination Report',
                 onTap: () {
                   _tabController.animateTo(5);
                 }),
-          if (_currentIndex != 4)
+          if (_currentIndex != 5)
             SpeedDialChild(
                 label: 'Symptoms',
                 onTap: () {
                   _tabController.animateTo(4);
                 }),
-          if (_currentIndex != 3)
+          if (_currentIndex != 4)
             SpeedDialChild(
                 label: 'Chest Report',
                 onTap: () {
                   _tabController.animateTo(3);
                 }),
-          if (_currentIndex != 2)
+          if (_currentIndex != 3)
             SpeedDialChild(
                 label: 'Medical History',
                 onTap: () {
                   _tabController.animateTo(2);
                 }),
-          if (_currentIndex != 1)
+          if (_currentIndex != 2)
             SpeedDialChild(
                 label: 'ECG Report',
+                onTap: () {
+                  _tabController.animateTo(1);
+                }),
+          if (_currentIndex != 1)
+            SpeedDialChild(
+                label: 'Patient-Centre Identification',
                 onTap: () {
                   _tabController.animateTo(1);
                 }),
@@ -432,6 +441,11 @@ class _PatientReportScreenState extends State<PatientReportScreen>
         children: <Widget>[
           Container(
             child: _buildReportOverview(),
+          ),
+          Container(
+            child: editReport
+                ? _buildPatientCentreForm()
+                : _buildPatientCentreDetails(),
           ),
           Container(
             child: editReport
@@ -484,6 +498,20 @@ class _PatientReportScreenState extends State<PatientReportScreen>
               ),
             ),
             _buildReportDetails(),
+            // Report Edit details
+            //  _buildEditDetails(),
+            SizedBox(height: 2.h),
+            Container(
+              width: SizeConfig.screenWidth,
+              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+              child: Text(
+                "Patient-Centre Indentification",
+                textAlign: TextAlign.left,
+                style: TextStyle(fontSize: 14.sp, color: kPrimaryColor),
+              ),
+            ),
+            _buildPatientCentreDetails(),
             // Report Edit details
             //  _buildEditDetails(),
             SizedBox(height: 2.h),
@@ -595,9 +623,22 @@ class _PatientReportScreenState extends State<PatientReportScreen>
                   .split(' ')[1]),
             ],
           ),
-          SizedBox(
-            height: 1.h,
-          ),
+        ],
+      ),
+    );
+  }
+
+  _buildPatientCentreDetails() {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.green[100],
+        borderRadius: BorderRadius.circular(20),
+      ),
+      width: SizeConfig.screenWidth,
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      child: Column(
+        children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -1026,6 +1067,97 @@ class _PatientReportScreenState extends State<PatientReportScreen>
         ),
       );
 
+  _buildPatientCentreForm() => Container(
+        width: SizeConfig.screenWidth,
+        margin: EdgeInsets.only(
+          left: 20,
+          right: 20,
+          top: 0,
+          // bottom: MediaQuery.of(context).viewInsets.bottom,
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: 2.h),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("Spoke Doctor's Name: "),
+                Text(editedReport.spokeName),
+              ],
+            ),
+            SizedBox(
+              height: 1.h,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("Spoke Hospital's Name: "),
+                Text(editedReport.spokeHospitalName),
+              ],
+            ),
+            SizedBox(
+              height: 1.h,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("Patient's Name: "),
+                Text(widget.patientDetails.name),
+              ],
+            ),
+            SizedBox(
+              height: 1.h,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("Patient's Contact Number: "),
+                Text(widget.patientDetails.contactNumber),
+              ],
+            ),
+            SizedBox(
+              height: 1.h,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("Patient's Age: "),
+                Text(widget.patientDetails.age.toString()),
+              ],
+            ),
+
+            SizedBox(height: 2.h),
+            // ECG Type
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('District: '),
+                Container(
+                  width: SizeConfig.screenWidth * 0.4,
+                  child: DropdownButton<District>(
+                    value: editedReport.district,
+                    isDense: false,
+                    onChanged: (District newValue) {
+                      setState(() {
+                        editedReport.district = newValue;
+                      });
+                    },
+                    items: District.values.map((District value) {
+                      return DropdownMenuItem<District>(
+                        value: value,
+                        child: Text(value.toString().split('.')[1]),
+                      );
+                    }).toList(),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: getProportionateScreenHeight(50)),
+          ],
+        ),
+      );
   _buildECGForm() => Container(
         width: SizeConfig.screenWidth,
         margin: EdgeInsets.only(

@@ -2,6 +2,7 @@
 import 'dart:convert';
 
 class TreatmentReport {
+  bool newReport;
   String report_time;
   District district;
   String spokeHospitalName;
@@ -12,6 +13,7 @@ class TreatmentReport {
   Symptoms symptoms;
   Examination examination;
   TreatmentReport({
+    this.newReport,
     this.report_time,
     this.district,
     this.spokeHospitalName,
@@ -23,8 +25,11 @@ class TreatmentReport {
     this.examination,
   });
 
-  TreatmentReport.initialize() {
+  TreatmentReport.initialize(String sname, String shname) {
+    this.newReport = true;
     this.district = District.nill;
+    this.spokeName = sname;
+    this.spokeHospitalName = shname;
     this.ecg = ECG.initialize();
     this.medicalHist = MedicalHist.initialize();
     this.chestReport = ChestReport.initialize();
@@ -32,6 +37,7 @@ class TreatmentReport {
     this.examination = Examination.initialize();
   }
 
+  set new_report(bool new_report) => this.newReport = new_report;
   set report_time_(String report_time) => this.report_time = report_time;
   set spoke_name_(String spoke_name) => this.spokeName = spoke_name;
   set spoke_hospital_name(String spoke_hospital_name) =>
@@ -43,6 +49,7 @@ class TreatmentReport {
   set examination_(Examination value) => this.examination = value;
 
   TreatmentReport copyWith({
+    bool newReport,
     String report_time,
     District district,
     String spokeName,
@@ -54,6 +61,7 @@ class TreatmentReport {
     Examination examination,
   }) {
     return TreatmentReport(
+      newReport: newReport ?? this.newReport,
       report_time: report_time ?? this.report_time,
       district: district ?? this.district,
       spokeName: spokeName ?? this.spokeName,
@@ -68,6 +76,7 @@ class TreatmentReport {
 
   Map<String, dynamic> toMap() {
     return {
+      'newReport': newReport,
       'report_time': report_time,
       'district': district.toString().split(".")[1],
       'spokeName': spokeName,
@@ -81,17 +90,30 @@ class TreatmentReport {
   }
 
   factory TreatmentReport.fromMap(Map<String, dynamic> map) {
+    var check = map['ecg']['ecg_file_id'] as List;
+    print(map['ecg']['ecg_file_id']);
     return TreatmentReport(
+      newReport: map['newReport'],
       report_time: map['report_time'].toString(),
-      district: District.values.firstWhere((element) =>
-          element.toString() == "District." + map['district'].toString()),
+      district: map['district'] == null
+          ? District.nill
+          : District.values.firstWhere((element) =>
+              element.toString() == "District." + map['district'].toString()),
       spokeName: map['spokeName'],
       spokeHospitalName: map['spokeHospitalName'],
-      ecg: ECG.fromMap(map['ecg']),
-      medicalHist: MedicalHist.fromMap(map['medical_hist']),
-      chestReport: ChestReport.fromMap(map['chest_report']),
-      symptoms: Symptoms.fromMap(map['symptoms']),
-      examination: Examination.fromMap(map['examination']),
+      ecg: check.length == 0 ? ECG.initialize() : ECG.fromMap(map['ecg']),
+      medicalHist: map['medical_hist'] == null
+          ? MedicalHist.initialize()
+          : MedicalHist.fromMap(map['medical_hist']),
+      chestReport: map['chest_report'] == null
+          ? ChestReport.initialize()
+          : ChestReport.fromMap(map['chest_report']),
+      symptoms: map['symptoms'] == null
+          ? Symptoms.initialize()
+          : Symptoms.fromMap(map['symptoms']),
+      examination: map['examination'] == null
+          ? Examination.initialize()
+          : Examination.fromMap(map['examination']),
     );
   }
 
