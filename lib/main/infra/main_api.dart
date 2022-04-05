@@ -232,16 +232,18 @@ class MainAPI extends IMainAPI {
     }
     if (response.body == null)
       return Result.error('No report available currently!');
-
+    print('``````````````````````````````````````````````');
+    print(jsonDecode(response.body));
     dynamic currentReport = jsonDecode(response.body)['currentReport'];
     //print("Report $currentReport");
     if (currentReport == null) return currentReport;
     dynamic previousReport = jsonDecode(response.body)['previousReports'];
     if (previousReport == null)
       return Result.value({
-        "currentReport": currentReport['ecg'] != null
+        "currentReport": currentReport['newReport'] == false
             ? treat.TreatmentReport.fromJson(jsonEncode(currentReport))
-            : treat.TreatmentReport.initialize(),
+            : treat.TreatmentReport.initialize(
+                currentReport['spokeName'], currentReport['spokeHospitalName']),
         "previousReport": null
       });
     // if (currentReport['ecg'] == null) {
@@ -254,7 +256,8 @@ class MainAPI extends IMainAPI {
     // }
     return Result.value({
       "currentReport": currentReport["ecg"] == null
-          ? treat.TreatmentReport.initialize()
+          ? treat.TreatmentReport.initialize(
+              currentReport['spokeName'], currentReport['spokeHospitalName'])
           : treat.TreatmentReport.fromJson(jsonEncode(currentReport)),
       "previousReport":
           treat.TreatmentReport.fromJson(jsonEncode(previousReport))
