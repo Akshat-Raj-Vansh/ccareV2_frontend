@@ -6,8 +6,6 @@
 	<string>location</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<true />
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<true />
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
