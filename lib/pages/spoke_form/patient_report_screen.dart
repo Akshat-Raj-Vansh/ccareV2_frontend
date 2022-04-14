@@ -1907,8 +1907,8 @@ class _PatientReportScreenState extends State<PatientReportScreen>
                     keyboardType: TextInputType.number,
                     focusNode: null,
                     onChanged: (newValue) =>
-                        editedReport.examination.sbp = newValue,
-                    initialValue: editedReport.examination.sbp,
+                        editedReport.examination.spo2 = newValue,
+                    initialValue: editedReport.examination.spo2,
                     decoration: const InputDecoration(
                       hintText: "Enter SpO2",
                       floatingLabelBehavior: FloatingLabelBehavior.always,

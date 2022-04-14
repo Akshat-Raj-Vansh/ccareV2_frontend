@@ -660,6 +660,8 @@ class Examination {
   set pulse_rate_(String value) => this.pulse_rate = value;
   set dbp_(String value) => this.dbp = value;
   set sbp_(String value) => this.sbp = value;
+
+  set spo2_(String value) => this.spo2 = value;
   // set local_tenderness_(String value) => this.local_tenderness = value;
 
   Examination copyWith({
