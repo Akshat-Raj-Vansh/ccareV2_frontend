@@ -262,6 +262,48 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
                 ) ??
                 false;
             //Create new state PatientAccepted by Hub
+          } else if (state is ShowNotificationDialogState) {
+            _hideLoader();
+            log('LOG > doctor_spoke.dart > 237 > state: ${state.toString()}',
+                time: DateTime.now());
+            await showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: Text(
+                      'Are you sure?',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16.sp,
+                      ),
+                    ),
+                    content: Text(
+                      'Do you want to accept the patient?',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w300,
+                        fontSize: 12.sp,
+                      ),
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(false),
+                        child: Text(
+                          'Cancel',
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () async {
+                          widget.mainCubit
+                              .acceptPatientBySpoke(state.patientID);
+                          Navigator.of(context).pop(false);
+                        },
+                        child: Text(
+                          'Yes',
+                        ),
+                      ),
+                    ],
+                  ),
+                ) ??
+                false;
           } else if (state is PatientAccepted) {
             // // _hideLoader();
             print("Inside patient accepted by Doctor state");

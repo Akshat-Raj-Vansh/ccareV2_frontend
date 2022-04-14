@@ -226,6 +226,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
             print('DATA > patient.dart > 222 > Inside DetailsLoaded State}');
             print('STATE: DetailsLoaded Builder');
             currentState = DetailsLoaded;
+
             // // _hideLoader();
             _notificationSent = true;
             eDetails = state.eDetails;
@@ -694,7 +695,9 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
               context,
               MaterialPageRoute(
                 builder: (context) => PatientReportScreen(
-                    mainCubit: widget.mainCubit, user: UserType.PATIENT),
+                  mainCubit: widget.mainCubit,
+                  user: UserType.PATIENT,
+                ),
               ));
         },
         child: Container(
@@ -820,8 +823,8 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                       label: Text("CALL")),
                   TextButton.icon(
                       onPressed: () => {}, //print("CANCEL"),
-                      icon: Icon(Icons.cancel),
-                      label: Text("CANCEL"))
+                      icon: Icon(Icons.info),
+                      label: Text("Spoke Doctor"))
                 ],
               ),
               SizedBox(

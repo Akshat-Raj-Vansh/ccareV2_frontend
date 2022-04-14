@@ -134,6 +134,15 @@ class MainCubit extends Cubit<MainState> {
     emit(AcceptState(patientID));
   }
 
+  showAcceptNotif(String patientID) async {
+    _startLoading("Notification for Accepting Patient");
+    if (patientID == null) {
+      emit(ErrorState("Invalid ID of patient"));
+      return;
+    }
+    emit(ShowNotificationDialogState(patientID));
+  }
+
   acceptPatientBySpoke(String patientID) async {
     _startLoading("AcceptPatientbySpoke");
     final token = await localStore.fetch();

@@ -370,33 +370,33 @@ class _PatientReportScreenState extends State<PatientReportScreen>
         children: [
           if (_currentIndex != 6)
             SpeedDialChild(
+                label: 'ECG Report',
+                onTap: () {
+                  _tabController.animateTo(6);
+                }),
+          if (_currentIndex != 5)
+            SpeedDialChild(
                 label: 'Examination Report',
                 onTap: () {
                   _tabController.animateTo(5);
                 }),
-          if (_currentIndex != 5)
+          if (_currentIndex != 4)
             SpeedDialChild(
                 label: 'Symptoms',
                 onTap: () {
                   _tabController.animateTo(4);
                 }),
-          if (_currentIndex != 4)
+          if (_currentIndex != 3)
             SpeedDialChild(
                 label: 'Chest Report',
                 onTap: () {
                   _tabController.animateTo(3);
                 }),
-          if (_currentIndex != 3)
+          if (_currentIndex != 2)
             SpeedDialChild(
                 label: 'Medical History',
                 onTap: () {
                   _tabController.animateTo(2);
-                }),
-          if (_currentIndex != 2)
-            SpeedDialChild(
-                label: 'ECG Report',
-                onTap: () {
-                  _tabController.animateTo(1);
                 }),
           if (_currentIndex != 1)
             SpeedDialChild(
@@ -450,12 +450,6 @@ class _PatientReportScreenState extends State<PatientReportScreen>
                 : _buildPatientCentreDetails(),
           ),
           Container(
-            child: editReport
-                ? _buildECGForm()
-                : _buildDetailsBody(_buildECGDetails(editedReport),
-                    _buildECGDetails(previousReport)),
-          ),
-          Container(
               child: editReport
                   ? _buildMedHistForm()
                   : _buildDetailsBody(_buildMedHistDetails(editedReport),
@@ -479,6 +473,12 @@ class _PatientReportScreenState extends State<PatientReportScreen>
                 ? _buildExaminationForm()
                 : _buildDetailsBody(_buildExaminationDetails(editedReport),
                     _buildExaminationDetails(previousReport)),
+          ),
+          Container(
+            child: editReport
+                ? _buildECGForm()
+                : _buildDetailsBody(_buildECGDetails(editedReport),
+                    _buildECGDetails(previousReport)),
           ),
         ],
       );
@@ -519,19 +519,6 @@ class _PatientReportScreenState extends State<PatientReportScreen>
             SizedBox(height: 2.h),
 
             // Patient Medical Report
-            // ECG Report
-            Container(
-              width: SizeConfig.screenWidth,
-              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-              child: Text(
-                "ECG Report",
-                textAlign: TextAlign.left,
-                style: TextStyle(fontSize: 14.sp, color: kPrimaryColor),
-              ),
-            ),
-            _buildECGDetails(editedReport),
-
             // Medical History
             Container(
               width: SizeConfig.screenWidth,
@@ -583,6 +570,19 @@ class _PatientReportScreenState extends State<PatientReportScreen>
               ),
             ),
             _buildExaminationDetails(editedReport),
+
+            // ECG Report
+            Container(
+              width: SizeConfig.screenWidth,
+              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+              child: Text(
+                "ECG Report",
+                textAlign: TextAlign.left,
+                style: TextStyle(fontSize: 14.sp, color: kPrimaryColor),
+              ),
+            ),
+            _buildECGDetails(editedReport),
           ],
         ),
       );
@@ -667,33 +667,38 @@ class _PatientReportScreenState extends State<PatientReportScreen>
           SizedBox(
             height: 1.h,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text("Patient's Name: "),
-              Text(widget.patientDetails.name),
-            ],
-          ),
-          SizedBox(
-            height: 1.h,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text("Patient's Contact Number: "),
-              Text(widget.patientDetails.contactNumber),
-            ],
-          ),
-          SizedBox(
-            height: 1.h,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text("Patient's Age: "),
-              Text(widget.patientDetails.age.toString()),
-            ],
-          ),
+          if (widget.user != UserType.PATIENT)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("Patient's Name: "),
+                Text(widget.patientDetails.name),
+              ],
+            ),
+          if (widget.user != UserType.PATIENT)
+            SizedBox(
+              height: 1.h,
+            ),
+          if (widget.user != UserType.PATIENT)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("Patient's Contact Number: "),
+                Text(widget.patientDetails.contactNumber),
+              ],
+            ),
+          if (widget.user != UserType.PATIENT)
+            SizedBox(
+              height: 1.h,
+            ),
+          if (widget.user != UserType.PATIENT)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("Patient's Age: "),
+                Text(widget.patientDetails.age.toString()),
+              ],
+            ),
         ],
       ),
     );

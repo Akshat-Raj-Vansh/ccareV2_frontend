@@ -40,7 +40,7 @@ class SpokeNotificationHandler {
         //         .copyWith(color: Colors.white, fontSize :8.sp),
         //   ),
         // ));
-        await mainCubit.acceptRequest(message.data["_patientID"]);
+        await mainCubit.showAcceptNotif(message.data["_patientID"]);
       }
       if (message.data["user"] == "DRIVER") {
         // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -63,7 +63,7 @@ class SpokeNotificationHandler {
   static Future<void> onMessageOpenedHandler(RemoteMessage message) async {
     if (message.data['type'] == 'Emergency') {
       //print("Not supposed to be here");
-      await mainCubit.acceptRequest(message.data["_patientID"]);
+      await mainCubit.showAcceptNotif(message.data["_patientID"]);
     }
     if (message.data['type'] == 'EmergencyStatus') {
       await mainCubit.spokeStatusFetched(message.data['status']);

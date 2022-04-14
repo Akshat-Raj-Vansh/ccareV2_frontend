@@ -499,7 +499,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('ACEI ARD: '),
+                Text('ACEI/ARB: '),
                 Text(editedReport.nTreatment.acei_arb.toString().split('.')[1]),
               ],
             ),
@@ -879,7 +879,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('ACEI ARD: '),
+                  Text('ACEI/ARB: '),
                   Container(
                     width: SizeConfig.screenWidth * 0.4,
                     child: DropdownButton<YN>(

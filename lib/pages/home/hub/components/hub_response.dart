@@ -277,6 +277,9 @@ class _ResponseScreenState extends State<ResponseScreen>
             style: TextStyle(fontSize: 14.sp, color: kPrimaryColor),
           ),
           _currentReportDetails,
+          SizedBox(
+            height: 20,
+          ),
         ],
       );
 

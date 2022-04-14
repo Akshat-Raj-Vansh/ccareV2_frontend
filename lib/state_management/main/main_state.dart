@@ -35,6 +35,13 @@ class AcceptState extends MainState {
   List<Object> get props => [patientID];
 }
 
+class ShowNotificationDialogState extends MainState {
+  final String patientID;
+  ShowNotificationDialogState(this.patientID);
+  @override
+  List<Object> get props => [patientID];
+}
+
 class ResponsesLoaded extends MainState {
   final HubResponse hubResponse;
   final SpokeResponse spokeResponse;
