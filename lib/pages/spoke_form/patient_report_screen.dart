@@ -48,7 +48,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
       child: Text('Patient-Centre Indentification'),
     ),
     Tab(
-      child: Text('ECG Report'),
+      child: Text('Examination'),
     ),
     Tab(
       child: Text('Medical History'),
@@ -60,7 +60,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
       child: Text('Symptoms'),
     ),
     Tab(
-      child: Text('Examination'),
+      child: Text('ECG Report'),
     ),
   ];
   bool ecgUploaded = false;
