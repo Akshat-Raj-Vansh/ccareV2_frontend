@@ -48,9 +48,6 @@ class _PatientReportScreenState extends State<PatientReportScreen>
       child: Text('Patient-Centre Indentification'),
     ),
     Tab(
-      child: Text('Examination'),
-    ),
-    Tab(
       child: Text('Medical History'),
     ),
     Tab(
@@ -58,6 +55,9 @@ class _PatientReportScreenState extends State<PatientReportScreen>
     ),
     Tab(
       child: Text('Symptoms'),
+    ),
+    Tab(
+      child: Text('Examination'),
     ),
     Tab(
       child: Text('ECG Report'),
