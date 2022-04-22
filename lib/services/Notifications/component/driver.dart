@@ -11,6 +11,7 @@ class DriverNotificationHandler {
   static configure(MainCubit cubit, BuildContext c) {
     mainCubit = cubit;
     context = c;
+    print("here inside");
   }
 
   static Future<void> backgroundMessageHandler(RemoteMessage message) async {
