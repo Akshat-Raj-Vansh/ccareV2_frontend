@@ -8,6 +8,7 @@ import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
 import 'package:ccarev2_frontend/state_management/main/main_state.dart';
 import 'package:ccarev2_frontend/state_management/user/user_cubit.dart';
 import 'package:ccarev2_frontend/user/domain/credential.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:sizer/sizer.dart';
 import 'package:ccarev2_frontend/utils/size_config.dart';
 import 'package:flutter/cupertino.dart';
@@ -23,7 +24,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class DriverHomeUI extends StatefulWidget {
   final IHomePageAdapter homePageAdapter;
-  const DriverHomeUI(this.homePageAdapter);
+  final UserCubit userCubit;
+  const DriverHomeUI(this.homePageAdapter, this.userCubit);
 
   @override
   State<DriverHomeUI> createState() => _DriverHomeUIState();
@@ -122,62 +124,6 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
 
     return Scaffold(
         key: scaffoldKey,
-        drawer: Drawer(
-          child: ListView(
-            // Important: Remove any padding from the ListView.
-            padding: EdgeInsets.zero,
-            children: [
-              const DrawerHeader(
-                decoration: BoxDecoration(
-                  color: Colors.blue,
-                ),
-                child: Text('Danish Sheikh'),
-              ),
-              ListTile(
-                title: Text('Logout'),
-                onTap: () async {
-                  await showDialog(
-                        context: context,
-                        builder: (context) => AlertDialog(
-                          title: Text(
-                            'Are you sure?',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 16.sp,
-                            ),
-                          ),
-                          content: Text(
-                            'Do you want to logout?',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w300,
-                              fontSize: 12.sp,
-                            ),
-                          ),
-                          actions: [
-                            TextButton(
-                              onPressed: () => Navigator.of(context).pop(false),
-                              child: Text(
-                                'Cancel',
-                              ),
-                            ),
-                            TextButton(
-                              onPressed: () async {
-                                widget.homePageAdapter.onLogout(context,
-                                    CubitProvider.of<UserCubit>(context));
-                              },
-                              child: Text(
-                                'Yes',
-                              ),
-                            ),
-                          ],
-                        ),
-                      ) ??
-                      false;
-                },
-              ),
-            ],
-          ),
-        ),
         body: CubitConsumer<MainCubit, MainState>(builder: (_, state) {
           if (state is DetailsLoaded) {
             currentState = state;
@@ -201,8 +147,8 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
             }
           }
 
-          if (state is NormalState) {
-            currentState = NormalState;
+          if (state is NewErrorState) {
+            currentState = NewErrorState;
           }
           if (currentState == null)
             return Center(child: CircularProgressIndicator());
@@ -335,10 +281,10 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
             padding: EdgeInsets.symmetric(horizontal: 30, vertical: 50),
             child: IconButton(
                 onPressed: () {
-                  scaffoldKey.currentState.openDrawer();
+                  widget.homePageAdapter.onLogout(context, widget.userCubit);
                 },
                 icon: Icon(
-                  Icons.menu,
+                  Icons.exit_to_app,
                   size: 30,
                   color: Colors.black,
                 )),
