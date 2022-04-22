@@ -47,6 +47,7 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
   @override
   void initState() {
     super.initState();
+    print('Inside the driver home screen');
     NotificationController.configure(
         CubitProvider.of<MainCubit>(context), UserType.DRIVER, context);
     NotificationController.fcmHandler();
@@ -107,12 +108,9 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
   }
 
   _getLocation() async {
+    print('getting location');
     lloc.LocationData _locationData = await lloc.Location().getLocation();
-    // "," +
-    // _locationData.longitude.toString());
-
     _userLocation = LatLng(_locationData.latitude, _locationData.longitude);
-
     _addDriverMarker();
   }
 
