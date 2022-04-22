@@ -495,6 +495,7 @@ class MainCubit extends Cubit<MainState> {
       emit(NewErrorState(result.asError!.error as String, "DetailsLoaded"));
       return;
     }
+    Future.delayed(Duration(microseconds: 500));
     emit(DetailsLoaded(result.asValue!.value));
   }
 
@@ -519,6 +520,7 @@ class MainCubit extends Cubit<MainState> {
       emit(ErrorState(result.asError!.error as String));
       return;
     }
+    Future.delayed(Duration(microseconds: 100));
     emit(StatusFetched(result.asValue!.value));
   }
 

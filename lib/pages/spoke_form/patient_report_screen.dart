@@ -48,9 +48,6 @@ class _PatientReportScreenState extends State<PatientReportScreen>
       child: Text('Patient-Centre Indentification'),
     ),
     Tab(
-      child: Text('Examination'),
-    ),
-    Tab(
       child: Text('Medical History'),
     ),
     Tab(
@@ -58,6 +55,9 @@ class _PatientReportScreenState extends State<PatientReportScreen>
     ),
     Tab(
       child: Text('Symptoms'),
+    ),
+    Tab(
+      child: Text('Examination'),
     ),
     Tab(
       child: Text('ECG Report'),
@@ -748,7 +748,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
               ],
             ),
 
-            SizedBox(height: 3.h),
+            SizedBox(height: getProportionateScreenHeight(100)),
           ],
         ),
       );
@@ -1040,7 +1040,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
                     .split('.')[1]),
               ],
             ),
-            SizedBox(height: getProportionateScreenHeight(100)),
+            SizedBox(height: 3.h),
           ],
         ),
       );

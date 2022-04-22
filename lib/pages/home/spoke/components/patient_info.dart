@@ -55,8 +55,8 @@ class _PatientInfoState extends State<PatientInfo> {
     super.initState();
     widget.mainCubit.patientInfoLoading();
     // widget.mainCubit.fetchEmergencyDetails(patientID: widget.patientID);
-    NotificationController.configure(widget.mainCubit, UserType.SPOKE, context);
-    NotificationController.fcmHandler();
+    // NotificationController.configure(widget.mainCubit, UserType.SPOKE, context);
+    // NotificationController.fcmHandler();
     widget.mainCubit.fetchToken();
   }
 

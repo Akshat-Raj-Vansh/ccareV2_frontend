@@ -41,9 +41,9 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
     _driverLocation = LatLng(100, 100);
     _getUserLocation();
 
-    NotificationController.configure(
-        CubitProvider.of<MainCubit>(context), UserType.PATIENT, context);
-    NotificationController.fcmHandler();
+    // NotificationController.configure(
+    //     CubitProvider.of<MainCubit>(context), UserType.PATIENT, context);
+    // NotificationController.fcmHandler();
   }
 
   _showLoader() {

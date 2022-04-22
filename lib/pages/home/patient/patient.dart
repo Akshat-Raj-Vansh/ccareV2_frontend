@@ -289,7 +289,12 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
             _notificationSent = true;
             _emergency = true;
             _currentStatus = "EMERGENCY";
+<<<<<<< HEAD
             _showMessage("Notifications sent to the Doctor and the Ambulance.");
+=======
+            //print("Emergency State Called");
+            // _showMessage("Notifications sent to the Doctor and the Ambulance.");
+>>>>>>> 8567da25d1f1596e776719ed5892ab663dc668fb
           } else if (state is DetailsLoaded) {
             _hideLoader();
             setState(() {});
@@ -332,8 +337,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // if (!_notificationSent) _buildHeader(),
-              if ((_questionnaire || _historyFetched) && !_notificationSent)
-                _buildPatienEmergencyButton(),
+
               if (_historyFetched && !_notificationSent)
                 _buildSelfAnalysisButton(),
               if (!_historyFetched && _questionnaire && !_notificationSent)
@@ -387,27 +391,32 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
             ],
           ),
         ),
+        if ((_questionnaire || _historyFetched) && !_notificationSent)
+          _buildPatienEmergencyButton(),
         if (_notificationSent || _doctorAccepted || _driverAccepted)
           _buildBottomUI(context)
       ]);
 
-  _buildPatienEmergencyButton() => InkWell(
-        onTap: () async {
-          _showAmbRequired("EBUTTON");
-          setState(() {});
-        },
-        child: Container(
-          width: SizeConfig.screenWidth,
-          margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(5),
-              border: Border.all(color: Colors.red)),
-          child: Text(
-            "Press here if you require Emergency AID",
-            style: TextStyle(color: Colors.red, fontSize: 12.sp),
-            textAlign: TextAlign.center,
+  _buildPatienEmergencyButton() => Align(
+        alignment: Alignment.bottomCenter,
+        child: InkWell(
+          onTap: () async {
+            _showAmbRequired("EBUTTON");
+            setState(() {});
+          },
+          child: Container(
+            width: SizeConfig.screenWidth,
+            margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(5),
+                border: Border.all(color: Colors.red)),
+            child: Text(
+              "Press here if you require Emergency AID",
+              style: TextStyle(color: Colors.red, fontSize: 12.sp),
+              textAlign: TextAlign.center,
+            ),
           ),
         ),
       );
@@ -459,7 +468,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                 style: styles,
               ),
             ),
-            Expanded(
+            SingleChildScrollView(
               child: ListView.separated(
                   shrinkWrap: true,
                   separatorBuilder: (context, index) => SizedBox(height: 20),
@@ -526,6 +535,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                                     //             display[index].question &&
                                     //         element.when == answers.join(',')));
                                     _showAmbRequired("QUESTIONNAIRE");
+<<<<<<< HEAD
                                     ScaffoldMessenger.of(context)
                                         .showSnackBar(SnackBar(
                                       backgroundColor:
@@ -541,6 +551,11 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                                       ),
                                     ));
                                   } catch (e) {} //think about the when logic incase
+=======
+                                  } catch (e) {
+                                    //print(e);
+                                  } //think about the when logic incase
+>>>>>>> 8567da25d1f1596e776719ed5892ab663dc668fb
                                 } else if (display[index].options[i ~/ 2] !=
                                     "next") {
                                   if (!answers.contains(
@@ -556,20 +571,6 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                                 if (display.last.node_type == NodeType.RESULT) {
                                   if (display.last.options[0] == "EMERGENCY") {
                                     _showAmbRequired("QUESTIONNAIRE");
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(SnackBar(
-                                      backgroundColor:
-                                          Theme.of(context).accentColor,
-                                      content: Text(
-                                        "Emergency Notifications Sent",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .caption
-                                            .copyWith(
-                                                color: Colors.white,
-                                                fontSize: 12.sp),
-                                      ),
-                                    ));
                                   }
                                 }
                               });
@@ -906,7 +907,19 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
 
             await widget.mainCubit.notify(action, true, location,
                 assessment: action == "QUESTIONNAIRE" ? display : null);
-            // await widget.mainCubit.fetchEmergencyDetails();
+            // await widget.mainCubit.fetchEmergencyDetails();\
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                backgroundColor: Theme.of(context).accentColor,
+                content: Text(
+                  "Emergency Notifications Sent to Doctor and Driver",
+                  style: Theme.of(context)
+                      .textTheme
+                      .caption
+                      .copyWith(color: Colors.white, fontSize: 12.sp),
+                ),
+              ),
+            );
           },
           child: Text(
             'Yes',
@@ -919,6 +932,16 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
             await widget.mainCubit.notify(action, false, location,
                 assessment: action == "QUESTIONNAIRE" ? display : null);
             // await widget.mainCubit.fetchEmergencyDetails();
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              backgroundColor: Theme.of(context).accentColor,
+              content: Text(
+                "Emergency Notifications Sent to Doctor",
+                style: Theme.of(context)
+                    .textTheme
+                    .caption
+                    .copyWith(color: Colors.white, fontSize: 12.sp),
+              ),
+            ));
           },
           child: Text(
             'No',

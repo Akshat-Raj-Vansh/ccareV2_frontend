@@ -37,8 +37,8 @@ class _HubPatientInfoState extends State<HubPatientInfo> {
     super.initState();
 
     widget.mainCubit.fetchToken();
-    NotificationController.configure(widget.mainCubit, UserType.HUB, context);
-    NotificationController.fcmHandler();
+    // NotificationController.configure(widget.mainCubit, UserType.HUB, context);
+    // NotificationController.fcmHandler();
   }
 
   @override
