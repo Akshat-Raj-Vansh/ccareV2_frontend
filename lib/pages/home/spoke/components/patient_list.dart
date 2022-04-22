@@ -27,15 +27,15 @@ class PatientList extends StatefulWidget {
 class _PatientListState extends State<PatientList> {
   List<PatientListInfo> _patients = [];
   bool loader = false;
-   dynamic currentState = null;
+  dynamic currentState = null;
 
   @override
   void initState() {
     super.initState();
     CubitProvider.of<MainCubit>(context).getAllPatients();
-    NotificationController.configure(
-        CubitProvider.of<MainCubit>(context), UserType.SPOKE, context);
-    NotificationController.fcmHandler();
+    // NotificationController.configure(
+    //     CubitProvider.of<MainCubit>(context), UserType.SPOKE, context);
+    // NotificationController.fcmHandler();
     // CubitProvider.of<MainCubit>(context).fetchToken();
   }
 

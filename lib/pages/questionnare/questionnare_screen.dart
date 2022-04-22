@@ -174,7 +174,7 @@ class _SelfAssessmentState extends State<SelfAssessment> {
                 style: styles,
               ),
             ),
-            Expanded(
+            SingleChildScrollView(
               child: ListView.separated(
                   shrinkWrap: true,
                   separatorBuilder: (context, index) => SizedBox(height: 20),

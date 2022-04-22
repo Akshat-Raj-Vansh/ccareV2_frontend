@@ -61,13 +61,15 @@ class SpokeNotificationHandler {
   }
 
   static Future<void> onMessageOpenedHandler(RemoteMessage message) async {
-    if (message.data['type'] == 'Emergency') {
-      //print("Not supposed to be here");
-      await mainCubit.showAcceptNotif(message.data["_patientID"]);
-    }
-    if (message.data['type'] == 'EmergencyStatus') {
-      await mainCubit.spokeStatusFetched(message.data['status']);
-    }
+    print(
+        "Handling a message for doctor in onMessageOpenedHandler: ${message.data}");
+    // if (message.data['type'] == 'Emergency') {
+    //   //print("Not supposed to be here");
+    //   await mainCubit.showAcceptNotif(message.data["_patientID"]);
+    // }
+    // if (message.data['type'] == 'EmergencyStatus') {
+    //   await mainCubit.spokeStatusFetched(message.data['status']);
+    // }
     // if(message.data["type"]=="Consultation" && message.data["user"]=="HUB"){
     //   await mainCubit.hubAccepted();
     // }

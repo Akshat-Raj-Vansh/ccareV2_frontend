@@ -76,7 +76,7 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
                 style: styles,
               ),
             ),
-            Expanded(
+            SingleChildScrollView(
               child: ListView.separated(
                   shrinkWrap: true,
                   separatorBuilder: (context, index) => SizedBox(height: 20),

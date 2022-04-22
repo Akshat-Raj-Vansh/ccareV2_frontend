@@ -773,7 +773,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
               ],
             ),
 
-            SizedBox(height: 3.h),
+            SizedBox(height: getProportionateScreenHeight(100)),
           ],
         ),
       );
@@ -1065,7 +1065,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
                     .split('.')[1]),
               ],
             ),
-            SizedBox(height: getProportionateScreenHeight(100)),
+            SizedBox(height: 3.h),
           ],
         ),
       );
