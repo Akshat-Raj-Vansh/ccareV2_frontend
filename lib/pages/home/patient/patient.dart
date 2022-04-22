@@ -289,12 +289,8 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
             _notificationSent = true;
             _emergency = true;
             _currentStatus = "EMERGENCY";
-<<<<<<< HEAD
-            _showMessage("Notifications sent to the Doctor and the Ambulance.");
-=======
             //print("Emergency State Called");
             // _showMessage("Notifications sent to the Doctor and the Ambulance.");
->>>>>>> 8567da25d1f1596e776719ed5892ab663dc668fb
           } else if (state is DetailsLoaded) {
             _hideLoader();
             setState(() {});
@@ -535,27 +531,9 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                                     //             display[index].question &&
                                     //         element.when == answers.join(',')));
                                     _showAmbRequired("QUESTIONNAIRE");
-<<<<<<< HEAD
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(SnackBar(
-                                      backgroundColor:
-                                          Theme.of(context).accentColor,
-                                      content: Text(
-                                        "Emergency Notifications Sent",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .caption
-                                            .copyWith(
-                                                color: Colors.white,
-                                                fontSize: 12.sp),
-                                      ),
-                                    ));
-                                  } catch (e) {} //think about the when logic incase
-=======
                                   } catch (e) {
                                     //print(e);
                                   } //think about the when logic incase
->>>>>>> 8567da25d1f1596e776719ed5892ab663dc668fb
                                 } else if (display[index].options[i ~/ 2] !=
                                     "next") {
                                   if (!answers.contains(
