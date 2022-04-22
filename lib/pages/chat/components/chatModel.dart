@@ -29,16 +29,10 @@ class ChatModel extends Model {
             .setQuery({"token": token, "patientID": patientID})
             .build());
     socket.connect();
-    socket.onConnect((_) {
-      //print('connect');
-    });
-    socket.onConnectError((err) {
-      //print(err);
-    });
+    socket.onConnect((_) {});
+    socket.onConnectError((err) {});
 
     socket.on("receive_message", (jsonData) {
-      //print(jsonEncode(jsonData));
-      //print(jsonEncode(jsonData['content']));
       Map<String, dynamic> data = jsonDecode(jsonEncode(jsonData));
       messages.add(Message(data['content'], data['senderChatID'],
           data['receiverChatID'], data['type'], data['time'],
@@ -48,11 +42,7 @@ class ChatModel extends Model {
   }
 
   void addMessages(List<Message> data) {
-    //print('777777777777777777');
-    //print(data.last);
     messages.addAll(data);
-    //print('888888888888888888');
-    print(messages.last);
 
     notifyListeners();
   }
@@ -66,7 +56,6 @@ class ChatModel extends Model {
     messages.add(Message(
         text, userChatID, receiverChatID, type, DateTime.now().toString(),
         path: type == "IMAGE" ? path : ""));
-    //print("UserChatID$userChatID");
     socket.emit("send_message", [
       {
         "content": text,
@@ -84,7 +73,6 @@ class ChatModel extends Model {
     //print(messages
     // .where((msg) => msg.senderID == chatID || msg.receiverID == chatID)
     // .toList());
-    print(messages.length);
     return messages;
     // return messages
     //     .where((msg) => msg.senderID == chatID || msg.receiverID == chatID)

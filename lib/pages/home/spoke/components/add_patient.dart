@@ -53,7 +53,6 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
           return _buildUI(context);
         },
         listener: (context, state) async {
-          print("Add Patient State $state");
           if (state is PatientAdded) {
             _showMessage("Patient Added Successfully");
             Navigator.pop(context);
@@ -108,7 +107,6 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                       onChanged: (Gender newValue) {
                         setState(() {
                           gender = newValue;
-                          //print(gender);
                         });
                       },
                       items: Gender.values.map((Gender value) {
@@ -152,7 +150,6 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                           name: name,
                           gender: gender.toString().split(".")[1],
                           age: age);
-                      //print(profile.toString());
                       widget.cubit.addPatient(profile, phone);
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(

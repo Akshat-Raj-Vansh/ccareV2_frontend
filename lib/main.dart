@@ -16,7 +16,6 @@ void main() async {
   var startPage = await CompositionRoot.start();
   await Firebase.initializeApp();
   await NotificationController.createChannels();
-  print('FCM Token: ' + await NotificationController.getFCMToken);
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);

@@ -97,8 +97,6 @@ class _ChatScreenState extends State<ChatScreen> {
       }
     });
     recieverChatID = widget.patientID + "-" + widget.recieverID;
-    print('Token:' + widget.token);
-    print('PatientID:' + widget.patientID);
     chatModel.init(widget.patientID, widget.token);
     // widget.mainCubit.loadMessages(widget.patientID);
     widget.mainCubit.chatLoading();
@@ -123,7 +121,6 @@ class _ChatScreenState extends State<ChatScreen> {
         builder: (context, child, model) {
           List<Message> messages = model.getMessagesForChatID(recieverChatID);
           // scrollToBottom();
-          print(messages.length);
           return SingleChildScrollView(
             child: Container(
               height: MediaQuery.of(context).size.height * 0.75,
@@ -151,7 +148,6 @@ class _ChatScreenState extends State<ChatScreen> {
     // setState(() {
     //   _image = image;
     //   clickImage = true;
-    //   print(_image.path);
     //   // widget.mainCubit.imageClicked(image);
     // });
   }
@@ -165,7 +161,6 @@ class _ChatScreenState extends State<ChatScreen> {
         //add message to db with image
         // _image = image;
         // clickImage = true;
-        // print(_image.path);
         // // widget.mainCubit.imageClicked(image);
       });
     }
@@ -206,16 +201,11 @@ class _ChatScreenState extends State<ChatScreen> {
       body: CubitConsumer<MainCubit, MainState>(
         cubit: widget.mainCubit,
         builder: (context, state) {
-          print("ChatScreen Builder state: $state");
-
           if (state is ChatLoadingState) {
             widget.mainCubit.loadMessages(widget.patientID);
           }
           if (state is MessagesLoadedState) {
-            print('Messages loaded state');
-            print(state.messages.last);
             chatModel.messages = [];
-            print(state.messages.length);
             chatModel.addMessages(state.messages);
             currentState = state;
             WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToEnd());
@@ -232,13 +222,10 @@ class _ChatScreenState extends State<ChatScreen> {
           return buildBody();
         },
         listener: (context, state) {
-          print("ChatScreen Listner state: $state");
           if (state is ErrorState) {
-            print("Error State Called CHAT SCREEN");
             // // _hideLoader();
           }
           if (state is ChatImageUploaded) {
-            print("Image Uploaded");
             chatModel.sendMessage("-", recieverChatID, "image",
                 path: state.fileID);
           }
@@ -320,7 +307,6 @@ class _ChatScreenState extends State<ChatScreen> {
                                     ]),
                                 prefixIcon: IconButton(
                                     onPressed: () {
-                                      print("Emoji Pressed");
                                       _focusNode.unfocus();
                                       // _focusNode.canRequestFocus = false;
                                       setState(() {

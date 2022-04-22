@@ -33,7 +33,6 @@ class _PatientReportHistoryScreenState
   @override
   void initState() {
     super.initState();
-    print('Patient Report History Init State');
     _fetchReport();
   }
 
@@ -69,7 +68,6 @@ class _PatientReportHistoryScreenState
   }
 
   _fetchReport() async {
-    //print("Fetching patient report");
     await widget.mainCubit.fetchPatientReportHistory(widget.patientID);
   }
 
@@ -104,12 +102,10 @@ class _PatientReportHistoryScreenState
       },
       listener: (context, state) {
         if (state is PatientReportHistoryFetched) {
-          print("Patient TreatmentReport History Fetched state Called");
           reports = state.reports;
           reports = reports.reversed.toList();
         }
         if (state is NoReportState) {
-          //print('No Treatment Report State Called');
           // _hideLoader();
         }
       },
@@ -125,7 +121,6 @@ class _PatientReportHistoryScreenState
         actions: [
           IconButton(
             onPressed: () async {
-              //print('Refresh button pressed');
               _fetchReport();
             },
             icon: Icon(Icons.refresh),

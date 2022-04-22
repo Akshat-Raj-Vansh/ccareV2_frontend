@@ -86,7 +86,6 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
   @override
   void initState() {
     super.initState();
-    print('DATA > patient.dart > 87 > Inside initState');
     CubitProvider.of<MainCubit>(context).fetchEmergencyDetails();
     CubitProvider.of<MainCubit>(context).getStatus();
     // CubitProvider.of<MainCubit>(context).recentHistory();
@@ -223,8 +222,6 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
             }
           }
           if (state is DetailsLoaded) {
-            print('DATA > patient.dart > 222 > Inside DetailsLoaded State}');
-            print('STATE: DetailsLoaded Builder');
             currentState = DetailsLoaded;
 
             // // _hideLoader();
@@ -243,7 +240,6 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
             //  setState(() {});
           }
           if (state is QuestionnaireState && display.length == 0) {
-            //print("Questionnaire State Called X");
             //_currentStatus = "SELFANANLYSIS";
             currentState = QuestionnaireState;
             // display.forEach((element) {
@@ -257,7 +253,6 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
             display.add(
                 _questions.firstWhere((element) => element.parent == "root"));
 
-            //print(display[0].status);
             _questionnaire = true;
           }
           if (state is PreviousHistory) {
@@ -279,15 +274,10 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
           if (currentState == null)
             return Center(child: CircularProgressIndicator());
 
-          // //print('currentState ' + currentState.toString());
-          // //print('notificationSent ' + _notificationSent.toString());
-          // //print('historyFetched ' + _historyFetched.toString());
-          // //print('_questionnaire ' + _questionnaire.toString());
           return _buildUI(context);
         },
         listener: (context, state) async {
           if (state is LoadingState) {
-            //print("Loading State Called Patient");
             _showLoader();
           } else if (state is StatusFetched) {
             _hideLoader();
@@ -303,7 +293,6 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
             // _showMessage("Notifications sent to the Doctor and the Ambulance.");
           } else if (state is DetailsLoaded) {
             _hideLoader();
-            //print('details loaded');
             setState(() {});
             //  _currentStatus = EDetails.patientDetails.status;
           } else if (state is NormalState) {
@@ -311,9 +300,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
             _showMessage(state.msg);
           } else if (state is ErrorState) {
             _hideLoader();
-            //print('Error State ' + state.error);
           } else if (state is QuestionnaireState) {
-            //print("Questionnaire State Called");
             _hideLoader();
             // _questions = state.questions;
 
@@ -321,7 +308,6 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
             //  answers = [];
             // display.add(
             //     _questions.firstWhere((element) => element.parent == "root"));
-            //   //print(display[0].status);
             if (_assessAgain) {
               _hideLoader();
               CubitProvider.of<MainCubit>(context).selfAssessment();
@@ -485,8 +471,6 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                   separatorBuilder: (context, index) => SizedBox(height: 20),
                   itemBuilder: (context, index) {
                     if (display[index].status) {
-                      //print("cmp");
-                      // //print(display);
                       return Column(children: [
                         Align(
                           alignment: Alignment.topLeft,
@@ -520,7 +504,6 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                                                 style: styles)))))
                       ]);
                     }
-                    //print("here");
                     var check = List<bool>.generate(
                         display[index].options.length, (index) => false);
                     var options =
@@ -542,15 +525,12 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                                   answers = indexes
                                       .map((e) => display[index].options[e])
                                       .toList();
-                                  //print(answers.join(','));
                                   try {
                                     // display.add(_questions.firstWhere(
                                     //     (element) =>
                                     //         element.parent ==
                                     //             display[index].question &&
                                     //         element.when == answers.join(',')));
-                                    print('3333333333333333');
-                                    print(display);
                                     _showAmbRequired("QUESTIONNAIRE");
                                   } catch (e) {
                                     //print(e);
@@ -583,21 +563,15 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                                           display[index].question &&
                                       element.when ==
                                           display[index].options[i ~/ 2]));
-                                  //print(display.last.question);
 
                                   if (display.last.node_type ==
                                       NodeType.RESULT) {
-                                    //print("INSIDE");
                                     if (display.last.options[0] ==
                                         "EMERGENCY") {
-                                      //print("Inside");
                                       _showAmbRequired("QUESTIONNAIRE");
                                     }
                                   }
-                                } catch (e) {
-                                  //print(e);
-                                }
-                                //print(display.length);
+                                } catch (e) {}
                               });
                             }
                           },
@@ -694,7 +668,6 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
 
   _buildPatientReportHistoryButton() => InkWell(
         onTap: () async {
-          print('Patient Report History');
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -799,9 +772,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                       icon: Icon(Icons.phone),
                       label: Text("CALL")),
                   TextButton.icon(
-                      onPressed: () => {}, //print("CANCEL"),
-                      icon: Icon(Icons.info),
-                      label: Text("Spoke Doctor"))
+                      icon: Icon(Icons.info), label: Text("Spoke Doctor"))
                 ],
               ),
               SizedBox(
@@ -837,7 +808,6 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20)),
                 onPressed: () async {
-                  //print(_emergency);
                   if (!_emergency) {
                     _showAmbRequired("EBUTTON");
                   } else {
@@ -936,7 +906,6 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
         ),
         TextButton(
           onPressed: () async {
-            // print(display);
             loc.Location location = await _getLocation();
             Navigator.of(context).pop(false);
             await widget.mainCubit.notify(action, false, location,

@@ -21,7 +21,6 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
-    //print("PROFILE SCREEN");
     super.initState();
   }
 
@@ -52,26 +51,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
   _buildUI(BuildContext context) => CubitConsumer<ProfileCubit, ProfileState>(
       cubit: widget.cubit,
       builder: (_, state) {
-        //print("INSIDE BUILDER PROFILE SCREEN");
-        //print('STATE:');
-        //print(state.toString());
         return Expanded(
           child: widget.pageAdapter
               .loadProfiles(context, widget.userType, widget.cubit),
         );
       },
       listener: (context, state) {
-        //print(state);
         if (state is LoadingState) {
-          //print("Loading State Called Profile Screen");
           // _showLoader();
         } else if (state is AddProfileState) {
-          //print("Add Profile State Called");
           // _hideLoader();
           // _showMessage(state.message);
           widget.pageAdapter.onProfileCompletion(context, widget.userType);
         } else if (state is ErrorState) {
-          //print('Error State Called PROFILE SCREEN');
           // _hideLoader();
           _showMessage(state.error);
         }

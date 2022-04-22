@@ -39,7 +39,6 @@ class ProfilePageAdapter extends IProfilePageAdapter {
   @override
   Widget loadProfiles(
       BuildContext context, UserType userType, ProfileCubit cubit) {
-    //print("Profile Adapter $userType");
     switch (userType) {
       case UserType.PATIENT:
         return PatientProfileScreen(cubit);

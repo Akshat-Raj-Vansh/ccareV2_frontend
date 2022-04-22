@@ -38,7 +38,6 @@ class _BodyState extends State<Body> {
   void initState() {
     super.initState();
     _getLocationPermission();
-    print("Inside body.dart initState");
   }
 
   _getLocationPermission() async {

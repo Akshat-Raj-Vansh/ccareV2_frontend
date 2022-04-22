@@ -18,7 +18,6 @@ class ReportOverview extends StatefulWidget {
 class _ReportOverviewState extends State<ReportOverview> {
   @override
   void initState() {
-    print(widget.report.ecg_av);
     super.initState();
   }
 

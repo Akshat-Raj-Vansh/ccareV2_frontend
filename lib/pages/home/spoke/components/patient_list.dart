@@ -90,7 +90,6 @@ class _PatientListState extends State<PatientList> {
             //  // _hideLoader();
             currentState = PatientsLoaded;
             _patients = state.patients;
-            //print(_patients);
           }
           if (state is NormalState) {
             //   // _hideLoader();
@@ -102,7 +101,6 @@ class _PatientListState extends State<PatientList> {
         },
         listener: (context, state) async {
           if (state is LoadingState) {
-            //print("Loading State Called Patient List");
             log('LOG > doctor_spoke.dart > 197 > state: ${state.toString()}');
 //_showLoader();
           } else if (state is ErrorState) {

@@ -143,37 +143,27 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
         ),
         body: CubitConsumer<MainCubit, MainState>(builder: (_, state) {
           if (state is HubPatientsLoaded) {
-            print('LOG > doctor_hub.dart > 139 > state: ${state.toString()}');
             currentState = state;
-            print(state);
             eDetails = state.details;
             patientsLoaded = true;
           }
           if (state is HubRequestsLoaded) {
-            print('LOG > doctor_hub.dart > 146 > state: ${state.toString()}');
             currentState = state;
             rDetails = state.details;
-            print('LOG > doctor_hub.dart > 149 > rDetails: ${rDetails}');
             requestsLoaded = true;
           }
           if (state is TokenLoadedState) {
-            print('LOG > doctor_hub.dart > 153 > state: ${state.toString()}');
             token = state.token;
-            print("Inside TokensLoaded State");
-            print(token);
           }
           if (state is NewErrorState) {
-            print('New Error Satet');
             if (state.prevState == "HUB REUQESTS") requestsLoaded = false;
             if (state.prevState == "HUB PATIENTS") patientsLoaded = false;
           }
           if (state is NoPatientAccepted) {
-            print('NoPatientAccepted');
             patientsLoaded = false;
             currentState = state;
           }
           if (state is NoPatientRequested) {
-            print('NoPatientRequested');
             requestsLoaded = false;
             currentState = state;
           }
@@ -184,12 +174,10 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
           return _buildUI(context);
         }, listener: (context, state) async {
           // if (state is LoadingState) {
-          //   //print("Loading State Called");
           //   _showLoader();
           // }
           log('LOG > doctor_hub.dart > 165 > state: ${state.toString()}');
           if (state is ErrorState) {
-            print("Error State Called HUB DOCTORr");
             // // _hideLoader();
           } else if (state is HubPatientsLoaded) {
             currentState = state;
@@ -205,7 +193,6 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
             //   return AssessmentScreen(state.assessments);
             // }));
           } else if (state is PatientAcceptedHub) {
-            // print('PatientAcceptedHUb state claled');
             // widget.mainCubit.fetchHubPatientDetails();
             // widget.mainCubit.fetchHubRequests();
             // setState(() {
@@ -213,11 +200,8 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
             // });
           } else if (state is TokenLoadedState) {
             token = state.token;
-            print("Inside TokensLoaded State");
-            print(token);
           } else if (state is AcceptState) {
             // // _hideLoader();
-            print("Accept State Called");
             await showDialog(
                   context: context,
                   builder: (context) => AlertDialog(
@@ -247,7 +231,6 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
                           // make api for accept patient by Hub
                           // widget.mainCubit.acceptPatientByHub(state.patientID);
                           // setState(() {});
-                          print('AcceptState');
                           // widget.mainCubit.acceptPatientByHub(state.patientID);
                           widget.mainCubit.fetchHubPatientDetails();
                           widget.mainCubit.fetchHubRequests();
@@ -306,7 +289,6 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
                 false;
           } else if (state is PatientAccepted) {
             // // _hideLoader();
-            print("Inside patient accepted by Doctor state");
             widget.mainCubit.fetchHubPatientDetails();
           }
         }));

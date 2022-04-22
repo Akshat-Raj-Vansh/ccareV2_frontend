@@ -59,7 +59,6 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
 
   // Future<loc.Location> _getLocation() async {
   //   lloc.LocationData _locationData = await lloc.Location().getLocation();
-  //   //print(_locationData.latitude.toString() +
   //       "," +
   //       _locationData.longitude.toString());
   //   loc.Location _location = loc.Location(
@@ -116,13 +115,11 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
             //  // _hideLoader();
             currentState = PatientsLoaded;
             _patients = state.patients;
-            //print(_patients);
           }
           if (state is RequestsLoaded) {
             //  // _hideLoader();
             currentState = RequestsLoaded;
             _requests = state.req;
-            //print(_requests);
           }
           // if (state is TokenLoadedState) {
           //   token = state.token;
@@ -159,14 +156,11 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
           return _buildUI(context);
         },
         listener: (context, state) async {
-          print("Auth Page State $state");
-
           if (state is NormalState) {
             _hideLoader();
             // currentState = NormalState;
           }
           if (state is LoadingState) {
-            //print("Loading State Called Doctor Spoke");
             log('LOG > doctor_spoke.dart > 197 > state: ${state.toString()}');
             _showLoader();
           } else if (state is ConsultHub) {
@@ -273,7 +267,6 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
           } else if (state is ErrorState) {
             // _hideLoader();
             // _emergency = true;
-            //print(state.error);
           }
           // else if (state is AllPatientsState) {
           //   log('LOG > doctor_spoke.dart > 284 > state: ${state.toString()}',
