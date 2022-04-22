@@ -416,7 +416,8 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
           },
           child: Container(
             width: SizeConfig.screenWidth,
-            margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            margin:
+                const EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 50),
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             decoration: BoxDecoration(
                 color: Colors.white,
