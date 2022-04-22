@@ -150,7 +150,6 @@ class _SelfAssessmentState extends State<SelfAssessment> {
 
   Future<loc.Location> _getLocation() async {
     lloc.LocationData _locationData = await lloc.Location().getLocation();
-    //print(_locationData.latitude.toString() +
     // "," +
     // _locationData.longitude.toString());
     loc.Location _location = loc.Location(
@@ -180,7 +179,6 @@ class _SelfAssessmentState extends State<SelfAssessment> {
                   separatorBuilder: (context, index) => SizedBox(height: 20),
                   itemBuilder: (context, index) {
                     if (display[index].status) {
-                      //print("cmp");
                       return Column(children: [
                         Align(
                           alignment: Alignment.topLeft,
@@ -214,7 +212,6 @@ class _SelfAssessmentState extends State<SelfAssessment> {
                                                 style: styles)))))
                       ]);
                     }
-                    //print("here");
                     var check = List<bool>.generate(
                         display[index].options.length, (index) => false);
                     var options =
@@ -236,16 +233,13 @@ class _SelfAssessmentState extends State<SelfAssessment> {
                                   answers = indexes
                                       .map((e) => display[index].options[e])
                                       .toList();
-                                  //print(answers.join(','));
                                   try {
                                     display.add(widget.questions.firstWhere(
                                         (element) =>
                                             element.parent ==
                                                 display[index].question &&
                                             element.when == answers.join(',')));
-                                  } catch (e) {
-                                    //print(e);
-                                  } //think about the when logic incase
+                                  } catch (e) {} //think about the when logic incase
                                 } else if (display[index].options[i ~/ 2] !=
                                     "next") {
                                   if (!answers.contains(
@@ -260,7 +254,6 @@ class _SelfAssessmentState extends State<SelfAssessment> {
 
                                 if (display.last.node_type == "RESULT") {
                                   if (display.last.options[0] == "EMERGENCY") {
-                                    print('11111111111111111111');
                                     _showAmbRequired();
                                     ScaffoldMessenger.of(context)
                                         .showSnackBar(SnackBar(
@@ -290,21 +283,15 @@ class _SelfAssessmentState extends State<SelfAssessment> {
                                               display[index].question &&
                                           element.when ==
                                               display[index].options[i ~/ 2]));
-                                  //print(display.last.question);
 
                                   if (display.last.node_type ==
                                       NodeType.RESULT) {
-                                    //print("INSIDE");
                                     if (display.last.options[0] ==
                                         "EMERGENCY") {
-                                      print("2222222222222222222");
                                       _showAmbRequired();
                                     }
                                   }
-                                } catch (e) {
-                                  //print(e);
-                                }
-                                //print(display.length);
+                                } catch (e) {}
                               });
                             }
                           },

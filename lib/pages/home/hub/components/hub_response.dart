@@ -105,7 +105,6 @@ class _ResponseScreenState extends State<ResponseScreen>
   }
 
   _fetchResponse() async {
-    //print("Fetching patient report");
     widget.mainCubit.fetchResponse(widget.patientDetails.id);
     // widget.mainCubit.fetchImage(widget.patientDetails.id);
   }
@@ -116,7 +115,6 @@ class _ResponseScreenState extends State<ResponseScreen>
     return CubitConsumer<MainCubit, MainState>(
       cubit: widget.mainCubit,
       builder: (_, state) {
-        print(state);
         if (state is ResponsesLoaded) {
           currentState = state;
           hubResponse = state.hubResponse;
@@ -125,7 +123,6 @@ class _ResponseScreenState extends State<ResponseScreen>
         }
 
         if (state is NoResponseState) {
-          print('No Response State Called');
           log('LOG > patient_report_screen.dart > 201 > state: ${state.toString()}');
           currentState = state;
           noReport = true;
@@ -178,7 +175,6 @@ class _ResponseScreenState extends State<ResponseScreen>
   }
 
   buildUI() {
-    //print(widget.user);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(

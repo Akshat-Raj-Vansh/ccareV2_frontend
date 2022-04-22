@@ -28,9 +28,7 @@ void main() {
       // dynamic result = await api.fetchEmergencyDetails(Token(token),patientID:token.value);
 
       // if(result.isError)
-      //   //print(result.asError.error);
       // else
-      // //print(result.asValue.value);
     });
   });
 }

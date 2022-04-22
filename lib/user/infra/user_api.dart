@@ -29,10 +29,8 @@ class UserAPI implements UserService {
     };
     dynamic response = await _client.post(Uri.parse(endpoint),
         body: credential.toJson(), headers: header);
-    //print('LOGIN API CALL');
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
-      //print(transformError(map));
       return Result.error(transformError(map));
     }
     dynamic json = jsonDecode(response.body);
@@ -45,13 +43,10 @@ class UserAPI implements UserService {
     var header = {
       "Content-Type": "application/json",
     };
-    print('DOC LOGIN API CALL');
     dynamic response = await _client.post(Uri.parse(endpoint),
         body: credential.toJson(), headers: header);
-    print('LOG > user_api.dart > 51 > response.body: ${response.body}');
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
-      //print(transformError(map));
       return Result.error(transformError(map));
     }
     dynamic json = jsonDecode(response.body);
@@ -69,10 +64,8 @@ class UserAPI implements UserService {
 
     var response = await _client.post(Uri.parse(endpoint),
         headers: header, body: profile.toJson());
-    //print('ADD DOCTOR PROFILE API CALL');
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
-      //print(transformError(map));
       return Result.error(transformError(map));
     }
     dynamic json = jsonDecode(response.body);
@@ -91,7 +84,6 @@ class UserAPI implements UserService {
         headers: header, body: profile.toJson());
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
-      //print(transformError(map));
       return Result.error(transformError(map));
     }
     dynamic json = jsonDecode(response.body);
@@ -110,7 +102,6 @@ class UserAPI implements UserService {
         headers: header, body: profile.toJson());
     if (response.statusCode != 200) {
       Map map = jsonDecode(response.body);
-      //print(transformError(map));
       return Result.error(transformError(map));
     }
     dynamic json = jsonDecode(response.body);
@@ -119,7 +110,6 @@ class UserAPI implements UserService {
 
   transformError(Map map) {
     var contents = map["error"] ?? map['errors'];
-    //print(contents);
     if (contents is String) return contents;
     var errStr =
         contents.fold('', (prev, ele) => prev + ele.values.first + '\n');

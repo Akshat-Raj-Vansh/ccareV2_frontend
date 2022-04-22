@@ -62,7 +62,6 @@ class _PatientInfoState extends State<PatientInfo> {
 
   @override
   void dispose() {
-    print("Disposing");
     eDetails = null;
     _emergency = false;
     _patientAccepted = false;
@@ -78,7 +77,6 @@ class _PatientInfoState extends State<PatientInfo> {
 
   // Future<loc.Location> _getLocation() async {
   //   lloc.LocationData _locationData = await lloc.Location().getLocation();
-  //   //print(_locationData.latitude.toString() +
   //       "," +
   //       _locationData.longitude.toString());
   //   loc.Location _location = loc.Location(
@@ -138,7 +136,6 @@ class _PatientInfoState extends State<PatientInfo> {
       body: CubitConsumer<MainCubit, MainState>(
         cubit: widget.mainCubit,
         builder: (_, state) {
-          print("PatientInfo Builder state: $state");
           if (state is PatientInfoLoadingState) {
             // _showLoader();
             widget.mainCubit.fetchEmergencyDetails(patientID: widget.patientID);
@@ -150,7 +147,6 @@ class _PatientInfoState extends State<PatientInfo> {
             //       _hideLoader();
             currentState = DetailsLoaded;
             eDetails = state.eDetails;
-            print(eDetails);
             if (eDetails.patientDetails != null) {
               _patientAccepted = true;
               _emergency = true;
@@ -178,9 +174,7 @@ class _PatientInfoState extends State<PatientInfo> {
           return _buildUI(context);
         },
         listener: (context, state) async {
-          print("PatientInfo Listner state: $state");
           if (state is LoadingState) {
-            //print("Loading State Called Patient Info");
             log('LOG > doctor_spoke.dart > 197 > state: ${state.toString()}');
             //  _showLoader();
           } else if (state is NormalState) {
@@ -196,7 +190,6 @@ class _PatientInfoState extends State<PatientInfo> {
               return AssessmentScreen(state.assessments);
             }));
           } else if (state is StatusFetched) {
-            print("Status Fetched");
             setState(() {});
           }
 

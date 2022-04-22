@@ -23,7 +23,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class DriverHomeUI extends StatefulWidget {
   final IHomePageAdapter homePageAdapter;
-  const DriverHomeUI(this.homePageAdapter);
+  final UserCubit userCubit;
+  const DriverHomeUI(this.homePageAdapter, this.userCubit);
 
   @override
   State<DriverHomeUI> createState() => _DriverHomeUIState();
@@ -107,7 +108,6 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
 
   _getLocation() async {
     lloc.LocationData _locationData = await lloc.Location().getLocation();
-    //print(_locationData.latitude.toString() +
     // "," +
     // _locationData.longitude.toString());
 
@@ -122,67 +122,10 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
 
     return Scaffold(
         key: scaffoldKey,
-        drawer: Drawer(
-          child: ListView(
-            // Important: Remove any padding from the ListView.
-            padding: EdgeInsets.zero,
-            children: [
-              const DrawerHeader(
-                decoration: BoxDecoration(
-                  color: Colors.blue,
-                ),
-                child: Text('Danish Sheikh'),
-              ),
-              ListTile(
-                title: Text('Logout'),
-                onTap: () async {
-                  await showDialog(
-                        context: context,
-                        builder: (context) => AlertDialog(
-                          title: Text(
-                            'Are you sure?',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 16.sp,
-                            ),
-                          ),
-                          content: Text(
-                            'Do you want to logout?',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w300,
-                              fontSize: 12.sp,
-                            ),
-                          ),
-                          actions: [
-                            TextButton(
-                              onPressed: () => Navigator.of(context).pop(false),
-                              child: Text(
-                                'Cancel',
-                              ),
-                            ),
-                            TextButton(
-                              onPressed: () async {
-                                widget.homePageAdapter.onLogout(context,
-                                    CubitProvider.of<UserCubit>(context));
-                              },
-                              child: Text(
-                                'Yes',
-                              ),
-                            ),
-                          ],
-                        ),
-                      ) ??
-                      false;
-                },
-              ),
-            ],
-          ),
-        ),
         body: CubitConsumer<MainCubit, MainState>(builder: (_, state) {
           if (state is DetailsLoaded) {
             currentState = state;
             eDetails = state.eDetails;
-            //print("Locations $eDetails");
             if (eDetails != null) {
               if (eDetails.patientDetails != null) {
                 _patientAccepted = true;
@@ -201,8 +144,8 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
             }
           }
 
-          if (state is NormalState) {
-            currentState = NormalState;
+          if (state is NewErrorState) {
+            currentState = NewErrorState;
           }
           if (currentState == null)
             return Center(child: CircularProgressIndicator());
@@ -210,11 +153,10 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
           return _buildUI(context);
         }, listener: (context, state) async {
           if (state is LoadingState) {
-            //print("Loading State Called Driver");
             //    _showLoader();
           } else if (state is AcceptState) {
+            print("Inside Accept State");
             // _hideLoader();
-            //print("Accept State Called");
             await showDialog(
                   context: context,
                   builder: (context) => AlertDialog(
@@ -242,7 +184,6 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
                       TextButton(
                         onPressed: () {
                           // // _hideLoader();
-                          // //print("inside");
                           CubitProvider.of<MainCubit>(
                                   scaffoldKey.currentContext)
                               .acceptPatientByDriver(state.patientID);
@@ -258,11 +199,8 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
                 false;
           } else if (state is PatientAccepted) {
             // _hideLoader();
-            // //print("patient arrived state");
-            // //print(state.location);
             _patientLocation =
                 LatLng(state.location.latitude, state.location.longitude);
-            //print(_patientLocation);
             _addPatientMarker();
             // // _hideLoader()zz;
             CubitProvider.of<MainCubit>(context).fetchEmergencyDetails();
@@ -270,7 +208,6 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
             // _hideLoader();
           } else if (state is DoctorAccepted) {
             // _hideLoader();
-            //print("doctor accepted state");
             _doctorLocation =
                 LatLng(state.location.latitude, state.location.longitude);
             _addDoctorMarker();
@@ -330,15 +267,15 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
           onCameraMove: _onCameraMove,
         ),
         Align(
-          alignment: Alignment.topLeft,
+          alignment: Alignment.topRight,
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 30, vertical: 50),
             child: IconButton(
                 onPressed: () {
-                  scaffoldKey.currentState.openDrawer();
+                  widget.homePageAdapter.onLogout(context, widget.userCubit);
                 },
                 icon: Icon(
-                  Icons.menu,
+                  Icons.exit_to_app,
                   size: 30,
                   color: Colors.black,
                 )),
@@ -406,9 +343,7 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
                       icon: Icon(Icons.phone),
                       label: Text("CALL")),
                   TextButton.icon(
-                      onPressed: () => {}, //print("CANCEL"),
-                      icon: Icon(Icons.cancel),
-                      label: Text("CANCEL"))
+                      icon: Icon(Icons.cancel), label: Text("CANCEL"))
                 ],
               ),
               RichText(

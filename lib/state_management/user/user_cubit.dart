@@ -25,8 +25,6 @@ class UserCubit extends Cubit<UserState> {
     // _startLoading();
     emit(LoginInProcessState());
     final result = await userAPI.loginNew(credential);
-    if (result == null) print("result is null");
-    print('Result: ' + result.toString());
 
     _setResultOfAuthStateNew(result);
   }
@@ -34,7 +32,6 @@ class UserCubit extends Cubit<UserState> {
   verifyPhone(String phone) async {
     //_startLoading();
     //  emit(LoginInProcessState());
-    print('INSIDE verifyPhone');
     Future.delayed(Duration(milliseconds: 3));
     emit(PhoneVerificationState(phone));
   }
@@ -57,15 +54,11 @@ class UserCubit extends Cubit<UserState> {
   //   }
   //   if (result.asValue.value is Details) {
   //     localStore.save(result.asValue.value as Details);
-  //     //print('INSIDE USER CUBIT/LOGIN');
-  //     //print('DETAILS:');
-  //     //print((result.asValue.value as Details).toJson());
   //     emit(LoginSuccessState(result.asValue.value as Details));
   //   }
   // }
 
   void _setResultOfAuthStateNew(Result<dynamic> result) {
-    print("result is ${result.toString()}");
     if (result.asError != null) {
       emit(ErrorState(result.asError.error));
       return;
@@ -76,7 +69,6 @@ class UserCubit extends Cubit<UserState> {
         (details.user_type == UserType.SPOKE ||
             details.user_type == UserType.HUB)) {
       if (result.asValue.value["name"] == null) {
-        print("NEW DOCTOR");
         emit(LoginSuccessState(details));
         return;
       }

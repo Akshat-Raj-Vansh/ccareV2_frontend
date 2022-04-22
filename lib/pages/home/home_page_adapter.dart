@@ -34,9 +34,6 @@ class HomePageAdapter extends IHomePageAdapter {
 
   @override
   void loadHomeUI(BuildContext context, UserType userType) {
-    //print('HOME PAGE ADAPTER/LOAD HOME UI');
-    //print('USERTYPE:');
-    //print(userType.toString());
     if (userType == UserType.PATIENT)
       Navigator.pushAndRemoveUntil(
           context,
@@ -52,11 +49,13 @@ class HomePageAdapter extends IHomePageAdapter {
           context,
           MaterialPageRoute(builder: (context) => doctorHubHomeScreen()),
           (Route<dynamic> route) => false);
-    else
+    else {
+      print("Changing the page to driver homepage");
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => driverHomeScreen()),
           (Route<dynamic> route) => false);
+    }
   }
 
   @override

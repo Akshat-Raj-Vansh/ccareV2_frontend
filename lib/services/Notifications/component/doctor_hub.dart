@@ -12,15 +12,11 @@ class HubNotificationHandler {
     context = c;
   }
 
-  static Future<void> backgroundMessageHandler(RemoteMessage message) async {
-    print("Handling a background message for spoke: ${message.data}");
-  }
+  static Future<void> backgroundMessageHandler(RemoteMessage message) async {}
 
   static Future<void> foregroundMessageHandler(RemoteMessage message) async {
-    print("Handling a foreground message for spoke: ${message.data}");
     if (message.data['type'] == 'Consultation') {
       if (message.data["user"] == "SPOKE") {
-        // //print("inside");
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           backgroundColor: Theme.of(context).accentColor,
           content: Text(
@@ -38,7 +34,6 @@ class HubNotificationHandler {
 
   static Future<void> onMessageOpenedHandler(RemoteMessage message) async {
     if (message.data['type'] == 'Consultation') {
-      print("Not supposed to be here");
       await mainCubit.acceptPatientByHub(message.data["patientID"]);
     }
   }

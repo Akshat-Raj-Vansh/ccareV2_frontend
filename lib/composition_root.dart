@@ -76,12 +76,9 @@ class CompositionRoot {
     // var isnewUser = await localStore.fetchNewUser();
     // var userType = await localStore.fetchUserType();
     Details details = await localStore.fetchDetails();
-    //print("COMPOSITION ROOT START");
 
     if (details == null) return splashScreen();
-    //print("user type ${details.user_type}");
-    //print('DETAILS:');
-    //print(details.toJson());
+
     return details.user_token == null
         ? splashScreen()
         : details.newUser
@@ -167,7 +164,7 @@ class CompositionRoot {
       CubitProvider<MainCubit>(
         create: (context) => mainCubit,
       ),
-    ], child: DriverHomeUI(homePageAdapter));
+    ], child: DriverHomeUI(homePageAdapter, userCubit));
   }
 
   static Widget createEmergencyUI(UserType userType, Location location) {

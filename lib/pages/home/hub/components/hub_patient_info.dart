@@ -53,26 +53,19 @@ class _HubPatientInfoState extends State<HubPatientInfo> {
         body: CubitConsumer<MainCubit, MainState>(
             cubit: widget.mainCubit,
             builder: (_, state) {
-              print("state is $state");
               if (state is TokenLoadedState) {
                 log('LOG > doctor_hub.dart > 153 > state: ${state.toString()}');
                 token = state.token;
-                //print("Inside TokensLoaded State");
-                //print(token);
               }
 
               return _buildPatientLoadedUI(context);
             },
             listener: (context, state) async {
               log('LOG > doctor_hub.dart > 165 > state: ${state.toString()}');
-              print(" Listener state is $state");
               if (state is ErrorState) {
-                //print("Error State Called HUB PATIENT");
                 // // _hideLoader();
               } else if (state is TokenLoadedState) {
                 token = state.token;
-                //print("Inside TokensLoaded State");
-                //print(token);
               } else if (state is AssessmentLoaded) {
                 Navigator.of(context)
                     .push(MaterialPageRoute(builder: (context) {
@@ -80,7 +73,6 @@ class _HubPatientInfoState extends State<HubPatientInfo> {
                 }));
               } else if (state is AcceptState) {
                 // // _hideLoader();
-                //print("Accept State Called");
                 await showDialog(
                       context: context,
                       builder: (context) => AlertDialog(
@@ -126,8 +118,6 @@ class _HubPatientInfoState extends State<HubPatientInfo> {
 
   _buildChatButton() => InkWell(
         onTap: () async {
-          print('Patient ID from Hub: ' + widget.details.patientDetails.id);
-          print('Token from Hub: ' + token);
           Navigator.push(
               context,
               MaterialPageRoute(
