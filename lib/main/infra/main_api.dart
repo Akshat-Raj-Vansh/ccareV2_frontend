@@ -401,6 +401,7 @@ class MainAPI extends IMainAPI {
       return Result.error(transformError(map));
     }
     dynamic json = jsonDecode(response.body);
+    print(json);
     return Result.value(
         Location(longitude: json['longitude'], latitude: json["latitude"]));
   }

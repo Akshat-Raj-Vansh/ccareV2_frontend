@@ -463,9 +463,11 @@ class MainCubit extends Cubit<MainState> {
     //print("Result ${result.asValue!.value}");
 
     if (result.isError) {
+      print(result.asError!.error);
       emit(ErrorState(result.asError!.error as String));
       return;
     }
+    print(result.asValue!.value);
     emit(PatientAccepted(result.asValue!.value));
   }
 
