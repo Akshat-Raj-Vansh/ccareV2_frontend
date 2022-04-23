@@ -26,7 +26,7 @@ class _TypeFormState extends State<TypeForm> {
     UserType.PATIENT,
     UserType.SPOKE,
     UserType.HUB,
-    UserType.DRIVER
+    //  UserType.DRIVER
   ];
   @override
   void initState() {
