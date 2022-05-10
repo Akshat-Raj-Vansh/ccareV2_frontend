@@ -100,7 +100,7 @@ class _SelfAssessmentState extends State<SelfAssessment> {
         ),
       ),
       content: Text(
-        'Do you need an ambulance?',
+        'Do you need an emergency services?',
         style: TextStyle(
           fontWeight: FontWeight.w300,
           fontSize: 12.sp,
@@ -119,24 +119,11 @@ class _SelfAssessmentState extends State<SelfAssessment> {
             Navigator.of(context).pop(true);
             loc.Location location = await _getLocation();
             await widget.cubit
-                .notify("QUESTIONNAIRE", true, location, assessment: display);
-            // await widget.mainCubit.fetchEmergencyDetails();
-          },
-          child: Text(
-            'Yes',
-          ),
-        ),
-        TextButton(
-          onPressed: () async {
-            // _hideLoader();
-            Navigator.of(context).pop(true);
-            loc.Location location = await _getLocation();
-            await widget.cubit
                 .notify("QUESTIONNAIRE", false, location, assessment: display);
             // await widget.mainCubit.fetchEmergencyDetails();
           },
           child: Text(
-            'No',
+            'Yes',
           ),
         ),
       ],

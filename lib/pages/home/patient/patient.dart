@@ -856,20 +856,20 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                   !_emergency ? "Emergency" : "Change Status",
                   style: TextStyle(color: Colors.white, fontSize: 12.sp),
                 )),
-          RaisedButton.icon(
-              color: Theme.of(context).primaryColor,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20)),
-              onPressed: () async {
-                _assessAgain = true;
-                CubitProvider.of<MainCubit>(context).getQuestions();
-              },
-              icon: Icon(
-                FontAwesomeIcons.stethoscope,
-                color: Colors.white,
-              ),
-              label: Text("Assess Again",
-                  style: TextStyle(color: Colors.white, fontSize: 12.sp)))
+          // RaisedButton.icon(
+          //     color: Theme.of(context).primaryColor,
+          //     shape: RoundedRectangleBorder(
+          //         borderRadius: BorderRadius.circular(20)),
+          //     onPressed: () async {
+          //       _assessAgain = true;
+          //       CubitProvider.of<MainCubit>(context).getQuestions();
+          //     },
+          //     icon: Icon(
+          //       FontAwesomeIcons.stethoscope,
+          //       color: Colors.white,
+          //     ),
+          //     label: Text("Assess Again",
+          //         style: TextStyle(color: Colors.white, fontSize: 12.sp)))
         ]),
       ));
 
@@ -894,7 +894,8 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
         ),
       ),
       content: Text(
-        'Do you need an ambulance?',
+        //    'Do you need an ambulance?',
+        'Do you need an emergency service?',
         style: TextStyle(
           fontWeight: FontWeight.w300,
           fontSize: 12.sp,
@@ -913,14 +914,14 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
             loc.Location location = await _getLocation();
             _notificationSent = true;
 
-            await widget.mainCubit.notify(action, true, location,
+            await widget.mainCubit.notify(action, false, location,
                 assessment: action == "QUESTIONNAIRE" ? display : null);
             // await widget.mainCubit.fetchEmergencyDetails();\
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 backgroundColor: Theme.of(context).accentColor,
                 content: Text(
-                  "Emergency Notifications Sent to Doctor and Driver",
+                  "Emergency Notifications Sent to Doctor",
                   style: Theme.of(context)
                       .textTheme
                       .caption
@@ -933,29 +934,29 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
             'Yes',
           ),
         ),
-        TextButton(
-          onPressed: () async {
-            // print(display);
-            loc.Location location = await _getLocation();
-            Navigator.of(context).pop(false);
-            await widget.mainCubit.notify(action, false, location,
-                assessment: action == "QUESTIONNAIRE" ? display : null);
-            // await widget.mainCubit.fetchEmergencyDetails();
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              backgroundColor: Theme.of(context).accentColor,
-              content: Text(
-                "Emergency Notifications Sent to Doctor",
-                style: Theme.of(context)
-                    .textTheme
-                    .caption
-                    .copyWith(color: Colors.white, fontSize: 12.sp),
-              ),
-            ));
-          },
-          child: Text(
-            'No',
-          ),
-        ),
+        // TextButton(
+        //   onPressed: () async {
+        //     // print(display);
+        //     loc.Location location = await _getLocation();
+        //     Navigator.of(context).pop(false);
+        //     await widget.mainCubit.notify(action, false, location,
+        //         assessment: action == "QUESTIONNAIRE" ? display : null);
+        //     // await widget.mainCubit.fetchEmergencyDetails();
+        //     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        //       backgroundColor: Theme.of(context).accentColor,
+        //       content: Text(
+        //         "Emergency Notifications Sent to Doctor",
+        //         style: Theme.of(context)
+        //             .textTheme
+        //             .caption
+        //             .copyWith(color: Colors.white, fontSize: 12.sp),
+        //       ),
+        //     ));
+        //   },
+        //   child: Text(
+        //     'No',
+        //   ),
+        // ),
       ],
     );
     showDialog(context: context, builder: (context) => alert);
@@ -1120,14 +1121,13 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
               ],
             ),
             SizedBox(height: 1.h),
-            // ECG Scan
-            //#FIXME add multiple scans
+            //  ECG Scan
+            // #FIXME add multiple scans
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('ECG Scan: '),
-                _treatmentReport.ecg.ecg_file_id != [] ||
-                        _treatmentReport.ecg.ecg_file_id != null
+                _treatmentReport.ecg.ecg_file_id.length > 0
                     ? GestureDetector(
                         onTap: () {
                           Navigator.push(context,
