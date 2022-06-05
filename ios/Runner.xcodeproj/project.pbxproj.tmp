@@ -41,6 +41,46 @@
 			<key>isa</key>
 			<string>PBXBuildFile</string>
 		</dict>
+		<key>19B6CD1A4F72D7E59798D456</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array/>
+			<key>inputFileListPaths</key>
+			<array/>
+			<key>inputPaths</key>
+			<array>
+				<string>${PODS_PODFILE_DIR_PATH}/Podfile.lock</string>
+				<string>${PODS_ROOT}/Manifest.lock</string>
+			</array>
+			<key>isa</key>
+			<string>PBXShellScriptBuildPhase</string>
+			<key>name</key>
+			<string>[CP] Check Pods Manifest.lock</string>
+			<key>outputFileListPaths</key>
+			<array/>
+			<key>outputPaths</key>
+			<array>
+				<string>$(DERIVED_FILE_DIR)/Pods-Runner-checkManifestLockResult.txt</string>
+			</array>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+			<key>shellPath</key>
+			<string>/bin/sh</string>
+			<key>shellScript</key>
+			<string>diff "${PODS_PODFILE_DIR_PATH}/Podfile.lock" "${PODS_ROOT}/Manifest.lock" &gt; /dev/null
+if [ $? != 0 ] ; then
+    # print error to STDERR
+    echo "error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation." &gt;&amp;2
+    exit 1
+fi
+# This output is used by Xcode 'outputs' to avoid re-running this script phase.
+echo "SUCCESS" &gt; "${SCRIPT_OUTPUT_FILE_0}"
+</string>
+			<key>showEnvVarsInLog</key>
+			<string>0</string>
+		</dict>
 		<key>249021D3217E4FDB00AE95B9</key>
 		<dict>
 			<key>buildSettings</key>
@@ -156,7 +196,10 @@
 				<key>INFOPLIST_FILE</key>
 				<string>Runner/Info.plist</string>
 				<key>LD_RUNPATH_SEARCH_PATHS</key>
-				<string>$(inherited) @executable_path/Frameworks</string>
+				<array>
+					<string>$(inherited)</string>
+					<string>@executable_path/Frameworks</string>
+				</array>
 				<key>PRODUCT_BUNDLE_IDENTIFIER</key>
 				<string>com.cardio.care</string>
 				<key>PRODUCT_NAME</key>
@@ -216,6 +259,21 @@
 			<key>isa</key>
 			<string>PBXBuildFile</string>
 		</dict>
+		<key>40E764B2555E373A2746A4F1</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>text.xcconfig</string>
+			<key>name</key>
+			<string>Pods-Runner.debug.xcconfig</string>
+			<key>path</key>
+			<string>Target Support Files/Pods-Runner/Pods-Runner.debug.xcconfig</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
 		<key>74858FAD1ED2DC5600515810</key>
 		<dict>
 			<key>isa</key>
@@ -246,6 +304,51 @@
 			<string>74858FAE1ED2DC5600515810</string>
 			<key>isa</key>
 			<string>PBXBuildFile</string>
+		</dict>
+		<key>75B0E976D375D06BDAB7C121</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array/>
+			<key>inputFileListPaths</key>
+			<array>
+				<string>${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-resources-${CONFIGURATION}-input-files.xcfilelist</string>
+			</array>
+			<key>isa</key>
+			<string>PBXShellScriptBuildPhase</string>
+			<key>name</key>
+			<string>[CP] Copy Pods Resources</string>
+			<key>outputFileListPaths</key>
+			<array>
+				<string>${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-resources-${CONFIGURATION}-output-files.xcfilelist</string>
+			</array>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+			<key>shellPath</key>
+			<string>/bin/sh</string>
+			<key>shellScript</key>
+			<string>"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-resources.sh"
+</string>
+			<key>showEnvVarsInLog</key>
+			<string>0</string>
+		</dict>
+		<key>7956CB0F04F38BE584EB6D7B</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>40E764B2555E373A2746A4F1</string>
+				<string>B7800522F93A97D10E446251</string>
+				<string>E20B02F94650FF47AA826DFB</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>Pods</string>
+			<key>path</key>
+			<string>Pods</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
 		</dict>
 		<key>7AFA3C8E1D35360C0083082E</key>
 		<dict>
@@ -351,6 +454,8 @@
 				<string>9740EEB11CF90186004384FC</string>
 				<string>97C146F01CF9000F007C117D</string>
 				<string>97C146EF1CF9000F007C117D</string>
+				<string>7956CB0F04F38BE584EB6D7B</string>
+				<string>CA9164F7959CBFB7EC29380D</string>
 			</array>
 			<key>isa</key>
 			<string>PBXGroup</string>
@@ -438,7 +543,9 @@
 			<key>buildActionMask</key>
 			<string>2147483647</string>
 			<key>files</key>
-			<array/>
+			<array>
+				<string>B508AD5E13BEB739D45A86C8</string>
+			</array>
 			<key>isa</key>
 			<string>PBXFrameworksBuildPhase</string>
 			<key>runOnlyForDeploymentPostprocessing</key>
@@ -466,12 +573,15 @@
 			<string>97C147051CF9000F007C117D</string>
 			<key>buildPhases</key>
 			<array>
+				<string>19B6CD1A4F72D7E59798D456</string>
 				<string>9740EEB61CF901F6004384FC</string>
 				<string>97C146EA1CF9000F007C117D</string>
 				<string>97C146EB1CF9000F007C117D</string>
 				<string>97C146EC1CF9000F007C117D</string>
 				<string>9705A1C41CF9048500538489</string>
 				<string>3B06AD1E1E4923F5004D2608</string>
+				<string>CA31928BABA151FC59E494EE</string>
+				<string>75B0E976D375D06BDAB7C121</string>
 			</array>
 			<key>buildRules</key>
 			<array/>
@@ -866,7 +976,10 @@
 				<key>INFOPLIST_FILE</key>
 				<string>Runner/Info.plist</string>
 				<key>LD_RUNPATH_SEARCH_PATHS</key>
-				<string>$(inherited) @executable_path/Frameworks</string>
+				<array>
+					<string>$(inherited)</string>
+					<string>@executable_path/Frameworks</string>
+				</array>
 				<key>PRODUCT_BUNDLE_IDENTIFIER</key>
 				<string>com.cardio.care</string>
 				<key>PRODUCT_NAME</key>
@@ -902,7 +1015,10 @@
 				<key>INFOPLIST_FILE</key>
 				<string>Runner/Info.plist</string>
 				<key>LD_RUNPATH_SEARCH_PATHS</key>
-				<string>$(inherited) @executable_path/Frameworks</string>
+				<array>
+					<string>$(inherited)</string>
+					<string>@executable_path/Frameworks</string>
+				</array>
 				<key>PRODUCT_BUNDLE_IDENTIFIER</key>
 				<string>com.cardio.care</string>
 				<key>PRODUCT_NAME</key>
@@ -918,6 +1034,97 @@
 			<string>XCBuildConfiguration</string>
 			<key>name</key>
 			<string>Release</string>
+		</dict>
+		<key>B508AD5E13BEB739D45A86C8</key>
+		<dict>
+			<key>fileRef</key>
+			<string>BAD69A358801EA3FD77E7008</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>B7800522F93A97D10E446251</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>text.xcconfig</string>
+			<key>name</key>
+			<string>Pods-Runner.release.xcconfig</string>
+			<key>path</key>
+			<string>Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>BAD69A358801EA3FD77E7008</key>
+		<dict>
+			<key>explicitFileType</key>
+			<string>wrapper.framework</string>
+			<key>includeInIndex</key>
+			<string>0</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>path</key>
+			<string>Pods_Runner.framework</string>
+			<key>sourceTree</key>
+			<string>BUILT_PRODUCTS_DIR</string>
+		</dict>
+		<key>CA31928BABA151FC59E494EE</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array/>
+			<key>inputFileListPaths</key>
+			<array>
+				<string>${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-frameworks-${CONFIGURATION}-input-files.xcfilelist</string>
+			</array>
+			<key>isa</key>
+			<string>PBXShellScriptBuildPhase</string>
+			<key>name</key>
+			<string>[CP] Embed Pods Frameworks</string>
+			<key>outputFileListPaths</key>
+			<array>
+				<string>${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-frameworks-${CONFIGURATION}-output-files.xcfilelist</string>
+			</array>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+			<key>shellPath</key>
+			<string>/bin/sh</string>
+			<key>shellScript</key>
+			<string>"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-frameworks.sh"
+</string>
+			<key>showEnvVarsInLog</key>
+			<string>0</string>
+		</dict>
+		<key>CA9164F7959CBFB7EC29380D</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>BAD69A358801EA3FD77E7008</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>Frameworks</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>E20B02F94650FF47AA826DFB</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>text.xcconfig</string>
+			<key>name</key>
+			<string>Pods-Runner.profile.xcconfig</string>
+			<key>path</key>
+			<string>Target Support Files/Pods-Runner/Pods-Runner.profile.xcconfig</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
 		</dict>
 	</dict>
 	<key>rootObject</key>

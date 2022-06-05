@@ -222,7 +222,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - SFSafariViewControllerDelegate
 
-- (void)safariViewControllerDidFinish:(SFSafariViewController *)controller NS_AVAILABLE_IOS(10.0) {
+- (void)safariViewControllerDidFinish:(SFSafariViewController *)controller NS_AVAILABLE_IOS(9.0) {
   if (controller != _safariVC) {
     // Ignore this call if the safari view controller do not match.
     return;
