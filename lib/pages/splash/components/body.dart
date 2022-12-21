@@ -56,7 +56,7 @@ class _BodyState extends State<Body> {
         content: Text(
             "This app uses location services to help you find nearby doctors."),
         actions: <Widget>[
-          FlatButton(
+          MaterialButton(
             child: Text("OK"),
             onPressed: () {
               Navigator.of(context).pop();
@@ -103,7 +103,7 @@ class _BodyState extends State<Body> {
   _button({String text, Function press}) => SizedBox(
         width: 65.w,
         height: 5.h,
-        child: FlatButton(
+        child: MaterialButton(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           color: kPrimaryColor,

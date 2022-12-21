@@ -827,11 +827,13 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
         height: 10.h,
         width: SizeConfig.screenWidth,
         padding: const EdgeInsets.all(5.0),
-        child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-          if (_currentStatus != "ATH" &&
-              _currentStatus != "UGT" &&
-              _doctorAccepted)
-            RaisedButton.icon(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            if (_currentStatus != "ATH" &&
+                _currentStatus != "UGT" &&
+                _doctorAccepted)
+              MaterialButton(
                 color: Theme.of(context).primaryColor,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20)),
@@ -848,29 +850,35 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                     _updateStatus();
                   }
                 },
-                icon: Icon(
-                  !_emergency ? Icons.phone : Icons.access_time,
-                  color: Colors.white,
+                child: Row(
+                  children: [
+                    Icon(
+                      !_emergency ? Icons.phone : Icons.access_time,
+                      color: Colors.white,
+                    ),
+                    Text(
+                      !_emergency ? "Emergency" : "Change Status",
+                      style: TextStyle(color: Colors.white, fontSize: 12.sp),
+                    ),
+                  ],
                 ),
-                label: Text(
-                  !_emergency ? "Emergency" : "Change Status",
-                  style: TextStyle(color: Colors.white, fontSize: 12.sp),
-                )),
-          // RaisedButton.icon(
-          //     color: Theme.of(context).primaryColor,
-          //     shape: RoundedRectangleBorder(
-          //         borderRadius: BorderRadius.circular(20)),
-          //     onPressed: () async {
-          //       _assessAgain = true;
-          //       CubitProvider.of<MainCubit>(context).getQuestions();
-          //     },
-          //     icon: Icon(
-          //       FontAwesomeIcons.stethoscope,
-          //       color: Colors.white,
-          //     ),
-          //     label: Text("Assess Again",
-          //         style: TextStyle(color: Colors.white, fontSize: 12.sp)))
-        ]),
+                // RaisedButton.icon(
+                //     color: Theme.of(context).primaryColor,
+                //     shape: RoundedRectangleBorder(
+                //         borderRadius: BorderRadius.circular(20)),
+                //     onPressed: () async {
+                //       _assessAgain = true;
+                //       CubitProvider.of<MainCubit>(context).getQuestions();
+                //     },
+                //     icon: Icon(
+                //       FontAwesomeIcons.stethoscope,
+                //       color: Colors.white,
+                //     ),
+                //     label: Text("Assess Again",
+                //         style: TextStyle(color: Colors.white, fontSize: 12.sp)))
+              ),
+          ],
+        ),
       ));
 
   _updateStatus() {

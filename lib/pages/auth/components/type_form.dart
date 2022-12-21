@@ -114,7 +114,7 @@ class _TypeFormState extends State<TypeForm> {
                 ],
               ),
               SizedBox(height: SizeConfig.screenHeight * 0.06),
-              RaisedButton(
+              MaterialButton(
                 onPressed: () async {
                   //widget.cubit.verifyPhone(_phone);
                   // CubitProvider.of<UserCubit>(widget.context).verifyPhone(_phone);

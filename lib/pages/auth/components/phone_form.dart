@@ -101,7 +101,7 @@ class phoneFormState extends State<PhoneForm> {
                   ],
                 ),
                 SizedBox(height: SizeConfig.screenHeight * 0.06),
-                RaisedButton(
+                MaterialButton(
                   onPressed: () async {
                     print('LOGIN BUTTON CLICKED');
                     FocusManager.instance.primaryFocus?.unfocus();

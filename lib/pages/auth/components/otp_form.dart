@@ -117,7 +117,7 @@ class _OTPFormState extends State<OTPForm> with TickerProviderStateMixin {
                   ),
                 ),
                 SizedBox(height: SizeConfig.screenHeight * 0.02),
-                RaisedButton(
+                MaterialButton(
                   onPressed: () {
                     //print('LOGIN BUTTON CLICKED');
                     FocusManager.instance.primaryFocus?.unfocus();
