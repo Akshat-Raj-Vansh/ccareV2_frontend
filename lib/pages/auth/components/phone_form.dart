@@ -101,7 +101,7 @@ class phoneFormState extends State<PhoneForm> {
                   ],
                 ),
                 SizedBox(height: SizeConfig.screenHeight * 0.06),
-                RaisedButton(
+                ElevatedButton(
                   onPressed: () async {
                     print('LOGIN BUTTON CLICKED');
                     FocusManager.instance.primaryFocus?.unfocus();
@@ -112,9 +112,9 @@ class phoneFormState extends State<PhoneForm> {
                       // CubitProvider.of<UserCubit>(widget.context).verifyPhone(phone);
                     }
                   },
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30)),
-                  padding: const EdgeInsets.all(0),
+                  // shape: RoundedRectangleBorder(
+                  //     borderRadius: BorderRadius.circular(30)),
+                  // padding: const EdgeInsets.all(0),
                   child: Container(
                     width: MediaQuery.of(context).size.width / 1.5,
                     alignment: Alignment.center,

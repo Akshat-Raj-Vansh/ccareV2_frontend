@@ -56,7 +56,7 @@ class _BodyState extends State<Body> {
         content: Text(
             "This app uses location services to help you find nearby doctors."),
         actions: <Widget>[
-          FlatButton(
+          TextButton(
             child: Text("OK"),
             onPressed: () {
               Navigator.of(context).pop();
@@ -101,18 +101,24 @@ class _BodyState extends State<Body> {
   }
 
   _button({String text, Function press}) => SizedBox(
-        width: 65.w,
-        height: 5.h,
-        child: FlatButton(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          color: kPrimaryColor,
+        height: 10.h,
+        child: TextButton(
           onPressed: press,
-          child: Text(
-            text,
-            style: TextStyle(
-              fontSize: 12.sp,
-              color: Colors.white,
+          child: Container(
+            width: 60.w,
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: kPrimaryColor,
+            ),
+            // background: kPrimaryColor,
+            child: Text(
+              text,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 16.sp,
+                color: Colors.white,
+              ),
             ),
           ),
         ),

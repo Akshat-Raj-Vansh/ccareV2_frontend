@@ -117,7 +117,7 @@ class _OTPFormState extends State<OTPForm> with TickerProviderStateMixin {
                   ),
                 ),
                 SizedBox(height: SizeConfig.screenHeight * 0.02),
-                RaisedButton(
+                ElevatedButton(
                   onPressed: () {
                     //print('LOGIN BUTTON CLICKED');
                     FocusManager.instance.primaryFocus?.unfocus();
@@ -125,9 +125,9 @@ class _OTPFormState extends State<OTPForm> with TickerProviderStateMixin {
                       widget.verifyOTP(_otp);
                     }
                   },
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30)),
-                  padding: const EdgeInsets.all(0),
+                  // shape: RoundedRectangleBorder(
+                  //     borderRadius: BorderRadius.circular(30)),
+                  // padding: const EdgeInsets.all(0),
                   child: Container(
                     width: MediaQuery.of(context).size.width / 1.5,
                     alignment: Alignment.center,

@@ -85,6 +85,13 @@
             {
               "client_id": "797374976435-aj8rjaq0f870iv670nqhuui2s6pp91mb.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "797374976435-apq1kjghvso51hgaejreh837uec0f3tk.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.cardio.care"
+              }
             }
           ]
         }
@@ -162,6 +169,13 @@
             {
               "client_id": "797374976435-aj8rjaq0f870iv670nqhuui2s6pp91mb.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "797374976435-apq1kjghvso51hgaejreh837uec0f3tk.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.cardio.care"
+              }
             }
           ]
         }

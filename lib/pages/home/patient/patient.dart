@@ -831,10 +831,10 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
           if (_currentStatus != "ATH" &&
               _currentStatus != "UGT" &&
               _doctorAccepted)
-            RaisedButton.icon(
-                color: Theme.of(context).primaryColor,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20)),
+            ElevatedButton.icon(
+                // color: Theme.of(context).primaryColor,
+                // shape: RoundedRectangleBorder(
+                //     borderRadius: BorderRadius.circular(20)),
                 onPressed: () async {
                   //print(_emergency);
                   if (!_emergency) {
@@ -856,7 +856,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                   !_emergency ? "Emergency" : "Change Status",
                   style: TextStyle(color: Colors.white, fontSize: 12.sp),
                 )),
-          // RaisedButton.icon(
+          // ElevatedButton.icon(
           //     color: Theme.of(context).primaryColor,
           //     shape: RoundedRectangleBorder(
           //         borderRadius: BorderRadius.circular(20)),

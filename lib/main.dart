@@ -1,5 +1,6 @@
 //@dart=2.9
 // import 'package:camera/camera.dart';
+import 'package:ccarev2_frontend/firebase_options.dart';
 import 'package:ccarev2_frontend/pages/chat/testChatScreen.dart';
 import 'package:flutter/services.dart';
 import 'package:sizer/sizer.dart';
@@ -14,7 +15,9 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await CompositionRoot.configure();
   var startPage = await CompositionRoot.start();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   await NotificationController.createChannels();
   print('FCM Token: ' + await NotificationController.getFCMToken);
   await SystemChrome.setPreferredOrientations([
@@ -23,6 +26,11 @@ void main() async {
   // cameras = await availableCameras();
   runApp(MyApp(startPage));
 }
+
+// Platform  Firebase App Id
+// web       1:797374976435:web:c4dab694ff35ea28d27bc6
+// android   1:797374976435:android:fc764f328698da40d27bc6
+// ios       1:797374976435:ios:9e5ec16a3e816da6d27bc6
 
 class MyApp extends StatelessWidget {
   final Widget startPage;

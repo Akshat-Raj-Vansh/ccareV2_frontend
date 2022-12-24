@@ -114,16 +114,16 @@ class _TypeFormState extends State<TypeForm> {
                 ],
               ),
               SizedBox(height: SizeConfig.screenHeight * 0.06),
-              RaisedButton(
+              ElevatedButton(
                 onPressed: () async {
                   //widget.cubit.verifyPhone(_phone);
                   // CubitProvider.of<UserCubit>(widget.context).verifyPhone(_phone);
                   print(userType);
                   widget.launchPhoneForm(userType);
                 },
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30)),
-                padding: const EdgeInsets.all(0),
+                // shape: RoundedRectangleBorder(
+                //     borderRadius: BorderRadius.circular(30)),
+                // padding: const EdgeInsets.all(0),
                 child: Container(
                   width: MediaQuery.of(context).size.width / 1.5,
                   alignment: Alignment.center,

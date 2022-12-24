@@ -241,7 +241,7 @@ class MainAPI extends IMainAPI {
             ? treat.TreatmentReport.fromJson(jsonEncode(currentReport))
             : treat.TreatmentReport.initialize(currentReport['spokeName'],
                 currentReport['spokeHospitalName'], currentReport['ecg_av']),
-        "previousReport": null
+        "previousReport": ""
       });
     // if (currentReport['ecg'] == null) {
     //   //print('HELLO WORLD');

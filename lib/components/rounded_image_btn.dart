@@ -3,6 +3,7 @@ import '../utils/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sizer/sizer.dart';
+
 class RoundedImageBtn extends StatelessWidget {
   const RoundedImageBtn({
     Key key,
@@ -19,7 +20,7 @@ class RoundedImageBtn extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: getProportionateScreenWidth(40),
-      width : 12.w,
+      width: 12.w,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         boxShadow: [
@@ -31,14 +32,18 @@ class RoundedImageBtn extends StatelessWidget {
             ),
         ],
       ),
-      child: FlatButton(
-        padding: EdgeInsets.zero,
-        color: Colors.white,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+      child: TextButton(
+        // padding: EdgeInsets.zero,
+        // color: Colors.white,
+        // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
         onPressed: press,
-        child: SvgPicture.asset(
-          icon,
-          height : 2.h
+        child: Container(
+          padding: EdgeInsets.zero,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(50),
+            color: Colors.white,
+          ),
+          child: SvgPicture.asset(icon, height: 2.h),
         ),
       ),
     );
