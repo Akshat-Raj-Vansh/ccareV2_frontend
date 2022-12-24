@@ -52,6 +52,11 @@ dependencies:
   encrypt: ^5.0.1
   video_player: ^2.2.18
 
+flutter_icons:
+  image_path: "assets/icon/icon.png"
+  android: true
+  ios: true
+
 dev_dependencies:
   common:
     path: ./common
@@ -71,11 +76,6 @@ dev_dependencies:
   shared_preferences: null
   timelines: ^0.1.0
   transparent_image: null
-
-flutter_icons:
-  image_path: "assets/icon/icon.png"
-  android: true
-  ios: true
 
 flutter:
   uses-material-design: true
