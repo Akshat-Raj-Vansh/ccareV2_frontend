@@ -28,12 +28,6 @@
 		<true/>
 		<key>NSPhotoLibraryUsageDescription</key>
 		<string>Photo Library Access Warning</string>
-		<key>NSLocationAlwaysUsageDescription</key>
-		<string>Location Access Warning</string>
-		<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-		<string>Location Access Warning</string>
-		<key>NSLocationWhenInUseUsageDescription</key>
-		<string>Location Access Warning</string>
 		<key>UILaunchStoryboardName</key>
 		<string>LaunchScreen</string>
 		<key>UIMainStoryboardFile</key>
