@@ -266,21 +266,23 @@ class _ResponseScreenState extends State<ResponseScreen>
     );
   }
 
-  _buildDetailsBody(_currentReportDetails) => Column(
-        children: [
-          SizedBox(
-            height: 20,
-          ),
-          Text(
-            "Current",
-            textAlign: TextAlign.left,
-            style: TextStyle(fontSize: 14.sp, color: kPrimaryColor),
-          ),
-          _currentReportDetails,
-          SizedBox(
-            height: 20,
-          ),
-        ],
+  _buildDetailsBody(_currentReportDetails) => SingleChildScrollView(
+        child: Column(
+          children: [
+            SizedBox(
+              height: 20,
+            ),
+            Text(
+              "Current",
+              textAlign: TextAlign.left,
+              style: TextStyle(fontSize: 14.sp, color: kPrimaryColor),
+            ),
+            _currentReportDetails,
+            SizedBox(
+              height: 20,
+            ),
+          ],
+        ),
       );
 
   _buildFormBody() => TabBarView(
@@ -354,6 +356,7 @@ class _ResponseScreenState extends State<ResponseScreen>
               ),
             ),
             _buildSpokeRespDetails(spokeResponse),
+            SizedBox(height: 15.h),
           ],
         ),
       );

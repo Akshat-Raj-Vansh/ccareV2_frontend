@@ -101,8 +101,8 @@ class phoneFormState extends State<PhoneForm> {
                   ],
                 ),
                 SizedBox(height: SizeConfig.screenHeight * 0.06),
-                ElevatedButton(
-                  onPressed: () async {
+                GestureDetector(
+                  onTap: () async {
                     print('LOGIN BUTTON CLICKED');
                     FocusManager.instance.primaryFocus?.unfocus();
                     if (_formKey.currentState!.validate()) {

@@ -16,10 +16,13 @@ class HubDoctorsList extends StatelessWidget {
         itemCount: hubDocs.length,
         itemBuilder: (BuildContext context, int index) {
           return InkWell(
-            onTap: () => cubit.consultHub(
-              hubDocs[index],
-              patientID,
-            ),
+            onTap: () {
+              cubit.consultHub(
+                hubDocs[index],
+                patientID,
+              );
+              Navigator.pop(context);
+            },
             child: ListTile(
               leading: Icon(Icons.local_hospital),
               title: Text(

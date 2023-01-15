@@ -40,6 +40,19 @@ class TreatmentReport {
     this.examination = Examination.initialize();
   }
 
+  TreatmentReport.initializeNull() {
+    this.newReport = true;
+    this.district = District.nill;
+    this.spokeName = '';
+    this.ecg_av = false;
+    this.spokeHospitalName = '';
+    this.ecg = ECG.initialize();
+    this.medicalHist = MedicalHist.initialize();
+    this.chestReport = ChestReport.initialize();
+    this.symptoms = Symptoms.initialize();
+    this.examination = Examination.initialize();
+  }
+
   set new_report(bool new_report) => this.newReport = new_report;
   set report_time_(String report_time) => this.report_time = report_time;
   set spoke_name_(String spoke_name) => this.spokeName = spoke_name;
@@ -736,14 +749,23 @@ class Examination {
 }
 
 enum ECGType { nill, STEMI, NSTEMI, Normal, NotSure }
+
 enum YN { nill, yes, no }
+
 enum Site { nill, Left_Precordium, Right_Precordium, Epigastric_region }
+
 enum Location { nill, Localized, Diffuse }
+
 enum Intensity { nill, Mild, Severe }
+
 enum Severity { nill, Mild, Moderate, Severe }
+
 enum Radiation { nill, Shoulder, back, Arm, Jaw, Neck }
+
 enum PN { nill, positive, negative }
+
 enum Statins { nill, Atorbastatin, Rozuastatin, NotGiven }
+
 enum District {
   nill,
   Chamba,

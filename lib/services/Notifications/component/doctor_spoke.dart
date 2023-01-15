@@ -5,6 +5,7 @@ import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
 import 'package:ccarev2_frontend/user/domain/location.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
 
 class SpokeNotificationHandler {
   static MainCubit mainCubit;
@@ -25,21 +26,22 @@ class SpokeNotificationHandler {
     //   await mainCubit.hubAccepted();
     // }
     if (message.data['type'] == 'EmergencyStatus') {
+      //  print(message.data['status']);
       await mainCubit.spokeStatusFetched(message.data['status']);
     }
     if (message.data['type'] == 'Emergency') {
       if (message.data["user"] == "PATIENT") {
         // //print("inside");
-        // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        //   backgroundColor: Theme.of(context).accentColor,
-        //   content: Text(
-        //     'Patient in emergency!! Accepting the emergency',
-        //     style: Theme.of(context)
-        //         .textTheme
-        //         .caption
-        //         .copyWith(color: Colors.white, fontSize :8.sp),
-        //   ),
-        // ));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          backgroundColor: Theme.of(context).accentColor,
+          content: Text(
+            'Patient in emergency!! Accepting the emergency',
+            style: Theme.of(context)
+                .textTheme
+                .caption
+                .copyWith(color: Colors.white, fontSize: 8.sp),
+          ),
+        ));
         await mainCubit.showAcceptNotif(message.data["_patientID"]);
       }
       if (message.data["user"] == "DRIVER") {

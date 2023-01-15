@@ -86,7 +86,7 @@ class _TypeFormState extends State<TypeForm> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       border: Border.all(
-                        color: Colors.blue,
+                        color: kPrimaryColor,
                         width: 1,
                       ),
                     ),
@@ -114,8 +114,8 @@ class _TypeFormState extends State<TypeForm> {
                 ],
               ),
               SizedBox(height: SizeConfig.screenHeight * 0.06),
-              ElevatedButton(
-                onPressed: () async {
+              GestureDetector(
+                onTap: () async {
                   //widget.cubit.verifyPhone(_phone);
                   // CubitProvider.of<UserCubit>(widget.context).verifyPhone(_phone);
                   print(userType);

@@ -107,7 +107,8 @@ class _PatientListState extends State<PatientList> {
 //_showLoader();
           } else if (state is ErrorState) {
             // _hideLoader();
-            log('LOG > doctor_spoke.dart > 204 > state: ${state.toString()}');
+            log('LOG > patient_list.dart > 110 > state: ${state.toString()}');
+            _hideLoader();
           }
         },
       ),

@@ -8,6 +8,8 @@ import 'package:location/location.dart' as lloc;
 import '../../../user/domain/location.dart' as loc;
 import 'package:sizer/sizer.dart';
 
+import '../../../utils/constants.dart';
+
 class DriverProfileScreen extends StatefulWidget {
   final ProfileCubit cubit;
   const DriverProfileScreen(this.cubit);
@@ -65,9 +67,22 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
           ),
           const Spacer(flex: 1),
           Center(
-            child: DefaultButton(
-              text: "Save",
-              press: () async {
+            child: GestureDetector(
+              child: Container(
+                width: MediaQuery.of(context).size.width / 1.5,
+                alignment: Alignment.center,
+                padding: const EdgeInsets.only(top: 8, bottom: 8),
+                decoration: ShapeDecoration(
+                  color: kPrimaryColor,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30)),
+                ),
+                child: Text(
+                  'Save',
+                  style: TextStyle(color: Colors.white, fontSize: 16.sp),
+                ),
+              ),
+              onTap: () async {
                 if (_formKeyDriver.currentState.validate()) {
                   _formKeyDriver.currentState.save();
                   lloc.LocationData locationData = await _getLocation();

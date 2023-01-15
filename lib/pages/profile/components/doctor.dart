@@ -11,6 +11,7 @@ import 'package:sizer/sizer.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
 import 'package:location/location.dart' as lloc;
 import '../../../user/domain/location.dart' as loc;
+import '../../../utils/constants.dart';
 
 class DoctorProfileScreen extends StatefulWidget {
   final ProfileCubit cubit;
@@ -125,12 +126,24 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
                 ],
               ),
             ),
-            SizedBox(height: 1.h),
-            SizedBox(height: 1.h),
+            SizedBox(height: 5.h),
             Center(
-              child: DefaultButton(
-                text: "Save",
-                press: () async {
+              child: GestureDetector(
+                child: Container(
+                  width: MediaQuery.of(context).size.width / 1.5,
+                  alignment: Alignment.center,
+                  padding: const EdgeInsets.only(top: 8, bottom: 8),
+                  decoration: ShapeDecoration(
+                    color: kPrimaryColor,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30)),
+                  ),
+                  child: Text(
+                    'Save',
+                    style: TextStyle(color: Colors.white, fontSize: 16.sp),
+                  ),
+                ),
+                onTap: () async {
                   if (_formKeyDoctor.currentState.validate()) {
                     _formKeyDoctor.currentState.save();
                     lloc.LocationData locationData = await _getLocation();

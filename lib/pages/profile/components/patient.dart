@@ -7,6 +7,8 @@ import 'package:ccarev2_frontend/utils/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../../utils/constants.dart';
+
 class PatientProfileScreen extends StatefulWidget {
   final ProfileCubit cubit;
   const PatientProfileScreen(this.cubit);
@@ -83,9 +85,22 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
             flex: 1,
           ),
           Center(
-            child: DefaultButton(
-              text: "Save",
-              press: () {
+            child: GestureDetector(
+              child: Container(
+                width: MediaQuery.of(context).size.width / 1.5,
+                alignment: Alignment.center,
+                padding: const EdgeInsets.only(top: 8, bottom: 8),
+                decoration: ShapeDecoration(
+                  color: kPrimaryColor,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30)),
+                ),
+                child: Text(
+                  'Save',
+                  style: TextStyle(color: Colors.white, fontSize: 16.sp),
+                ),
+              ),
+              onTap: () {
                 if (_formKeyPatient.currentState.validate()) {
                   _formKeyPatient.currentState.save();
                   var profile = PatientProfile(

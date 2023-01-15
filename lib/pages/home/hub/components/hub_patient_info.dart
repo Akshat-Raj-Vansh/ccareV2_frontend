@@ -325,7 +325,7 @@ class _HubPatientInfoState extends State<HubPatientInfo> {
         _buildPatientReportButton(),
         _buildResponseButton(),
         _buildPatientExamButton(),
-        _buildChatButton(),
+        //  _buildChatButton(),
         _buildPatientReportHistoryButton(),
       ]);
 

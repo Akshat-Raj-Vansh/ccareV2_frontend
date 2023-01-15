@@ -188,6 +188,7 @@ class _PatientInfoState extends State<PatientInfo> {
           } else if (state is ErrorState) {
             // _hideLoader();
             log('LOG > doctor_spoke.dart > 204 > state: ${state.toString()}');
+            _hideLoader();
           } else if (state is TokenLoadedState) {
             token = state.token;
           } else if (state is AssessmentLoaded) {
@@ -196,7 +197,20 @@ class _PatientInfoState extends State<PatientInfo> {
               return AssessmentScreen(state.assessments);
             }));
           } else if (state is StatusFetched) {
-            print("Status Fetched");
+            _showLoader();
+            log('Status Changed > state: ${state.toString()}');
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              backgroundColor: Theme.of(context).accentColor,
+              content: Text(
+                'Patient Status changed! Status -> ${state.msg}',
+                style: Theme.of(context)
+                    .textTheme
+                    .caption
+                    .copyWith(color: Colors.white, fontSize: 12.sp),
+              ),
+            ));
+            _hideLoader();
+            _currentStatus = state.msg;
             setState(() {});
           }
 
@@ -420,7 +434,7 @@ class _PatientInfoState extends State<PatientInfo> {
             if (_patientAccepted && _ugt) _buildPatientReportButton(),
             if (_patientAccepted && _ugt) _buildPatientExamButton(),
             if (_patientAccepted && _ugt && !_hubAccepted) _buildHubList(),
-            if (_hubAccepted) _buildChatButton(),
+            //   if (_hubAccepted) _buildChatButton(),
             if (_hubAccepted) _buildResponseButton(),
             if (_patientAccepted && _ugt) _buildNewReportButton(),
             if (_patientAccepted && _ugt) _buildPatientReportHistoryButton(),

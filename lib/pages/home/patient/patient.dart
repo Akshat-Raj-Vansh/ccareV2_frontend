@@ -28,12 +28,6 @@ import 'package:ccarev2_frontend/utils/size_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
-import '../home_page_adapter.dart';
-import '../../questionnare/questionnare_screen.dart';
-import '../../../state_management/main/main_cubit.dart';
-import '../../../state_management/main/main_state.dart';
-import '../../../state_management/user/user_cubit.dart';
-import '../../../utils/size_config.dart';
 import '../../../utils/constants.dart';
 
 class PatientHomeUI extends StatefulWidget {
@@ -58,7 +52,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
   static bool _historyFetched = false;
   static TreatmentReport _treatmentReport;
   static List<QuestionTree> _questions;
-  static String _currentStatus = "NULL";
+  static String _currentStatus = "EMERGENCY";
   List<QuestionTree> display = [];
   List<String> answers = [];
   int length = 1;
