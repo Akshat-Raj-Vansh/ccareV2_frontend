@@ -1,7 +1,10 @@
 //@dart=2.9
 // import 'package:camera/camera.dart';
+import 'dart:io';
+
 import 'package:ccarev2_frontend/firebase_options.dart';
 import 'package:ccarev2_frontend/pages/chat/testChatScreen.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/services.dart';
 import 'package:sizer/sizer.dart';
 import 'package:ccarev2_frontend/services/Notifications/notificationContoller.dart';
@@ -18,8 +21,24 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  await NotificationController.createChannels();
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
+  NotificationSettings settings = await messaging.requestPermission(
+    alert: true,
+    announcement: false,
+    badge: true,
+    carPlay: false,
+    criticalAlert: false,
+    provisional: false,
+    sound: true,
+  );
+  if (Platform.isIOS) {
+    await messaging.setForegroundNotificationPresentationOptions(
+        alert: true, badge: true, sound: true);
+  } else if (Platform.isAndroid) {
+    await NotificationController.createChannels();
+  }
   print('FCM Token: ' + await NotificationController.getFCMToken);
+  // print('User granted permission: ${settings.authorizationStatus}');
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
