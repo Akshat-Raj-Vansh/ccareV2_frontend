@@ -32,8 +32,8 @@ dependencies:
   #camera: 0.8.0
   cupertino_icons: ^1.0.2
   emoji_picker_flutter: ^1.1.1
-  firebase_auth: ^3.3.19
-  firebase_core: ^4.2.9
+  firebase_auth: ^4.2.9
+  firebase_core: ^2.4.1
   firebase_messaging: ^14.2.0
   flutter:
     sdk: flutter
