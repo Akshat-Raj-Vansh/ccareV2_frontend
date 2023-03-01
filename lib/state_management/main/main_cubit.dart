@@ -222,6 +222,7 @@ class MainCubit extends Cubit<MainState> {
     final result = await api.getAllPatients(Token(token.value));
     log('LOG > main_cubit.dart > getAllPatients > 153 > result.asValue!.value: ${result.asValue!.value}');
     if (result.isError) {
+      log('Error >> ${result.asError!.error}');
       emit(ErrorState(result.asError!.error as String));
       return;
     }
