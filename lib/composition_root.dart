@@ -1,4 +1,5 @@
 //@dart=2.9
+import 'package:ccarev2_frontend/pages/auth/auth_page%20copy.dart';
 import 'package:ccarev2_frontend/pages/emergency/emergency_screen.dart';
 import 'package:ccarev2_frontend/pages/home/hub/doctor_hub.dart';
 import 'package:ccarev2_frontend/pages/home/spoke/doctor_spoke.dart';
@@ -103,6 +104,9 @@ class CompositionRoot {
       child: AuthPage(
         pageAdatper: authPageAdapter,
       ),
+      // child: AuthPage(
+      //   pageAdatper: authPageAdapter,
+      // ),
     );
   }
 

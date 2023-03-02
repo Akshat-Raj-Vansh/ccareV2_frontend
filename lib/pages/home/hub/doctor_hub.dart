@@ -94,7 +94,10 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          title: Text('CardioCare - HUB'),
+          title: Text(
+            'CardioCare - HUB',
+            style: TextStyle(fontSize: 16.sp),
+          ),
           backgroundColor: kPrimaryColor,
           actions: [
             IconButton(

@@ -136,7 +136,10 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
     SizeConfig().init(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text('CardioCare - Patient'),
+        title: Text(
+          'CardioCare - Patient',
+          style: TextStyle(fontSize: 16.sp),
+        ),
         backgroundColor: kPrimaryColor,
         actions: [
           if (!_emergency && currentState == QuestionnaireState)

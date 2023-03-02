@@ -107,7 +107,10 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('CardioCare - SPOKE'),
+        title: Text(
+          'CardioCare - SPOKE',
+          style: TextStyle(fontSize: 16.sp),
+        ),
         backgroundColor: kPrimaryColor,
       ),
       body: CubitConsumer<MainCubit, MainState>(

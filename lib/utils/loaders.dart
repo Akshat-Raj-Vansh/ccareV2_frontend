@@ -16,11 +16,15 @@ class Loaders {
 
       showDialog(
           context: context, barrierDismissible: true, builder: (_) => alert);
+      loading = true;
     }
   }
 
   static hideLoader(BuildContext context) {
-    Navigator.pop(context);
+    if (loading) {
+      Navigator.pop(context);
+      loading = false;
+    }
   }
 
   static showSnackbar(BuildContext context, String msg) {
