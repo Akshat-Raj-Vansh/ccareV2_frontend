@@ -3,7 +3,7 @@ import 'size_config.dart';
 
 import 'package:sizer/sizer.dart';
 
-const BASEURL = 'http://3.14.133.144:3000';
+const BASEURL = 'http://3.143.255.116:3000';
 // const BASEURL = "http://192.168.125.151:3000";
 
 const kPrimaryColor = Color(0XFF17AD75);
