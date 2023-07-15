@@ -11,7 +11,7 @@ class SecureClient implements IHttpClient {
       {required Map<String, String> headers}) async {
     final token = await store.fetch();
     final modifiedHeader = headers;
-    modifiedHeader['Authorization'] = token.value;
+    modifiedHeader['Authorization'] = token!.value;
     return await client.get(url, headers: modifiedHeader);
   }
 
@@ -20,7 +20,7 @@ class SecureClient implements IHttpClient {
       {required Map<String, String> headers}) async {
     final token = await store.fetch();
     final modifiedHeader = headers;
-    modifiedHeader['Authorization'] = token.value;
+    modifiedHeader['Authorization'] = token!.value;
     modifiedHeader['Content-Type'] = "application/json";
     return await client.post(url, body, headers: modifiedHeader);
   }

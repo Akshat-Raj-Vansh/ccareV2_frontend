@@ -43,10 +43,13 @@ void main() async {
   ]);
   // cameras = await availableCameras();
   runApp(
-    GetMaterialApp(
-      title: "Application",
-      initialRoute: AppPages.INITIAL,
-      getPages: AppPages.routes,
+    Sizer(
+      builder: (context, orientation, deviceType) => GetMaterialApp(
+        title: "Application",
+        debugShowCheckedModeBanner: false,
+        initialRoute: AppPages.INITIAL,
+        getPages: AppPages.routes,
+      ),
     ),
   );
 }
