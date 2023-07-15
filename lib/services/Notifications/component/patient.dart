@@ -1,5 +1,4 @@
 //@dart=2.9
-import 'dart:convert';
 import 'package:sizer/sizer.dart';
 import 'package:ccarev2_frontend/main/domain/edetails.dart';
 import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';

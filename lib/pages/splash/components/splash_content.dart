@@ -1,6 +1,5 @@
 //@dart=2.9
 import 'package:flutter/material.dart';
-import '../../../utils/size_config.dart';
 import '../../../utils/constants.dart';
 import 'package:sizer/sizer.dart';
 

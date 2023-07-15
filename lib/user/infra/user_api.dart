@@ -1,7 +1,6 @@
 //@dart=2.9
 import 'dart:async';
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:ccarev2_frontend/user/domain/credential.dart';
 import 'package:ccarev2_frontend/user/domain/details.dart';

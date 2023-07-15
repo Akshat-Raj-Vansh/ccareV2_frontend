@@ -8,10 +8,8 @@ import 'package:location/location.dart';
 import 'package:sizer/sizer.dart';
 // This is the best practice
 import 'splash_content.dart';
-import '../../../components/default_button.dart';
 
 import '../../auth/auth_page_adapter.dart';
-import '../../../utils/size_config.dart';
 
 class Body extends StatefulWidget {
   final IAuthPageAdapter pageAdapter;

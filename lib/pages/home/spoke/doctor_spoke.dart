@@ -27,7 +27,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-import '../../questionnare/assessment_screen.dart';
 
 class HomeScreenSpoke extends StatefulWidget {
   final MainCubit mainCubit;

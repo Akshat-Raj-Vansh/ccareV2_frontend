@@ -8,7 +8,6 @@ import 'package:sizer/sizer.dart';
 
 import 'package:flutter_cubit/flutter_cubit.dart';
 
-import '../../../utils/loaders.dart';
 
 class PhoneForm extends StatefulWidget {
   final PageController controller;

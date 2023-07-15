@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../user/domain/credential.dart';
 import '../../state_management/user/user_cubit.dart';
-import '../../state_management/main/main_cubit.dart';
 
 abstract class IHomePageAdapter {
   void loadHomeUI(BuildContext context, UserType userType);
