@@ -1,87 +1,62 @@
 name: ccarev2_frontend
-description: A new Flutter project.
-
-# The following line prevents the package from being accidentally published to
-# pub.dev using `flutter pub publish`. This is preferred for private packages.
-publish_to: "none" # Remove this line if you wish to publish to pub.dev
-
-# The following defines the version and build number for your application.
-# A version number is three numbers separated by dots, like 1.2.43
-# followed by an optional build number separated by a +.
-# Both the version and the builder number may be overridden in flutter
-# build by specifying --build-name and --build-number, respectively.
-# In Android, build-name is used as versionName while build-number used as versionCode.
-# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
-# In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
-# Read more about iOS versioning at
-# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 version: 1.7.5+1
+publish_to: none
+description: A new Flutter project.
+environment: 
+  sdk: '>=2.12.0 <3.0.0'
 
-environment:
-  sdk: ">=2.12.0 <3.0.0"
-
-# Dependencies specify other packages that your package needs in order to work.
-# To automatically upgrade your package dependencies to the latest versions
-# consider running `flutter pub upgrade --major-versions`. Alternatively,
-# dependencies can be manually updated by changing the version numbers below to
-# the latest version available on pub.dev. To see which dependencies have newer
-# versions available, run `flutter pub outdated`.
-dependencies:
+dependencies: 
   aligned_dialog: ^0.0.6
   cached_network_image: ^3.2.0
-  #camera: 0.8.0
   cupertino_icons: ^1.0.2
   emoji_picker_flutter: ^1.1.1
   firebase_auth: ^4.2.9
   firebase_core: ^2.4.1
   firebase_messaging: ^14.2.0
-  flutter:
-    sdk: flutter
   flutter_launcher_icons: ^0.13.1
   flutter_local_notifications: ^15.1.0+1
   flutter_speed_dial: ^7.0.0
   google_maps_flutter: ^2.0.11
   image_picker: ^1.0.1
   location: ^5.0.0
-  path: null
-  path_provider: null
+  path: any
+  path_provider: any
   scoped_model: ^2.0.0
   sizer: ^2.0.15
   socket_io_client: ^2.0.0-beta.2
-  url_launcher: null
+  url_launcher: any
   encrypt: ^5.0.1
   video_player: ^2.2.18
+  get: 4.6.5
+  flutter: 
+    sdk: flutter
 
-flutter_icons:
-  image_path: "assets/icon/icon.png"
+dev_dependencies: 
+  flutter_lints: ^2.0.2
+  flutter_rating_bar: ^4.0.0
+  flutter_svg: any
+  font_awesome_flutter: any
+  google_fonts: any
+  google_sign_in: any
+  http: ^0.13.3
+  shared_preferences: any
+  timelines: ^0.1.0
+  transparent_image: any
+  common: 
+    path: ./common
+  flutter_test: 
+    sdk: flutter
+
+flutter_icons: 
+  image_path: assets/icon/icon.png
   android: true
   ios: true
 
-dev_dependencies:
-  common:
-    path: ./common
-  # cubit: null
-  # equatable: ^2.0.3
-  # flutter_cubit: null
-  flutter_lints: ^2.0.2
-  flutter_rating_bar: ^4.0.0
-  flutter_svg: null
-
-  flutter_test:
-    sdk: flutter
-  font_awesome_flutter: null
-  google_fonts:
-  google_sign_in: null
-  http: ^0.13.3
-  shared_preferences: null
-  timelines: ^0.1.0
-  transparent_image: null
-
-flutter:
-  uses-material-design: true
-
-  assets:
+flutter: 
+  assets: 
     - assets/
     - assets/images/
     - assets/icons/
     - assets/icon/
+  uses-material-design: true
+
