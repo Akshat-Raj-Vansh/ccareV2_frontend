@@ -1,10 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
-import '../../user/domain/credential.dart';
-import '../../user/domain/token.dart';
-import '../../state_management/user/user_cubit.dart';
-import 'package:flutter_cubit/flutter_cubit.dart';
+import '../../data/credential.dart';
+import '../../data/token.dart';
+// import '../../../state_management/user/user_cubit.dart';
+// import 'package:flutter_cubit/flutter_cubit.dart';
 import 'package:flutter/material.dart';
 
 class AuthenticationController {
