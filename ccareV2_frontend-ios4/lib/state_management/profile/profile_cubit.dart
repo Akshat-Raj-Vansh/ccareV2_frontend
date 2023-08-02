@@ -2,8 +2,9 @@ import 'package:ccarev2_frontend/user/domain/details.dart';
 import 'package:ccarev2_frontend/user/domain/profile.dart';
 import 'package:ccarev2_frontend/user/domain/token.dart';
 import 'package:ccarev2_frontend/user/infra/user_api.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'profile_state.dart';
-import 'package:cubit/cubit.dart';
+
 
 import '../../cache/ilocal_store.dart';
 
@@ -15,15 +16,15 @@ class ProfileCubit extends Cubit<ProfileState> {
   addPatientProfile(PatientProfile profile) async {
     _startLoading();
     final token = await this.localStore.fetch();
-    Details details = await this.localStore.fetchDetails();
-    final result = await api.addPatientProfile(Token(token.value), profile);
+    Details? details = await this.localStore.fetchDetails();
+    final result = await api.addPatientProfile(Token(token!.value), profile);
     if (result == null) emit(ErrorState("Server Error"));
     if (result.isError) {
-      emit(ErrorState(result.asError.error));
+      emit(ErrorState(result.asError!.error.toString()));
       return;
     }
     await this.localStore.updateNewUser(false);
-    emit(AddProfileState(details));
+    emit(AddProfileState(details!));
   }
 
   getDocInfo() async {
@@ -49,17 +50,17 @@ class ProfileCubit extends Cubit<ProfileState> {
     //print("PROFILE CUBIT/ADD DOCTOR PROFILE");
     _startLoading();
     final token = await this.localStore.fetch();
-    final result = await api.addDoctorProfile(Token(token.value), profile);
+    final result = await api.addDoctorProfile(Token(token!.value), profile);
     if (result == null) emit(ErrorState("Server Error"));
     if (result.isError) {
-      emit(ErrorState(result.asError.error));
+      emit(ErrorState(result.asError!.error.toString()));
       return;
     }
     await this.localStore.updateNewUser(false);
-    Details details = await this.localStore.fetchDetails();
+    Details? details = await this.localStore.fetchDetails();
     //print("DETAILS:");
     //print(details.toJson());
-    emit(AddProfileState(details));
+    emit(AddProfileState(details!));
   }
 
   searchDoctor(String hospital) async {
@@ -79,15 +80,15 @@ class ProfileCubit extends Cubit<ProfileState> {
     _startLoading();
 
     final token = await this.localStore.fetch();
-    Details details = await this.localStore.fetchDetails();
-    final result = await api.addDriverProfile(Token(token.value), profile);
+    Details? details = await this.localStore.fetchDetails();
+    final result = await api.addDriverProfile(Token(token!.value), profile);
     if (result == null) emit(ErrorState("Server Error"));
     if (result.isError) {
-      emit(ErrorState(result.asError.error));
+      emit(ErrorState(result.asError!.error.toString()));
       return;
     }
     await this.localStore.updateNewUser(false);
-    emit(AddProfileState(details));
+    emit(AddProfileState(details!));
   }
 
   void _startLoading() {

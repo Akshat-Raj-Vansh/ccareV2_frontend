@@ -2,6 +2,8 @@ import 'dart:developer';
 
 import 'package:ccarev2_frontend/main/domain/edetails.dart';
 import 'package:ccarev2_frontend/main/domain/question.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sizer/sizer.dart';
 
 import 'package:url_launcher/url_launcher.dart';
@@ -26,7 +28,6 @@ import 'package:ccarev2_frontend/user/domain/location.dart' as loc;
 import 'package:ccarev2_frontend/utils/size_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_cubit/flutter_cubit.dart';
 import '../../../utils/constants.dart';
 
 class PatientHomeUI extends StatefulWidget {
@@ -41,7 +42,7 @@ class PatientHomeUI extends StatefulWidget {
 
 class _PatientHomeUIState extends State<PatientHomeUI> {
   bool loader = false;
-  EDetails eDetails;
+  late EDetails eDetails;
   static bool _emergency = false;
   static bool _doctorAccepted = false;
   static bool _driverAccepted = false;
@@ -49,8 +50,8 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
   static bool _assessAgain = false;
   static bool _questionnaire = false;
   static bool _historyFetched = false;
-  static TreatmentReport _treatmentReport;
-  static List<QuestionTree> _questions;
+  late TreatmentReport _treatmentReport;
+  late List<QuestionTree> _questions;
   static String _currentStatus = "EMERGENCY";
   List<QuestionTree> display = [];
   List<String> answers = [];
@@ -80,12 +81,12 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
   void initState() {
     super.initState();
     print('DATA > patient.dart > 87 > Inside initState');
-    CubitProvider.of<MainCubit>(context).fetchEmergencyDetails();
-    CubitProvider.of<MainCubit>(context).getStatus();
+    BlocProvider.of<MainCubit>(context).fetchEmergencyDetails();
+    BlocProvider.of<MainCubit>(context).getStatus();
     // CubitProvider.of<MainCubit>(context).recentHistory();
     //CubitProvider.of<MainCubit>(context).getQuestions();
     NotificationController.configure(
-        CubitProvider.of<MainCubit>(context), UserType.PATIENT, context);
+        BlocProvider.of<MainCubit>(context), UserType.PATIENT, context);
     NotificationController.fcmHandler();
   }
 
@@ -103,7 +104,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
         msg,
         style: Theme.of(context)
             .textTheme
-            .bodySmall
+            .bodySmall!
             .copyWith(color: Colors.white, fontSize: 12.sp),
       ),
     ));
@@ -201,7 +202,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
           ),
         ],
       ),
-      body: CubitConsumer<MainCubit, MainState>(
+      body: BlocConsumer<MainCubit, MainState>(
         builder: (_, state) {
           if (state is NewErrorState) {
             // if (state.prevState == "QuestionnaireState") {
@@ -211,11 +212,11 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
             if (state.prevState == "DetailsLoaded") {
               if (state.error != "Doesn't Exist") _notificationSent = true;
               _hideLoader();
-              CubitProvider.of<MainCubit>(context).recentHistory();
+              BlocProvider.of<MainCubit>(context).recentHistory();
             }
             if (state.prevState == "PreviousHistory") {
               _hideLoader();
-              CubitProvider.of<MainCubit>(context).getQuestions();
+              BlocProvider.of<MainCubit>(context).getQuestions();
             }
           }
           if (state is DetailsLoaded) {
@@ -260,7 +261,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
             _treatmentReport = state.treatmentReport;
             //  _currentStatus = "HISTORY";
             currentState = PreviousHistory;
-            if (_treatmentReport != null) _historyFetched = true;
+ _historyFetched = true;
           }
           if (state is NormalState) {
             //  currentState = NormalState;
@@ -320,10 +321,10 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
             //   //print(display[0].status);
             if (_assessAgain) {
               _hideLoader();
-              CubitProvider.of<MainCubit>(context).selfAssessment();
+              BlocProvider.of<MainCubit>(context).selfAssessment();
             }
           } else if (state is SelfAssessmentState) {
-            var cubit = CubitProvider.of<MainCubit>(context);
+            var cubit = BlocProvider.of<MainCubit>(context);
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -430,7 +431,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
   _buildSelfAnalysisButton() => InkWell(
         onTap: () async {
           _assessAgain = true;
-          CubitProvider.of<MainCubit>(context).getQuestions();
+          BlocProvider.of<MainCubit>(context).getQuestions();
         },
         child: Container(
           width: SizeConfig.screenWidth,
@@ -693,9 +694,9 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (ctx) => CubitProvider<MainCubit>(
-                create: (_) => CubitProvider.of<MainCubit>(context),
-                child: PatientReportHistoryScreen(mainCubit: widget.mainCubit),
+              builder: (ctx) => BlocProvider<MainCubit>(
+                create: (_) => BlocProvider.of<MainCubit>(context),
+                child: PatientReportHistoryScreen(mainCubit: widget.mainCubit, patientID: '',),
               ),
             ),
           );
@@ -722,7 +723,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
               MaterialPageRoute(
                 builder: (context) => PatientExamScreen(
                   mainCubit: widget.mainCubit,
-                  user: UserType.PATIENT,
+                  user: UserType.PATIENT, patientDetails: null,
                 ),
               ));
         },
@@ -743,8 +744,8 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
       );
 
   _makingPhoneCall() async {
-    String url = eDetails.doctorDetails.contactNumber;
-    await launch("tel:$url");
+    String url = eDetails.doctorDetails!.contactNumber;
+    await launchUrl(Uri.parse("tel:$url"));
   }
 
   _buildDoctorDetails() => Column(children: [
@@ -770,7 +771,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text("Name: "),
-                  Text(eDetails.doctorDetails.name),
+                  Text(eDetails.doctorDetails!.name),
                 ],
               ),
               SizedBox(
@@ -780,7 +781,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text("Hospital: "),
-                  Text(eDetails.doctorDetails.hospital),
+                  Text(eDetails.doctorDetails!.hospital),
                 ],
               ),
               SizedBox(
@@ -806,10 +807,9 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text("Location: "),
-                  Text(eDetails.doctorDetails.address == null ||
-                          eDetails.doctorDetails.address == ""
+                  Text(eDetails.doctorDetails!.address == ""
                       ? "India"
-                      : eDetails.doctorDetails.address),
+                      : eDetails.doctorDetails!.address),
                 ],
               ),
             ],
@@ -920,7 +920,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                   "Emergency Notifications Sent to Doctor",
                   style: Theme.of(context)
                       .textTheme
-                      .bodySmall
+                      .bodySmall!
                       .copyWith(color: Colors.white, fontSize: 12.sp),
                 ),
               ),
@@ -981,7 +981,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text("Name: "),
-                  Text(eDetails.driverDetails.name),
+                  Text(eDetails.driverDetails!.name),
                 ],
               ),
               SizedBox(
@@ -991,7 +991,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text("Plate Number: "),
-                  Text(eDetails.driverDetails.plateNumber),
+                  Text(eDetails.driverDetails!.plateNumber),
                 ],
               ),
               SizedBox(
@@ -1001,7 +1001,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text("Contact Number: "),
-                  Text(eDetails.driverDetails.contactNumber),
+                  Text(eDetails.driverDetails!.contactNumber),
                 ],
               ),
               SizedBox(
@@ -1013,7 +1013,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                   style: GoogleFonts.montserrat(color: Colors.black),
                   children: [
                     TextSpan(
-                        text: eDetails.driverDetails.address,
+                        text: eDetails.driverDetails!.address,
                         style: TextStyle(color: Colors.black))
                   ],
                 ),
@@ -1462,4 +1462,9 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
           ],
         ),
       );
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<TreatmentReport>('_treatmentReport', _treatmentReport));
+  }
 }

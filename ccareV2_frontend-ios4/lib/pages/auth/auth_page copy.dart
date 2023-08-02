@@ -3,39 +3,39 @@ import 'package:ccarev2_frontend/pages/auth/components/type_form.dart';
 import 'package:ccarev2_frontend/pages/splash/splash_screen.dart';
 import 'package:ccarev2_frontend/services/Authentication/authfirebase.dart';
 import 'package:ccarev2_frontend/utils/constants.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:sizer/sizer.dart';
 import '../../state_management/profile/profile_cubit.dart';
 import '../../state_management/profile/profile_state.dart' as profileState;
+import '../../state_management/user/user_cubit.dart';
 import '../../state_management/user/user_state.dart';
 import '../../user/domain/credential.dart';
-import '../../state_management/user/user_cubit.dart';
 import '../../utils/loaders.dart';
 import 'auth_page_adapter.dart';
-import 'package:flutter_cubit/flutter_cubit.dart';
 import '../../utils/size_config.dart';
 import 'package:flutter/material.dart';
 
 class AuthPageC extends StatefulWidget {
   final IAuthPageAdapter pageAdatper;
   AuthPageC({
-    this.pageAdatper,
+    required this.pageAdatper,
   });
   @override
   _AuthPageCState createState() => _AuthPageCState();
 }
 
 class _AuthPageCState extends State<AuthPageC> {
-  UserType _userType;
+  late UserType _userType;
 
   int hex(String color) {
     return int.parse("FF" + color.toUpperCase(), radix: 16);
   }
 
-  AnimationController animationController;
+  late AnimationController animationController;
   final PageController _controller = PageController();
 
-  final _formKey = GlobalKey<FormState>();
+
   @override
   void initState() {
     super.initState();
@@ -71,7 +71,7 @@ class _AuthPageCState extends State<AuthPageC> {
                   ),
                   Positioned(
                     bottom: 0,
-                    child: CubitConsumer<UserCubit, UserState>(
+                    child: BlocConsumer<UserCubit, UserState>(
                       builder: (_, state) {
                         print("Builder State $state");
                         // var cubit = CubitProvider.of<UserCubit>(context);
@@ -112,7 +112,7 @@ class _AuthPageCState extends State<AuthPageC> {
                       },
                     ),
                   ),
-                  CubitListener<ProfileCubit, profileState.ProfileState>(
+                  BlocListener<ProfileCubit, profileState.ProfileState>(
                     child: Container(),
                     listener: (context, state) {
                       if (state is profileState.LoadingState) {
@@ -131,7 +131,7 @@ class _AuthPageCState extends State<AuthPageC> {
                               state.error,
                               style: Theme.of(context)
                                   .textTheme
-                                  .bodySmall
+                                  .bodySmall!
                                   .copyWith(
                                       color: Colors.white, fontSize: 8.sp),
                             ),
@@ -203,7 +203,7 @@ class _AuthPageCState extends State<AuthPageC> {
             // _onBackPressed),
             OTPForm(
                 _controller,
-                CubitProvider.of<UserCubit>(context),
+                BlocProvider.of<UserCubit>(context),
                 AuthenticationController.verifyOTP,
                 AuthenticationController.getPhone),
           ],

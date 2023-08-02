@@ -1,4 +1,3 @@
-//@dart=2.9
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
@@ -6,7 +5,7 @@ class FullScreenImage extends StatelessWidget {
   final String imageUrl;
   final String tag;
 
-  FullScreenImage({ this.imageUrl, this.tag});
+  FullScreenImage({ required this.imageUrl, required this.tag});
 
   @override
   Widget build(BuildContext context) {

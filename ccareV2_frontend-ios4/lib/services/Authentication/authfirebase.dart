@@ -1,18 +1,18 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../user/domain/credential.dart';
 import '../../user/domain/token.dart';
 import '../../state_management/user/user_cubit.dart';
-import 'package:flutter_cubit/flutter_cubit.dart';
 import 'package:flutter/material.dart';
 
 class AuthenticationController {
-  static UserType userType;
-  static String _phone;
-  static UserType _type;
-  static bool _verified;
-  static String _verificationCode;
+  static UserType? userType;
+  static String? _phone;
+  static UserType? _type;
+  static bool? _verified;
+  static String? _verificationCode;
 
   static configure(UserType type) {
     _type = type;
@@ -28,28 +28,28 @@ class AuthenticationController {
     _verified = false;
     try {
       await FirebaseAuth.instance.verifyPhoneNumber(
-          phoneNumber: "+91" + _phone,
+          phoneNumber: "+91" + _phone!,
           verificationCompleted: (PhoneAuthCredential credential) async {
             await FirebaseAuth.instance
                 .signInWithCredential(credential)
                 .then((value) async {
               if (value.user != null) {
                 _verified = true;
-                _msg = "VERIFICATION SUCCESSFUL " + value.user.uid;
+                _msg = "VERIFICATION SUCCESSFUL " + value.user!.uid;
                 print('auth_page.dart : ' + _msg);
-                CubitProvider.of<UserCubit>(context).login(Credential(_phone,
-                    userType, getFCMToken, Token(value.user.uid.toString())));
+                BlocProvider.of<UserCubit>(context).login(Credential(_phone!,
+                    userType!, getFCMToken, Token(value.user!.uid.toString())));
               }
             });
           },
           verificationFailed: (FirebaseAuthException e) {
             _msg = "VERIFICATION FAILED " + e.toString();
           },
-          codeSent: (String verificationID, int resendToken) {
-            if (!_verified) {
+          codeSent: (String verificationID, int? resendToken) {
+            if (!_verified!) {
               _msg = "CODE SENT " + verificationID;
               _verificationCode = verificationID;
-              CubitProvider.of<UserCubit>(context).verifyOTP();
+              BlocProvider.of<UserCubit>(context).verifyOTP();
             }
           },
           codeAutoRetrievalTimeout: (String verificationID) {
@@ -69,13 +69,13 @@ class AuthenticationController {
     try {
       await FirebaseAuth.instance
           .signInWithCredential(PhoneAuthProvider.credential(
-              verificationId: _verificationCode, smsCode: otp))
+              verificationId: _verificationCode!, smsCode: otp))
           .then((value) async {
         if (value.user != null) {
-          _msg = "VERIFICATION SUCCESSFUL OTP " + value.user.uid;
+          _msg = "VERIFICATION SUCCESSFUL OTP " + value.user!.uid;
           print('auth_page.dart : ' + _msg);
-          CubitProvider.of<UserCubit>(context).login(Credential(
-              _phone, userType, getFCMToken, Token(value.user.uid.toString())));
+          BlocProvider.of<UserCubit>(context).login(Credential(
+              _phone!, userType!, getFCMToken, Token(value.user!.uid.toString())));
         } else {
           _msg = "VERIFICATION FAILED. INVALID OTP.";
           print(_msg);

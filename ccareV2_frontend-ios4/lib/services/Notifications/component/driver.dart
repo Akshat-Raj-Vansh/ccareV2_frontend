@@ -4,8 +4,8 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
 class DriverNotificationHandler {
-  static MainCubit mainCubit;
-  static BuildContext context;
+  static MainCubit? mainCubit;
+  static BuildContext? context;
   static configure(MainCubit cubit, BuildContext c) {
     mainCubit = cubit;
     context = c;
@@ -30,7 +30,7 @@ class DriverNotificationHandler {
         //   ),
         // ));
 
-        await mainCubit.acceptRequest(message.data["_patientID"]);
+        await mainCubit!.acceptRequest(message.data["_patientID"]);
       }
     }
     if (message.data["user"] == "DOCTOR") {
@@ -45,8 +45,8 @@ class DriverNotificationHandler {
       //   ),
       // ));
 
-      mainCubit.doctorAccepted(Location.fromJson(message.data["location"]));
-      await mainCubit.fetchEmergencyDetails(
+      mainCubit!.doctorAccepted(Location.fromJson(message.data["location"]));
+      await mainCubit!.fetchEmergencyDetails(
           patientID: message.data["patientID"]);
     }
   }
@@ -54,7 +54,7 @@ class DriverNotificationHandler {
   static Future<void> onMessageOpenedHandler(RemoteMessage message) async {
     if (message.data['type'] == 'Emergency') {
       //print(message.data);
-      await mainCubit.acceptRequest(message.data["_patientID"]);
+      await mainCubit!.acceptRequest(message.data["_patientID"]);
     }
   }
 }

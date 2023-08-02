@@ -5,7 +5,7 @@ import 'package:ccarev2_frontend/user/domain/details.dart';
 import 'package:ccarev2_frontend/user/domain/location.dart';
 import 'package:ccarev2_frontend/utils/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_cubit/flutter_cubit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart';
 
@@ -29,21 +29,21 @@ import '../user/domain/user_service_contract.dart';
 import '../user/infra/user_api.dart';
 
 class CompositionRoot {
-  static SharedPreferences sharedPreferences;
-  static ILocalStore localStore;
-  static String baseUrl;
-  static Client client;
-  static SecureClient secureClient;
-  static UserAPI userAPI;
-  static MainAPI mainAPI;
-  static IAuthPageAdapter authPageAdapter;
-  static IProfilePageAdapter profilePageAdapter;
-  static IHomePageAdapter homePageAdapter;
-  static UserService userService;
-  static UserCubit userCubit;
-  static MainCubit mainCubit;
+  late SharedPreferences sharedPreferences;
+  late ILocalStore localStore;
+  late String baseUrl;
+  late Client client;
+  late SecureClient secureClient;
+  late UserAPI userAPI;
+  late MainAPI mainAPI;
+  late IAuthPageAdapter authPageAdapter;
+  late ProfilePageAdapter profilePageAdapter;
+  late HomePageAdapter homePageAdapter;
+  late UserService userService;
+  late UserCubit userCubit;
+  late MainCubit mainCubit;
 //90d9f67022627247658ea748f4695546
-  static configure() async {
+   configure() async {
     sharedPreferences = await SharedPreferences.getInstance();
     localStore = LocalStore(sharedPreferences);
     client = Client();
@@ -66,17 +66,18 @@ class CompositionRoot {
     authPageAdapter = AuthPageAdapter(profilePageAdapter, createLoginScreen);
   }
 
-  static Future<Widget> start() async {
+  Future<Widget> start() async {
     // var token = await localStore.fetch();
     // var isnewUser = await localStore.fetchNewUser();
     // var userType = await localStore.fetchUserType();
-    Details details = await localStore.fetchDetails();
+    Details? details = await localStore.fetchDetails();
     //print("COMPOSITION ROOT START");
 
     if (details == null) return splashScreen();
     //print("user type ${details.user_type}");
     //print('DETAILS:');
     //print(details.toJson());
+    // ignore: unnecessary_null_comparison
     return details.user_token == null
         ? splashScreen()
         : details.newUser
@@ -84,16 +85,16 @@ class CompositionRoot {
             : createHomeUI(details.user_type);
   }
 
-  static Widget splashScreen() {
+  Widget splashScreen() {
     return SplashScreen(authPageAdapter);
   }
 
-  static Widget createLoginScreen() {
+  Widget createLoginScreen() {
     ProfileCubit profileCubit = ProfileCubit(localStore, userAPI);
-    return MultiCubitProvider(
+    return MultiBlocProvider(
       providers: [
-        CubitProvider<UserCubit>(create: (context) => userCubit),
-        CubitProvider<ProfileCubit>(create: (context) => profileCubit),
+        BlocProvider<UserCubit>(create: (context) => userCubit),
+        BlocProvider<ProfileCubit>(create: (context) => profileCubit),
       ],
       child: AuthPage(
         pageAdatper: authPageAdapter,
@@ -104,7 +105,7 @@ class CompositionRoot {
     );
   }
 
-  static Widget createHomeUI(UserType userType) {
+  Widget createHomeUI(UserType userType) {
     if (userType == UserType.PATIENT)
       return createPatientHomeUI();
     else if (userType == UserType.SPOKE)
@@ -113,70 +114,70 @@ class CompositionRoot {
     return createDriverHomeUI();
   }
 
-  static Widget createProfileScreen(UserType userType) {
+  Widget createProfileScreen(UserType userType) {
     ProfileCubit profileCubit = ProfileCubit(localStore, userAPI);
-    return MultiCubitProvider(
+    return MultiBlocProvider(
       providers: [
-        CubitProvider<UserCubit>(create: (context) => userCubit),
-        CubitProvider<ProfileCubit>(create: (context) => profileCubit),
+        BlocProvider<UserCubit>(create: (context) => userCubit),
+        BlocProvider<ProfileCubit>(create: (context) => profileCubit),
       ],
       child: ProfileScreen(profilePageAdapter, userType, profileCubit),
     );
   }
 
-  static Widget createPatientHomeUI() {
-    return MultiCubitProvider(providers: [
-      CubitProvider<UserCubit>(
+  Widget createPatientHomeUI() {
+    return MultiBlocProvider(providers: [
+      BlocProvider<UserCubit>(
         create: (context) => userCubit,
       ),
-      CubitProvider<MainCubit>(
+      BlocProvider<MainCubit>(
         create: (context) => mainCubit,
       ),
     ], child: PatientHomeUI(mainCubit, userCubit, homePageAdapter));
   }
 
-  static Widget createSpokeDoctorHomeUI() {
-    return MultiCubitProvider(providers: [
-      CubitProvider<UserCubit>(
+  Widget createSpokeDoctorHomeUI() {
+    return MultiBlocProvider(providers: [
+      BlocProvider<UserCubit>(
         create: (context) => userCubit,
       ),
-      CubitProvider<MainCubit>(
+      BlocProvider<MainCubit>(
         create: (context) => mainCubit,
       ),
     ], child: HomeScreenSpoke(mainCubit, userCubit, homePageAdapter));
   }
 
-  static Widget createHubDoctorHomeUI() {
-    return MultiCubitProvider(providers: [
-      CubitProvider<UserCubit>(
+  Widget createHubDoctorHomeUI() {
+    return MultiBlocProvider(providers: [
+      BlocProvider<UserCubit>(
         create: (context) => userCubit,
       ),
-      CubitProvider<MainCubit>(
+      BlocProvider<MainCubit>(
         create: (context) => mainCubit,
       ),
     ], child: HomeScreenHub(mainCubit, userCubit, homePageAdapter));
   }
 
-  static Widget createDriverHomeUI() {
-    return MultiCubitProvider(providers: [
-      CubitProvider<UserCubit>(
+  Widget createDriverHomeUI() {
+    return MultiBlocProvider(providers: [
+      BlocProvider<UserCubit>(
         create: (context) => userCubit,
       ),
-      CubitProvider<MainCubit>(
+      BlocProvider<MainCubit>(
         create: (context) => mainCubit,
       ),
     ], child: DriverHomeUI(homePageAdapter, userCubit));
   }
 
-  static Widget createEmergencyUI(UserType userType, Location location) {
-    return MultiCubitProvider(
+  Widget createEmergencyUI(UserType userType, Location location) {
+    return MultiBlocProvider(
       providers: [
-        CubitProvider<UserCubit>(create: (context) => userCubit),
-        CubitProvider<MainCubit>(create: (context) => mainCubit),
+        BlocProvider<UserCubit>(create: (context) => userCubit),
+        BlocProvider<MainCubit>(create: (context) => mainCubit),
       ],
       child: EmergencyScreen(
         userType: userType,
-        location: location,
+        location: location, patientID: '',
       ),
     );
   }

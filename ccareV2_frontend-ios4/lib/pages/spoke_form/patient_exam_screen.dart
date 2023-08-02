@@ -8,17 +8,17 @@ import 'package:ccarev2_frontend/state_management/main/main_state.dart';
 import 'package:ccarev2_frontend/user/domain/credential.dart';
 import 'package:ccarev2_frontend/utils/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sizer/sizer.dart';
-import 'package:flutter_cubit/flutter_cubit.dart';
 import '../../utils/size_config.dart';
 
 class PatientExamScreen extends StatefulWidget {
   final MainCubit mainCubit;
   final UserType user;
-  final PatientDetails patientDetails;
+  PatientDetails? patientDetails;
 
-  const PatientExamScreen(
-      {Key key, this.mainCubit, this.user, this.patientDetails})
+  PatientExamScreen(
+      {Key? key, required this.patientDetails ,required this.mainCubit, required this.user})
       : super(key: key);
   @override
   _PatientExamScreenState createState() => _PatientExamScreenState();
@@ -26,11 +26,11 @@ class PatientExamScreen extends StatefulWidget {
 
 class _PatientExamScreenState extends State<PatientExamScreen>
     with TickerProviderStateMixin {
-  TabController _tabController;
+  late TabController _tabController;
   bool editReport = false;
   // ScrollController scrollView;
   // ScrollView scrollView;
-  FocusNode focusNode;
+  late FocusNode focusNode;
   final List<Tab> _myTabs = [
     Tab(
       child: Text('Patient Details'),
@@ -93,7 +93,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
         msg,
         style: Theme.of(context)
             .textTheme
-            .bodySmall
+            .bodySmall!
             .copyWith(color: Colors.white, fontSize: 12.sp),
       ),
     ));
@@ -101,16 +101,16 @@ class _PatientExamScreenState extends State<PatientExamScreen>
 
   _fetchReport() async {
     print("Fetching patient exam report");
-    print(widget.patientDetails == null ? '' : widget.patientDetails.id);
+    print(widget.patientDetails == null ? '' : widget.patientDetails!.id);
     await widget.mainCubit.fetchPatientExamReport(
-        widget.patientDetails == null ? '' : widget.patientDetails.id);
+        widget.patientDetails == null ? '' : widget.patientDetails!.id);
   }
 
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    return CubitConsumer<MainCubit, MainState>(
-      cubit: widget.mainCubit,
+    return BlocConsumer<MainCubit, MainState>(
+      bloc: widget.mainCubit,
       builder: (_, state) {
         print("PatientExamScreen builder state: $state");
         if (state is PatientExamReportFetched) {
@@ -184,7 +184,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
                       print('before saving');
                       print(editedReport.toString());
                       widget.mainCubit.savePatientExamReport(
-                          editedReport, widget.patientDetails.id);
+                          editedReport, widget.patientDetails!.id);
                     },
                     child: Text(
                       'SAVE',
@@ -300,7 +300,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text("Patient Name: "),
-                Text(widget.patientDetails.name),
+                Text(widget.patientDetails!.name),
               ],
             ),
             SizedBox(
@@ -310,7 +310,7 @@ class _PatientExamScreenState extends State<PatientExamScreen>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text("Contact Number: "),
-                Text(widget.patientDetails.contactNumber,
+                Text(widget.patientDetails!.contactNumber,
                     textAlign: TextAlign.right),
               ],
             ),
@@ -609,9 +609,9 @@ class _PatientExamScreenState extends State<PatientExamScreen>
                     child: DropdownButton<YN>(
                       value: editedReport.nTreatment.aspirin_loading,
                       isDense: false,
-                      onChanged: (YN newValue) {
+                      onChanged: (newValue) {
                         setState(() {
-                          editedReport.nTreatment.aspirin_loading = newValue;
+                          editedReport.nTreatment.aspirin_loading = newValue!;
                         });
                       },
                       items: YN.values.map((YN value) {
@@ -635,9 +635,9 @@ class _PatientExamScreenState extends State<PatientExamScreen>
                     child: DropdownButton<YN>(
                       value: editedReport.nTreatment.c_p_t_loading,
                       isDense: false,
-                      onChanged: (YN newValue) {
+                      onChanged: (newValue) {
                         setState(() {
-                          editedReport.nTreatment.c_p_t_loading = newValue;
+                          editedReport.nTreatment.c_p_t_loading = newValue!;
                         });
                       },
                       items: YN.values.map((YN value) {
@@ -661,9 +661,9 @@ class _PatientExamScreenState extends State<PatientExamScreen>
                     child: DropdownButton<YN>(
                       value: editedReport.nTreatment.lmwh,
                       isDense: false,
-                      onChanged: (YN newValue) {
+                      onChanged: (newValue) {
                         setState(() {
-                          editedReport.nTreatment.lmwh = newValue;
+                          editedReport.nTreatment.lmwh = newValue!;
                         });
                       },
                       items: YN.values.map((YN value) {
@@ -688,9 +688,9 @@ class _PatientExamScreenState extends State<PatientExamScreen>
                             child: DropdownButton<YN>(
                               value: editedReport.nTreatment.ivbolus,
                               isDense: false,
-                              onChanged: (YN newValue) {
+                              onChanged: (newValue) {
                                 setState(() {
-                                  editedReport.nTreatment.ivbolus = newValue;
+                                  editedReport.nTreatment.ivbolus = newValue!;
                                 });
                               },
                               items: YN.values.map((YN value) {
@@ -721,9 +721,9 @@ class _PatientExamScreenState extends State<PatientExamScreen>
                             child: DropdownButton<YN>(
                               value: editedReport.nTreatment.inj_eno,
                               isDense: false,
-                              onChanged: (YN newValue) {
+                              onChanged: (newValue) {
                                 setState(() {
-                                  editedReport.nTreatment.inj_eno = newValue;
+                                  editedReport.nTreatment.inj_eno = newValue!;
                                 });
                               },
                               items: YN.values.map((YN value) {
@@ -748,9 +748,9 @@ class _PatientExamScreenState extends State<PatientExamScreen>
                     child: DropdownButton<Statins>(
                       value: editedReport.nTreatment.statins,
                       isDense: false,
-                      onChanged: (Statins newValue) {
+                      onChanged: (newValue) {
                         setState(() {
-                          editedReport.nTreatment.statins = newValue;
+                          editedReport.nTreatment.statins = newValue!;
                         });
                       },
                       items: Statins.values.map((Statins value) {
@@ -804,9 +804,9 @@ class _PatientExamScreenState extends State<PatientExamScreen>
                     child: DropdownButton<YN>(
                       value: editedReport.nTreatment.beta_blockers,
                       isDense: false,
-                      onChanged: (YN newValue) {
+                      onChanged: (newValue) {
                         setState(() {
-                          editedReport.nTreatment.beta_blockers = newValue;
+                          editedReport.nTreatment.beta_blockers = newValue!;
                         });
                       },
                       items: YN.values.map((YN value) {
@@ -830,9 +830,9 @@ class _PatientExamScreenState extends State<PatientExamScreen>
                     child: DropdownButton<YN>(
                       value: editedReport.nTreatment.nitrates,
                       isDense: false,
-                      onChanged: (YN newValue) {
+                      onChanged: (newValue) {
                         setState(() {
-                          editedReport.nTreatment.nitrates = newValue;
+                          editedReport.nTreatment.nitrates = newValue!;
                         });
                       },
                       items: YN.values.map((YN value) {
@@ -856,9 +856,9 @@ class _PatientExamScreenState extends State<PatientExamScreen>
                     child: DropdownButton<YN>(
                       value: editedReport.nTreatment.diuretics,
                       isDense: false,
-                      onChanged: (YN newValue) {
+                      onChanged: (newValue) {
                         setState(() {
-                          editedReport.nTreatment.diuretics = newValue;
+                          editedReport.nTreatment.diuretics = newValue!;
                         });
                       },
                       items: YN.values.map((YN value) {
@@ -882,9 +882,9 @@ class _PatientExamScreenState extends State<PatientExamScreen>
                     child: DropdownButton<YN>(
                       value: editedReport.nTreatment.acei_arb,
                       isDense: false,
-                      onChanged: (YN newValue) {
+                      onChanged: (newValue) {
                         setState(() {
-                          editedReport.nTreatment.acei_arb = newValue;
+                          editedReport.nTreatment.acei_arb = newValue!;
                         });
                       },
                       items: YN.values.map((YN value) {
@@ -925,9 +925,9 @@ class _PatientExamScreenState extends State<PatientExamScreen>
                   child: DropdownButton<YN>(
                     value: editedReport.thrombolysis.thrombolysis,
                     isDense: false,
-                    onChanged: (YN newValue) {
+                    onChanged: (newValue) {
                       setState(() {
-                        editedReport.thrombolysis.thrombolysis = newValue;
+                        editedReport.thrombolysis.thrombolysis = newValue!;
                       });
                     },
                     items: YN.values.map((YN value) {
@@ -952,10 +952,10 @@ class _PatientExamScreenState extends State<PatientExamScreen>
                           child: DropdownButton<YN>(
                             value: editedReport.thrombolysis.tnk_stk_ret,
                             isDense: false,
-                            onChanged: (YN newValue) {
+                            onChanged: (newValue) {
                               setState(() {
                                 editedReport.thrombolysis.tnk_stk_ret =
-                                    newValue;
+                                    newValue!;
                               });
                             },
                             items: YN.values.map((YN value) {
@@ -980,9 +980,9 @@ class _PatientExamScreenState extends State<PatientExamScreen>
                   child: DropdownButton<YN>(
                     value: editedReport.thrombolysis.death,
                     isDense: false,
-                    onChanged: (YN newValue) {
+                    onChanged: (newValue) {
                       setState(() {
-                        editedReport.thrombolysis.death = newValue;
+                        editedReport.thrombolysis.death = newValue!;
                       });
                     },
                     items: YN.values.map((YN value) {
@@ -1006,9 +1006,9 @@ class _PatientExamScreenState extends State<PatientExamScreen>
                   child: DropdownButton<YN>(
                     value: editedReport.thrombolysis.referral,
                     isDense: false,
-                    onChanged: (YN newValue) {
+                    onChanged: (newValue) {
                       setState(() {
-                        editedReport.thrombolysis.referral = newValue;
+                        editedReport.thrombolysis.referral = newValue!;
                       });
                     },
                     items: YN.values.map((YN value) {
@@ -1060,9 +1060,9 @@ class _PatientExamScreenState extends State<PatientExamScreen>
                   child: DropdownButton<YN>(
                     value: editedReport.thrombolysis.discharged,
                     isDense: false,
-                    onChanged: (YN newValue) {
+                    onChanged: (newValue) {
                       setState(() {
-                        editedReport.thrombolysis.discharged = newValue;
+                        editedReport.thrombolysis.discharged = newValue!;
                       });
                     },
                     items: YN.values.map((YN value) {

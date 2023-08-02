@@ -1,12 +1,11 @@
 import 'package:ccarev2_frontend/utils/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../../components/default_button.dart';
 import '../../../../state_management/main/main_cubit.dart';
 import '../../../../state_management/main/main_state.dart';
-import 'package:flutter_cubit/flutter_cubit.dart';
-
 import '../../../../user/domain/profile.dart';
 import '../../../../utils/size_config.dart';
 
@@ -20,10 +19,10 @@ class AddPatientScreen extends StatefulWidget {
 
 class _AddPatientScreenState extends State<AddPatientScreen> {
   final _formKeyPatient = GlobalKey<FormState>();
-  String name;
-  int age;
+  late String name;
+  late int age;
   Gender gender = Gender.MALE;
-  String phone;
+  late String phone;
   _showMessage(String msg) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       backgroundColor: Theme.of(context).colorScheme.secondary,
@@ -31,7 +30,7 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
         msg,
         style: Theme.of(context)
             .textTheme
-            .bodySmall
+            .bodySmall!
             .copyWith(color: Colors.white, fontSize: 12.sp),
       ),
     ));
@@ -45,8 +44,8 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
         backgroundColor: kPrimaryColor,
         title: Text('Add Patient'),
       ),
-      body: CubitConsumer<MainCubit, MainState>(
-        cubit: widget.cubit,
+      body: BlocConsumer<MainCubit, MainState>(
+        bloc: widget.cubit,
         builder: (_, state) {
           return _buildUI(context);
         },
@@ -72,8 +71,8 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
               SizedBox(height: 2.h),
               TextFormField(
                 keyboardType: TextInputType.text,
-                onSaved: (newValue) => name = newValue,
-                validator: (value) => value.isEmpty ? "Name is required" : null,
+                onSaved: (newValue) => name = newValue!,
+                validator: (value) => value!.isEmpty ? "Name is required" : null,
                 decoration: const InputDecoration(
                   labelText: "Full Name",
                   hintText: "Enter your Full Name",
@@ -83,8 +82,8 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
               SizedBox(height: 1.h),
               TextFormField(
                 keyboardType: TextInputType.number,
-                onSaved: (newValue) => age = int.parse(newValue),
-                validator: (value) => value.isEmpty
+                onSaved: (newValue) => age = int.parse(newValue!),
+                validator: (value) => value!.isEmpty
                     ? "Age is required"
                     : (int.parse(value) > 120 ? "Enter valid age" : null),
                 decoration: const InputDecoration(
@@ -103,9 +102,9 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                     child: DropdownButton<Gender>(
                       isDense: false,
                       value: gender,
-                      onChanged: (Gender newValue) {
+                      onChanged: (newValue) {
                         setState(() {
-                          gender = newValue;
+                          gender = newValue!;
                           //print(gender);
                         });
                       },
@@ -123,8 +122,8 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
               TextFormField(
                 keyboardType: TextInputType.number,
                 onSaved: (newValue) =>
-                    {if (newValue.length <= 10) phone = newValue},
-                validator: (value) => value.isEmpty
+                    {if (newValue!.length <= 10) phone = newValue},
+                validator: (value) => value!.isEmpty
                     ? "Phone Number is required"
                     : (value.length != 10 ||
                             value.contains(RegExp(r'[A-Z][a-z]'))
@@ -144,8 +143,8 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                 child: DefaultButton(
                   text: "Save",
                   press: () {
-                    if (_formKeyPatient.currentState.validate()) {
-                      _formKeyPatient.currentState.save();
+                    if (_formKeyPatient.currentState!.validate()) {
+                      _formKeyPatient.currentState!.save();
                       var profile = PatientProfile(
                           name: name,
                           gender: gender.toString().split(".")[1],

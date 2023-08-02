@@ -45,10 +45,10 @@ class SpokeResponse {
     return steMapping[value];
   }
 
-  String note;
-  ChestP chest_pain;
-  STE st_elevation;
-  SRes st_segment_res;
+  late String note;
+  late ChestP chest_pain;
+  late STE st_elevation;
+  late SRes st_segment_res;
   SpokeResponse(
     this.note,
     this.chest_pain,

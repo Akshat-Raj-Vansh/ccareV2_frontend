@@ -1,12 +1,11 @@
-//@dart=2.9
 import 'dart:async';
 import 'package:ccarev2_frontend/main/domain/edetails.dart';
 import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
 import 'package:ccarev2_frontend/state_management/main/main_state.dart';
 import 'package:ccarev2_frontend/user/domain/credential.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:flutter_cubit/flutter_cubit.dart';
 import 'package:sizer/sizer.dart';
 import 'package:ccarev2_frontend/user/domain/location.dart' as loc;
 
@@ -14,7 +13,7 @@ class EmergencyScreen extends StatefulWidget {
   final UserType userType;
   final loc.Location location;
   final String patientID;
-  EmergencyScreen({this.userType, this.location, this.patientID});
+  EmergencyScreen({required this.userType, required this.location, required this.patientID});
 
   @override
   _EmergencyScreenState createState() => _EmergencyScreenState();
@@ -23,12 +22,12 @@ class EmergencyScreen extends StatefulWidget {
 class _EmergencyScreenState extends State<EmergencyScreen> {
   Completer<GoogleMapController> _controller = Completer();
 
-  LatLng _center;
+  late LatLng _center;
   final Set<Marker> _markers = {};
-  LatLng _patientLocation;
-  LatLng _doctorLocation;
-  LatLng _driverLocation;
-  EDetails details;
+  late LatLng _patientLocation;
+  late LatLng _doctorLocation;
+  late LatLng _driverLocation;
+  late EDetails details;
   MapType _currentMapType = MapType.normal;
 
   @override
@@ -65,24 +64,24 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
   }
 
   _getLocations() {
-    CubitProvider.of<MainCubit>(context)
+    BlocProvider.of<MainCubit>(context)
         .fetchEmergencyDetails(patientID: widget.patientID);
   }
 
   _getUserLocation() {
     if (widget.userType == UserType.PATIENT) {
       _patientLocation =
-          LatLng(widget.location.latitude, widget.location.longitude);
+          LatLng(widget.location.latitude!, widget.location.longitude!);
       _center = _patientLocation;
       _addPatientMarker();
     } else if (widget.userType == UserType.PATIENT) {
       _doctorLocation =
-          LatLng(widget.location.latitude, widget.location.longitude);
+          LatLng(widget.location.latitude!, widget.location.longitude!);
       _center = _doctorLocation;
       _addDoctorMarker();
     } else {
       _driverLocation =
-          LatLng(widget.location.latitude, widget.location.longitude);
+          LatLng(widget.location.latitude!, widget.location.longitude!);
       _center = _driverLocation;
       _addDriverMarker();
     }
@@ -136,7 +135,7 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
         msg,
         style: Theme.of(context)
             .textTheme
-            .bodySmall
+            .bodySmall!
             .copyWith(color: Colors.white, fontSize: 12.sp),
       ),
     ));
@@ -144,13 +143,13 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return CubitConsumer<MainCubit, MainState>(
+    return BlocConsumer<MainCubit, MainState>(
       listener: (context, state) {
         if (state is PatientAccepted) {
           //print("patient arrived state");
           //print(state.location);
           _patientLocation =
-              LatLng(state.location.latitude, state.location.longitude);
+              LatLng(state.location.latitude!, state.location.longitude!);
           _addPatientMarker();
           // _hideLoader();
           _showMessage("Patient Accepted");
@@ -158,7 +157,7 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
         if (state is DoctorAccepted) {
           //print("doctor accepted state");
           _doctorLocation =
-              LatLng(state.location.latitude, state.location.longitude);
+              LatLng(state.location.latitude!, state.location.longitude!);
           _addDoctorMarker();
           // // _hideLoader();
           // _showMessage("Doctor Accepted");
@@ -166,7 +165,7 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
         if (state is DriverAccepted) {
           //print("driver accepted state");
           _driverLocation =
-              LatLng(state.location.latitude, state.location.longitude);
+              LatLng(state.location.latitude!, state.location.longitude!);
           _addDriverMarker();
           // // _hideLoader();
           // _showMessage("Driver Accepted");
@@ -176,23 +175,21 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
         if (state is DetailsLoaded) {
           details = state.eDetails;
           //print("Details $details");
-          if (details != null) {
-            if (details.patientDetails != null) {
-              _patientLocation = LatLng(
-                  details.patientDetails.location.latitude,
-                  details.patientDetails.location.longitude);
-              _addPatientMarker();
-            }
-            if (details.doctorDetails != null) {
-              _doctorLocation = LatLng(details.doctorDetails.location.latitude,
-                  details.doctorDetails.location.longitude);
-              _addDoctorMarker();
-            }
-            if (details.driverDetails != null) {
-              _driverLocation = LatLng(details.driverDetails.location.latitude,
-                  details.driverDetails.location.longitude);
-              _addDriverMarker();
-            }
+          if (details.patientDetails != null) {
+            _patientLocation = LatLng(
+                details.patientDetails!.location.latitude!,
+                details.patientDetails!.location.longitude!);
+            _addPatientMarker();
+          }
+          if (details.doctorDetails != null) {
+            _doctorLocation = LatLng(details.doctorDetails!.location.latitude!,
+                details.doctorDetails!.location.longitude!);
+            _addDoctorMarker();
+          }
+          if (details.driverDetails != null) {
+            _driverLocation = LatLng(details.driverDetails!.location.latitude!,
+                details.driverDetails!.location.longitude!);
+            _addDriverMarker();
           }
         }
         return Scaffold(

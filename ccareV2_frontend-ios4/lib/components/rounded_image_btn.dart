@@ -5,9 +5,9 @@ import 'package:sizer/sizer.dart';
 
 class RoundedImageBtn extends StatelessWidget {
   const RoundedImageBtn({
-    Key key,
-    @required this.icon,
-    @required this.press,
+    required Key key,
+    required this.icon,
+    required this.press,
     this.showShadow = false,
   }) : super(key: key);
 

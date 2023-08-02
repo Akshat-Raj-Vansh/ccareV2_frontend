@@ -4,9 +4,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sizer/sizer.dart';
 class SocalCard extends StatelessWidget {
   const SocalCard({
-    Key key,
-    this.icon,
-    this.press,
+    required Key key,
+    required this.icon,
+    required this.press,
   }) : super(key: key);
 
   final String icon;
@@ -15,7 +15,7 @@ class SocalCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: press,
+      onTap: () {},  //There was a press function here which was not working
       child: Container(
         margin:
             EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),

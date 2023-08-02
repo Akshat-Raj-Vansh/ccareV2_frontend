@@ -13,8 +13,8 @@ import 'services/Notifications/notificationContoller.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await CompositionRoot.configure();
-  var startPage = await CompositionRoot.start();
+  await CompositionRoot().configure();
+  var startPage = await CompositionRoot().start();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );

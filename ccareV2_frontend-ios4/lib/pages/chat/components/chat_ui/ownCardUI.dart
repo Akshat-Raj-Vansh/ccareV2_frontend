@@ -1,9 +1,8 @@
-//@dart=2.9
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' show Align, Alignment, BorderRadius, BoxConstraints, BuildContext, Card, Color, Colors, ConstrainedBox, EdgeInsets, Key, MediaQuery, Padding, Positioned, RoundedRectangleBorder, Row, Stack, StatelessWidget, Text, TextStyle, Widget;
 import 'package:sizer/sizer.dart';
 
 class OwnMessageCard extends StatelessWidget {
-  OwnMessageCard({Key key, this.message, this.time}) : super(key: key);
+  OwnMessageCard({Key? key, required this.message, required this.time}) : super(key: key);
   final String message;
   final String time;
 

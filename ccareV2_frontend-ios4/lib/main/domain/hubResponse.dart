@@ -1,13 +1,11 @@
-//@dart=2.9
 import 'dart:convert';
 
-
 class HubResponse {
-  EcgInterperation ecg;
-  Advice advice;
+  late EcgInterperation ecg;
+  late Advice advice;
   HubResponse({
-    this.ecg,
-    this.advice,
+    required this.ecg,
+    required this.advice,
   });
 
   HubResponse.initialize() {
@@ -15,12 +13,12 @@ class HubResponse {
     this.advice = Advice.initialize();
   }
   HubResponse copyWith({
-    EcgInterperation ecg,
-    Advice advice,
+    required EcgInterperation ecg,
+    required Advice advice,
   }) {
     return HubResponse(
-      ecg: ecg ?? this.ecg,
-      advice: advice ?? this.advice,
+      ecg: ecg,
+      advice: advice,
     );
   }
 
@@ -58,27 +56,27 @@ class HubResponse {
 }
 
 class EcgInterperation {
-  Rythm rythm;
-  STElevation st_elevation;
-  STDepression st_depression;
-  TInversion t_wave_inversion;
-  BBBlock bbblock;
-  YN lvh;
-  YN rvh;
-  YN rae;
-  YN lae;
-  Diagonis diagnosis;
+  late Rythm rythm;
+  late STElevation st_elevation;
+  late STDepression st_depression;
+  late TInversion t_wave_inversion;
+  late BBBlock bbblock;
+  late YN lvh;
+  late YN rvh;
+  late YN rae;
+  late YN lae;
+  late Diagonis diagnosis;
   EcgInterperation({
-    this.rythm,
-    this.st_elevation,
-    this.st_depression,
-    this.t_wave_inversion,
-    this.bbblock,
-    this.lvh,
-    this.rvh,
-    this.rae,
-    this.lae,
-    this.diagnosis,
+    required this.rythm,
+    required this.st_elevation,
+    required this.st_depression,
+    required this.t_wave_inversion,
+    required this.bbblock,
+    required this.lvh,
+    required this.rvh,
+    required this.rae,
+    required this.lae,
+    required this.diagnosis,
   });
 
   EcgInterperation.initialize() {
@@ -95,28 +93,28 @@ class EcgInterperation {
   }
 
   EcgInterperation copyWith({
-    Rythm rythm,
-    STElevation st_elevation,
-    STDepression st_depression,
-    TInversion t_wave_inversion,
-    BBBlock bbblock,
-    YN lvh,
-    YN rvh,
-    YN rae,
-    YN lae,
-    Diagonis diagnosis,
+    required Rythm rythm,
+    required STElevation st_elevation,
+    required STDepression st_depression,
+    required TInversion t_wave_inversion,
+    required BBBlock bbblock,
+    required YN lvh,
+    required YN rvh,
+    required YN rae,
+    required YN lae,
+    required Diagonis diagnosis,
   }) {
     return EcgInterperation(
-      rythm: rythm ?? this.rythm,
-      st_elevation: st_elevation ?? this.st_elevation,
-      st_depression: st_depression ?? this.st_depression,
-      t_wave_inversion: t_wave_inversion ?? this.t_wave_inversion,
-      bbblock: bbblock ?? this.bbblock,
-      lvh: lvh ?? this.lvh,
-      rvh: rvh ?? this.rvh,
-      rae: rae ?? this.rae,
-      lae: lae ?? this.lae,
-      diagnosis: diagnosis ?? this.diagnosis,
+      rythm: rythm,
+      st_elevation: st_elevation,
+      st_depression: st_depression,
+      t_wave_inversion: t_wave_inversion,
+      bbblock: bbblock,
+      lvh: lvh,
+      rvh: rvh,
+      rae: rae,
+      lae: lae,
+      diagnosis: diagnosis,
     );
   }
 
@@ -203,19 +201,19 @@ class EcgInterperation {
 }
 
 class Advice {
-  String ecg_repeat;
-  YN trop_i_repeat;
-  MedicineAdvice medicines;
-  YN oxygen_inhalation;
-  YN nebulization;
-  BioChemistry bioChemistry;
+  late String ecg_repeat;
+  late YN trop_i_repeat;
+  late MedicineAdvice medicines;
+  late YN oxygen_inhalation;
+  late YN nebulization;
+  late BioChemistry bioChemistry;
   Advice({
-    this.ecg_repeat,
-    this.trop_i_repeat,
-    this.medicines,
-    this.oxygen_inhalation,
-    this.nebulization,
-    this.bioChemistry,
+    required this.ecg_repeat,
+    required this.trop_i_repeat,
+    required this.medicines,
+    required this.oxygen_inhalation,
+    required this.nebulization,
+    required this.bioChemistry,
   });
 
   Advice.initialize() {
@@ -228,20 +226,20 @@ class Advice {
   }
 
   Advice copyWith({
-    String ecg_repeat,
-    YN trop_i_repeat,
-    MedicineAdvice medicines,
-    YN oxygen_inhalation,
-    YN nebulization,
-    BioChemistry bioChemistry,
+    required String ecg_repeat,
+    required YN trop_i_repeat,
+    required MedicineAdvice medicines,
+    required YN oxygen_inhalation,
+    required YN nebulization,
+    required BioChemistry bioChemistry,
   }) {
     return Advice(
-      ecg_repeat: ecg_repeat ?? this.ecg_repeat,
-      trop_i_repeat: trop_i_repeat ?? this.trop_i_repeat,
-      medicines: medicines ?? this.medicines,
-      oxygen_inhalation: oxygen_inhalation ?? this.oxygen_inhalation,
-      nebulization: nebulization ?? this.nebulization,
-      bioChemistry: bioChemistry ?? this.bioChemistry,
+      ecg_repeat: ecg_repeat,
+      trop_i_repeat: trop_i_repeat,
+      medicines: medicines,
+      oxygen_inhalation: oxygen_inhalation,
+      nebulization: nebulization,
+      bioChemistry: bioChemistry,
     );
   }
 
@@ -285,7 +283,10 @@ class Advice {
 
   @override
   bool operator ==(Object other) {
-    if (identical(this, other)) return true;
+    if (identical(this, other))
+      return true;
+    else
+      return false;
   }
 
   @override
@@ -300,17 +301,17 @@ class Advice {
 }
 
 class STElevation {
-  YN anterior;
-  YN posterior;
-  YN lateral;
-  YN inferior;
-  YN rv;
+  late YN anterior;
+  late YN posterior;
+  late YN lateral;
+  late YN inferior;
+  late YN rv;
   STElevation({
-    this.anterior,
-    this.posterior,
-    this.lateral,
-    this.inferior,
-    this.rv,
+    required this.anterior,
+    required this.posterior,
+    required this.lateral,
+    required this.inferior,
+    required this.rv,
   });
 
   STElevation.initialize() {
@@ -322,18 +323,18 @@ class STElevation {
   }
 
   STElevation copyWith({
-    YN anterior,
-    YN posterior,
-    YN lateral,
-    YN inferior,
-    YN rv,
+    required YN anterior,
+    required YN posterior,
+    required YN lateral,
+    required YN inferior,
+    required YN rv,
   }) {
     return STElevation(
-      anterior: anterior ?? this.anterior,
-      posterior: posterior ?? this.posterior,
-      lateral: lateral ?? this.lateral,
-      inferior: inferior ?? this.inferior,
-      rv: rv ?? this.rv,
+      anterior: anterior,
+      posterior: posterior,
+      lateral: lateral,
+      inferior: inferior,
+      rv: rv,
     );
   }
 
@@ -397,13 +398,13 @@ class STElevation {
 }
 
 class STDepression {
-  YN inferior_lead;
-  YN lateral_lead;
-  YN anterior_lead;
+  late YN inferior_lead;
+  late YN lateral_lead;
+  late YN anterior_lead;
   STDepression({
-    this.inferior_lead,
-    this.lateral_lead,
-    this.anterior_lead,
+    required this.inferior_lead,
+    required this.lateral_lead,
+    required this.anterior_lead,
   });
   STDepression.initialize() {
     this.inferior_lead = YN.nill;
@@ -411,14 +412,14 @@ class STDepression {
     this.anterior_lead = YN.nill;
   }
   STDepression copyWith({
-    YN inferior_lead,
-    YN lateral_lead,
-    YN anterior_lead,
+    required YN inferior_lead,
+    required YN lateral_lead,
+    required YN anterior_lead,
   }) {
     return STDepression(
-      inferior_lead: inferior_lead ?? this.inferior_lead,
-      lateral_lead: lateral_lead ?? this.lateral_lead,
-      anterior_lead: anterior_lead ?? this.anterior_lead,
+      inferior_lead: inferior_lead,
+      lateral_lead: lateral_lead,
+      anterior_lead: anterior_lead,
     );
   }
 
@@ -470,13 +471,13 @@ class STDepression {
 }
 
 class TInversion {
-  YN inferior_lead;
-  YN lateral_lead;
-  YN anterior_lead;
+  late YN inferior_lead;
+  late YN lateral_lead;
+  late YN anterior_lead;
   TInversion({
-    this.inferior_lead,
-    this.lateral_lead,
-    this.anterior_lead,
+    required this.inferior_lead,
+    required this.lateral_lead,
+    required this.anterior_lead,
   });
 
   TInversion.initialize() {
@@ -485,14 +486,14 @@ class TInversion {
     this.anterior_lead = YN.nill;
   }
   TInversion copyWith({
-    YN inferior_lead,
-    YN lateral_lead,
-    YN anterior_lead,
+    required YN inferior_lead,
+    required YN lateral_lead,
+    required YN anterior_lead,
   }) {
     return TInversion(
-      inferior_lead: inferior_lead ?? this.inferior_lead,
-      lateral_lead: lateral_lead ?? this.lateral_lead,
-      anterior_lead: anterior_lead ?? this.anterior_lead,
+      inferior_lead: inferior_lead,
+      lateral_lead: lateral_lead,
+      anterior_lead: anterior_lead,
     );
   }
 
@@ -544,16 +545,16 @@ class TInversion {
 }
 
 class BioChemistry {
-  YN sugar;
-  YN bu_creatinine;
-  YN electrolytes;
-  YN hemogram;
+  late YN sugar;
+  late YN bu_creatinine;
+  late YN electrolytes;
+  late YN hemogram;
 
   BioChemistry({
-    this.sugar,
-    this.bu_creatinine,
-    this.electrolytes,
-    this.hemogram,
+    required this.sugar,
+    required this.bu_creatinine,
+    required this.electrolytes,
+    required this.hemogram,
   });
   BioChemistry.initialize() {
     this.sugar = YN.nill;
@@ -562,16 +563,16 @@ class BioChemistry {
     this.hemogram = YN.nill;
   }
   BioChemistry copyWith({
-    YN sugar,
-    YN bu_creatinine,
-    YN electrolytes,
-    YN hemogram,
+    required YN sugar,
+    required YN bu_creatinine,
+    required YN electrolytes,
+    required YN hemogram,
   }) {
     return BioChemistry(
-      sugar: sugar ?? this.sugar,
-      bu_creatinine: bu_creatinine ?? this.bu_creatinine,
-      electrolytes: electrolytes ?? this.electrolytes,
-      hemogram: hemogram ?? this.hemogram,
+      sugar: sugar,
+      bu_creatinine: bu_creatinine,
+      electrolytes: electrolytes,
+      hemogram: hemogram,
     );
   }
 
@@ -826,10 +827,17 @@ class MedicineAdvice {
 }
 
 enum YN { nill, yes, no }
+
 enum BBBlock { nill, No, LBBB, RBBB }
+
 enum Diagonis { nill, STEMI, NSTEMI, SACS, NCCP }
+
 enum Rythm { nill, NSR, A_Fib, A, V_Block }
+
 enum MED4 { nill, NO, A, B, C }
+
 enum MED5 { nill, NO, A, B, C }
+
 enum MED6 { nill, NO, A, B }
+
 enum MED7 { nill, A, B, C }

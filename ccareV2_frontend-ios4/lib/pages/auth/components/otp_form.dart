@@ -1,4 +1,3 @@
-import 'package:ccarev2_frontend/customBuilds/customtextformfield.dart';
 import 'package:ccarev2_frontend/state_management/user/user_cubit.dart';
 import 'package:ccarev2_frontend/utils/constants.dart';
 import 'package:ccarev2_frontend/utils/size_config.dart';
@@ -75,13 +74,18 @@ class _OTPFormState extends State<OTPForm> with TickerProviderStateMixin {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    CustomTextFormField(
-                        hint: "OTP",
+                    TextFormField(
+                      decoration: InputDecoration(
+                        hintText: 'OTP',
+                        
+                      ),
+                        // hint: "OTP",
                         obscureText: false,
                         keyboardType: TextInputType.number,
-                        color: kPrimaryColor,
-                        width: MediaQuery.of(context).size.width * 0.40,
-                        backgroundColor: Colors.white,
+                        key: _formKey,
+                        // color: kPrimaryColor,
+                        // width: MediaQuery.of(context).size.width * 0.40,
+                        // backgroundColor: Colors.white,
                         textAlign: TextAlign.center,
                         initialValue: "",
                         onChanged: (value) {
@@ -89,7 +93,7 @@ class _OTPFormState extends State<OTPForm> with TickerProviderStateMixin {
                             _formKey.currentState!.validate();
                           _otp = value;
                         },
-                        validator: (otp) => otp.isEmpty || otp == ""
+                        validator: (otp) => otp!.isEmpty || otp == ""
                             ? "Please enter the OTP"
                             : otp.length != 6
                                 ? "Invalid OTP"

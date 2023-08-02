@@ -1,4 +1,3 @@
-//@dart=2.9
 import 'package:scoped_model/scoped_model.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'dart:convert';
@@ -9,12 +8,18 @@ import 'package:ccarev2_frontend/utils/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ChatModel extends Model {
-  String userChatID;
-  List<Message> messages = [];
-  IO.Socket socket;
+  late String _userChatID;
 
-  SharedPreferences sharedPreferences;
-  ILocalStore localStore;
+  String get userChatID => _userChatID;
+
+  set userChatID(String value) {
+    _userChatID = value;
+  }
+  List<Message> messages = [];
+  late IO.Socket socket;
+
+  late SharedPreferences sharedPreferences;
+  late ILocalStore localStore;
 
   void init(String patientID, String token) {
     userChatID = patientID + "-" + token;
@@ -60,7 +65,7 @@ class ChatModel extends Model {
   }
 
   void sendMessage(String text, String receiverChatID, String type,
-      {String path}) {
+      {String? path}) {
     messages.add(Message(
         text, userChatID, receiverChatID, type, DateTime.now().toString(),
         path: type == "IMAGE" ? path : ""));

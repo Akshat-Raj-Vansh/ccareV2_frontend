@@ -1,5 +1,5 @@
-//@dart=2.9
 import 'dart:developer';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sizer/sizer.dart';
 
 import 'package:ccarev2_frontend/main/domain/treatment.dart';
@@ -8,7 +8,6 @@ import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
 import 'package:ccarev2_frontend/state_management/main/main_state.dart';
 import 'package:ccarev2_frontend/utils/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_cubit/flutter_cubit.dart';
 import '../../utils/size_config.dart';
 import 'package:timelines/timelines.dart';
 
@@ -16,7 +15,7 @@ class PatientReportHistoryScreen extends StatefulWidget {
   final MainCubit mainCubit;
   final String patientID;
 
-  const PatientReportHistoryScreen({Key key, this.mainCubit, this.patientID})
+  const PatientReportHistoryScreen({Key? key, required this.mainCubit, required this.patientID})
       : super(key: key);
   @override
   _PatientReportHistoryScreenState createState() =>
@@ -58,7 +57,7 @@ class _PatientReportHistoryScreenState
         msg,
         style: Theme.of(context)
             .textTheme
-            .bodySmall
+            .bodySmall!
             .copyWith(color: Colors.white, fontSize: 12.sp),
       ),
     ));
@@ -72,8 +71,8 @@ class _PatientReportHistoryScreenState
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    return CubitConsumer<MainCubit, MainState>(
-      cubit: widget.mainCubit,
+    return BlocConsumer<MainCubit, MainState>(
+      bloc: widget.mainCubit,
       builder: (_, state) {
         if (state is LoadingState) {
           _hideLoader();

@@ -7,10 +7,10 @@ import 'package:ccarev2_frontend/state_management/main/main_state.dart';
 import 'package:ccarev2_frontend/utils/constants.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:sizer/sizer.dart';
-import 'package:flutter_cubit/flutter_cubit.dart';
 import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
 
 import 'components/message.dart';
@@ -22,11 +22,11 @@ class ChatScreen extends StatefulWidget {
   final String token;
   final MainCubit mainCubit;
   const ChatScreen({
-    this.name,
-    this.recieverID,
-    this.patientID,
-    this.token,
-    this.mainCubit,
+    required this.name,
+    required this.recieverID,
+    required this.patientID,
+    required this.token,
+    required this.mainCubit,
   });
 
   @override
@@ -35,16 +35,16 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   ChatModel chatModel = ChatModel();
-  MainState currentState;
+  late MainState currentState;
   FocusNode _focusNode = FocusNode();
-  TextEditingController _textEditingController;
+  late TextEditingController _textEditingController;
   bool _showEmojiPicker = false;
-  bool _sendButtonEnabled = false;
+  // bool _sendButtonEnabled = false;
   final ImagePicker _imagePicker = ImagePicker();
-  XFile _image;
-  bool clickImage;
+  // late XFile _image;
+  late bool clickImage;
   String message = "Message";
-  String recieverChatID;
+  late String recieverChatID;
 
   ScrollController _scrollController = ScrollController();
   _scrollToEnd() {
@@ -58,7 +58,7 @@ class _ChatScreenState extends State<ChatScreen> {
     widget.mainCubit.uploadChatImage(file);
   }
 
-  _onEmojiSelected(Category category, Emoji emoji) {
+  void _onEmojiSelected(Category? category, Emoji emoji) {
     _textEditingController
       ..text += emoji.emoji
       ..selection = TextSelection.fromPosition(
@@ -108,8 +108,8 @@ class _ChatScreenState extends State<ChatScreen> {
           : OwnMessageCard(message: message.text, time: message.time);
     else
       return message.senderID == recieverChatID
-          ? ReplyImageCard(path: message.path, time: message.time)
-          : OwnImageCard(path: message.path, time: message.time);
+          ? ReplyImageCard(path: message.path!, time: message.time)
+          : OwnImageCard(path: message.path!, time: message.time);
   }
 
   Widget buildChatList() {
@@ -140,11 +140,9 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   _imgFromCamera() async {
-    XFile image = await _imagePicker.pickImage(
+    XFile? image = await _imagePicker.pickImage(
         source: ImageSource.camera, imageQuality: 50);
-    if (image != null) {
-      _sendImage(image);
-    }
+    _sendImage(image!);
     // setState(() {
     //   _image = image;
     //   clickImage = true;
@@ -154,25 +152,23 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   _imgFromGallery() async {
-    XFile image = await _imagePicker.pickImage(
+    XFile? image = await _imagePicker.pickImage(
         source: ImageSource.gallery, imageQuality: 50);
-    if (image != null) {
-      _sendImage(image);
-      setState(() {
-        //add message to db with image
-        // _image = image;
-        // clickImage = true;
-        // print(_image.path);
-        // // widget.mainCubit.imageClicked(image);
-      });
-    }
+    _sendImage(image!);
+    setState(() {
+      //add message to db with image
+      // _image = image;
+      // clickImage = true;
+      // print(_image.path);
+      // // widget.mainCubit.imageClicked(image);
+    });
   }
 
   Widget emojiPicker() {
     return EmojiPicker(
       config: Config(
-        bgColor: Colors.grey[200],
-        indicatorColor: Colors.grey[300],
+        bgColor: Colors.grey.shade200,
+        indicatorColor: Colors.grey.shade300,
       ),
       onEmojiSelected: _onEmojiSelected,
       onBackspacePressed: _onBackspacePressed,
@@ -200,8 +196,8 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
       ),
       // body: buildBody(),
-      body: CubitConsumer<MainCubit, MainState>(
-        cubit: widget.mainCubit,
+      body: BlocConsumer<MainCubit, MainState>(
+        bloc: widget.mainCubit,
         builder: (context, state) {
           print("ChatScreen Builder state: $state");
 
@@ -345,7 +341,7 @@ class _ChatScreenState extends State<ChatScreen> {
                             if (_textEditingController.text != "") {
                               FocusManager.instance.primaryFocus?.unfocus();
                               model.sendMessage(_textEditingController.text,
-                                  recieverChatID, "text");
+                                  recieverChatID, "text", path: '');
                               _textEditingController.text = '';
                               _scrollToEnd();
                             }
@@ -403,7 +399,7 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget iconCreation(
       IconData icons, Color color, String text, Function onTap) {
     return InkWell(
-      onTap: onTap,
+      onTap: () {},
       child: Column(
         children: [
           CircleAvatar(

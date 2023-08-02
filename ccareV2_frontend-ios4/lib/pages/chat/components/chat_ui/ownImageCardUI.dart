@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
 class OwnImageCard extends StatelessWidget {
-  OwnImageCard({Key key, this.path, this.time}) : super(key: key);
+  OwnImageCard({Key? key, required this.path, required this.time}) : super(key: key);
   final String path;
   final String time;
 

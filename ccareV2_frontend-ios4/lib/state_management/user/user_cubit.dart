@@ -1,12 +1,11 @@
-//@dart=2.9
 import 'dart:convert';
 
 import 'package:async/src/result/result.dart';
 import 'package:ccarev2_frontend/user/domain/details.dart';
 import 'package:ccarev2_frontend/user/domain/doc_info.dart';
 import 'package:ccarev2_frontend/user/infra/user_api.dart';
-import 'package:cubit/cubit.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../user/domain/credential.dart';
 import '../../state_management/user/user_state.dart';
@@ -66,20 +65,20 @@ class UserCubit extends Cubit<UserState> {
   void _setResultOfAuthStateNew(Result<dynamic> result) {
     print("result is ${result.toString()}");
     if (result.asError != null) {
-      emit(ErrorState(result.asError.error));
+      emit(ErrorState(result.asError!.error.toString()));
       return;
     }
-    Details details = Details.fromJson(jsonEncode(result.asValue.value));
+    Details details = Details.fromJson(jsonEncode(result.asValue!.value));
     localStore.save(details);
     if (details.newUser &&
         (details.user_type == UserType.SPOKE ||
             details.user_type == UserType.HUB)) {
-      if (result.asValue.value["name"] == null) {
+      if (result.asValue!.value["name"] == null) {
         print("NEW DOCTOR");
         emit(LoginSuccessState(details));
         return;
       }
-      Info docInfo = Info.fromJson(jsonEncode(result.asValue.value));
+      Info docInfo = Info.fromJson(jsonEncode(result.asValue!.value));
       localStore.saveInfo(docInfo);
     }
     emit(LoginSuccessState(details));

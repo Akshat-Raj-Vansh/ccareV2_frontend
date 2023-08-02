@@ -4,12 +4,12 @@ import 'package:ccarev2_frontend/pages/home/home_page_adapter.dart';
 import 'package:ccarev2_frontend/pages/home/spoke/components/patient_info.dart';
 import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
 import 'package:ccarev2_frontend/state_management/main/main_state.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sizer/sizer.dart';
 import 'package:ccarev2_frontend/user/domain/patient_list_info.dart';
 import 'package:ccarev2_frontend/utils/constants.dart';
 import 'package:ccarev2_frontend/utils/size_config.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_cubit/flutter_cubit.dart';
 
 class PatientList extends StatefulWidget {
   final IHomePageAdapter homePageAdapter;
@@ -28,7 +28,7 @@ class _PatientListState extends State<PatientList> {
   @override
   void initState() {
     super.initState();
-    CubitProvider.of<MainCubit>(context).getAllPatients();
+    BlocProvider.of<MainCubit>(context).getAllPatients();
     // NotificationController.configure(
     //     CubitProvider.of<MainCubit>(context), UserType.SPOKE, context);
     // NotificationController.fcmHandler();
@@ -80,7 +80,7 @@ class _PatientListState extends State<PatientList> {
           icon: Icon(Icons.arrow_back_ios),
         ),
       ),
-      body: CubitConsumer<MainCubit, MainState>(
+      body: BlocConsumer<MainCubit, MainState>(
         builder: (_, state) {
           if (state is PatientsLoaded) {
             //  // _hideLoader();
@@ -127,7 +127,7 @@ class _PatientListState extends State<PatientList> {
                 MaterialPageRoute(
                   builder: (ctx) => PatientInfo(
                       patientID: _patients[index].id,
-                      mainCubit: CubitProvider.of<MainCubit>(context),
+                      mainCubit: BlocProvider.of<MainCubit>(context),
                       homePageAdapter: widget.homePageAdapter),
                 ),
               ),

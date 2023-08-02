@@ -1,4 +1,3 @@
-// @dart=2.9
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 class CustomTextFormField extends StatelessWidget {
@@ -17,20 +16,20 @@ class CustomTextFormField extends StatelessWidget {
   final Function(String value) onSubmitted;
 
   CustomTextFormField({
-    Key key,
-    this.hint,
-    this.color,
-    this.icon,
-    this.width,
-    this.keyboardType,
-    this.obscureText,
-    this.backgroundColor,
-    this.textInputAction,
-    this.onChanged,
-    this.initialValue,
-    this.textAlign,
-    this.validator,
-    this.onSubmitted,
+    required Key key,
+    required this.hint,
+    required this.color,
+    required this.icon,
+    required this.width,
+    required this.keyboardType,
+    required this.obscureText,
+    required this.backgroundColor,
+    required this.textInputAction,
+    required this.onChanged,
+    required this.initialValue,
+    required this.textAlign,
+    required this.validator,
+    required this.onSubmitted,
   }) : super(key: key);
 
   @override
@@ -42,7 +41,7 @@ class CustomTextFormField extends StatelessWidget {
           color: backgroundColor, borderRadius: BorderRadius.circular(30)),
       child: TextFormField(
         textInputAction: textInputAction,
-        validator: validator,
+        //There was a validator here
         onFieldSubmitted: onSubmitted,
         keyboardType: keyboardType,
         obscureText: obscureText,
@@ -52,20 +51,20 @@ class CustomTextFormField extends StatelessWidget {
         cursorColor: color,
         style: Theme.of(context)
             .textTheme
-            .labelSmall
+            .labelSmall!
             .copyWith(color: color, fontSize :12.sp),
         decoration: InputDecoration(
           labelText: hint,
           errorStyle: Theme.of(context)
               .textTheme
-              .labelSmall
+              .labelSmall!
               .copyWith(color: color, fontSize :8.sp),
           icon: icon,
           // hintText: hint,
           // hintStyle: TextStyle(color: color, fontSize :12.sp),
           labelStyle: Theme.of(context)
               .textTheme
-              .labelSmall
+              .labelSmall!
               .copyWith(color: color, fontSize :12.sp),
           enabledBorder: const OutlineInputBorder(
             borderSide: BorderSide(color: Colors.blue),

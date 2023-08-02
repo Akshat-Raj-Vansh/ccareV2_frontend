@@ -3,11 +3,11 @@ import 'dart:convert';
 import 'package:ccarev2_frontend/main/domain/treatment.dart';
 
 class Examination {
-  NTreatment nTreatment;
-  Thrombolysis thrombolysis;
+  late NTreatment nTreatment;
+  late Thrombolysis thrombolysis;
   Examination({
-    this.nTreatment,
-    this.thrombolysis,
+    required this.nTreatment,
+    required this.thrombolysis,
   });
 
   Examination.initialize() {
@@ -19,12 +19,12 @@ class Examination {
   }
 
   Examination copyWith({
-    NTreatment nTreatment,
-    Thrombolysis thrombolysis,
+    required NTreatment nTreatment,
+    required Thrombolysis thrombolysis,
   }) {
     return Examination(
-      nTreatment: nTreatment ?? this.nTreatment,
-      thrombolysis: thrombolysis ?? this.thrombolysis,
+      nTreatment: nTreatment,
+      thrombolysis: thrombolysis,
     );
   }
 
@@ -67,29 +67,29 @@ class Examination {
 }
 
 class NTreatment {
-  YN aspirin_loading;
-  YN c_p_t_loading;
-  YN lmwh;
-  YN ivbolus;
-  YN inj_eno;
-  Statins statins;
-  String statins_dose;
-  YN beta_blockers;
-  YN nitrates;
-  YN diuretics;
-  YN acei_arb;
+  late YN aspirin_loading;
+  late YN c_p_t_loading;
+  late YN lmwh;
+  late YN ivbolus;
+  late YN inj_eno;
+  late Statins statins;
+  late String statins_dose;
+  late YN beta_blockers;
+  late YN nitrates;
+  late YN diuretics;
+  late YN acei_arb;
   NTreatment({
-    this.aspirin_loading,
-    this.c_p_t_loading,
-    this.lmwh,
-    this.ivbolus,
-    this.inj_eno,
-    this.statins,
-    this.statins_dose,
-    this.beta_blockers,
-    this.nitrates,
-    this.diuretics,
-    this.acei_arb,
+    required this.aspirin_loading,
+    required this.c_p_t_loading,
+    required this.lmwh,
+    required this.ivbolus,
+    required this.inj_eno,
+    required this.statins,
+    required this.statins_dose,
+    required this.beta_blockers,
+    required this.nitrates,
+    required this.diuretics,
+    required this.acei_arb,
   });
 
   NTreatment.initialize() {
@@ -107,30 +107,30 @@ class NTreatment {
   }
 
   NTreatment copyWith({
-    YN aspirin_loading,
-    YN c_p_t_loading,
-    YN lmwh,
-    YN ivbolus,
-    YN inj_eno,
-    Statins statins,
-    String statins_dose,
-    YN beta_blockers,
-    YN nitrates,
-    YN diuretics,
-    YN acei_arb,
+    required YN aspirin_loading,
+    required YN c_p_t_loading,
+    required YN lmwh,
+    required YN ivbolus,
+    required YN inj_eno,
+    required Statins statins,
+    required String statins_dose,
+    required YN beta_blockers,
+    required YN nitrates,
+    required YN diuretics,
+    required YN acei_arb,
   }) {
     return NTreatment(
-      aspirin_loading: aspirin_loading ?? this.aspirin_loading,
-      c_p_t_loading: c_p_t_loading ?? this.c_p_t_loading,
-      lmwh: lmwh ?? this.lmwh,
-      ivbolus: ivbolus ?? this.ivbolus,
-      inj_eno: inj_eno ?? this.inj_eno,
-      statins: statins ?? this.statins,
-      statins_dose: statins_dose ?? this.statins_dose,
-      beta_blockers: beta_blockers ?? this.beta_blockers,
-      nitrates: nitrates ?? this.nitrates,
-      diuretics: diuretics ?? this.diuretics,
-      acei_arb: acei_arb ?? this.acei_arb,
+      aspirin_loading: aspirin_loading,
+      c_p_t_loading: c_p_t_loading,
+      lmwh: lmwh,
+      ivbolus: ivbolus,
+      inj_eno: inj_eno,
+      statins: statins,
+      statins_dose: statins_dose,
+      beta_blockers: beta_blockers,
+      nitrates: nitrates,
+      diuretics: diuretics,
+      acei_arb: acei_arb,
     );
   }
 
@@ -215,19 +215,19 @@ class NTreatment {
 }
 
 class Thrombolysis {
-  YN thrombolysis;
-  YN tnk_stk_ret;
-  YN discharged;
-  YN death;
-  YN referral;
-  String reason_for_referral;
+  late YN thrombolysis;
+  late YN tnk_stk_ret;
+  late YN discharged;
+  late YN death;
+  late YN referral;
+  late String reason_for_referral;
   Thrombolysis({
-    this.thrombolysis,
-    this.tnk_stk_ret,
-    this.discharged,
-    this.death,
-    this.referral,
-    this.reason_for_referral,
+    required this.thrombolysis,
+    required this.tnk_stk_ret,
+    required this.discharged,
+    required this.death,
+    required this.referral,
+    required this.reason_for_referral,
   });
 
   Thrombolysis.initialize() {
@@ -240,20 +240,20 @@ class Thrombolysis {
   }
 
   Thrombolysis copyWith({
-    YN thrombolysis,
-    YN tnk_stk_ret,
-    YN discharged,
-    YN death,
-    YN referral,
-    String reason_for_referral,
+    required YN thrombolysis,
+    required YN tnk_stk_ret,
+    required YN discharged,
+    required YN death,
+    required YN referral,
+    required String reason_for_referral,
   }) {
     return Thrombolysis(
-      thrombolysis: thrombolysis ?? this.thrombolysis,
-      tnk_stk_ret: tnk_stk_ret ?? this.tnk_stk_ret,
-      discharged: discharged ?? this.discharged,
-      death: death ?? this.death,
-      referral: referral ?? this.referral,
-      reason_for_referral: reason_for_referral ?? this.reason_for_referral,
+      thrombolysis: thrombolysis,
+      tnk_stk_ret: tnk_stk_ret,
+      discharged: discharged,
+      death: death,
+      referral: referral,
+      reason_for_referral: reason_for_referral,
     );
   }
 

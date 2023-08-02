@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:ccarev2_frontend/utils/constants.dart';
 import 'package:ccarev2_frontend/main/domain/edetails.dart';
 import 'package:ccarev2_frontend/pages/home/components/fullImage.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ccarev2_frontend/main/domain/treatment.dart';
 import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
@@ -11,7 +12,6 @@ import 'package:ccarev2_frontend/state_management/main/main_state.dart';
 import 'package:ccarev2_frontend/user/domain/credential.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:flutter_cubit/flutter_cubit.dart';
 import '../../utils/size_config.dart';
 
 import 'package:sizer/sizer.dart';
@@ -19,10 +19,10 @@ import 'package:sizer/sizer.dart';
 class PatientReportScreen extends StatefulWidget {
   final MainCubit mainCubit;
   final UserType user;
-  final PatientDetails patientDetails;
+  final PatientDetails? patientDetails;
 
   const PatientReportScreen(
-      {Key key, this.mainCubit, this.user, this.patientDetails})
+      {Key? key, required this.mainCubit, required this.user, this.patientDetails})
       : super(key: key);
   @override
   _PatientReportScreenState createState() => _PatientReportScreenState();
@@ -30,13 +30,13 @@ class PatientReportScreen extends StatefulWidget {
 
 class _PatientReportScreenState extends State<PatientReportScreen>
     with TickerProviderStateMixin {
-  TabController _tabController;
+  late TabController _tabController;
   bool editReport = false;
   bool clickImage = false;
-  String imagePath;
-  XFile _image;
-  List<XFile> _images;
-  MainState currentState;
+  late String imagePath;
+  late XFile _image;
+  late List<XFile> _images;
+  late MainState currentState;
   final ImagePicker _imagePicker = ImagePicker();
   final List<Tab> _myTabs = [
     Tab(
@@ -91,27 +91,25 @@ class _PatientReportScreenState extends State<PatientReportScreen>
   }
 
   _imgFromCamera() async {
-    XFile image = await _imagePicker.pickImage(
+    XFile? image = await _imagePicker.pickImage(
         source: ImageSource.camera, imageQuality: 50);
-    if (image != null)
-      setState(() {
-        _image = image;
-        clickImage = true;
-        print(_image.path);
-        // widget.mainCubit.imageClicked(image);
-      });
+    setState(() {
+      _image = image!;
+      clickImage = true;
+      print(_image.path);
+      // widget.mainCubit.imageClicked(image);
+    });
   }
 
   _imgFromGallery() async {
-    XFile image = await _imagePicker.pickImage(
+    XFile? image = await _imagePicker.pickImage(
         source: ImageSource.gallery, imageQuality: 50);
-    if (image != null)
-      setState(() {
-        _image = image;
-        clickImage = true;
-        print(_image.path);
-        // widget.mainCubit.imageClicked(image);
-      });
+    setState(() {
+      _image = image!;
+      clickImage = true;
+      print(_image.path);
+      // widget.mainCubit.imageClicked(image);
+    });
   }
 
   _imgmultipleFromGallery() async {
@@ -182,7 +180,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
         msg,
         style: Theme.of(context)
             .textTheme
-            .bodySmall
+            .bodySmall!
             .copyWith(color: Colors.white, fontSize: 12.sp),
       ),
     ));
@@ -191,15 +189,15 @@ class _PatientReportScreenState extends State<PatientReportScreen>
   _fetchReport() async {
     //print("Fetching patient report");
     widget.mainCubit.fetchPatientReport(
-        widget.patientDetails == null ? '' : widget.patientDetails.id);
+        widget.patientDetails == null ? '' : widget.patientDetails!.id);
     // widget.mainCubit.fetchImage(widget.patientDetails.id);
   }
 
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    return CubitConsumer<MainCubit, MainState>(
-      cubit: widget.mainCubit,
+    return BlocConsumer<MainCubit, MainState>(
+      bloc: widget.mainCubit,
       builder: (_, state) {
         if (state is PatientReportFetched) {
           print("Patient Report Fetched state builder Called $state");
@@ -210,13 +208,10 @@ class _PatientReportScreenState extends State<PatientReportScreen>
               'LOG > patient_report_screen.dart > 182 > editedReport: ${editedReport.ecg.ecg_time.toString() == "nill"}');
           print(
               'LOG > patient_report_screen.dart > 182 > ecg id: ${editedReport.ecg.ecg_file_id.toString()}');
-          if (state.mixReport.previousTreatment != null)
-            previousReport = state.mixReport.previousTreatment;
+          previousReport = state.mixReport.previousTreatment;
           //print(editedReport.toString());
-          if (state.mixReport.previousTreatment != null) {
-            previousReport = state.mixReport.previousTreatment;
-            previousReportExists = true;
-          }
+          previousReport = state.mixReport.previousTreatment;
+          previousReportExists = true;
           noReport = false;
           currentState = state;
           if (editedReport.ecg.ecg_file_id != null ||
@@ -259,13 +254,10 @@ class _PatientReportScreenState extends State<PatientReportScreen>
               'LOG > patient_report_screen.dart > 182 > editedReport: ${editedReport}');
           print(
               'LOG > patient_report_screen.dart > 182 > editedReport: ${editedReport.ecg.ecg_file_id}');
-          if (state.mixReport.previousTreatment != null)
-            previousReport = state.mixReport.previousTreatment;
+          previousReport = state.mixReport.previousTreatment;
           //print(editedReport.toString());
-          if (state.mixReport.previousTreatment != null) {
-            previousReport = state.mixReport.previousTreatment;
-            previousReportExists = true;
-          }
+          previousReport = state.mixReport.previousTreatment;
+          previousReportExists = true;
           noReport = false;
           currentState = state;
           if (editedReport.ecg.ecg_file_id != null ||
@@ -302,7 +294,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
           // _hideLoader();
           _showMessage('Report Saved');
           editReport = false;
-          widget.mainCubit.fetchPatientReport(widget.patientDetails.id);
+          widget.mainCubit.fetchPatientReport(widget.patientDetails!.id);
         }
       },
     );
@@ -322,7 +314,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
                     onPressed: () async {
                       //print(editedReport.toString());
                       widget.mainCubit.savePatientReport(
-                          editedReport, widget.patientDetails.id);
+                          editedReport, widget.patientDetails!.id);
                     },
                     child: Text(
                       'SAVE',
@@ -670,7 +662,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text("Patient's Name: "),
-                Text(widget.patientDetails.name),
+                Text(widget.patientDetails!.name),
               ],
             ),
           if (widget.user != UserType.PATIENT)
@@ -682,7 +674,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text("Patient's Contact Number: "),
-                Text(widget.patientDetails.contactNumber),
+                Text(widget.patientDetails!.contactNumber),
               ],
             ),
           if (widget.user != UserType.PATIENT)
@@ -694,7 +686,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text("Patient's Age: "),
-                Text(widget.patientDetails.age.toString()),
+                Text(widget.patientDetails!.age.toString()),
               ],
             ),
         ],
@@ -1105,7 +1097,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text("Patient's Name: "),
-                Text(widget.patientDetails.name),
+                Text(widget.patientDetails!.name),
               ],
             ),
             SizedBox(
@@ -1115,7 +1107,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text("Patient's Contact Number: "),
-                Text(widget.patientDetails.contactNumber),
+                Text(widget.patientDetails!.contactNumber),
               ],
             ),
             SizedBox(
@@ -1125,7 +1117,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text("Patient's Age: "),
-                Text(widget.patientDetails.age.toString()),
+                Text(widget.patientDetails!.age.toString()),
               ],
             ),
 
@@ -1140,9 +1132,9 @@ class _PatientReportScreenState extends State<PatientReportScreen>
                   child: DropdownButton<District>(
                     value: editedReport.district,
                     isDense: false,
-                    onChanged: (District newValue) {
+                    onChanged: (newValue) {
                       setState(() {
-                        editedReport.district = newValue;
+                        editedReport.district = newValue!;
                       });
                     },
                     items: District.values.map((District value) {
@@ -1224,9 +1216,9 @@ class _PatientReportScreenState extends State<PatientReportScreen>
                   child: DropdownButton<ECGType>(
                     value: editedReport.ecg.ecg_type,
                     isDense: false,
-                    onChanged: (ECGType newValue) {
+                    onChanged: (newValue) {
                       setState(() {
-                        editedReport.ecg.ecg_type = newValue;
+                        editedReport.ecg.ecg_type = newValue!;
                       });
                     },
                     items: ECGType.values.map((ECGType value) {
@@ -1245,7 +1237,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
                   widget.mainCubit.imageClicked(
                       _image,
                       editedReport.ecg.ecg_type.toString().split(".")[1],
-                      widget.patientDetails.id,
+                      widget.patientDetails!.id,
                       editedReport,
                       1);
                   // }
@@ -1303,9 +1295,9 @@ class _PatientReportScreenState extends State<PatientReportScreen>
                   child: DropdownButton<YN>(
                     value: editedReport.medicalHist.smoker,
                     isDense: false,
-                    onChanged: (YN newValue) {
+                    onChanged: (newValue) {
                       setState(() {
-                        editedReport.medicalHist.smoker = newValue;
+                        editedReport.medicalHist.smoker = newValue!;
                       });
                     },
                     items: YN.values.map((YN value) {
@@ -1329,9 +1321,9 @@ class _PatientReportScreenState extends State<PatientReportScreen>
                   child: DropdownButton<YN>(
                     value: editedReport.medicalHist.diabetic,
                     isDense: false,
-                    onChanged: (YN newValue) {
+                    onChanged: (newValue) {
                       setState(() {
-                        editedReport.medicalHist.diabetic = newValue;
+                        editedReport.medicalHist.diabetic = newValue!;
                       });
                     },
                     items: YN.values.map((YN value) {
@@ -1355,9 +1347,9 @@ class _PatientReportScreenState extends State<PatientReportScreen>
                   child: DropdownButton<YN>(
                     value: editedReport.medicalHist.hypertensive,
                     isDense: false,
-                    onChanged: (YN newValue) {
+                    onChanged: (newValue) {
                       setState(() {
-                        editedReport.medicalHist.hypertensive = newValue;
+                        editedReport.medicalHist.hypertensive = newValue!;
                       });
                     },
                     items: YN.values.map((YN value) {
@@ -1381,9 +1373,9 @@ class _PatientReportScreenState extends State<PatientReportScreen>
                   child: DropdownButton<YN>(
                     value: editedReport.medicalHist.dyslipidaemia,
                     isDense: false,
-                    onChanged: (YN newValue) {
+                    onChanged: (newValue) {
                       setState(() {
-                        editedReport.medicalHist.dyslipidaemia = newValue;
+                        editedReport.medicalHist.dyslipidaemia = newValue!;
                       });
                     },
                     items: YN.values.map((YN value) {
@@ -1407,9 +1399,9 @@ class _PatientReportScreenState extends State<PatientReportScreen>
                   child: DropdownButton<YN>(
                     value: editedReport.medicalHist.old_mi,
                     isDense: false,
-                    onChanged: (YN newValue) {
+                    onChanged: (newValue) {
                       setState(() {
-                        editedReport.medicalHist.old_mi = newValue;
+                        editedReport.medicalHist.old_mi = newValue!;
                       });
                     },
                     items: YN.values.map((YN value) {
@@ -1433,9 +1425,9 @@ class _PatientReportScreenState extends State<PatientReportScreen>
                   child: DropdownButton<PN>(
                     value: editedReport.medicalHist.trop_i,
                     isDense: false,
-                    onChanged: (PN newValue) {
+                    onChanged: (newValue) {
                       setState(() {
-                        editedReport.medicalHist.trop_i = newValue;
+                        editedReport.medicalHist.trop_i = newValue!;
                       });
                     },
                     items: PN.values.map((PN value) {
@@ -1475,9 +1467,9 @@ class _PatientReportScreenState extends State<PatientReportScreen>
                     child: DropdownButton<YN>(
                       value: editedReport.chestReport.chest_pain,
                       isDense: false,
-                      onChanged: (YN newValue) {
+                      onChanged: (newValue) {
                         setState(() {
-                          editedReport.chestReport.chest_pain = newValue;
+                          editedReport.chestReport.chest_pain = newValue!;
                         });
                       },
                       items: YN.values.map((YN value) {
@@ -1504,9 +1496,9 @@ class _PatientReportScreenState extends State<PatientReportScreen>
                             child: DropdownButton<Site>(
                               value: editedReport.chestReport.site,
                               isDense: false,
-                              onChanged: (Site newValue) {
+                              onChanged: (newValue) {
                                 setState(() {
-                                  editedReport.chestReport.site = newValue;
+                                  editedReport.chestReport.site = newValue!;
                                 });
                               },
                               items: Site.values.map((Site value) {
@@ -1532,9 +1524,9 @@ class _PatientReportScreenState extends State<PatientReportScreen>
                     child: DropdownButton<Location>(
                       value: editedReport.chestReport.location,
                       isDense: false,
-                      onChanged: (Location newValue) {
+                      onChanged: (newValue) {
                         setState(() {
-                          editedReport.chestReport.location = newValue;
+                          editedReport.chestReport.location = newValue!;
                         });
                       },
                       items: Location.values.map((Location value) {
@@ -1580,9 +1572,9 @@ class _PatientReportScreenState extends State<PatientReportScreen>
                   child: DropdownButton<Severity>(
                     value: editedReport.chestReport.severity,
                     isDense: false,
-                    onChanged: (Severity newValue) {
+                    onChanged: (newValue) {
                       setState(() {
-                        editedReport.chestReport.severity = newValue;
+                        editedReport.chestReport.severity = newValue!;
                       });
                     },
                     items: Severity.values.map((Severity value) {
@@ -1605,9 +1597,9 @@ class _PatientReportScreenState extends State<PatientReportScreen>
                     child: DropdownButton<Radiation>(
                       value: editedReport.chestReport.radiation,
                       isDense: false,
-                      onChanged: (Radiation newValue) {
+                      onChanged: (newValue) {
                         setState(() {
-                          editedReport.chestReport.radiation = newValue;
+                          editedReport.chestReport.radiation = newValue!;
                         });
                       },
                       items: Radiation.values.map((Radiation value) {
@@ -1669,9 +1661,9 @@ class _PatientReportScreenState extends State<PatientReportScreen>
                   child: DropdownButton<YN>(
                     value: editedReport.symptoms.postural_black_out,
                     isDense: false,
-                    onChanged: (YN newValue) {
+                    onChanged: (newValue) {
                       setState(() {
-                        editedReport.symptoms.postural_black_out = newValue;
+                        editedReport.symptoms.postural_black_out = newValue!;
                       });
                     },
                     items: YN.values.map((YN value) {
@@ -1721,9 +1713,9 @@ class _PatientReportScreenState extends State<PatientReportScreen>
                   child: DropdownButton<YN>(
                     value: editedReport.symptoms.sweating,
                     isDense: false,
-                    onChanged: (YN newValue) {
+                    onChanged: (newValue) {
                       setState(() {
-                        editedReport.symptoms.sweating = newValue;
+                        editedReport.symptoms.sweating = newValue!;
                       });
                     },
                     items: YN.values.map((YN value) {
@@ -1747,9 +1739,9 @@ class _PatientReportScreenState extends State<PatientReportScreen>
                   child: DropdownButton<YN>(
                     value: editedReport.symptoms.nausea,
                     isDense: false,
-                    onChanged: (YN newValue) {
+                    onChanged: (newValue) {
                       setState(() {
-                        editedReport.symptoms.nausea = newValue;
+                        editedReport.symptoms.nausea = newValue!;
                       });
                     },
                     items: YN.values.map((YN value) {
@@ -1773,9 +1765,9 @@ class _PatientReportScreenState extends State<PatientReportScreen>
                   child: DropdownButton<YN>(
                     value: editedReport.symptoms.shortness_of_breath,
                     isDense: false,
-                    onChanged: (YN newValue) {
+                    onChanged: (newValue) {
                       setState(() {
-                        editedReport.symptoms.shortness_of_breath = newValue;
+                        editedReport.symptoms.shortness_of_breath = newValue!;
                       });
                     },
                     items: YN.values.map((YN value) {
@@ -1926,9 +1918,9 @@ class _PatientReportScreenState extends State<PatientReportScreen>
                   child: DropdownButton<YN>(
                     value: editedReport.examination.local_tenderness,
                     isDense: false,
-                    onChanged: (YN newValue) {
+                    onChanged: (newValue) {
                       setState(() {
-                        editedReport.examination.local_tenderness = newValue;
+                        editedReport.examination.local_tenderness = newValue!;
                       });
                     },
                     items: YN.values.map((YN value) {

@@ -1,4 +1,3 @@
-//@dart=2.9
 import 'dart:developer';
 
 import 'package:ccarev2_frontend/main/domain/hubResponse.dart';
@@ -9,9 +8,10 @@ import 'package:ccarev2_frontend/utils/size_config.dart';
 import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
 import 'package:ccarev2_frontend/state_management/main/main_state.dart';
 import 'package:ccarev2_frontend/user/domain/credential.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:flutter_cubit/flutter_cubit.dart';
 
 import 'package:sizer/sizer.dart';
 
@@ -21,7 +21,7 @@ class ResponseScreen extends StatefulWidget {
   final PatientDetails patientDetails;
 
   const ResponseScreen(
-      {Key key, this.mainCubit, this.user, this.patientDetails})
+      {Key? key, required this.mainCubit, required this.user, required this.patientDetails})
       : super(key: key);
   @override
   _ResponseScreenState createState() => _ResponseScreenState();
@@ -29,11 +29,11 @@ class ResponseScreen extends StatefulWidget {
 
 class _ResponseScreenState extends State<ResponseScreen>
     with TickerProviderStateMixin {
-  TabController _tabController;
+  late TabController _tabController;
   bool editReport = false;
   bool clickImage = false;
-  String imagePath;
-  MainState currentState;
+  late String imagePath;
+  late MainState currentState;
   final List<Tab> _myTabs = [
     Tab(
       child: Text('Overview'),
@@ -98,7 +98,7 @@ class _ResponseScreenState extends State<ResponseScreen>
         msg,
         style: Theme.of(context)
             .textTheme
-            .bodySmall
+            .bodySmall!
             .copyWith(color: Colors.white, fontSize: 12.sp),
       ),
     ));
@@ -113,8 +113,8 @@ class _ResponseScreenState extends State<ResponseScreen>
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    return CubitConsumer<MainCubit, MainState>(
-      cubit: widget.mainCubit,
+    return BlocConsumer<MainCubit, MainState>(
+      bloc: widget.mainCubit,
       builder: (_, state) {
         print(state);
         if (state is ResponsesLoaded) {
@@ -850,9 +850,9 @@ class _ResponseScreenState extends State<ResponseScreen>
                     child: DropdownButton<Rythm>(
                       value: hubResponse.ecg.rythm,
                       isDense: false,
-                      onChanged: (Rythm newValue) {
+                      onChanged: (newValue) {
                         setState(() {
-                          hubResponse.ecg.rythm = newValue;
+                          hubResponse.ecg.rythm = newValue!;
                         });
                       },
                       items: Rythm.values.map((Rythm value) {
@@ -886,9 +886,9 @@ class _ResponseScreenState extends State<ResponseScreen>
                     child: DropdownButton<YN>(
                       value: hubResponse.ecg.st_elevation.anterior,
                       isDense: false,
-                      onChanged: (YN newValue) {
+                      onChanged: (newValue) {
                         setState(() {
-                          hubResponse.ecg.st_elevation.anterior = newValue;
+                          hubResponse.ecg.st_elevation.anterior = newValue!;
                         });
                       },
                       items: YN.values.map((YN value) {
@@ -911,9 +911,9 @@ class _ResponseScreenState extends State<ResponseScreen>
                     child: DropdownButton<YN>(
                       value: hubResponse.ecg.st_elevation.lateral,
                       isDense: false,
-                      onChanged: (YN newValue) {
+                      onChanged: (newValue) {
                         setState(() {
-                          hubResponse.ecg.st_elevation.lateral = newValue;
+                          hubResponse.ecg.st_elevation.lateral = newValue!;
                         });
                       },
                       items: YN.values.map((YN value) {
@@ -936,9 +936,9 @@ class _ResponseScreenState extends State<ResponseScreen>
                     child: DropdownButton<YN>(
                       value: hubResponse.ecg.st_elevation.inferior,
                       isDense: false,
-                      onChanged: (YN newValue) {
+                      onChanged: (newValue) {
                         setState(() {
-                          hubResponse.ecg.st_elevation.inferior = newValue;
+                          hubResponse.ecg.st_elevation.inferior = newValue!;
                         });
                       },
                       items: YN.values.map((YN value) {
@@ -961,9 +961,9 @@ class _ResponseScreenState extends State<ResponseScreen>
                     child: DropdownButton<YN>(
                       value: hubResponse.ecg.st_elevation.rv,
                       isDense: false,
-                      onChanged: (YN newValue) {
+                      onChanged: (newValue) {
                         setState(() {
-                          hubResponse.ecg.st_elevation.rv = newValue;
+                          hubResponse.ecg.st_elevation.rv = newValue!;
                         });
                       },
                       items: YN.values.map((YN value) {
@@ -986,9 +986,9 @@ class _ResponseScreenState extends State<ResponseScreen>
                     child: DropdownButton<YN>(
                       value: hubResponse.ecg.st_elevation.posterior,
                       isDense: false,
-                      onChanged: (YN newValue) {
+                      onChanged: (newValue) {
                         setState(() {
-                          hubResponse.ecg.st_elevation.posterior = newValue;
+                          hubResponse.ecg.st_elevation.posterior = newValue!;
                         });
                       },
                       items: YN.values.map((YN value) {
@@ -1025,9 +1025,9 @@ class _ResponseScreenState extends State<ResponseScreen>
                     child: DropdownButton<YN>(
                       value: hubResponse.ecg.st_depression.lateral_lead,
                       isDense: false,
-                      onChanged: (YN newValue) {
+                      onChanged: (newValue) {
                         setState(() {
-                          hubResponse.ecg.st_depression.lateral_lead = newValue;
+                          hubResponse.ecg.st_depression.lateral_lead = newValue!;
                         });
                       },
                       items: YN.values.map((YN value) {
@@ -1050,10 +1050,10 @@ class _ResponseScreenState extends State<ResponseScreen>
                     child: DropdownButton<YN>(
                       value: hubResponse.ecg.st_depression.inferior_lead,
                       isDense: false,
-                      onChanged: (YN newValue) {
+                      onChanged: (newValue) {
                         setState(() {
                           hubResponse.ecg.st_depression.inferior_lead =
-                              newValue;
+                              newValue!;
                         });
                       },
                       items: YN.values.map((YN value) {
@@ -1076,10 +1076,10 @@ class _ResponseScreenState extends State<ResponseScreen>
                     child: DropdownButton<YN>(
                       value: hubResponse.ecg.st_depression.anterior_lead,
                       isDense: false,
-                      onChanged: (YN newValue) {
+                      onChanged: (newValue) {
                         setState(() {
                           hubResponse.ecg.st_depression.anterior_lead =
-                              newValue;
+                              newValue!;
                         });
                       },
                       items: YN.values.map((YN value) {
@@ -1113,10 +1113,10 @@ class _ResponseScreenState extends State<ResponseScreen>
                     child: DropdownButton<YN>(
                       value: hubResponse.ecg.t_wave_inversion.lateral_lead,
                       isDense: false,
-                      onChanged: (YN newValue) {
+                      onChanged: (newValue) {
                         setState(() {
                           hubResponse.ecg.t_wave_inversion.lateral_lead =
-                              newValue;
+                              newValue!;
                         });
                       },
                       items: YN.values.map((YN value) {
@@ -1139,10 +1139,10 @@ class _ResponseScreenState extends State<ResponseScreen>
                     child: DropdownButton<YN>(
                       value: hubResponse.ecg.t_wave_inversion.inferior_lead,
                       isDense: false,
-                      onChanged: (YN newValue) {
+                      onChanged: (newValue) {
                         setState(() {
                           hubResponse.ecg.t_wave_inversion.inferior_lead =
-                              newValue;
+                              newValue!;
                         });
                       },
                       items: YN.values.map((YN value) {
@@ -1165,10 +1165,10 @@ class _ResponseScreenState extends State<ResponseScreen>
                     child: DropdownButton<YN>(
                       value: hubResponse.ecg.t_wave_inversion.anterior_lead,
                       isDense: false,
-                      onChanged: (YN newValue) {
+                      onChanged: (newValue) {
                         setState(() {
                           hubResponse.ecg.t_wave_inversion.anterior_lead =
-                              newValue;
+                              newValue!;
                         });
                       },
                       items: YN.values.map((YN value) {
@@ -1191,9 +1191,9 @@ class _ResponseScreenState extends State<ResponseScreen>
                     child: DropdownButton<BBBlock>(
                       value: hubResponse.ecg.bbblock,
                       isDense: false,
-                      onChanged: (BBBlock newValue) {
+                      onChanged: (newValue) {
                         setState(() {
-                          hubResponse.ecg.bbblock = newValue;
+                          hubResponse.ecg.bbblock = newValue!;
                         });
                       },
                       items: BBBlock.values.map((BBBlock value) {
@@ -1217,9 +1217,9 @@ class _ResponseScreenState extends State<ResponseScreen>
                     child: DropdownButton<YN>(
                       value: hubResponse.ecg.lvh,
                       isDense: false,
-                      onChanged: (YN newValue) {
+                      onChanged: (newValue) {
                         setState(() {
-                          hubResponse.ecg.lvh = newValue;
+                          hubResponse.ecg.lvh = newValue!;
                         });
                       },
                       items: YN.values.map((YN value) {
@@ -1243,9 +1243,9 @@ class _ResponseScreenState extends State<ResponseScreen>
                     child: DropdownButton<YN>(
                       value: hubResponse.ecg.rvh,
                       isDense: false,
-                      onChanged: (YN newValue) {
+                      onChanged: (newValue) {
                         setState(() {
-                          hubResponse.ecg.rvh = newValue;
+                          hubResponse.ecg.rvh = newValue!;
                         });
                       },
                       items: YN.values.map((YN value) {
@@ -1269,9 +1269,9 @@ class _ResponseScreenState extends State<ResponseScreen>
                     child: DropdownButton<YN>(
                       value: hubResponse.ecg.rae,
                       isDense: false,
-                      onChanged: (YN newValue) {
+                      onChanged: (newValue) {
                         setState(() {
-                          hubResponse.ecg.rae = newValue;
+                          hubResponse.ecg.rae = newValue!;
                         });
                       },
                       items: YN.values.map((YN value) {
@@ -1295,9 +1295,9 @@ class _ResponseScreenState extends State<ResponseScreen>
                     child: DropdownButton<YN>(
                       value: hubResponse.ecg.lae,
                       isDense: false,
-                      onChanged: (YN newValue) {
+                      onChanged: (newValue) {
                         setState(() {
-                          hubResponse.ecg.lae = newValue;
+                          hubResponse.ecg.lae = newValue!;
                         });
                       },
                       items: YN.values.map((YN value) {
@@ -1321,9 +1321,9 @@ class _ResponseScreenState extends State<ResponseScreen>
                     child: DropdownButton<Diagonis>(
                       value: hubResponse.ecg.diagnosis,
                       isDense: false,
-                      onChanged: (Diagonis newValue) {
+                      onChanged: (newValue) {
                         setState(() {
-                          hubResponse.ecg.diagnosis = newValue;
+                          hubResponse.ecg.diagnosis = newValue!;
                         });
                       },
                       items: Diagonis.values.map((Diagonis value) {
@@ -1388,9 +1388,9 @@ class _ResponseScreenState extends State<ResponseScreen>
                     child: DropdownButton<YN>(
                       value: hubResponse.advice.trop_i_repeat,
                       isDense: false,
-                      onChanged: (YN newValue) {
+                      onChanged: (newValue) {
                         setState(() {
-                          hubResponse.advice.trop_i_repeat = newValue;
+                          hubResponse.advice.trop_i_repeat = newValue!;
                         });
                       },
                       items: YN.values.map((YN value) {
@@ -1434,7 +1434,7 @@ class _ResponseScreenState extends State<ResponseScreen>
                               ? YN.nill
                               : YN.no,
                       isDense: false,
-                      onChanged: (YN newValue) {
+                      onChanged: (newValue) {
                         setState(() {
                           hubResponse.advice.medicines.med1['value'] =
                               newValue.toString();
@@ -1471,7 +1471,7 @@ class _ResponseScreenState extends State<ResponseScreen>
                               ? YN.nill
                               : YN.no,
                       isDense: false,
-                      onChanged: (YN newValue) {
+                      onChanged: (newValue) {
                         setState(() {
                           hubResponse.advice.medicines.med2['value'] =
                               newValue.toString();
@@ -1510,7 +1510,7 @@ class _ResponseScreenState extends State<ResponseScreen>
                               ? YN.nill
                               : YN.no,
                       isDense: false,
-                      onChanged: (YN newValue) {
+                      onChanged: (newValue) {
                         setState(() {
                           hubResponse.advice.medicines.med3['value'] =
                               newValue.toString();
@@ -1537,7 +1537,7 @@ class _ResponseScreenState extends State<ResponseScreen>
                       value:
                           hubResponse.advice.medicines.med4Enum() ?? MED4.nill,
                       isDense: false,
-                      onChanged: (MED4 newValue) {
+                      onChanged: (newValue) {
                         setState(() {
                           hubResponse.advice.medicines.med4['value'] =
                               newValue.toString();
@@ -1567,7 +1567,7 @@ class _ResponseScreenState extends State<ResponseScreen>
                       value:
                           hubResponse.advice.medicines.med5Enum() ?? MED5.nill,
                       isDense: false,
-                      onChanged: (MED5 newValue) {
+                      onChanged: (newValue) {
                         setState(() {
                           hubResponse.advice.medicines.med5['value'] =
                               newValue.toString();
@@ -1597,7 +1597,7 @@ class _ResponseScreenState extends State<ResponseScreen>
                       value:
                           hubResponse.advice.medicines.med6Enum() ?? MED6.nill,
                       isDense: false,
-                      onChanged: (MED6 newValue) {
+                      onChanged: (newValue) {
                         setState(() {
                           hubResponse.advice.medicines.med6['value'] =
                               newValue.toString();
@@ -1627,7 +1627,7 @@ class _ResponseScreenState extends State<ResponseScreen>
                       value:
                           hubResponse.advice.medicines.med7Enum() ?? MED7.nill,
                       isDense: false,
-                      onChanged: (MED7 newValue) {
+                      onChanged: (newValue) {
                         setState(() {
                           hubResponse.advice.medicines.med7['value'] =
                               newValue.toString();
@@ -1656,9 +1656,9 @@ class _ResponseScreenState extends State<ResponseScreen>
                     child: DropdownButton<YN>(
                       value: hubResponse.advice.oxygen_inhalation,
                       isDense: false,
-                      onChanged: (YN newValue) {
+                      onChanged: (newValue) {
                         setState(() {
-                          hubResponse.advice.oxygen_inhalation = newValue;
+                          hubResponse.advice.oxygen_inhalation = newValue!;
                         });
                       },
                       items: YN.values.map((YN value) {
@@ -1681,9 +1681,9 @@ class _ResponseScreenState extends State<ResponseScreen>
                     child: DropdownButton<YN>(
                       value: hubResponse.advice.nebulization,
                       isDense: false,
-                      onChanged: (YN newValue) {
+                      onChanged: (newValue) {
                         setState(() {
-                          hubResponse.advice.nebulization = newValue;
+                          hubResponse.advice.nebulization = newValue!;
                         });
                       },
                       items: YN.values.map((YN value) {
@@ -1718,9 +1718,9 @@ class _ResponseScreenState extends State<ResponseScreen>
                     child: DropdownButton<YN>(
                       value: hubResponse.advice.bioChemistry.sugar,
                       isDense: false,
-                      onChanged: (YN newValue) {
+                      onChanged: (newValue) {
                         setState(() {
-                          hubResponse.advice.bioChemistry.sugar = newValue;
+                          hubResponse.advice.bioChemistry.sugar = newValue!;
                         });
                       },
                       items: YN.values.map((YN value) {
@@ -1744,10 +1744,10 @@ class _ResponseScreenState extends State<ResponseScreen>
                     child: DropdownButton<YN>(
                       value: hubResponse.advice.bioChemistry.bu_creatinine,
                       isDense: false,
-                      onChanged: (YN newValue) {
+                      onChanged: (newValue) {
                         setState(() {
                           hubResponse.advice.bioChemistry.bu_creatinine =
-                              newValue;
+                              newValue!;
                         });
                       },
                       items: YN.values.map((YN value) {
@@ -1770,10 +1770,10 @@ class _ResponseScreenState extends State<ResponseScreen>
                     child: DropdownButton<YN>(
                       value: hubResponse.advice.bioChemistry.electrolytes,
                       isDense: false,
-                      onChanged: (YN newValue) {
+                      onChanged: (newValue) {
                         setState(() {
                           hubResponse.advice.bioChemistry.electrolytes =
-                              newValue;
+                              newValue!;
                         });
                       },
                       items: YN.values.map((YN value) {
@@ -1796,9 +1796,9 @@ class _ResponseScreenState extends State<ResponseScreen>
                     child: DropdownButton<YN>(
                       value: hubResponse.advice.bioChemistry.hemogram,
                       isDense: false,
-                      onChanged: (YN newValue) {
+                      onChanged: (newValue) {
                         setState(() {
-                          hubResponse.advice.bioChemistry.hemogram = newValue;
+                          hubResponse.advice.bioChemistry.hemogram = newValue!;
                         });
                       },
                       items: YN.values.map((YN value) {
@@ -1839,16 +1839,16 @@ class _ResponseScreenState extends State<ResponseScreen>
                 child: DropdownButton<ChestP>(
                   value: spokeResponse.chest_pain,
                   isDense: false,
-                  onChanged: (ChestP newValue) {
+                  onChanged: (newValue) {
                     setState(() {
-                      spokeResponse.chest_pain = newValue;
+                      spokeResponse.chest_pain = newValue!;
                     });
                   },
                   items: ChestP.values.map((ChestP value) {
                     return DropdownMenuItem<ChestP>(
                       value: value,
                       child: Text(
-                        SpokeResponse.chestMapping[value],
+                        SpokeResponse.chestMapping[value]!,
                         // style: TextStyle(fontSize: 8.sp),
                       ),
                     );
@@ -1864,16 +1864,16 @@ class _ResponseScreenState extends State<ResponseScreen>
                 child: DropdownButton<STE>(
                   value: spokeResponse.st_elevation,
                   isDense: false,
-                  onChanged: (STE newValue) {
+                  onChanged: (newValue) {
                     setState(() {
-                      spokeResponse.st_elevation = newValue;
+                      spokeResponse.st_elevation = newValue!;
                     });
                   },
                   items: STE.values.map((STE value) {
                     return DropdownMenuItem<STE>(
                       value: value,
                       child: Text(
-                        SpokeResponse.steMapping[value],
+                        SpokeResponse.steMapping[value]!,
                         // style: TextStyle(fontSize: 8.sp),
                       ),
                     );
@@ -1887,16 +1887,16 @@ class _ResponseScreenState extends State<ResponseScreen>
                 child: DropdownButton<SRes>(
                   value: spokeResponse.st_segment_res,
                   isDense: false,
-                  onChanged: (SRes newValue) {
+                  onChanged: (newValue) {
                     setState(() {
-                      spokeResponse.st_segment_res = newValue;
+                      spokeResponse.st_segment_res = newValue!;
                     });
                   },
                   items: SRes.values.map((SRes value) {
                     return DropdownMenuItem<SRes>(
                       value: value,
                       child: Text(
-                        SpokeResponse.steResMapping[value],
+                        SpokeResponse.steResMapping[value]!,
                         // style: TextStyle(fontSize: 8.sp),
                       ),
                     );
@@ -1929,4 +1929,9 @@ class _ResponseScreenState extends State<ResponseScreen>
           ),
         ),
       );
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<TabController>('_tabController', _tabController));
+  }
 }

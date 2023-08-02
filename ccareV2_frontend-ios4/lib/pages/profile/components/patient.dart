@@ -1,4 +1,3 @@
-//@dart=2.9
 import 'package:ccarev2_frontend/state_management/profile/profile_cubit.dart';
 import 'package:ccarev2_frontend/user/domain/profile.dart';
 import 'package:ccarev2_frontend/utils/size_config.dart';
@@ -17,8 +16,8 @@ class PatientProfileScreen extends StatefulWidget {
 
 class _PatientProfileScreenState extends State<PatientProfileScreen> {
   final _formKeyPatient = GlobalKey<FormState>();
-  String name;
-  int age;
+  late String name;
+  late int age;
   Gender gender = Gender.MALE;
 
   @override
@@ -31,8 +30,8 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
           SizedBox(height: 2.h),
           TextFormField(
             keyboardType: TextInputType.text,
-            onSaved: (newValue) => name = newValue,
-            validator: (value) => value.isEmpty ? "Name is required" : null,
+            onSaved: (newValue) => name = newValue!,
+            validator: (value) => value!.isEmpty ? "Name is required" : null,
             decoration: const InputDecoration(
               labelText: "Full Name",
               hintText: "Enter your Full Name",
@@ -42,8 +41,8 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
           SizedBox(height: 1.h),
           TextFormField(
             keyboardType: TextInputType.number,
-            onSaved: (newValue) => age = int.parse(newValue),
-            validator: (value) => value.isEmpty
+            onSaved: (newValue) => age = int.parse(newValue!),
+            validator: (value) => value!.isEmpty
                 ? "Age is required"
                 : (int.parse(value) > 120 ? "Enter valid age" : null),
             decoration: const InputDecoration(
@@ -62,9 +61,9 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
                 child: DropdownButton<Gender>(
                   isDense: false,
                   value: gender,
-                  onChanged: (Gender newValue) {
+                  onChanged: (newValue) {
                     setState(() {
-                      gender = newValue;
+                      gender = newValue!;
                       //print(gender);
                     });
                   },
@@ -99,8 +98,8 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
                 ),
               ),
               onTap: () {
-                if (_formKeyPatient.currentState.validate()) {
-                  _formKeyPatient.currentState.save();
+                if (_formKeyPatient.currentState!.validate()) {
+                  _formKeyPatient.currentState!.save();
                   var profile = PatientProfile(
                       name: name,
                       gender: gender.toString().split(".")[1],

@@ -3,8 +3,8 @@ import 'package:ccarev2_frontend/state_management/profile/profile_cubit.dart';
 import 'package:ccarev2_frontend/state_management/profile/profile_state.dart';
 import 'package:ccarev2_frontend/user/domain/credential.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sizer/sizer.dart';
-import 'package:flutter_cubit/flutter_cubit.dart';
 import '../../utils/size_config.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -48,8 +48,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  _buildUI(BuildContext context) => CubitConsumer<ProfileCubit, ProfileState>(
-      cubit: widget.cubit,
+  _buildUI(BuildContext context) => BlocConsumer<ProfileCubit, ProfileState>(
+      bloc: widget.cubit,
       builder: (_, state) {
         //print("INSIDE BUILDER PROFILE SCREEN");
         //print('STATE:');
@@ -101,7 +101,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         msg,
         style: Theme.of(context)
             .textTheme
-            .bodySmall
+            .bodySmall!
             .copyWith(color: Colors.white, fontSize: 12.sp),
       ),
     ));
@@ -120,7 +120,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             RichText(
               text: TextSpan(
                   text: "Personal",
-                  style: Theme.of(context).textTheme.bodySmall.copyWith(
+                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
                       color: Colors.lightGreen[500],
                       fontSize: 24.sp,
                       fontWeight: FontWeight.bold),

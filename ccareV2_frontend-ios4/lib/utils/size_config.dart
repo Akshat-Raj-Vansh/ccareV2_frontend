@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:path/path.dart';
 
 class SizeConfig {
-  static MediaQueryData _mediaQueryData;
-  static double bottomInsets;
-  static double screenWidth;
-  static double screenHeight;
-  static double defaultSize;
-  static Orientation orientation;
+  static MediaQueryData _mediaQueryData = MediaQuery.of(context as BuildContext);
+  static double bottomInsets = _mediaQueryData.viewInsets.bottom;
+  static double screenWidth = _mediaQueryData.size.width;
+  static double screenHeight = _mediaQueryData.size.height;
+  static Orientation orientation = _mediaQueryData.orientation;
 
   void init(BuildContext context) {
     _mediaQueryData = MediaQuery.of(context);

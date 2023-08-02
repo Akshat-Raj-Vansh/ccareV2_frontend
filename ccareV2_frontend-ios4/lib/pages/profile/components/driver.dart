@@ -19,9 +19,9 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
   final _formKeyDriver = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    String name;
-    String uniqueCode;
-    String plateNumber;
+    late String name;
+    late String uniqueCode;
+    late String plateNumber;
     return Form(
       key: _formKeyDriver,
       child: Column(
@@ -30,8 +30,8 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
           SizedBox(height: 2.h),
           TextFormField(
             keyboardType: TextInputType.text,
-            onSaved: (newValue) => name = newValue,
-            validator: (value) => value.isEmpty ? "Name is required" : null,
+            onSaved: (newValue) => name = newValue!,
+            validator: (value) => value!.isEmpty ? "Name is required" : null,
             decoration: const InputDecoration(
               labelText: "Full Name",
               hintText: "Enter your Full Name",
@@ -41,9 +41,9 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
           SizedBox(height: 1.h),
           TextFormField(
             keyboardType: TextInputType.text,
-            onSaved: (newValue) => uniqueCode = newValue.toUpperCase(),
+            onSaved: (newValue) => uniqueCode = newValue!.toUpperCase(),
             validator: (value) =>
-                value.isEmpty ? "Unique Code is required" : null,
+                value!.isEmpty ? "Unique Code is required" : null,
             decoration: const InputDecoration(
               labelText: "Unique Code",
               hintText: "Enter your Unique Code",
@@ -53,9 +53,9 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
           SizedBox(height: 1.h),
           TextFormField(
             keyboardType: TextInputType.text,
-            onSaved: (newValue) => plateNumber = newValue.toUpperCase(),
+            onSaved: (newValue) => plateNumber = newValue!.toUpperCase(),
             validator: (value) =>
-                value.isEmpty ? "Plate Number is required" : null,
+                value!.isEmpty ? "Plate Number is required" : null,
             decoration: const InputDecoration(
               labelText: "Plate Number",
               hintText: "Enter your Plate Number",
@@ -80,8 +80,8 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
                 ),
               ),
               onTap: () async {
-                if (_formKeyDriver.currentState.validate()) {
-                  _formKeyDriver.currentState.save();
+                if (_formKeyDriver.currentState!.validate()) {
+                  _formKeyDriver.currentState!.save();
                   lloc.LocationData locationData = await _getLocation();
                   var profile = DriverProfile(
                       name: name,

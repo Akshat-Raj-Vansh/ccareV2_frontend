@@ -10,11 +10,12 @@ import 'package:ccarev2_frontend/state_management/main/main_state.dart';
 import 'package:ccarev2_frontend/state_management/user/user_cubit.dart';
 import 'package:ccarev2_frontend/user/domain/credential.dart';
 import 'package:ccarev2_frontend/utils/constants.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sizer/sizer.dart';
 
 import 'package:ccarev2_frontend/utils/size_config.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_cubit/flutter_cubit.dart';
 
 
 class HomeScreenHub extends StatefulWidget {
@@ -29,22 +30,22 @@ class HomeScreenHub extends StatefulWidget {
 }
 
 class _HomeScreenHubState extends State<HomeScreenHub> {
-  List<EDetails> eDetails;
-  List<EDetails> rDetails;
+  late List<EDetails> eDetails;
+  late List<EDetails> rDetails;
   // static bool _patientAccepted = false;
   bool patientsLoaded = false;
   bool requestsLoaded = false;
 
   dynamic currentState = null;
   bool loader = false;
-  String token;
+  late String token;
 
   @override
   void initState() {
     super.initState();
-    CubitProvider.of<MainCubit>(context).fetchHubPatientDetails();
-    CubitProvider.of<MainCubit>(context).fetchHubRequests();
-    CubitProvider.of<MainCubit>(context).fetchToken();
+    BlocProvider.of<MainCubit>(context).fetchHubPatientDetails();
+    BlocProvider.of<MainCubit>(context).fetchHubRequests();
+    BlocProvider.of<MainCubit>(context).fetchToken();
     NotificationController.configure(widget.mainCubit, UserType.HUB, context);
     NotificationController.fcmHandler();
   }
@@ -74,7 +75,7 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
         msg,
         style: Theme.of(context)
             .textTheme
-            .bodySmall
+            .bodySmall!
             .copyWith(color: Colors.white, fontSize: 12.sp),
       ),
     ));
@@ -136,7 +137,7 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
             ),
           ],
         ),
-        body: CubitConsumer<MainCubit, MainState>(builder: (_, state) {
+        body: BlocConsumer<MainCubit, MainState>(builder: (_, state) {
           if (state is HubPatientsLoaded) {
             print('LOG > doctor_hub.dart > 139 > state: ${state.toString()}');
             currentState = state;
@@ -324,7 +325,7 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
             requestsLoaded
                 ? RequestPatientList(
                     patients: rDetails
-                        .map<PatientDetails>((e) => e.patientDetails)
+                        .map<PatientDetails>((e) => e.patientDetails!)
                         .toList(),
                     mainCubit: widget.mainCubit)
                 : Padding(
@@ -344,7 +345,7 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
             ),
             patientsLoaded
                 ? AcceptedPatientList(
-                    eDetails, CubitProvider.of<MainCubit>(context))
+                    eDetails, BlocProvider.of<MainCubit>(context))
                 : Padding(
                     padding:
                         const EdgeInsets.symmetric(horizontal: 30, vertical: 5),
@@ -353,4 +354,9 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
           ]),
         ),
       ]);
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(IterableProperty<EDetails>('eDetails', eDetails));
+  }
 }

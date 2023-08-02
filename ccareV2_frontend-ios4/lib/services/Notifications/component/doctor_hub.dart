@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
 class HubNotificationHandler {
-  static MainCubit mainCubit;
-  static BuildContext context;
+  static MainCubit? mainCubit;
+  static BuildContext? context;
   static configure(MainCubit cubit, BuildContext c) {
     mainCubit = cubit;
     context = c;
@@ -20,17 +20,17 @@ class HubNotificationHandler {
     if (message.data['type'] == 'Consultation') {
       if (message.data["user"] == "SPOKE") {
         // //print("inside");
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          backgroundColor: Theme.of(context).colorScheme.secondary,
+        ScaffoldMessenger.of(context!).showSnackBar(SnackBar(
+          backgroundColor: Theme.of(context!).colorScheme.secondary,
           content: Text(
             'New Patient Request Received!',
-            style: Theme.of(context)
+            style: Theme.of(context!)
                 .textTheme
-                .bodySmall
+                .bodySmall!
                 .copyWith(color: Colors.white, fontSize: 8.sp),
           ),
         ));
-        await mainCubit.acceptPatientByHub(message.data["patientID"]);
+        await mainCubit!.acceptPatientByHub(message.data["patientID"]);
       }
     }
   }
@@ -38,7 +38,7 @@ class HubNotificationHandler {
   static Future<void> onMessageOpenedHandler(RemoteMessage message) async {
     if (message.data['type'] == 'Consultation') {
       print("Not supposed to be here");
-      await mainCubit.acceptPatientByHub(message.data["patientID"]);
+      await mainCubit!.acceptPatientByHub(message.data["patientID"]);
     }
   }
 }

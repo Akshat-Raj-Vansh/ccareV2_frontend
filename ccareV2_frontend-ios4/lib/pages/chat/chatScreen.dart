@@ -1,12 +1,11 @@
-//@dart=2.9
 import 'package:ccarev2_frontend/pages/chat/components/chatModel.dart';
 import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
 import 'package:ccarev2_frontend/state_management/main/main_state.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sizer/sizer.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:ccarev2_frontend/utils/constants.dart';
-import 'package:flutter_cubit/flutter_cubit.dart';
 import 'components/message.dart';
 
 class ChatPage extends StatefulWidget {
@@ -23,9 +22,9 @@ class ChatPage extends StatefulWidget {
 
 class _ChatPageState extends State<ChatPage> {
   final TextEditingController textEditingController = TextEditingController();
-  String recieverChatID;
+  late String recieverChatID;
   ChatModel chatModel = ChatModel();
-  MainState currentState;
+  late MainState currentState;
   ScrollController _scrollController = ScrollController();
   BoxDecoration decA = const BoxDecoration(
       color: kSecondaryColor,
@@ -195,8 +194,8 @@ class _ChatPageState extends State<ChatPage> {
           },
         ),
       ),
-      body: CubitConsumer<MainCubit, MainState>(
-        cubit: widget.mainCubit,
+      body: BlocConsumer<MainCubit, MainState>(
+        bloc: widget.mainCubit,
         builder: (context, state) {
           print("ChatScreen Builder state: $state");
 

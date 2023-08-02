@@ -1,4 +1,3 @@
-//@dart=2.9
 import 'package:ccarev2_frontend/services/Notifications/component/doctor_hub.dart';
 import 'package:ccarev2_frontend/services/Notifications/component/doctor_spoke.dart';
 import 'package:ccarev2_frontend/services/Notifications/component/driver.dart';
@@ -20,7 +19,7 @@ class NotificationController {
 
   static FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
-  static UserType userType;
+  static UserType? userType;
   static configure(MainCubit mainCubit, UserType type, BuildContext context) {
     userType = type;
     //print(type);
@@ -46,7 +45,7 @@ class NotificationController {
     await flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin>()
-        .createNotificationChannel(highImportancechannel);
+        !.createNotificationChannel(highImportancechannel);
   }
 
   static fcmHandler() {

@@ -1,38 +1,37 @@
-//@dart=2.9
 import 'package:ccarev2_frontend/pages/auth/components/otp_form.dart';
 import 'package:ccarev2_frontend/pages/auth/components/phone_form.dart';
 import 'package:ccarev2_frontend/pages/auth/components/type_form.dart';
 import 'package:ccarev2_frontend/pages/splash/splash_screen.dart';
 import 'package:ccarev2_frontend/utils/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:sizer/sizer.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import '../../state_management/profile/profile_cubit.dart';
 import '../../state_management/profile/profile_state.dart' as profileState;
+import '../../state_management/user/user_cubit.dart';
 import '../../state_management/user/user_state.dart';
 import '../../user/domain/credential.dart';
 import '../../user/domain/token.dart';
-import '../../state_management/user/user_cubit.dart';
 import '../../utils/loaders.dart';
 import 'auth_page_adapter.dart';
-import 'package:flutter_cubit/flutter_cubit.dart';
 import '../../utils/size_config.dart';
 import 'package:flutter/material.dart';
 
 class AuthPage extends StatefulWidget {
   final IAuthPageAdapter pageAdatper;
   AuthPage({
-    this.pageAdatper,
+    required this.pageAdatper,
   });
   @override
   _AuthPageState createState() => _AuthPageState();
 }
 
 class _AuthPageState extends State<AuthPage> {
-  UserType _userType;
+  late UserType _userType;
   String _verificationCode = "";
-  String _otp = "";
+  // String _otp = "";
   String _phone = "";
   String _fcmToken = "";
   bool verified = false;
@@ -41,15 +40,14 @@ class _AuthPageState extends State<AuthPage> {
     return int.parse("FF" + color.toUpperCase(), radix: 16);
   }
 
-  AnimationController animationController;
+  late AnimationController animationController;
   final PageController _controller = PageController();
 
-  final _formKey = GlobalKey<FormState>();
   @override
   void initState() {
     super.initState();
     print('AUTH PAGE');
-    FirebaseMessaging.instance.getToken().then((value) => _fcmToken = value);
+    FirebaseMessaging.instance.getToken().then((value) => _fcmToken = value!);
   }
 
   @override
@@ -76,10 +74,10 @@ class _AuthPageState extends State<AuthPage> {
                 ),
                 Positioned(
                   bottom: 0,
-                  child: CubitConsumer<UserCubit, UserState>(
+                  child: BlocConsumer<UserCubit, UserState>(
                     builder: (_, state) {
                       print("Builder State $state");
-                      // var cubit = CubitProvider.of<UserCubit>(context);
+                      // var cubit = BlocProvider.of<UserCubit>(context);
 
                       return _buildUI();
                     },
@@ -125,7 +123,7 @@ class _AuthPageState extends State<AuthPage> {
                     },
                   ),
                 ),
-                CubitListener<ProfileCubit, profileState.ProfileState>(
+                BlocListener<ProfileCubit, profileState.ProfileState>(
                   child: Container(),
                   listener: (context, state) {
                     if (state is profileState.LoadingState) {
@@ -144,7 +142,7 @@ class _AuthPageState extends State<AuthPage> {
                             state.error,
                             style: Theme.of(context)
                                 .textTheme
-                                .bodySmall
+                                .bodySmall!
                                 .copyWith(color: Colors.white, fontSize: 8.sp),
                           ),
                         ));
@@ -217,9 +215,9 @@ class _AuthPageState extends State<AuthPage> {
           physics: NeverScrollableScrollPhysics(),
           children: [
             TypeForm(_launchPhoneForm, _onBackPressed),
-            PhoneForm(_controller, CubitProvider.of<UserCubit>(context),
+            PhoneForm(_controller, BlocProvider.of<UserCubit>(context),
                 _verifyPhone, _launchPhoneVerificationState, _onBackPressed),
-            OTPForm(_controller, CubitProvider.of<UserCubit>(context),
+            OTPForm(_controller, BlocProvider.of<UserCubit>(context),
                 _verifyOTP, _phone),
           ],
         ),
@@ -240,10 +238,10 @@ class _AuthPageState extends State<AuthPage> {
                 .then((value) async {
               if (value.user != null) {
                 verified = true;
-                _msg = "VERIFICATION SUCCESSFUL " + value.user.uid;
+                _msg = "VERIFICATION SUCCESSFUL " + value.user!.uid;
                 print('auth_page.dart : ' + _msg);
-                CubitProvider.of<UserCubit>(context).login(Credential(_phone,
-                    _userType, _fcmToken, Token(value.user.uid.toString())));
+                BlocProvider.of<UserCubit>(context).login(Credential(_phone,
+                    _userType, _fcmToken, Token(value.user!.uid.toString())));
               }
             });
           },
@@ -253,12 +251,12 @@ class _AuthPageState extends State<AuthPage> {
             Loaders.showSnackbar(context, _msg);
             Loaders.hideLoader(context);
           },
-          codeSent: (String verificationID, int resendToken) {
+          codeSent: (String verificationID, int? resendToken) {
             if (!verified) {
               setState(() {
                 _msg = "CODE SENT " + verificationID;
                 _verificationCode = verificationID;
-                CubitProvider.of<UserCubit>(context).verifyOTP();
+                BlocProvider.of<UserCubit>(context).verifyOTP();
               });
             }
           },
@@ -284,10 +282,10 @@ class _AuthPageState extends State<AuthPage> {
               verificationId: _verificationCode, smsCode: otp))
           .then((value) async {
         if (value.user != null) {
-          _msg = "VERIFICATION SUCCESSFUL OTP " + value.user.uid;
+          _msg = "VERIFICATION SUCCESSFUL OTP " + value.user!.uid;
           print('auth_page.dart : ' + _msg);
-          CubitProvider.of<UserCubit>(context).login(Credential(
-              _phone, _userType, _fcmToken, Token(value.user.uid.toString())));
+          BlocProvider.of<UserCubit>(context).login(Credential(
+              _phone, _userType, _fcmToken, Token(value.user!.uid.toString())));
         } else {
           _msg = "VERIFICATION FAILED. INVALID OTP.";
           print('INVALID OTP');

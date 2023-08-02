@@ -1,4 +1,3 @@
-//@dart=2.9
 import 'dart:developer';
 
 import 'package:ccarev2_frontend/pages/home/home_page_adapter.dart';
@@ -17,7 +16,7 @@ import 'package:ccarev2_frontend/state_management/main/main_state.dart';
 import 'package:ccarev2_frontend/user/domain/credential.dart';
 import 'package:ccarev2_frontend/utils/constants.dart';
 import 'package:ccarev2_frontend/utils/size_config.dart';
-import 'package:flutter_cubit/flutter_cubit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
 import 'package:flutter/cupertino.dart';
@@ -29,7 +28,7 @@ class PatientInfo extends StatefulWidget {
   final IHomePageAdapter homePageAdapter;
 
   const PatientInfo(
-      {Key key, this.patientID, this.mainCubit, this.homePageAdapter})
+      {Key? key, required this.patientID, required this.mainCubit, required this.homePageAdapter})
       : super(key: key);
 
   @override
@@ -37,7 +36,7 @@ class PatientInfo extends StatefulWidget {
 }
 
 class _PatientInfoState extends State<PatientInfo> {
-  EDetails eDetails;
+  EDetails? eDetails;
   bool _emergency = false;
   bool _patientAccepted = false;
   bool _driverAccepted = false;
@@ -45,7 +44,7 @@ class _PatientInfoState extends State<PatientInfo> {
   bool _ugt = false;
   String _currentStatus = "UNKNOWN";
   dynamic currentState = null;
-  String token;
+  String? token;
   bool loader = false;
 
   @override
@@ -112,7 +111,7 @@ class _PatientInfoState extends State<PatientInfo> {
         msg,
         style: Theme.of(context)
             .textTheme
-            .bodySmall
+            .bodySmall!
             .copyWith(color: Colors.white, fontSize: 12.sp),
       ),
     ));
@@ -133,8 +132,8 @@ class _PatientInfoState extends State<PatientInfo> {
             },
             icon: Icon(Icons.arrow_back_ios)),
       ),
-      body: CubitConsumer<MainCubit, MainState>(
-        cubit: widget.mainCubit,
+      body: BlocConsumer<MainCubit, MainState>(
+        bloc: widget.mainCubit,
         builder: (_, state) {
           print("PatientInfo Builder state: $state");
           if (state is PatientInfoLoadingState) {
@@ -149,20 +148,20 @@ class _PatientInfoState extends State<PatientInfo> {
             currentState = DetailsLoaded;
             eDetails = state.eDetails;
             print(eDetails);
-            if (eDetails.patientDetails != null) {
+            if (eDetails!.patientDetails != null) {
               _patientAccepted = true;
               _emergency = true;
               _currentStatus =
-                  eDetails.patientDetails.status.toString().split('.')[1];
-              if (eDetails.patientDetails.status == EStatus.UGT) {
+                  eDetails!.patientDetails!.status.toString().split('.')[1];
+              if (eDetails!.patientDetails!.status == EStatus.UGT) {
                 _ugt = true;
               }
             }
-            if (eDetails.driverDetails != null) {
+            if (eDetails!.driverDetails != null) {
               _driverAccepted = true;
               _emergency = true;
             }
-            if (eDetails.hubDetails != null) {
+            if (eDetails!.hubDetails != null) {
               _hubAccepted = true;
             }
           }
@@ -203,7 +202,7 @@ class _PatientInfoState extends State<PatientInfo> {
                 'Patient Status changed! Status -> ${state.msg}',
                 style: Theme.of(context)
                     .textTheme
-                    .bodySmall
+                    .bodySmall!
                     .copyWith(color: Colors.white, fontSize: 12.sp),
               ),
             ));
@@ -427,7 +426,7 @@ class _PatientInfoState extends State<PatientInfo> {
               _buildStartTreatmentButton(),
             if (_patientAccepted) _buildPatientDetails(),
             if (_patientAccepted &&
-                eDetails.patientDetails.action == "QUESTIONNAIRE")
+                eDetails!.patientDetails!.action == "QUESTIONNAIRE")
               _buildPatientAssessmentButton(),
             if (_patientAccepted && _ugt) _buildPatientReportButton(),
             if (_patientAccepted && _ugt) _buildPatientExamButton(),
@@ -497,7 +496,7 @@ class _PatientInfoState extends State<PatientInfo> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text("Name: "),
-                  Text(eDetails.patientDetails.name),
+                  Text(eDetails!.patientDetails!.name),
                 ],
               ),
               SizedBox(
@@ -507,7 +506,7 @@ class _PatientInfoState extends State<PatientInfo> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text("Contact Number: "),
-                  Text(eDetails.patientDetails.contactNumber),
+                  Text(eDetails!.patientDetails!.contactNumber),
                 ],
               ),
             ],
@@ -563,7 +562,7 @@ class _PatientInfoState extends State<PatientInfo> {
                 builder: (cTX) => ResponseScreen(
                   mainCubit: widget.mainCubit,
                   user: UserType.SPOKE,
-                  patientDetails: eDetails.patientDetails,
+                  patientDetails: eDetails!.patientDetails!, 
                 ),
               ));
         },
@@ -590,7 +589,7 @@ class _PatientInfoState extends State<PatientInfo> {
                 builder: (cTX) => PatientReportScreen(
                   mainCubit: widget.mainCubit,
                   user: UserType.SPOKE,
-                  patientDetails: eDetails.patientDetails,
+                  patientDetails: eDetails!.patientDetails!,
                 ),
               ));
         },
@@ -616,7 +615,7 @@ class _PatientInfoState extends State<PatientInfo> {
               MaterialPageRoute(
                 builder: (ctx) => PatientExamScreen(
                   mainCubit: widget.mainCubit,
-                  patientDetails: eDetails.patientDetails,
+                  patientDetails: eDetails!.patientDetails!,
                   user: UserType.SPOKE,
                 ),
               ));
@@ -689,10 +688,10 @@ class _PatientInfoState extends State<PatientInfo> {
               context,
               MaterialPageRoute(
                   builder: (cTX) => ChatPage(
-                      eDetails.hubDetails.name,
-                      eDetails.hubDetails.id,
-                      eDetails.patientDetails.id,
-                      token,
+                      eDetails!.hubDetails!.name,
+                      eDetails!.hubDetails!.id,
+                      eDetails!.patientDetails!.id,
+                      token!,
                       widget.mainCubit)));
           // widget.widget.mainCubit.getAllHubDoctors();
           // Navigator.push(
@@ -710,7 +709,7 @@ class _PatientInfoState extends State<PatientInfo> {
               color: kPrimaryLightColor,
               borderRadius: BorderRadius.circular(20)),
           child: Text(
-            eDetails.hubDetails.name,
+            eDetails!.hubDetails!.name,
             style: TextStyle(color: Colors.white, fontSize: 12.sp),
             textAlign: TextAlign.center,
           ),
@@ -779,7 +778,7 @@ class _PatientInfoState extends State<PatientInfo> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text("Name: "),
-                  Text(eDetails.driverDetails.name),
+                  Text(eDetails!.driverDetails!.name),
                 ],
               ),
               SizedBox(
@@ -789,7 +788,7 @@ class _PatientInfoState extends State<PatientInfo> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text("Plate Number: "),
-                  Text(eDetails.driverDetails.plateNumber),
+                  Text(eDetails!.driverDetails!.plateNumber),
                 ],
               ),
               SizedBox(
@@ -799,7 +798,7 @@ class _PatientInfoState extends State<PatientInfo> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text("Contact Number: "),
-                  Text(eDetails.driverDetails.contactNumber),
+                  Text(eDetails!.driverDetails!.contactNumber),
                 ],
               ),
               SizedBox(
@@ -811,7 +810,7 @@ class _PatientInfoState extends State<PatientInfo> {
                   style: GoogleFonts.montserrat(color: Colors.black),
                   children: [
                     TextSpan(
-                        text: eDetails.driverDetails.address,
+                        text: eDetails!.driverDetails!.address,
                         style: TextStyle(color: Colors.black))
                   ],
                 ),

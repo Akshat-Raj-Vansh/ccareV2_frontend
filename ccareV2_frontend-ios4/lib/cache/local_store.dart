@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:ffi';
 import 'package:ccarev2_frontend/user/domain/details.dart';
 import 'package:ccarev2_frontend/user/domain/doc_info.dart';
 import 'package:ccarev2_frontend/user/domain/token.dart';
@@ -16,20 +15,19 @@ class LocalStore implements ILocalStore {
   final SharedPreferences sharedPreferences;
   LocalStore(this.sharedPreferences);
 
-  @override
-  Future<Token> fetch() {
+  
+  Future<Token?> fetch() async {
     String? data = sharedPreferences.getString(token_key);
     //print('LOCAL STORE FETCH');
     //print(data);
     if (data != null) {
       Details details = Details.fromMap(jsonDecode(data));
-      return Future.value(Token(details.user_token) as FutureOr<Token>?);
-    }
+      return Future.value(Token(details.user_token));}
     return null;
   }
 
   @override
-  Future<bool> fetchNewUser() {
+  Future<bool>? fetchNewUser() {
     String? data = sharedPreferences.getString(token_key);
     //print(data);
     if (data != null) {
@@ -40,7 +38,7 @@ class LocalStore implements ILocalStore {
   }
 
   @override
-  Future<Info> fetchDocInfo() {
+  Future<Info>? fetchDocInfo() {
     String? data = sharedPreferences.getString(info_key);
     //print("LOCAL STORE/FETCH DOC INFO");
     //print("DATA:");
@@ -102,7 +100,7 @@ class LocalStore implements ILocalStore {
   // }
 
   @override
-  Future<Details> fetchDetails() {
+  Future<Details>? fetchDetails() {
     String? data = sharedPreferences.getString(token_key);
     //print(data);
     if (data != null) {
@@ -118,7 +116,7 @@ class LocalStore implements ILocalStore {
   }
 
   @override
-  Future<Token> fetchTempToken() {
+  Future<Token>? fetchTempToken() {
     String? data = sharedPreferences.getString(temp_token_key);
     //print(data);
     if (data != null) return Future.value(Token(data));

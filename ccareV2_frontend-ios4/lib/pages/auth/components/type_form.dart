@@ -4,8 +4,6 @@ import 'package:ccarev2_frontend/utils/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
-import 'package:flutter_cubit/flutter_cubit.dart';
-
 class TypeForm extends StatefulWidget {
   final Function launchPhoneForm;
   final Function backPressed;
@@ -89,9 +87,9 @@ class _TypeFormState extends State<TypeForm> {
                     child: DropdownButton<UserType>(
                       value: userType,
                       isDense: false,
-                      onChanged: (UserType newValue) {
+                      onChanged: (newValue) {
                         setState(() {
-                          userType = newValue;
+                          userType = newValue!;
                         });
                       },
                       items: userTypes.map((UserType value) {

@@ -1,7 +1,7 @@
-//@dart=2.9
 import 'dart:developer';
 
 import 'package:ccarev2_frontend/pages/home/spoke/components/add_patient.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sizer/sizer.dart';
 import 'package:ccarev2_frontend/pages/home/spoke/components/patient_info.dart';
 import 'package:ccarev2_frontend/pages/home/spoke/components/patient_list.dart';
@@ -14,7 +14,6 @@ import 'package:ccarev2_frontend/user/domain/credential.dart';
 import 'package:ccarev2_frontend/user/domain/patient_list_info.dart';
 import 'package:ccarev2_frontend/utils/constants.dart';
 import 'package:ccarev2_frontend/utils/size_config.dart';
-import 'package:flutter_cubit/flutter_cubit.dart';
 import 'package:flutter/material.dart';
 
 
@@ -31,7 +30,7 @@ class HomeScreenSpoke extends StatefulWidget {
 
 class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
   dynamic currentState;
-  String token;
+  late String token;
   List<PatientListInfo> _patients = [];
   List<PatientListInfo> _requests = [];
   bool loader = false;
@@ -39,11 +38,11 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
   @override
   void initState() {
     super.initState();
-    CubitProvider.of<MainCubit>(context).getAllPatients();
-    CubitProvider.of<MainCubit>(context).getAllPatientRequests();
+    BlocProvider.of<MainCubit>(context).getAllPatients();
+    BlocProvider.of<MainCubit>(context).getAllPatientRequests();
     NotificationController.configure(widget.mainCubit, UserType.SPOKE, context);
     NotificationController.fcmHandler();
-    CubitProvider.of<MainCubit>(context).fetchToken();
+    BlocProvider.of<MainCubit>(context).fetchToken();
   }
 
   // Future<loc.Location> _getLocation() async {
@@ -84,7 +83,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
         msg,
         style: Theme.of(context)
             .textTheme
-            .bodySmall
+            .bodySmall!
             .copyWith(color: Colors.white, fontSize: 12.sp),
       ),
     ));
@@ -102,7 +101,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
         ),
         backgroundColor: kPrimaryColor,
       ),
-      body: CubitConsumer<MainCubit, MainState>(
+      body: BlocConsumer<MainCubit, MainState>(
         builder: (_, state) {
           if (state is PatientsLoaded) {
             //  // _hideLoader();
@@ -258,10 +257,10 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
             // _emergency = true;
             log('LOG > doctor_spoke.dart > 280 > state: ${state.toString()}',
                 time: DateTime.now());
-            CubitProvider.of<MainCubit>(context).getAllPatients();
-            CubitProvider.of<MainCubit>(context).getAllPatientRequests();
+            BlocProvider.of<MainCubit>(context).getAllPatients();
+            BlocProvider.of<MainCubit>(context).getAllPatientRequests();
             setState(() {});
-            //   CubitProvider.of<MainCubit>(context).fetchEmergencyDetails();
+            //   BlocProvider.of<MainCubit>(context).fetchEmergencyDetails();
           } else if (state is ErrorState) {
             // _hideLoader();
             // _emergency = true;
@@ -312,8 +311,8 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (ctx) => CubitProvider<MainCubit>(
-                        create: (ctx) => CubitProvider.of<MainCubit>(context),
+                      builder: (ctx) => BlocProvider<MainCubit>(
+                        create: (ctx) => BlocProvider.of<MainCubit>(context),
                         child: PatientList(widget.homePageAdapter),
                       ),
                     ));
@@ -331,7 +330,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
                     context,
                     MaterialPageRoute(
                       builder: (ctx) => AddPatientScreen(
-                          CubitProvider.of<MainCubit>(context)),
+                          BlocProvider.of<MainCubit>(context)),
                     ));
               },
             ),
@@ -446,7 +445,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
                               builder: (ctx) => PatientInfo(
                                   patientID: _patients[index].id,
                                   mainCubit:
-                                      CubitProvider.of<MainCubit>(context),
+                                      BlocProvider.of<MainCubit>(context),
                                   homePageAdapter: widget.homePageAdapter)),
                         ),
                         child: Container(
@@ -501,7 +500,7 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
                     itemBuilder: (BuildContext context, int index) {
                       return InkWell(
                         onTap: () {
-                          CubitProvider.of<MainCubit>(context)
+                          BlocProvider.of<MainCubit>(context)
                               .acceptPatientBySpoke(_requests[index].id);
                           setState(() {
                             _requests.removeAt(index);

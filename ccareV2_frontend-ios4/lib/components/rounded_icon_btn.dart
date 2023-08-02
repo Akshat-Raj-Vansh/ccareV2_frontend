@@ -1,13 +1,12 @@
-//@dart=2.9
 import '../utils/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
 class RoundedIconBtn extends StatelessWidget {
   const RoundedIconBtn({
-    Key key,
-    @required this.icon,
-    @required this.press,
+    required Key key,
+    required this.icon,
+    required this.press,
     this.showShadow = false,
   }) : super(key: key);
 

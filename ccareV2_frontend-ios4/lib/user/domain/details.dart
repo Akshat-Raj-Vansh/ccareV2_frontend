@@ -9,17 +9,17 @@ class Details {
   final UserType user_type;
   final String phone;
   Details({
-    this.newUser,
-    this.user_token,
-    this.user_type,
-    this.phone,
+    required this.newUser,
+    required this.user_token,
+    required this.user_type,
+    required this.phone,
   });
 
   Details copyWith({
-    bool newUser,
-    String user_token,
-    UserType user_type,
-    String phone,
+    required bool newUser,
+    required String user_token,
+    required UserType user_type,
+    required String phone,
   }) {
     return Details(
       newUser: newUser ?? this.newUser,

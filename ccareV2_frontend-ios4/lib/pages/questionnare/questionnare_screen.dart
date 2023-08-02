@@ -1,4 +1,3 @@
-//@dart=2.9
 import 'package:ccarev2_frontend/main/domain/question.dart';
 import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
 import 'package:location/location.dart' as lloc;
@@ -257,7 +256,7 @@ class _SelfAssessmentState extends State<SelfAssessment> {
                                         "Emergency Notifications Sent",
                                         style: Theme.of(context)
                                             .textTheme
-                                            .bodySmall
+                                            .bodySmall!
                                             .copyWith(
                                                 color: Colors.white,
                                                 fontSize: 12.sp),

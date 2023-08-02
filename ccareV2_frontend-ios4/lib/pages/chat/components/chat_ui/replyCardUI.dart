@@ -1,9 +1,8 @@
-//@dart=2.9
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
 class ReplyCard extends StatelessWidget {
-  ReplyCard({Key key, this.message, this.time}) : super(key: key);
+  ReplyCard({Key? key, required this.message, required this.time}) : super(key: key);
   final String message;
   final String time;
 

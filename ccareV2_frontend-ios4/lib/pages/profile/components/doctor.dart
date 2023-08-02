@@ -1,4 +1,3 @@
-//@dart=2.9
 import 'package:ccarev2_frontend/components/default_button.dart';
 import 'package:ccarev2_frontend/state_management/profile/profile_cubit.dart';
 import 'package:ccarev2_frontend/state_management/profile/profile_state.dart';
@@ -7,8 +6,8 @@ import 'package:ccarev2_frontend/user/domain/doc_info.dart';
 import 'package:ccarev2_frontend/user/domain/profile.dart';
 import 'package:ccarev2_frontend/utils/size_config.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sizer/sizer.dart';
-import 'package:flutter_cubit/flutter_cubit.dart';
 import 'package:location/location.dart' as lloc;
 import '../../../user/domain/location.dart' as loc;
 import '../../../utils/constants.dart';
@@ -25,10 +24,10 @@ class DoctorProfileScreen extends StatefulWidget {
 class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
   final _formKeyDoctor = GlobalKey<FormState>();
 
-  String _email;
-  String name;
-  String hospital;
-  Info docInfo;
+  late String _email;
+  late String name;
+  late String hospital;
+  late Info docInfo;
   @override
   void initState() {
     //print("DOCTOR PROFILE");
@@ -44,8 +43,8 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
   Widget build(BuildContext ctx) {
     // ProfileCubit cubit = CubitProvider.of<ProfileCubit>(ctx);
 
-    return CubitConsumer<ProfileCubit, ProfileState>(
-        cubit: widget.cubit,
+    return BlocConsumer<ProfileCubit, ProfileState>(
+        bloc: widget.cubit,
         builder: (ctx, state) {
           //print("INSIDE BUILDER DOCTOR PROFILE");
           //print('STATE:');
@@ -84,8 +83,8 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
             SizedBox(height: 2.h),
             TextFormField(
               keyboardType: TextInputType.text,
-              onSaved: (newValue) => name = newValue,
-              validator: (value) => value.isEmpty ? "Name is required" : null,
+              onSaved: (newValue) => name = newValue!,
+              validator: (value) => value!.isEmpty ? "Name is required" : null,
               decoration: const InputDecoration(
                 labelText: "Full Name",
                 hintText: "Enter your Full Name",
@@ -95,9 +94,9 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
             SizedBox(height: 1.h),
             TextFormField(
               keyboardType: TextInputType.text,
-              onSaved: (newValue) => hospital = newValue,
+              onSaved: (newValue) => hospital = newValue!,
               validator: (value) =>
-                  value.isEmpty ? "Hospital is required" : null,
+                  value!.isEmpty ? "Hospital is required" : null,
               decoration: const InputDecoration(
                 labelText: "Hospital",
                 hintText: "Enter your Hospital",
@@ -106,8 +105,8 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
             ),
             TextFormField(
               keyboardType: TextInputType.text,
-              onSaved: (newValue) => _email = newValue,
-              validator: (value) => value.isEmpty ? "Email is required" : null,
+              onSaved: (newValue) => _email = newValue!,
+              validator: (value) => value!.isEmpty ? "Email is required" : null,
               decoration: const InputDecoration(
                 labelText: "Email",
                 hintText: "Enter your Email",
@@ -144,8 +143,8 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
                   ),
                 ),
                 onTap: () async {
-                  if (_formKeyDoctor.currentState.validate()) {
-                    _formKeyDoctor.currentState.save();
+                  if (_formKeyDoctor.currentState!.validate()) {
+                    _formKeyDoctor.currentState!.save();
                     lloc.LocationData locationData = await _getLocation();
                     var profile = DoctorProfile(
                       name: name,
@@ -244,7 +243,7 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
                       keyboardType: TextInputType.emailAddress,
                       focusNode: null,
                       initialValue: "",
-                      onSaved: (newValue) => _email = newValue,
+                      onSaved: (newValue) => _email = newValue!,
                       decoration: const InputDecoration(
                         hintText: "Enter Email ID",
                         floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -299,8 +298,8 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
               child: DefaultButton(
                 text: "Save",
                 press: () async {
-                  if (_formKeyDoctor.currentState.validate()) {
-                    _formKeyDoctor.currentState.save();
+                  if (_formKeyDoctor.currentState!.validate()) {
+                    _formKeyDoctor.currentState!.save();
                     lloc.LocationData locationData = await _getLocation();
                     var profile = DoctorProfile(
                       name: docInfo.name,
@@ -350,7 +349,7 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
       backgroundColor: Theme.of(context).colorScheme.secondary,
       content: Text(
         msg,
-        style: Theme.of(context).textTheme.bodySmall.copyWith(fontSize: 12.sp),
+        style: Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 12.sp),
       ),
     ));
   }

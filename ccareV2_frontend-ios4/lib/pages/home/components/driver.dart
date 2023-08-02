@@ -6,15 +6,14 @@ import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
 import 'package:ccarev2_frontend/state_management/main/main_state.dart';
 import 'package:ccarev2_frontend/state_management/user/user_cubit.dart';
 import 'package:ccarev2_frontend/user/domain/credential.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sizer/sizer.dart';
 import 'package:ccarev2_frontend/utils/size_config.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_cubit/flutter_cubit.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart' as lloc;
 import 'package:url_launcher/url_launcher.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class DriverHomeUI extends StatefulWidget {
@@ -28,9 +27,9 @@ class DriverHomeUI extends StatefulWidget {
 
 class _DriverHomeUIState extends State<DriverHomeUI> {
   Completer<GoogleMapController> _controller = Completer();
-  LatLng _patientLocation;
-  LatLng _doctorLocation;
-  EDetails eDetails;
+  late LatLng _patientLocation;
+  late LatLng _doctorLocation;
+  late EDetails eDetails;
   EStatus patientStatus = EStatus.EMERGENCY;
   dynamic currentState = null;
   LatLng _userLocation = LatLng(40, 23);
@@ -44,15 +43,15 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
   void initState() {
     super.initState();
     NotificationController.configure(
-        CubitProvider.of<MainCubit>(context), UserType.DRIVER, context);
+        BlocProvider.of<MainCubit>(context), UserType.DRIVER, context);
     NotificationController.fcmHandler();
-    CubitProvider.of<MainCubit>(context).fetchEmergencyDetails();
+    BlocProvider.of<MainCubit>(context).fetchEmergencyDetails();
     _getLocation();
   }
 
   _makingPhoneCall() async {
     // String url = eDetails.patientDetails.contactNumber;
-    String url = eDetails.patientDetails.contactNumber;
+    String url = eDetails.patientDetails!.contactNumber;
 
     // if (await canLaunch("tel://$url")) {
     await launch("tel:$url");
@@ -108,7 +107,7 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
     // "," +
     // _locationData.longitude.toString());
 
-    _userLocation = LatLng(_locationData.latitude, _locationData.longitude);
+    _userLocation = LatLng(_locationData.latitude!, _locationData.longitude!);
 
     _addDriverMarker();
   }
@@ -119,26 +118,24 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
 
     return Scaffold(
         key: scaffoldKey,
-        body: CubitConsumer<MainCubit, MainState>(builder: (_, state) {
+        body: BlocConsumer<MainCubit, MainState>(builder: (_, state) {
           if (state is DetailsLoaded) {
             currentState = state;
             eDetails = state.eDetails;
             //print("Locations $eDetails");
-            if (eDetails != null) {
-              if (eDetails.patientDetails != null) {
-                _patientAccepted = true;
-                _patientLocation = LatLng(
-                    eDetails.patientDetails.location.latitude,
-                    eDetails.patientDetails.location.longitude);
-                _addPatientMarker();
-              }
-              if (eDetails.doctorDetails != null) {
-                _doctorAccepted = true;
-                _doctorLocation = LatLng(
-                    eDetails.doctorDetails.location.latitude,
-                    eDetails.doctorDetails.location.longitude);
-                _addDoctorMarker();
-              }
+            if (eDetails.patientDetails != null) {
+              _patientAccepted = true;
+              _patientLocation = LatLng(
+                  eDetails.patientDetails!.location.latitude!,
+                  eDetails.patientDetails!.location.longitude!);
+              _addPatientMarker();
+            }
+            if (eDetails.doctorDetails != null) {
+              _doctorAccepted = true;
+              _doctorLocation = LatLng(
+                  eDetails.doctorDetails!.location.latitude!,
+                  eDetails.doctorDetails!.location.longitude!);
+              _addDoctorMarker();
             }
           }
 
@@ -184,8 +181,8 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
                         onPressed: () {
                           // // _hideLoader();
                           // //print("inside");
-                          CubitProvider.of<MainCubit>(
-                                  scaffoldKey.currentContext)
+                          BlocProvider.of<MainCubit>(
+                                  scaffoldKey.get!)
                               .acceptPatientByDriver(state.patientID);
                           Navigator.of(context).pop(false);
                         },
@@ -202,23 +199,23 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
             // //print("patient arrived state");
             // //print(state.location);
             _patientLocation =
-                LatLng(state.location.latitude, state.location.longitude);
+                LatLng(state.location.latitude!, state.location.longitude!);
             //print(_patientLocation);
             _addPatientMarker();
             // // _hideLoader()zz;
-            CubitProvider.of<MainCubit>(context).fetchEmergencyDetails();
+            BlocProvider.of<MainCubit>(context).fetchEmergencyDetails();
           } else if (state is DetailsLoaded) {
             // _hideLoader();
           } else if (state is DoctorAccepted) {
             // _hideLoader();
             //print("doctor accepted state");
             _doctorLocation =
-                LatLng(state.location.latitude, state.location.longitude);
+                LatLng(state.location.latitude!, state.location.longitude!);
             _addDoctorMarker();
             // // _hideLoader();
             _showMessage("Doctor Accepted");
 
-            CubitProvider.of<MainCubit>(context).fetchEmergencyDetails();
+            BlocProvider.of<MainCubit>(context).fetchEmergencyDetails();
           }
         }));
   }
@@ -251,7 +248,7 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
         msg,
         style: Theme.of(context)
             .textTheme
-            .bodySmall
+            .bodySmall!
             .copyWith(color: Colors.white, fontSize: 12.sp),
       ),
     ));
@@ -331,7 +328,7 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
                   ),
                   SizedBox(width: 3.w),
                   Text(
-                    eDetails.patientDetails.name,
+                    eDetails.patientDetails!.name,
                     style: TextStyle(
                         fontSize: 14.sp,
                         color: Colors.blue,
@@ -361,7 +358,7 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
                             color: Colors.blue, size: 15)),
                     TextSpan(text: " Destination :"),
                     TextSpan(
-                        text: eDetails.patientDetails.address,
+                        text: eDetails.patientDetails!.address,
                         style: TextStyle(color: Colors.blue))
                   ],
                 ),
@@ -374,8 +371,8 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20))),
                     onPressed: () async {
-                      CubitProvider.of<MainCubit>(context).statusUpdate("OTW",
-                          patientID: eDetails.patientDetails.id);
+                      BlocProvider.of<MainCubit>(context).statusUpdate("OTW",
+                          patientID: eDetails.patientDetails!.id);
 
                       setState(() {
                         patientStatus = EStatus.OTW;
@@ -400,7 +397,7 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
                   ),
                   SizedBox(width: 3.w),
                   Text(
-                    eDetails.patientDetails.name,
+                    eDetails.patientDetails!.name,
                     style: TextStyle(
                         fontSize: 14.sp,
                         color: Colors.blue,
@@ -431,8 +428,8 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20))),
                     onPressed: () async {
-                      CubitProvider.of<MainCubit>(context).statusUpdate("ATH",
-                          patientID: eDetails.patientDetails.id);
+                      BlocProvider.of<MainCubit>(context).statusUpdate("ATH",
+                          patientID: eDetails.patientDetails!.id);
                       setState(() {
                         _patientAccepted = false;
                       });

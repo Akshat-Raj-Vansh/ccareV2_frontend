@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 class NoAccountText extends StatelessWidget {
   const NoAccountText({
-    Key key,
+    required Key key,
   }) : super(key: key);
 
   @override

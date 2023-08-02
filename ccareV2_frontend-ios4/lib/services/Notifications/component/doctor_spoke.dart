@@ -1,4 +1,3 @@
-//@dart=2.9
 import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
 import 'package:ccarev2_frontend/user/domain/location.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -6,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
 class SpokeNotificationHandler {
-  static MainCubit mainCubit;
-  static BuildContext context;
+  static MainCubit? mainCubit;
+  static BuildContext? context;
   static configure(MainCubit cubit, BuildContext c) {
     mainCubit = cubit;
     context = c;
@@ -25,22 +24,22 @@ class SpokeNotificationHandler {
     // }
     if (message.data['type'] == 'EmergencyStatus') {
       //  print(message.data['status']);
-      await mainCubit.spokeStatusFetched(message.data['status']);
+      await mainCubit!.spokeStatusFetched(message.data['status']);
     }
     if (message.data['type'] == 'Emergency') {
       if (message.data["user"] == "PATIENT") {
         // //print("inside");
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          backgroundColor: Theme.of(context).colorScheme.secondary,
+        ScaffoldMessenger.of(context!).showSnackBar(SnackBar(
+          backgroundColor: Theme.of(context!).colorScheme.secondary,
           content: Text(
             'Patient in emergency!! Accepting the emergency',
-            style: Theme.of(context)
+            style: Theme.of(context!)
                 .textTheme
-                .bodySmall
+                .bodySmall!
                 .copyWith(color: Colors.white, fontSize: 8.sp),
           ),
         ));
-        await mainCubit.showAcceptNotif(message.data["_patientID"]);
+        await mainCubit!.showAcceptNotif(message.data["_patientID"]);
       }
       if (message.data["user"] == "DRIVER") {
         // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -53,8 +52,8 @@ class SpokeNotificationHandler {
         //         .copyWith(color: Colors.white, fontSize :8.sp),
         //   ),
         // ));
-        mainCubit.driverAccepted(Location.fromJson(message.data["location"]));
-        await mainCubit.fetchEmergencyDetails(
+        mainCubit!.driverAccepted(Location.fromJson(message.data["location"]));
+        await mainCubit!.fetchEmergencyDetails(
             patientID: message.data["patientID"]);
       }
     }

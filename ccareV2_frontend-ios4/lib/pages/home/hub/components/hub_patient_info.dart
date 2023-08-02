@@ -1,6 +1,4 @@
-//@dart=2.9
 import 'dart:developer';
-
 import 'package:ccarev2_frontend/main/domain/edetails.dart';
 import 'package:ccarev2_frontend/pages/chat/chatScreen.dart';
 import 'package:ccarev2_frontend/pages/home/hub/components/hub_response.dart';
@@ -13,21 +11,22 @@ import 'package:ccarev2_frontend/state_management/main/main_state.dart';
 import 'package:ccarev2_frontend/user/domain/credential.dart';
 import 'package:ccarev2_frontend/utils/constants.dart';
 import 'package:ccarev2_frontend/utils/size_config.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sizer/sizer.dart';
-import 'package:flutter_cubit/flutter_cubit.dart';
 
 class HubPatientInfo extends StatefulWidget {
   final EDetails details;
   final MainCubit mainCubit;
-  const HubPatientInfo({this.details, this.mainCubit});
+  const HubPatientInfo({required this.details, required this.mainCubit});
 
   @override
   _HubPatientInfoState createState() => _HubPatientInfoState();
 }
 
 class _HubPatientInfoState extends State<HubPatientInfo> {
-  static String token;
+  late String token;
 
   @override
   void initState() {
@@ -44,11 +43,11 @@ class _HubPatientInfoState extends State<HubPatientInfo> {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          title: Text(widget.details.patientDetails.name),
+          title: Text(widget.details.patientDetails!.name),
           backgroundColor: kPrimaryColor,
         ),
-        body: CubitConsumer<MainCubit, MainState>(
-            cubit: widget.mainCubit,
+        body: BlocConsumer<MainCubit, MainState>(
+            bloc: widget.mainCubit,
             builder: (_, state) {
               print("state is $state");
               if (state is TokenLoadedState) {
@@ -123,15 +122,15 @@ class _HubPatientInfoState extends State<HubPatientInfo> {
 
   _buildChatButton() => InkWell(
         onTap: () async {
-          print('Patient ID from Hub: ' + widget.details.patientDetails.id);
+          print('Patient ID from Hub: ' + widget.details.patientDetails!.id);
           print('Token from Hub: ' + token);
           Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (ctx) => ChatPage(
-                      widget.details.doctorDetails.name,
-                      widget.details.doctorDetails.id,
-                      widget.details.patientDetails.id,
+                      widget.details.doctorDetails!.name,
+                      widget.details.doctorDetails!.id,
+                      widget.details.patientDetails!.id,
                       token,
                       widget.mainCubit)));
           // widget.mainCubit.getAllHubDoctors();
@@ -154,7 +153,7 @@ class _HubPatientInfoState extends State<HubPatientInfo> {
               color: kPrimaryLightColor,
               borderRadius: BorderRadius.circular(20)),
           child: Text(
-            widget.details.doctorDetails.name,
+            widget.details.doctorDetails!.name,
             style: TextStyle(color: Colors.white, fontSize: 12.sp),
             textAlign: TextAlign.center,
           ),
@@ -162,7 +161,7 @@ class _HubPatientInfoState extends State<HubPatientInfo> {
       );
   _buildPatientAssessmentButton() => InkWell(
         onTap: () async {
-          widget.mainCubit.getAssessments(widget.details.patientDetails.id);
+          widget.mainCubit.getAssessments(widget.details.patientDetails!.id);
         },
         child: Container(
           width: SizeConfig.screenWidth,
@@ -201,7 +200,7 @@ class _HubPatientInfoState extends State<HubPatientInfo> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text("Name: "),
-                  Text(details.doctorDetails.name),
+                  Text(details.doctorDetails!.name),
                 ],
               ),
               SizedBox(
@@ -211,7 +210,7 @@ class _HubPatientInfoState extends State<HubPatientInfo> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text("Contact Number: "),
-                  Text(details.doctorDetails.contactNumber),
+                  Text(details.doctorDetails!.contactNumber),
                 ],
               ),
               SizedBox(
@@ -221,7 +220,7 @@ class _HubPatientInfoState extends State<HubPatientInfo> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text("Hospital: "),
-                  Text(details.doctorDetails.hospital),
+                  Text(details.doctorDetails!.hospital),
                 ],
               ),
             ],
@@ -252,7 +251,7 @@ class _HubPatientInfoState extends State<HubPatientInfo> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text("Name: "),
-                  Text(details.patientDetails.name),
+                  Text(details.patientDetails!.name),
                 ],
               ),
               SizedBox(
@@ -262,7 +261,7 @@ class _HubPatientInfoState extends State<HubPatientInfo> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text("Contact Number: "),
-                  Text(details.patientDetails.contactNumber),
+                  Text(details.patientDetails!.contactNumber),
                 ],
               ),
             ],
@@ -278,7 +277,7 @@ class _HubPatientInfoState extends State<HubPatientInfo> {
                 builder: (_) => PatientReportScreen(
                   mainCubit: widget.mainCubit,
                   user: UserType.SPOKE,
-                  patientDetails: widget.details.patientDetails,
+                  patientDetails: widget.details.patientDetails!,
                 ),
               ));
         },
@@ -317,7 +316,7 @@ class _HubPatientInfoState extends State<HubPatientInfo> {
 
         _buildSpokeDetails(widget.details),
         //Needs to be conditional
-        if (widget.details.patientDetails.action == "QUESTIONNAIRE")
+        if (widget.details.patientDetails!.action == "QUESTIONNAIRE")
           _buildPatientAssessmentButton(),
         _buildPatientReportButton(),
         _buildResponseButton(),
@@ -334,7 +333,7 @@ class _HubPatientInfoState extends State<HubPatientInfo> {
                 builder: (cTX) => ResponseScreen(
                   mainCubit: widget.mainCubit,
                   user: UserType.HUB,
-                  patientDetails: widget.details.patientDetails,
+                  patientDetails: widget.details.patientDetails!,
                 ),
               ));
         },
@@ -360,7 +359,7 @@ class _HubPatientInfoState extends State<HubPatientInfo> {
               MaterialPageRoute(
                 builder: (_) => PatientExamScreen(
                   mainCubit: widget.mainCubit,
-                  patientDetails: widget.details.patientDetails,
+                  patientDetails: widget.details.patientDetails!,
                   user: UserType.HUB,
                 ),
               ));
@@ -387,7 +386,7 @@ class _HubPatientInfoState extends State<HubPatientInfo> {
               MaterialPageRoute(
                 builder: (_) => PatientReportHistoryScreen(
                   mainCubit: widget.mainCubit,
-                  patientID: widget.details.patientDetails.id,
+                  patientID: widget.details.patientDetails!.id,
                 ),
               ));
         },
@@ -402,4 +401,9 @@ class _HubPatientInfoState extends State<HubPatientInfo> {
           ),
         ),
       );
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(StringProperty('token', token));
+  }
 }

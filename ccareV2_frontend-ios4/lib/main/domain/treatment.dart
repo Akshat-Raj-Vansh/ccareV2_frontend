@@ -1,30 +1,29 @@
-//@dart=2.9
 import 'dart:convert';
 
 class TreatmentReport {
-  bool newReport;
-  String report_time;
-  District district;
-  String spokeHospitalName;
-  String spokeName;
-  ECG ecg;
-  bool ecg_av;
-  MedicalHist medicalHist;
-  ChestReport chestReport;
-  Symptoms symptoms;
-  Examination examination;
+  late bool newReport;
+  late String report_time;
+  late District district;
+  late String spokeHospitalName;
+  late String spokeName;
+  late ECG ecg;
+  late bool ecg_av;
+  late MedicalHist medicalHist;
+  late ChestReport chestReport;
+  late Symptoms symptoms;
+  late Examination examination;
   TreatmentReport({
-    this.newReport,
-    this.report_time,
-    this.district,
-    this.spokeHospitalName,
-    this.spokeName,
-    this.ecg,
+    required this.newReport,
+    required this.report_time,
+    required this.district,
+    required this.spokeHospitalName,
+    required this.spokeName,
+    required this.ecg,
     this.ecg_av = false,
-    this.medicalHist,
-    this.chestReport,
-    this.symptoms,
-    this.examination,
+    required this.medicalHist,
+    required this.chestReport,
+    required this.symptoms,
+    required this.examination,
   });
 
   TreatmentReport.initialize(String sname, String shname, bool ecg_av) {
@@ -66,17 +65,17 @@ class TreatmentReport {
   set examination_(Examination value) => this.examination = value;
 
   TreatmentReport copyWith({
-    bool newReport,
-    String report_time,
-    District district,
-    String spokeName,
-    String spokeHospitalName,
-    ECG ecg,
-    bool ecg_av,
-    MedicalHist medicalHist,
-    ChestReport chestReport,
-    Symptoms symptoms,
-    Examination examination,
+    required bool newReport,
+    required String report_time,
+    required District district,
+    required String spokeName,
+    required String spokeHospitalName,
+    required ECG ecg,
+    required bool ecg_av,
+    required MedicalHist medicalHist,
+    required ChestReport chestReport,
+    required Symptoms symptoms,
+    required Examination examination,
   }) {
     return TreatmentReport(
       newReport: newReport ?? this.newReport,
@@ -180,13 +179,13 @@ class ECGFile {
   String file_id;
   String seq_no;
   ECGFile({
-    this.file_id,
-    this.seq_no,
+    required this.file_id,
+    required this.seq_no,
   });
 
   ECGFile copyWith({
-    String file_id,
-    String seq_no,
+    required String file_id,
+    required String seq_no,
   }) {
     return ECGFile(
       file_id: file_id ?? this.file_id,
@@ -230,13 +229,13 @@ class ECGFile {
 }
 
 class ECG {
-  String ecg_time;
-  ECGType ecg_type;
-  List<ECGFile> ecg_file_id;
+  late String ecg_time;
+  late ECGType ecg_type;
+  late List<ECGFile> ecg_file_id;
   ECG({
-    this.ecg_time,
-    this.ecg_type,
-    this.ecg_file_id,
+    required this.ecg_time,
+    required this.ecg_type,
+    required this.ecg_file_id,
   });
   ECG.initialize() {
     this.ecg_time = "nill";
@@ -248,9 +247,9 @@ class ECG {
   set ecg_file_ids_(List<ECGFile> value) => this.ecg_file_id = value;
 
   ECG copyWith({
-    String ecg_time,
-    ECGType ecg_type,
-    List<ECGFile> ecg_file_id,
+    required String ecg_time,
+    required ECGType ecg_type,
+    required List<ECGFile> ecg_file_id,
   }) {
     return ECG(
       ecg_time: ecg_time ?? this.ecg_time,
@@ -298,19 +297,19 @@ class ECG {
 }
 
 class MedicalHist {
-  YN smoker;
-  YN diabetic;
-  YN hypertensive;
-  YN dyslipidaemia;
-  YN old_mi;
-  PN trop_i;
+  late YN smoker;
+  late YN diabetic;
+  late YN hypertensive;
+  late YN dyslipidaemia;
+  late YN old_mi;
+  late PN trop_i;
   MedicalHist({
-    this.smoker,
-    this.diabetic,
-    this.hypertensive,
-    this.dyslipidaemia,
-    this.old_mi,
-    this.trop_i,
+    required this.smoker,
+    required this.diabetic,
+    required this.hypertensive,
+    required this.dyslipidaemia,
+    required this.old_mi,
+    required this.trop_i,
   });
   MedicalHist.initialize() {
     this.smoker = YN.nill;
@@ -328,12 +327,12 @@ class MedicalHist {
   set old_mi_(YN value) => this.old_mi = value;
 
   MedicalHist copyWith({
-    YN smoker,
-    YN diabetic,
-    YN hypertensive,
-    YN dyslipidaemia,
-    YN old_mi,
-    PN trop_i,
+    required YN smoker,
+    required YN diabetic,
+    required YN hypertensive,
+    required YN dyslipidaemia,
+    required YN old_mi,
+    required PN trop_i,
   }) {
     return MedicalHist(
       smoker: smoker ?? this.smoker,
@@ -416,21 +415,21 @@ class MedicalHist {
 }
 
 class ChestReport {
-  YN chest_pain;
-  Site site;
-  Location location;
+  late YN chest_pain;
+  late Site site;
+  late Location location;
   // Intensity intensity;
-  Severity severity;
-  Radiation radiation;
-  String duration;
+  late Severity severity;
+  late Radiation radiation;
+  late String duration;
   ChestReport({
-    this.chest_pain,
-    this.site,
-    this.location,
+    required this.chest_pain,
+    required this.site,
+    required this.location,
     // this.intensity,
-    this.severity,
-    this.radiation,
-    this.duration,
+    required this.severity,
+    required this.radiation,
+    required this.duration,
   });
 
   ChestReport.initialize() {
@@ -452,13 +451,13 @@ class ChestReport {
   set duration_(String value) => this.duration = value;
 
   ChestReport copyWith({
-    YN chest_pain,
-    Site site,
-    Location location,
+    required YN chest_pain,
+    required Site site,
+    required Location location,
     // Intensity intensity,
-    Severity severity,
-    Radiation radiation,
-    String duration,
+    required Severity severity,
+    required Radiation radiation,
+    required String duration,
   }) {
     return ChestReport(
       chest_pain: chest_pain ?? this.chest_pain,
@@ -538,18 +537,18 @@ class ChestReport {
 }
 
 class Symptoms {
-  YN postural_black_out;
+  late YN postural_black_out;
   // YN light_headedness;
-  YN sweating;
-  YN nausea;
-  YN shortness_of_breath;
+  late YN sweating;
+  late YN nausea;
+  late YN shortness_of_breath;
   // YN loss_of_consciousness;
   Symptoms({
-    this.postural_black_out,
+    required this.postural_black_out,
     // this.light_headedness,
-    this.sweating,
-    this.nausea,
-    this.shortness_of_breath,
+    required this.sweating,
+    required this.nausea,
+    required this.shortness_of_breath,
     // this.loss_of_consciousness,
   });
   Symptoms.initialize() {
@@ -569,11 +568,11 @@ class Symptoms {
   // set loss_of_consciousness_(YN value) => this.loss_of_consciousness = value;
 
   Symptoms copyWith({
-    YN postural_black_out,
+    required YN postural_black_out,
     // YN light_headedness,
-    YN sweating,
-    YN nausea,
-    YN shortness_of_breath,
+    required YN sweating,
+    required YN nausea,
+    required YN shortness_of_breath,
     // YN loss_of_consciousness,
   }) {
     return Symptoms(
@@ -651,17 +650,17 @@ class Symptoms {
 }
 
 class Examination {
-  String pulse_rate;
-  String dbp;
-  String sbp;
-  String spo2;
-  YN local_tenderness;
+  late String pulse_rate;
+  late String dbp;
+  late String sbp;
+  late  String spo2;
+  late YN local_tenderness;
   Examination({
-    this.pulse_rate,
-    this.dbp,
-    this.sbp,
-    this.spo2,
-    this.local_tenderness,
+    required this.pulse_rate,
+    required this.dbp,
+    required this.sbp,
+    required this.spo2,
+    required this.local_tenderness,
   });
   Examination.initialize() {
     this.pulse_rate = "nill";
@@ -678,11 +677,11 @@ class Examination {
   // set local_tenderness_(String value) => this.local_tenderness = value;
 
   Examination copyWith({
-    String pulse_rate,
-    String dbp,
-    String sbp,
-    String spo2,
-    YN local_tenderness,
+    required String pulse_rate,
+    required String dbp,
+    required String sbp,
+    required String spo2,
+    required YN local_tenderness,
   }) {
     return Examination(
       pulse_rate: pulse_rate ?? this.pulse_rate,

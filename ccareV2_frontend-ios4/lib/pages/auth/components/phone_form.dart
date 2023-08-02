@@ -5,8 +5,6 @@ import 'package:ccarev2_frontend/utils/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
-import 'package:flutter_cubit/flutter_cubit.dart';
-
 
 class PhoneForm extends StatefulWidget {
   final PageController controller;
@@ -95,7 +93,7 @@ class phoneFormState extends State<PhoneForm> {
                             ? "Please enter a Phone Number"
                             : phone.length != 10
                                 ? "Please enter a valid Phone Number"
-                                : null),
+                                : null, icon: Icon(Icons.phone), key: _formKey, initialValue: '', onSubmitted: (String value) {  }, textInputAction: TextInputAction.done,),
                   ],
                 ),
                 SizedBox(height: SizeConfig.screenHeight * 0.06),

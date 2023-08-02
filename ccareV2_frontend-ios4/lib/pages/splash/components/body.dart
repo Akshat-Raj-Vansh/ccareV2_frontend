@@ -19,8 +19,8 @@ class _BodyState extends State<Body> {
   int currentPage = 0;
   PageController controller = PageController();
   Location location = Location();
-  bool _serviceEnabled;
-  PermissionStatus _permissionGranted;
+  late bool _serviceEnabled;
+  late PermissionStatus _permissionGranted;
   List<Map<String, String>> splashData = [
     {
       "text": "Welcome to CardioCare,\n Let’s take care of your heart!",
@@ -77,8 +77,8 @@ class _BodyState extends State<Body> {
             Expanded(
               flex: 5,
               child: SplashContent(
-                image: splashData[0]["image"],
-                text: splashData[0]['text'],
+                image: splashData[0]["image"]!,
+                text: splashData[0]['text']!,
               ),
             ),
             Expanded(
@@ -94,10 +94,10 @@ class _BodyState extends State<Body> {
     );
   }
 
-  _button({String text, Function press}) => SizedBox(
+  _button({required String text, Function? press}) => SizedBox(
         height: 10.h,
         child: TextButton(
-          onPressed: press,
+          onPressed: () {}, //There was a function press here
           child: Container(
             width: 60.w,
             padding: const EdgeInsets.all(10),

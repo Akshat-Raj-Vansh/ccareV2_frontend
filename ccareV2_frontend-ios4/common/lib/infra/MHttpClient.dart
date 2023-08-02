@@ -6,14 +6,14 @@ class MHttpClient implements IHttpClient {
 
   MHttpClient(this.client);
   @override
-  Future<HttpResult> get(String url, {Map<String, String>? headers}) async {
+  Future<HttpResult> get(String url, Map<String, String>? headers) async {
     final response = await client.get(Uri.parse(url), headers: headers);
     return _parseRespone(response);
   }
 
   @override
   Future<HttpResult> post(String url, String body,
-      {Map<String, String>? headers}) async {
+      Map<String, String>? headers) async {
     final response =
         await client.post(Uri.parse(url), body: body, headers: headers);
     return _parseRespone(response);
