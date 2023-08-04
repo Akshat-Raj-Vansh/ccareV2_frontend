@@ -4,18 +4,18 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
 class DriverNotificationHandler {
-  static MainCubit? mainCubit;
-  static BuildContext? context;
-  static configure(MainCubit cubit, BuildContext c) {
+  MainCubit? mainCubit;
+  // BuildContext? context;
+  configure(MainCubit cubit) {
     mainCubit = cubit;
-    context = c;
+    // context = c;
   }
 
-  static Future<void> backgroundMessageHandler(RemoteMessage message) async {
+  Future<void> backgroundMessageHandler(RemoteMessage message) async {
     //print("Handling a background message for driver: ${message.data}");
   }
 
-  static Future<void> foregroundMessageHandler(RemoteMessage message) async {
+  Future<void> foregroundMessageHandler(RemoteMessage message) async {
     //print("Handling a foreground message for driver: ${message.data}");
     if (message.data['type'] == 'Emergency') {
       if (message.data['user'] == "PATIENT") {
@@ -51,7 +51,7 @@ class DriverNotificationHandler {
     }
   }
 
-  static Future<void> onMessageOpenedHandler(RemoteMessage message) async {
+  Future<void> onMessageOpenedHandler(RemoteMessage message) async {
     if (message.data['type'] == 'Emergency') {
       //print(message.data);
       await mainCubit!.acceptRequest(message.data["_patientID"]);

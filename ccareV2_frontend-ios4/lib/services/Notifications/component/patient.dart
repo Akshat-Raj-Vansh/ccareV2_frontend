@@ -5,68 +5,72 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
 class PatientNotificationHandler {
-  static MainCubit? mainCubit;
-  static BuildContext? context;
-  static configure(MainCubit cubit, BuildContext c) {
+  MainCubit? mainCubit;
+  // BuildContext context = BuildContext as BuildContext;
+  
+
+  PatientNotificationHandler();
+
+  void configure(MainCubit cubit) {
     mainCubit = cubit;
-    context = c;
+    // context = c;
   }
 
-  static Future<void> backgroundMessageHandler(RemoteMessage message) async {
+  Future<void> backgroundMessageHandler(RemoteMessage message) async {
     //print("Handling a background message for patient: ${message.data}");
   }
 
-  static Future<void> foregroundMessageHandler(RemoteMessage message) async {
+  Future<void> foregroundMessageHandler(RemoteMessage message) async {
     //print("Handling a foreground message for patient: ${message.data}");
     if (message.data['type'] == 'Emergency') {
       if (message.data["user"] == "DOCTOR") {
-        ScaffoldMessenger.of(context!).showSnackBar(SnackBar(
-          backgroundColor: Theme.of(context!).colorScheme.secondary,
-          content: Text(
-            message.notification!.body!,
-            style: Theme.of(context!)
-                .textTheme
-                .bodySmall!
-                .copyWith(color: Colors.white, fontSize: 12.sp),
-          ),
-        ));
+        // ScaffoldMessenger.of(context!).showSnackBar(SnackBar(
+        //   backgroundColor: Theme.of(context!).colorScheme.secondary,
+        //   content: Text(
+        //     message.notification!.body!,
+        //     style: Theme.of(context!)
+        //         .textTheme
+        //         .bodySmall!
+        //         .copyWith(color: Colors.white, fontSize: 12.sp),
+        //   ),
+        // ));
         //print("LOCATION DOCTOR");
         //print(message.data["location"]);
         mainCubit!.doctorAccepted(Location.fromJson(message.data["location"]));
-        await mainCubit!.fetchEmergencyDetails(
-            patientID: message.data["patientID"]);
+        await mainCubit!
+            .fetchEmergencyDetails(patientID: message.data["patientID"]);
       }
       if (message.data["user"] == "DRIVER") {
-        ScaffoldMessenger.of(context!).showSnackBar(SnackBar(
-          backgroundColor: Theme.of(context!).colorScheme.secondary,
-          content: Text(
-            message.notification!.body!,
-            style: Theme.of(context!)
-                .textTheme
-                .bodySmall!
-                .copyWith(color: Colors.white, fontSize: 12.sp),
-          ),
-        ));
+        // ScaffoldMessenger.of(context!).showSnackBar(SnackBar(
+        //   backgroundColor: Theme.of(context!).colorScheme.secondary,
+        //   content: Text(
+        //     message.notification!.body!,
+        //     style: Theme.of(context!)
+        //         .textTheme
+        //         .bodySmall!
+        //         .copyWith(color: Colors.white, fontSize: 12.sp),
+        //   ),
+        // ));
         //print("LOCATION DRIVER");
         //print(message.data["location"]);
         mainCubit!.driverAccepted(Location.fromJson(message.data["location"]));
-        await mainCubit!.fetchEmergencyDetails(
-            patientID: message.data["patientID"]);
+        await mainCubit!
+            .fetchEmergencyDetails(patientID: message.data["patientID"]);
       }
     }
     if (message.data['type'] == 'EmergencyStatus') {
       if (message.data["status"] == "UGT") {
-        ScaffoldMessenger.of(context!).showSnackBar(SnackBar(
-          backgroundColor: Theme.of(context!).colorScheme.secondary,
-          content: Text(
-            message.notification!.body!,
-            style: Theme.of(context!)
-                .textTheme
-                .bodySmall!
-                .copyWith(color: Colors.white, fontSize: 12.sp),
-          ),
-        ));
-        print("Status Updated to UGT");
+        // ScaffoldMessenger.of(context!).showSnackBar(SnackBar(
+        //   backgroundColor: Theme.of(context!).colorScheme.secondary,
+        //   content: Text(
+        //     message.notification!.body!,
+        //     style: Theme.of(context!)
+        //         .textTheme
+        //         .bodySmall!
+        //         .copyWith(color: Colors.white, fontSize: 12.sp),
+        //   ),
+        // ));
+        // print("Status Updated to UGT");
         //print(message.data["location"]);
         await mainCubit!.getStatus();
       }

@@ -9,103 +9,106 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class NotificationController {
-  static AndroidNotificationChannel highImportancechannel =
-      AndroidNotificationChannel(
-          'high_importance_channel', // id
-          'Emergency5', // title
-          description:
-              'This channel is used for important notifications.', // description
-          importance: Importance.max);
+  final patientNotificationHandler = PatientNotificationHandler();
+  final spokeNotificationHandler = SpokeNotificationHandler();
+  final hubNotificationHandler = HubNotificationHandler();
+  final driverNotificationHandler = DriverNotificationHandler();
+  AndroidNotificationChannel highImportancechannel = AndroidNotificationChannel(
+      'high_importance_channel', // id
+      'Emergency5', // title
+      description:
+          'This channel is used for important notifications.', // description
+      importance: Importance.max);
 
-  static FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
-  static UserType? userType;
-  static configure(MainCubit mainCubit, UserType type, BuildContext context) {
+  UserType? userType;
+  configure(MainCubit mainCubit, UserType type, BuildContext context) {
     userType = type;
     //print(type);
     switch (userType) {
       case UserType.PATIENT:
-        PatientNotificationHandler.configure(mainCubit, context);
+        patientNotificationHandler.configure(mainCubit);
         break;
       case UserType.SPOKE:
-        SpokeNotificationHandler.configure(mainCubit, context);
+        SpokeNotificationHandler().configure(mainCubit);
         break;
       case UserType.HUB:
-        HubNotificationHandler.configure(mainCubit, context);
+        HubNotificationHandler().configure(mainCubit);
         break;
       default:
-        DriverNotificationHandler.configure(mainCubit, context);
+        DriverNotificationHandler().configure(mainCubit);
         break;
     }
   }
 
-  static get getFCMToken async => await FirebaseMessaging.instance.getToken();
+  get getFCMToken async => await FirebaseMessaging.instance.getToken();
 
-  static createChannels() async {
+  createChannels() async {
     await flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()
-        !.createNotificationChannel(highImportancechannel);
+            AndroidFlutterLocalNotificationsPlugin>()!
+        .createNotificationChannel(highImportancechannel);
   }
 
-  static fcmHandler() {
+  fcmHandler() {
     backgroundMessageHandler();
     onMessageHandler();
     onMessageOpenedHandler();
   }
 
-  static backgroundMessageHandler() async {
+  backgroundMessageHandler() async {
     Future<void> Function(RemoteMessage) selected;
     switch (userType) {
       case UserType.PATIENT:
-        selected = PatientNotificationHandler.backgroundMessageHandler;
+        selected = patientNotificationHandler.backgroundMessageHandler;
         break;
       case UserType.SPOKE:
-        selected = SpokeNotificationHandler.backgroundMessageHandler;
+        selected = SpokeNotificationHandler().backgroundMessageHandler;
         break;
       case UserType.HUB:
-        selected = HubNotificationHandler.backgroundMessageHandler;
+        selected = HubNotificationHandler().backgroundMessageHandler;
         break;
       default:
-        selected = DriverNotificationHandler.backgroundMessageHandler;
+        selected = DriverNotificationHandler().backgroundMessageHandler;
         break;
     }
     FirebaseMessaging.onBackgroundMessage(selected);
   }
 
-  static onMessageHandler() {
+  onMessageHandler() {
     Future<void> Function(RemoteMessage) selected;
     switch (userType) {
       case UserType.PATIENT:
-        selected = PatientNotificationHandler.foregroundMessageHandler;
+        selected = patientNotificationHandler.foregroundMessageHandler;
         break;
       case UserType.SPOKE:
-        selected = SpokeNotificationHandler.foregroundMessageHandler;
+        selected = SpokeNotificationHandler().foregroundMessageHandler;
         break;
       case UserType.HUB:
-        selected = HubNotificationHandler.foregroundMessageHandler;
+        selected = HubNotificationHandler().foregroundMessageHandler;
         break;
       default:
-        selected = DriverNotificationHandler.foregroundMessageHandler;
+        selected = DriverNotificationHandler().foregroundMessageHandler;
         break;
     }
     FirebaseMessaging.onMessage.listen(selected);
   }
 
-  static onMessageOpenedHandler() {
+  onMessageOpenedHandler() {
     Future<void> Function(RemoteMessage) selected;
     switch (userType) {
       case UserType.PATIENT:
-        selected = PatientNotificationHandler.foregroundMessageHandler;
+        selected = patientNotificationHandler.foregroundMessageHandler;
         break;
       case UserType.SPOKE:
-        selected = SpokeNotificationHandler.onMessageOpenedHandler;
+        selected = SpokeNotificationHandler().onMessageOpenedHandler;
         break;
       case UserType.HUB:
-        selected = HubNotificationHandler.onMessageOpenedHandler;
+        selected = HubNotificationHandler().onMessageOpenedHandler;
         break;
       default:
-        selected = DriverNotificationHandler.onMessageOpenedHandler;
+        selected = DriverNotificationHandler().onMessageOpenedHandler;
         break;
     }
     FirebaseMessaging.onMessageOpenedApp.listen(selected);

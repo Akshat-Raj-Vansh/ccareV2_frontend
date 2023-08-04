@@ -38,13 +38,13 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
   static bool _patientAccepted = false;
   final Set<Marker> _markers = {};
   MapType _currentMapType = MapType.normal;
-  var scaffoldKey = GlobalKey<ScaffoldState>();
+  var scaffoldKey = GlobalKey<ScaffoldMessengerState>();
   @override
   void initState() {
     super.initState();
-    NotificationController.configure(
+    NotificationController().configure(
         BlocProvider.of<MainCubit>(context), UserType.DRIVER, context);
-    NotificationController.fcmHandler();
+    NotificationController().fcmHandler();
     BlocProvider.of<MainCubit>(context).fetchEmergencyDetails();
     _getLocation();
   }
@@ -181,8 +181,7 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
                         onPressed: () {
                           // // _hideLoader();
                           // //print("inside");
-                          BlocProvider.of<MainCubit>(
-                                  scaffoldKey.get!)
+                          BlocProvider.of<MainCubit>(scaffoldKey.get)
                               .acceptPatientByDriver(state.patientID);
                           Navigator.of(context).pop(false);
                         },

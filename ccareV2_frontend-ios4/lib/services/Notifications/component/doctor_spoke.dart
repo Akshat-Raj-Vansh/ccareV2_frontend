@@ -5,18 +5,18 @@ import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
 class SpokeNotificationHandler {
-  static MainCubit? mainCubit;
-  static BuildContext? context;
-  static configure(MainCubit cubit, BuildContext c) {
+  MainCubit? mainCubit;
+  // BuildContext context = BuildContext as BuildContext;
+  configure(MainCubit cubit) {
     mainCubit = cubit;
-    context = c;
+    // context = c;
   }
 
-  static Future<void> backgroundMessageHandler(RemoteMessage message) async {
+  Future<void> backgroundMessageHandler(RemoteMessage message) async {
     print("Handling a background message for doctor: ${message.data}");
   }
 
-  static Future<void> foregroundMessageHandler(RemoteMessage message) async {
+  Future<void> foregroundMessageHandler(RemoteMessage message) async {
     print("Handling a foreground message for doctor: ${message.data}");
 
     //  if(message.data["type"]=="Consultation" && message.data["user"]=="HUB"){
@@ -29,16 +29,16 @@ class SpokeNotificationHandler {
     if (message.data['type'] == 'Emergency') {
       if (message.data["user"] == "PATIENT") {
         // //print("inside");
-        ScaffoldMessenger.of(context!).showSnackBar(SnackBar(
-          backgroundColor: Theme.of(context!).colorScheme.secondary,
-          content: Text(
-            'Patient in emergency!! Accepting the emergency',
-            style: Theme.of(context!)
-                .textTheme
-                .bodySmall!
-                .copyWith(color: Colors.white, fontSize: 8.sp),
-          ),
-        ));
+        // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        //   backgroundColor: Theme.of(context).colorScheme.secondary,
+        //   content: Text(
+        //     'Patient in emergency!! Accepting the emergency',
+        //     style: Theme.of(context)
+        //         .textTheme
+        //         .bodySmall!
+        //         .copyWith(color: Colors.white, fontSize: 8.sp),
+        //   ),
+        // ));
         await mainCubit!.showAcceptNotif(message.data["_patientID"]);
       }
       if (message.data["user"] == "DRIVER") {
@@ -59,7 +59,7 @@ class SpokeNotificationHandler {
     }
   }
 
-  static Future<void> onMessageOpenedHandler(RemoteMessage message) async {
+  Future<void> onMessageOpenedHandler(RemoteMessage message) async {
     print(
         "Handling a message for doctor in onMessageOpenedHandler: ${message.data}");
     // if (message.data['type'] == 'Emergency') {

@@ -40,8 +40,8 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
     super.initState();
     BlocProvider.of<MainCubit>(context).getAllPatients();
     BlocProvider.of<MainCubit>(context).getAllPatientRequests();
-    NotificationController.configure(widget.mainCubit, UserType.SPOKE, context);
-    NotificationController.fcmHandler();
+    NotificationController().configure(widget.mainCubit, UserType.SPOKE, context);
+    NotificationController().fcmHandler();
     BlocProvider.of<MainCubit>(context).fetchToken();
   }
 

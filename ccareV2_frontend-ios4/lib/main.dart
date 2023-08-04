@@ -19,6 +19,7 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   FirebaseMessaging messaging = FirebaseMessaging.instance;
+  final notificationController = NotificationController();
   NotificationSettings settings = await messaging.requestPermission(
     alert: true,
     announcement: false,
@@ -32,9 +33,9 @@ void main() async {
     await messaging.setForegroundNotificationPresentationOptions(
         alert: true, badge: true, sound: true);
   } else if (Platform.isAndroid) {
-    await NotificationController.createChannels();
+    await notificationController.createChannels();
   }
-  print('FCM Token: ' + await NotificationController.getFCMToken);
+  print('FCM Token: ' + await notificationController.getFCMToken);
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);

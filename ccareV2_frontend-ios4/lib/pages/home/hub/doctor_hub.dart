@@ -46,8 +46,8 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
     BlocProvider.of<MainCubit>(context).fetchHubPatientDetails();
     BlocProvider.of<MainCubit>(context).fetchHubRequests();
     BlocProvider.of<MainCubit>(context).fetchToken();
-    NotificationController.configure(widget.mainCubit, UserType.HUB, context);
-    NotificationController.fcmHandler();
+    NotificationController().configure(widget.mainCubit, UserType.HUB, context);
+    NotificationController().fcmHandler();
   }
 
   _showLoader() {

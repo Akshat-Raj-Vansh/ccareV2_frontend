@@ -4,38 +4,38 @@ import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
 class HubNotificationHandler {
-  static MainCubit? mainCubit;
-  static BuildContext? context;
-  static configure(MainCubit cubit, BuildContext c) {
+  MainCubit? mainCubit;
+  // BuildContext? context;
+  configure(MainCubit cubit) {
     mainCubit = cubit;
-    context = c;
+    // context = c;
   }
 
-  static Future<void> backgroundMessageHandler(RemoteMessage message) async {
+  Future<void> backgroundMessageHandler(RemoteMessage message) async {
     print("Handling a background message for spoke: ${message.data}");
   }
 
-  static Future<void> foregroundMessageHandler(RemoteMessage message) async {
+  Future<void> foregroundMessageHandler(RemoteMessage message) async {
     print("Handling a foreground message for spoke: ${message.data}");
     if (message.data['type'] == 'Consultation') {
       if (message.data["user"] == "SPOKE") {
         // //print("inside");
-        ScaffoldMessenger.of(context!).showSnackBar(SnackBar(
-          backgroundColor: Theme.of(context!).colorScheme.secondary,
-          content: Text(
-            'New Patient Request Received!',
-            style: Theme.of(context!)
-                .textTheme
-                .bodySmall!
-                .copyWith(color: Colors.white, fontSize: 8.sp),
-          ),
-        ));
+        // ScaffoldMessenger.of(context!).showSnackBar(SnackBar(
+        //   backgroundColor: Theme.of(context!).colorScheme.secondary,
+        //   content: Text(
+        //     'New Patient Request Received!',
+        //     style: Theme.of(context!)
+        //         .textTheme
+        //         .bodySmall!
+        //         .copyWith(color: Colors.white, fontSize: 8.sp),
+        //   ),
+        // ));
         await mainCubit!.acceptPatientByHub(message.data["patientID"]);
       }
     }
   }
 
-  static Future<void> onMessageOpenedHandler(RemoteMessage message) async {
+  Future<void> onMessageOpenedHandler(RemoteMessage message) async {
     if (message.data['type'] == 'Consultation') {
       print("Not supposed to be here");
       await mainCubit!.acceptPatientByHub(message.data["patientID"]);

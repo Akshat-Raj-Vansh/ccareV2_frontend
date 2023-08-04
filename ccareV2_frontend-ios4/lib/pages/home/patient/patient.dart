@@ -85,9 +85,9 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
     BlocProvider.of<MainCubit>(context).getStatus();
     // CubitProvider.of<MainCubit>(context).recentHistory();
     //CubitProvider.of<MainCubit>(context).getQuestions();
-    NotificationController.configure(
+    NotificationController().configure(
         BlocProvider.of<MainCubit>(context), UserType.PATIENT, context);
-    NotificationController.fcmHandler();
+    NotificationController().fcmHandler();
   }
 
   Future<loc.Location> _getLocation() async {
