@@ -8,9 +8,9 @@ import 'splash_content.dart';
 import '../../auth/auth_page_adapter.dart';
 
 class Body extends StatefulWidget {
-  final IAuthPageAdapter pageAdapter;
+  IAuthPageAdapter? pageAdapter;
 
-  const Body(this.pageAdapter);
+  Body(this.pageAdapter);
   @override
   _BodyState createState() => _BodyState();
 }
@@ -134,7 +134,7 @@ class _BodyState extends State<Body> {
             children: [
               _button(
                 text: "Patient",
-                press: () => widget.pageAdapter.onLoginButtonPressed(context),
+                press: () => widget.pageAdapter!.onLoginButtonPressed(context),
               ),
               _button(
                   text: "Doctor",
@@ -170,7 +170,7 @@ class _BodyState extends State<Body> {
                                   ),
                                 ),
                                 child: TextButton(
-                                  onPressed: () => widget.pageAdapter
+                                  onPressed: () => widget.pageAdapter!
                                       .onLoginButtonPressed(context),
                                   child: Text(
                                     'SPOKE',
@@ -194,7 +194,7 @@ class _BodyState extends State<Body> {
                                   ),
                                 ),
                                 child: TextButton(
-                                  onPressed: () => widget.pageAdapter
+                                  onPressed: () => widget.pageAdapter!
                                       .onLoginButtonPressed(context),
                                   child: Text(
                                     'HUB',
@@ -215,7 +215,7 @@ class _BodyState extends State<Body> {
                   }),
               _button(
                 text: "Driver",
-                press: () => widget.pageAdapter.onLoginButtonPressed(context),
+                press: () => widget.pageAdapter!.onLoginButtonPressed(context),
               ),
             ],
           ),
@@ -239,7 +239,7 @@ class _BodyState extends State<Body> {
             children: [
               _button(
                 text: "Login",
-                press: () => widget.pageAdapter.onLoginButtonPressed(context),
+                press: () => widget.pageAdapter!.onLoginButtonPressed(context),
               ),
             ],
           ),

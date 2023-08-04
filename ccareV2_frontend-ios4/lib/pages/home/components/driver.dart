@@ -181,7 +181,8 @@ class _DriverHomeUIState extends State<DriverHomeUI> {
                         onPressed: () {
                           // // _hideLoader();
                           // //print("inside");
-                          BlocProvider.of<MainCubit>(scaffoldKey.get)
+                          BlocProvider.of<MainCubit>(
+                                  scaffoldKey.currentContext!)
                               .acceptPatientByDriver(state.patientID);
                           Navigator.of(context).pop(false);
                         },

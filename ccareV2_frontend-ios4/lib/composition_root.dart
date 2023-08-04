@@ -30,20 +30,20 @@ import '../user/infra/user_api.dart';
 
 class CompositionRoot {
   late SharedPreferences sharedPreferences;
-  late ILocalStore localStore;
+  ILocalStore? localStore;
   late String baseUrl;
   late Client client;
   late SecureClient secureClient;
   late UserAPI userAPI;
   late MainAPI mainAPI;
-  late IAuthPageAdapter authPageAdapter;
+  IAuthPageAdapter? authPageAdapter;
   late ProfilePageAdapter profilePageAdapter;
   late HomePageAdapter homePageAdapter;
   late UserService userService;
   late UserCubit userCubit;
   late MainCubit mainCubit;
 //90d9f67022627247658ea748f4695546
-   configure() async {
+  configure() async {
     sharedPreferences = await SharedPreferences.getInstance();
     localStore = LocalStore(sharedPreferences);
     client = Client();
@@ -52,8 +52,8 @@ class CompositionRoot {
     // baseUrl = "http://192.168.95.55:3000";
     userAPI = UserAPI(client, baseUrl);
     mainAPI = MainAPI(client, baseUrl);
-    mainCubit = MainCubit(localStore, mainAPI);
-    userCubit = UserCubit(localStore, userAPI);
+    mainCubit = MainCubit(localStore!, mainAPI);
+    userCubit = UserCubit(localStore!, userAPI);
     homePageAdapter = HomePageAdapter(
         createPatientHomeUI,
         createSpokeDoctorHomeUI,
@@ -70,7 +70,13 @@ class CompositionRoot {
     // var token = await localStore.fetch();
     // var isnewUser = await localStore.fetchNewUser();
     // var userType = await localStore.fetchUserType();
-    Details? details = await localStore.fetchDetails();
+
+    Details? details;
+
+    if (localStore != null) {
+      details = await localStore!.fetchDetails();
+    }
+
     //print("COMPOSITION ROOT START");
 
     if (details == null) return splashScreen();
@@ -86,18 +92,21 @@ class CompositionRoot {
   }
 
   Widget splashScreen() {
-    return SplashScreen(authPageAdapter);
+    if (authPageAdapter != null) {
+      return SplashScreen(authPageAdapter!);
+    }
+    return SplashScreen(null);
   }
 
   Widget createLoginScreen() {
-    ProfileCubit profileCubit = ProfileCubit(localStore, userAPI);
+    ProfileCubit profileCubit = ProfileCubit(localStore!, userAPI);
     return MultiBlocProvider(
       providers: [
         BlocProvider<UserCubit>(create: (context) => userCubit),
         BlocProvider<ProfileCubit>(create: (context) => profileCubit),
       ],
       child: AuthPage(
-        pageAdatper: authPageAdapter,
+        pageAdatper: authPageAdapter!,
       ),
       // child: AuthPage(
       //   pageAdatper: authPageAdapter,
@@ -115,7 +124,7 @@ class CompositionRoot {
   }
 
   Widget createProfileScreen(UserType userType) {
-    ProfileCubit profileCubit = ProfileCubit(localStore, userAPI);
+    ProfileCubit profileCubit = ProfileCubit(localStore!, userAPI);
     return MultiBlocProvider(
       providers: [
         BlocProvider<UserCubit>(create: (context) => userCubit),
@@ -177,7 +186,8 @@ class CompositionRoot {
       ],
       child: EmergencyScreen(
         userType: userType,
-        location: location, patientID: '',
+        location: location,
+        patientID: '',
       ),
     );
   }
