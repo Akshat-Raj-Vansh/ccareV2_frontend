@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:ccarev2_frontend/firebase_options.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/services.dart';
@@ -7,14 +6,16 @@ import 'package:sizer/sizer.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:get/get.dart';
 import './utils/constants.dart';
 import 'composition_root.dart';
 import 'services/Notifications/notificationContoller.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await CompositionRoot().configure();
-  var startPage = await CompositionRoot().start();
+  final _compositionRoot = CompositionRoot();
+  await _compositionRoot.configure();
+  var startPage = _compositionRoot.start();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -39,7 +40,7 @@ void main() async {
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
-  runApp(MyApp(startPage));
+  runApp(MyApp(await startPage));
 }
 
 // Platform  Firebase App Id
@@ -54,7 +55,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Sizer(
-      builder: (context, orientation, deviceType) => MaterialApp(
+      builder: (context, orientation, deviceType) => GetMaterialApp(
           title: 'CardioCare',
           debugShowCheckedModeBanner: false,
           theme: ThemeData(

@@ -8,7 +8,7 @@ import 'splash_content.dart';
 import '../../auth/auth_page_adapter.dart';
 
 class Body extends StatefulWidget {
-  IAuthPageAdapter? pageAdapter;
+  IAuthPageAdapter pageAdapter;
 
   Body(this.pageAdapter);
   @override
@@ -94,10 +94,10 @@ class _BodyState extends State<Body> {
     );
   }
 
-  _button({required String text, Function? press}) => SizedBox(
+  _button({required String text, press}) => SizedBox(
         height: 10.h,
         child: TextButton(
-          onPressed: () {}, //There was a function press here
+          onPressed: press, //There was a function press here
           child: Container(
             width: 60.w,
             padding: const EdgeInsets.all(10),
@@ -134,7 +134,7 @@ class _BodyState extends State<Body> {
             children: [
               _button(
                 text: "Patient",
-                press: () => widget.pageAdapter!.onLoginButtonPressed(context),
+                press: () => widget.pageAdapter.onLoginButtonPressed(context),
               ),
               _button(
                   text: "Doctor",
@@ -170,7 +170,7 @@ class _BodyState extends State<Body> {
                                   ),
                                 ),
                                 child: TextButton(
-                                  onPressed: () => widget.pageAdapter!
+                                  onPressed: () => widget.pageAdapter
                                       .onLoginButtonPressed(context),
                                   child: Text(
                                     'SPOKE',
@@ -194,7 +194,7 @@ class _BodyState extends State<Body> {
                                   ),
                                 ),
                                 child: TextButton(
-                                  onPressed: () => widget.pageAdapter!
+                                  onPressed: () => widget.pageAdapter
                                       .onLoginButtonPressed(context),
                                   child: Text(
                                     'HUB',
@@ -215,7 +215,7 @@ class _BodyState extends State<Body> {
                   }),
               _button(
                 text: "Driver",
-                press: () => widget.pageAdapter!.onLoginButtonPressed(context),
+                press: () => widget.pageAdapter.onLoginButtonPressed(context),
               ),
             ],
           ),
@@ -239,7 +239,10 @@ class _BodyState extends State<Body> {
             children: [
               _button(
                 text: "Login",
-                press: () => widget.pageAdapter!.onLoginButtonPressed(context),
+                press: () {
+                  print("===== LOGIN BUTTON =====");
+                  widget.pageAdapter.onLoginButtonPressed(context);
+                },
               ),
             ],
           ),

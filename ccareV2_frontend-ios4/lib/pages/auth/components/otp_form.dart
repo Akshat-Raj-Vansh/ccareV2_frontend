@@ -17,8 +17,8 @@ class OTPForm extends StatefulWidget {
 
 class _OTPFormState extends State<OTPForm> with TickerProviderStateMixin {
   late AnimationController animationController;
-  final _formKey = GlobalKey<FormState>();
-  String _otp = "";
+  // final _formKey = GlobalKey<FormState>();
+  final otpController = TextEditingController();
 
   @override
   void initState() {
@@ -46,109 +46,115 @@ class _OTPFormState extends State<OTPForm> with TickerProviderStateMixin {
         padding:
             EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
         child: SingleChildScrollView(
-          child: Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                SizedBox(height: SizeConfig.screenHeight * 0.02),
-                Row(
-                  children: [
-                    IconButton(
-                      onPressed: () => widget.controller.previousPage(
-                          duration: const Duration(microseconds: 1000),
-                          curve: Curves.elasticIn),
-                      icon: const Icon(
-                        Icons.arrow_back_ios,
-                        color: Colors.black,
-                      ),
+          child: Column(
+            children: [
+              SizedBox(height: SizeConfig.screenHeight * 0.02),
+              Row(
+                children: [
+                  IconButton(
+                    onPressed: () => widget.controller.previousPage(
+                        duration: const Duration(microseconds: 1000),
+                        curve: Curves.elasticIn),
+                    icon: const Icon(
+                      Icons.arrow_back_ios,
+                      color: Colors.black,
                     ),
-                    Text(
-                      'Enter OTP',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontSize: 18.sp, fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 5.h),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    TextFormField(
+                  ),
+                  Text(
+                    'Enter OTP',
+                    textAlign: TextAlign.center,
+                    style:
+                        TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+              SizedBox(height: 5.h),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.40,
+                    child: TextFormField(
                       decoration: InputDecoration(
                         hintText: 'OTP',
-                        
                       ),
-                        // hint: "OTP",
-                        obscureText: false,
-                        keyboardType: TextInputType.number,
-                        key: _formKey,
-                        // color: kPrimaryColor,
-                        // width: MediaQuery.of(context).size.width * 0.40,
-                        // backgroundColor: Colors.white,
-                        textAlign: TextAlign.center,
-                        initialValue: "",
-                        onChanged: (value) {
-                          if (value.length >= 6)
-                            _formKey.currentState!.validate();
-                          _otp = value;
-                        },
-                        validator: (otp) => otp!.isEmpty || otp == ""
-                            ? "Please enter the OTP"
-                            : otp.length != 6
-                                ? "Invalid OTP"
-                                : null),
-                    buildTimer(),
-                  ],
+                      // hint: "OTP",
+                      obscureText: false,
+                      maxLength: 6,
+                      keyboardType: TextInputType.number,
+                      controller: otpController,
+                      // key: _formKey,
+                      // color: kPrimaryColor,
+                      // width: MediaQuery.of(context).size.width * 0.40,
+                      // backgroundColor: Colors.white,
+                      textAlign: TextAlign.center,
+                      // initialValue: "",
+                      // onChanged: (value) {
+                      //   if (value.length >= 6)
+                      //     _formKey.currentState!.validate();
+                      //   _otp = value;
+                      // },
+                      // validator: (otp) => otp!.isEmpty || otp == ""
+                      //     ? "Please enter the OTP"
+                      //     : otp.length != 6
+                      //         ? "Invalid OTP"
+                      //         : null
+                    ),
+                  ),
+                  buildTimer(),
+                ],
+              ),
+              SizedBox(height: SizeConfig.screenHeight * 0.02),
+              Text(
+                "We sent your code to - ${widget.phone}",
+                style: TextStyle(color: Colors.green, fontSize: 12.sp),
+              ),
+              GestureDetector(
+                onTap: () {
+                  if (animationController.value == 0) {
+                    animationController.reverse(from: 1);
+                    widget.cubit.verifyPhone(widget.phone);
+                  }
+                },
+                child: Text(
+                  "Resend OTP Code",
+                  style: TextStyle(
+                      color: Colors.green,
+                      decoration: TextDecoration.underline),
                 ),
-                SizedBox(height: SizeConfig.screenHeight * 0.02),
-                Text(
-                  "We sent your code to - ${widget.phone}",
-                  style: TextStyle(color: Colors.green, fontSize: 12.sp),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    if (animationController.value == 0) {
-                      animationController.reverse(from: 1);
-                      widget.cubit.verifyPhone(widget.phone);
-                    }
-                  },
+              ),
+              SizedBox(height: SizeConfig.screenHeight * 0.02),
+              GestureDetector(
+                onTap: otpController.text.length == 6
+                    ? () async {
+                        //print('LOGIN BUTTON CLICKED');
+                        FocusManager.instance.primaryFocus?.unfocus();
+                        // if (_formKey.currentState!.validate()) {
+                        //   widget.verifyOTP(_otp);
+                        // }
+                        print("===== OTP BUTTON =====");
+                        await widget.verifyOTP(otpController.text);
+                      }
+                    : null,
+                // shape: RoundedRectangleBorder(
+                //     borderRadius: BorderRadius.circular(30)),
+                // padding: const EdgeInsets.all(0),
+                child: Container(
+                  width: MediaQuery.of(context).size.width / 1.5,
+                  alignment: Alignment.center,
+                  padding: const EdgeInsets.only(top: 8, bottom: 8),
+                  decoration: ShapeDecoration(
+                    color: kPrimaryColor,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30)),
+                  ),
                   child: Text(
-                    "Resend OTP Code",
-                    style: TextStyle(
-                        color: Colors.green,
-                        decoration: TextDecoration.underline),
+                    "Verify",
+                    style: TextStyle(color: Colors.white, fontSize: 16.sp),
                   ),
                 ),
-                SizedBox(height: SizeConfig.screenHeight * 0.02),
-                GestureDetector(
-                  onTap: () {
-                    //print('LOGIN BUTTON CLICKED');
-                    FocusManager.instance.primaryFocus?.unfocus();
-                    if (_formKey.currentState!.validate()) {
-                      widget.verifyOTP(_otp);
-                    }
-                  },
-                  // shape: RoundedRectangleBorder(
-                  //     borderRadius: BorderRadius.circular(30)),
-                  // padding: const EdgeInsets.all(0),
-                  child: Container(
-                    width: MediaQuery.of(context).size.width / 1.5,
-                    alignment: Alignment.center,
-                    padding: const EdgeInsets.only(top: 8, bottom: 8),
-                    decoration: ShapeDecoration(
-                      color: kPrimaryColor,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30)),
-                    ),
-                    child: Text(
-                      "Verify",
-                      style: TextStyle(color: Colors.white, fontSize: 16.sp),
-                    ),
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

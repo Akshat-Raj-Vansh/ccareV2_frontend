@@ -5,7 +5,7 @@ import 'components/body.dart';
 import '../../utils/size_config.dart';
 
 class SplashScreen extends StatelessWidget {
-  IAuthPageAdapter? pageAdatper;
+  IAuthPageAdapter pageAdatper;
 
   SplashScreen(this.pageAdatper);
 
@@ -19,7 +19,7 @@ class SplashScreen extends StatelessWidget {
         return await _onBackPressed(context);
       },
       child: Scaffold(
-        body: pageAdatper == null ? Body(null) : Body(pageAdatper),
+        body: Body(pageAdatper),
       ),
     );
   }

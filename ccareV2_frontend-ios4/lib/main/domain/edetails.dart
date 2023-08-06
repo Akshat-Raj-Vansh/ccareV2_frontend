@@ -253,7 +253,7 @@ class DoctorDetails {
       location: Location.fromMap(map['location']),
       hospital: map['hospital'],
       contactNumber: map['contactNumber'],
-      address: map['address'],
+      address: map['address'] ?? "",
     );
   }
 

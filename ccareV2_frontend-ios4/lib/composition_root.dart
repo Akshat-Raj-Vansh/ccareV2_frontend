@@ -36,14 +36,14 @@ class CompositionRoot {
   late SecureClient secureClient;
   late UserAPI userAPI;
   late MainAPI mainAPI;
-  IAuthPageAdapter? authPageAdapter;
+  late IAuthPageAdapter authPageAdapter;
   late ProfilePageAdapter profilePageAdapter;
   late HomePageAdapter homePageAdapter;
   late UserService userService;
   late UserCubit userCubit;
   late MainCubit mainCubit;
 //90d9f67022627247658ea748f4695546
-  configure() async {
+  Future<bool> configure() async {
     sharedPreferences = await SharedPreferences.getInstance();
     localStore = LocalStore(sharedPreferences);
     client = Client();
@@ -62,8 +62,12 @@ class CompositionRoot {
         createEmergencyUI,
         splashScreen);
     profilePageAdapter =
-        ProfilePageAdapter(homePageAdapter, createProfileScreen);
-    authPageAdapter = AuthPageAdapter(profilePageAdapter, createLoginScreen);
+        await ProfilePageAdapter(homePageAdapter, createProfileScreen);
+    authPageAdapter =
+        await AuthPageAdapter(profilePageAdapter, createLoginScreen);
+    print("==== AuthPageAdapter ====");
+    print(authPageAdapter);
+    return true;
   }
 
   Future<Widget> start() async {
@@ -92,10 +96,9 @@ class CompositionRoot {
   }
 
   Widget splashScreen() {
-    if (authPageAdapter != null) {
-      return SplashScreen(authPageAdapter!);
-    }
-    return SplashScreen(null);
+    print("==== AuthPageAdapter ====");
+    print(authPageAdapter);
+    return SplashScreen(authPageAdapter);
   }
 
   Widget createLoginScreen() {
@@ -106,7 +109,7 @@ class CompositionRoot {
         BlocProvider<ProfileCubit>(create: (context) => profileCubit),
       ],
       child: AuthPage(
-        pageAdatper: authPageAdapter!,
+        pageAdatper: authPageAdapter,
       ),
       // child: AuthPage(
       //   pageAdatper: authPageAdapter,

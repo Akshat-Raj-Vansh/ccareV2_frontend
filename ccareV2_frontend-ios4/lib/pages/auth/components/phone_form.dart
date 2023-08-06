@@ -5,7 +5,6 @@ import 'package:ccarev2_frontend/utils/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
-
 class PhoneForm extends StatefulWidget {
   final PageController controller;
   final UserCubit cubit;
@@ -21,8 +20,8 @@ class PhoneForm extends StatefulWidget {
 }
 
 class phoneFormState extends State<PhoneForm> {
-  final _formKey = GlobalKey<FormState>();
-  String phone = "";
+  // final _formKey = GlobalKey<FormState>();
+  final phoneController = TextEditingController();
 
   @override
   void initState() {
@@ -34,15 +33,13 @@ class phoneFormState extends State<PhoneForm> {
   Widget build(BuildContext context) {
     // print(widget.context);
     return Container(
-      height: 45.h,
-      color: Colors.white,
-      width: double.infinity,
-      child: Padding(
-        padding:
-            EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
-        child: SingleChildScrollView(
-          child: Form(
-            key: _formKey,
+        height: 45.h,
+        color: Colors.white,
+        width: double.infinity,
+        child: Padding(
+          padding:
+              EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
+          child: SingleChildScrollView(
             child: Column(
               children: [
                 SizedBox(height: SizeConfig.screenHeight * 0.02),
@@ -76,38 +73,42 @@ class phoneFormState extends State<PhoneForm> {
                         fontSize: 14.sp,
                       ),
                     ),
-                    CustomTextFormField(
-                        hint: "Mobile Number",
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.70,
+                      child: TextFormField(
+                        // hint: "Mobile Number",
                         obscureText: false,
                         keyboardType: TextInputType.number,
-                        color: kPrimaryColor,
-                        width: MediaQuery.of(context).size.width * 0.70,
-                        backgroundColor: Colors.white,
+                        controller: phoneController,
+                        // color: kPrimaryColor,
+                        // backgroundColor: Colors.white,
+                        decoration: InputDecoration(
+                          hintText: "Mobile Number",
+                        ),
+
                         textAlign: TextAlign.center,
-                        onChanged: (value) {
-                          if (value.length > 10)
-                            _formKey.currentState!.validate();
-                          phone = value;
-                        },
-                        validator: (phone) => phone.isEmpty
-                            ? "Please enter a Phone Number"
-                            : phone.length != 10
-                                ? "Please enter a valid Phone Number"
-                                : null, icon: Icon(Icons.phone), key: _formKey, initialValue: '', onSubmitted: (String value) {  }, textInputAction: TextInputAction.done,),
+                        maxLength: 10,
+                        // validator: (phone) => phone.isEmpty
+                        //     ? "Please enter a Phone Number"
+                        //     : phone.length != 10
+                        //         ? "Please enter a valid Phone Number"
+                        //         : null, icon: Icon(Icons.phone), key: _formKey, initialValue: '', onSubmitted: (String value) {  }, textInputAction: TextInputAction.done,
+                      ),
+                    ),
                   ],
                 ),
                 SizedBox(height: SizeConfig.screenHeight * 0.06),
                 GestureDetector(
-                  onTap: () async {
-                    print('LOGIN BUTTON CLICKED');
-                    FocusManager.instance.primaryFocus?.unfocus();
-                    if (_formKey.currentState!.validate()) {
-                      print('NOT COMING INSIDE');
-                      widget.phoneVerificationState(phone);
-                      // widget.cubit.verifyPhone(phone);
-                      // CubitProvider.of<UserCubit>(widget.context).verifyPhone(phone);
-                    }
-                  },
+                  onTap: phoneController.text.length != 10
+                      ? null
+                      : () async {
+                          print('LOGIN BUTTON CLICKED');
+                          FocusManager.instance.primaryFocus?.unfocus();
+
+                          widget.phoneVerificationState(phoneController.text);
+                          // widget.cubit.verifyPhone(phone);
+                          // CubitProvider.of<UserCubit>(widget.context).verifyPhone(phone);
+                        },
                   // shape: RoundedRectangleBorder(
                   //     borderRadius: BorderRadius.circular(30)),
                   // padding: const EdgeInsets.all(0),
@@ -129,8 +130,6 @@ class phoneFormState extends State<PhoneForm> {
               ],
             ),
           ),
-        ),
-      ),
-    );
+        ));
   }
 }
