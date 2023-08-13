@@ -2,13 +2,11 @@ import 'package:ccarev2_frontend/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:sizer/sizer.dart';
-// This is the best practice
+
 import 'splash_content.dart';
 
-import '../../auth/auth_page_adapter.dart';
-
 class Body extends StatefulWidget {
-  IAuthPageAdapter pageAdapter;
+  final pageAdapter;
 
   Body(this.pageAdapter);
   @override
@@ -73,6 +71,7 @@ class _BodyState extends State<Body> {
       child: SizedBox(
         width: double.infinity,
         child: Column(
+          
           children: <Widget>[
             Expanded(
               flex: 5,

@@ -437,8 +437,8 @@ class MainCubit extends Cubit<MainState> {
   savePatientExamReport(exam.Examination ereport, String patientID) async {
     // _startLoading("PatientReportSaved");
     final token = await localStore.fetch();
-    final result =
-        await api.savePatientExamReport(Token(token!.value), ereport, patientID);
+    final result = await api.savePatientExamReport(
+        Token(token!.value), ereport, patientID);
     //print("Result ${result.asValue!.value}");
     if (result == null) {
       emit(ErrorState("Server Error"));
@@ -525,7 +525,8 @@ class MainCubit extends Cubit<MainState> {
     //  _startLoading("fetchEmergencyDetails");
     print('DATA > main_cubit.dart > 387 > Inside fetchEmergencyDetails');
     final token = await localStore.fetch();
-    final result = await api.fetchEmergencyDetails(token!, patientID: patientID);
+    final result =
+        await api.fetchEmergencyDetails(token!, patientID: patientID);
     if (result.isError) {
       print(
           'DATA > main_cubit.dart > 391 > Inside error of fetchEmergencyDetails');
@@ -558,6 +559,7 @@ class MainCubit extends Cubit<MainState> {
       emit(ErrorState(result.asError!.error as String));
       return;
     }
+    emit(StatusFetched(result.asValue!.value));
     Future.delayed(Duration(microseconds: 100));
     emit(StatusFetched(result.asValue!.value));
   }

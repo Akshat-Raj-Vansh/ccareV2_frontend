@@ -1,8 +1,6 @@
 import 'package:ccarev2_frontend/state_management/main/main_cubit.dart';
 import 'package:ccarev2_frontend/user/domain/location.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
 
 class SpokeNotificationHandler {
   MainCubit? mainCubit;

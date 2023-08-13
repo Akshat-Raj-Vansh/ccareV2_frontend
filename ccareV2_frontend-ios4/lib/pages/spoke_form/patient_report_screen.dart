@@ -22,7 +22,10 @@ class PatientReportScreen extends StatefulWidget {
   final PatientDetails? patientDetails;
 
   const PatientReportScreen(
-      {Key? key, required this.mainCubit, required this.user, this.patientDetails})
+      {Key? key,
+      required this.mainCubit,
+      required this.user,
+      this.patientDetails})
       : super(key: key);
   @override
   _PatientReportScreenState createState() => _PatientReportScreenState();
@@ -36,7 +39,7 @@ class _PatientReportScreenState extends State<PatientReportScreen>
   late String imagePath;
   late XFile _image;
   late List<XFile> _images;
-  late MainState currentState;
+  MainState? currentState;
   final ImagePicker _imagePicker = ImagePicker();
   final List<Tab> _myTabs = [
     Tab(

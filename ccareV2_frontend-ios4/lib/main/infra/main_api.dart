@@ -48,18 +48,26 @@ class MainAPI extends IMainAPI {
       "Content-Type": "application/json",
       "Authorization": token.value
     };
-    var response = await _client.get(Uri.parse(endpoint), headers: header);
-    log('DATA > main_api.dart > FUNCTION_NAME > 52 > response.statusCode: ${response.statusCode}');
-    log('DATA > main_api.dart > FUNCTION_NAME > 53 > response.body: ${response.body}');
-    if (response.statusCode != 200) {
-      Map map = jsonDecode(response.body);
+    var response;
+    var map;
+    await _client.get(Uri.parse(endpoint), headers: header).then((value) {
+      response = value;
+      log(token.value);
+      log('DATA > main_api.dart > FUNCTION_NAME > 52 > response.statusCode: ${response.statusCode}');
+      log('DATA > main_api.dart > FUNCTION_NAME > 53 > response.body: ${response.body}');
+      if (response.statusCode == 200) {
+        dynamic json = jsonDecode(response.body);
+        //print('@main_api.dart/getStatus json: $json');
+        print("=====1=====");
+        var result = json["message"] as String;
+        return Result.value(result);
+      }
+      print("=====2=====");
+
       //print(transformError(map));
-      return Result.error(transformError(map));
-    }
-    dynamic json = jsonDecode(response.body);
-    //print('@main_api.dart/getStatus json: $json');
-    var result = json["message"] as String;
-    return Result.value(result);
+    });
+    map = jsonDecode(response.body);
+    return Result.error(transformError(map));
   }
 
   @override
@@ -199,6 +207,8 @@ class MainAPI extends IMainAPI {
       "Content-Type": "application/json",
       "Authorization": token.value
     };
+    print('===== TOKEN VALUE =====');
+    print(token.value);
     var response = await _client.get(Uri.parse(endpoint), headers: header);
     //print(response.statusCode);
     //print(response.body);

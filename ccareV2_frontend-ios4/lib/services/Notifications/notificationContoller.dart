@@ -31,13 +31,13 @@ class NotificationController {
         patientNotificationHandler.configure(mainCubit);
         break;
       case UserType.SPOKE:
-        SpokeNotificationHandler().configure(mainCubit);
+        spokeNotificationHandler.configure(mainCubit);
         break;
       case UserType.HUB:
-        HubNotificationHandler().configure(mainCubit);
+        hubNotificationHandler.configure(mainCubit);
         break;
       default:
-        DriverNotificationHandler().configure(mainCubit);
+        driverNotificationHandler.configure(mainCubit);
         break;
     }
   }
@@ -64,15 +64,17 @@ class NotificationController {
         selected = patientNotificationHandler.backgroundMessageHandler;
         break;
       case UserType.SPOKE:
-        selected = SpokeNotificationHandler().backgroundMessageHandler;
+        selected = spokeNotificationHandler.backgroundMessageHandler;
         break;
       case UserType.HUB:
-        selected = HubNotificationHandler().backgroundMessageHandler;
+        selected = hubNotificationHandler.backgroundMessageHandler;
         break;
       default:
-        selected = DriverNotificationHandler().backgroundMessageHandler;
+        selected = driverNotificationHandler.backgroundMessageHandler;
         break;
     }
+    print("====== SELECTED =======");
+    print(selected);
     FirebaseMessaging.onBackgroundMessage(selected);
   }
 
@@ -83,13 +85,13 @@ class NotificationController {
         selected = patientNotificationHandler.foregroundMessageHandler;
         break;
       case UserType.SPOKE:
-        selected = SpokeNotificationHandler().foregroundMessageHandler;
+        selected = spokeNotificationHandler.foregroundMessageHandler;
         break;
       case UserType.HUB:
-        selected = HubNotificationHandler().foregroundMessageHandler;
+        selected = hubNotificationHandler.foregroundMessageHandler;
         break;
       default:
-        selected = DriverNotificationHandler().foregroundMessageHandler;
+        selected = driverNotificationHandler.foregroundMessageHandler;
         break;
     }
     FirebaseMessaging.onMessage.listen(selected);
@@ -102,13 +104,13 @@ class NotificationController {
         selected = patientNotificationHandler.foregroundMessageHandler;
         break;
       case UserType.SPOKE:
-        selected = SpokeNotificationHandler().onMessageOpenedHandler;
+        selected = spokeNotificationHandler.onMessageOpenedHandler;
         break;
       case UserType.HUB:
-        selected = HubNotificationHandler().onMessageOpenedHandler;
+        selected = hubNotificationHandler.onMessageOpenedHandler;
         break;
       default:
-        selected = DriverNotificationHandler().onMessageOpenedHandler;
+        selected = driverNotificationHandler.onMessageOpenedHandler;
         break;
     }
     FirebaseMessaging.onMessageOpenedApp.listen(selected);

@@ -3,6 +3,7 @@ import 'package:ccarev2_frontend/utils/constants.dart';
 import 'package:ccarev2_frontend/utils/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
+import 'package:pinput/pinput.dart';
 
 class OTPForm extends StatefulWidget {
   final PageController controller;
@@ -69,38 +70,17 @@ class _OTPFormState extends State<OTPForm> with TickerProviderStateMixin {
                 ],
               ),
               SizedBox(height: 5.h),
-              Row(
+              Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.40,
-                    child: TextFormField(
-                      decoration: InputDecoration(
-                        hintText: 'OTP',
-                      ),
-                      // hint: "OTP",
-                      obscureText: false,
-                      maxLength: 6,
-                      keyboardType: TextInputType.number,
-                      controller: otpController,
-                      // key: _formKey,
-                      // color: kPrimaryColor,
-                      // width: MediaQuery.of(context).size.width * 0.40,
-                      // backgroundColor: Colors.white,
-                      textAlign: TextAlign.center,
-                      // initialValue: "",
-                      // onChanged: (value) {
-                      //   if (value.length >= 6)
-                      //     _formKey.currentState!.validate();
-                      //   _otp = value;
-                      // },
-                      // validator: (otp) => otp!.isEmpty || otp == ""
-                      //     ? "Please enter the OTP"
-                      //     : otp.length != 6
-                      //         ? "Invalid OTP"
-                      //         : null
-                    ),
-                  ),
+                      width: MediaQuery.of(context).size.width * 0.80,
+                      child: Pinput(
+                       
+                          controller: otpController,
+                        length: 6,
+                        showCursor: true,
+                      )),
                   buildTimer(),
                 ],
               ),
@@ -109,6 +89,7 @@ class _OTPFormState extends State<OTPForm> with TickerProviderStateMixin {
                 "We sent your code to - ${widget.phone}",
                 style: TextStyle(color: Colors.green, fontSize: 12.sp),
               ),
+              SizedBox(height: SizeConfig.screenHeight * 0.02),
               GestureDetector(
                 onTap: () {
                   if (animationController.value == 0) {

@@ -220,10 +220,10 @@ packages:
     dependency: transitive
     description:
       name: ffi
-      sha256: ed5337a5660c506388a9f012be0288fb38b49020ce2b45fe1f8b8323fe429f99
+      sha256: "7bf0adc28a23d395f19f3f1eb21dd7cfd1dd9f8e1c50051c069122e6853bc878"
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.2"
+    version: "2.1.0"
   file:
     dependency: transitive
     description:
@@ -499,10 +499,10 @@ packages:
     dependency: transitive
     description:
       name: google_maps_flutter_android
-      sha256: "9512c862df77c1f0fa5f445513dd3c57f5996f0a809dccb74e54b690ee4e3a0f"
+      sha256: fb3e52f94d0736f6ee8bcdef290f8eab9325376d676f61303347c10ccf15379c
       url: "https://pub.dev"
     source: hosted
-    version: "2.4.15"
+    version: "2.4.16"
   google_maps_flutter_ios:
     dependency: transitive
     description:
@@ -603,10 +603,10 @@ packages:
     dependency: "direct main"
     description:
       name: image_picker
-      sha256: "6296e98782726d37f59663f0727d0e978eee1ced1ffed45ccaba591786a7f7b3"
+      sha256: "841837258e0b42c80946c43443054fc726f5e8aa84a97f363eb9ef0d45b33c14"
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.1"
+    version: "1.0.2"
   image_picker_android:
     dependency: transitive
     description:
@@ -619,10 +619,10 @@ packages:
     dependency: transitive
     description:
       name: image_picker_for_web
-      sha256: "869fe8a64771b7afbc99fc433a5f7be2fea4d1cb3d7c11a48b6b579eb9c797f0"
+      sha256: "8b6c160cdbe572199103a091c783685b236110e4a0fd7a4947f32ff5b7da8765"
       url: "https://pub.dev"
     source: hosted
-    version: "2.2.0"
+    version: "3.0.0"
   image_picker_ios:
     dependency: transitive
     description:
@@ -699,26 +699,26 @@ packages:
     dependency: "direct main"
     description:
       name: location
-      sha256: c8e0c8cd92c6ce8b42760f9aafd6d80592459e2e0cd702bc336061c738ec4715
+      sha256: "06be54f682c9073cbfec3899eb9bc8ed90faa0e17735c9d9fa7fe426f5be1dd1"
       url: "https://pub.dev"
     source: hosted
-    version: "5.0.2+1"
+    version: "5.0.3"
   location_platform_interface:
     dependency: transitive
     description:
       name: location_platform_interface
-      sha256: a211a41b1fdfaddaf02996750dd703abcc7ac1d4fd90e978c8773ccf2260af68
+      sha256: "8aa1d34eeecc979d7c9fe372931d84f6d2ebbd52226a54fe1620de6fdc0753b1"
       url: "https://pub.dev"
     source: hosted
-    version: "3.1.1"
+    version: "3.1.2"
   location_web:
     dependency: transitive
     description:
       name: location_web
-      sha256: acde3e95c4dec2b82cbdc3490bf010eeaf66e793e20f62364887e072bd701d49
+      sha256: ec484c66e8a4ff1ee5d044c203f4b6b71e3a0556a97b739a5bc9616de672412b
       url: "https://pub.dev"
     source: hosted
-    version: "4.1.1"
+    version: "4.2.0"
   logging:
     dependency: transitive
     description:
@@ -795,10 +795,10 @@ packages:
     dependency: "direct main"
     description:
       name: path_provider
-      sha256: "3087813781ab814e4157b172f1a11c46be20179fcc9bea043e0fba36bc0acaa2"
+      sha256: "909b84830485dbcd0308edf6f7368bc8fd76afa26a270420f34cabea2a6467a0"
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.15"
+    version: "2.1.0"
   path_provider_android:
     dependency: transitive
     description:
@@ -847,6 +847,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.4.0"
+  pinput:
+    dependency: "direct main"
+    description:
+      name: pinput
+      sha256: "92b60664eec437a53de7cf5472ed3e65edb2dc32d7070875887c4285a9c0a088"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.0"
   platform:
     dependency: transitive
     description:
@@ -931,10 +939,10 @@ packages:
     dependency: transitive
     description:
       name: shared_preferences_foundation
-      sha256: f39696b83e844923b642ce9dd4bd31736c17e697f6731a5adf445b1274cf3cd4
+      sha256: d29753996d8eb8f7619a1f13df6ce65e34bc107bef6330739ed76f18b22310ef
       url: "https://pub.dev"
     source: hosted
-    version: "2.3.2"
+    version: "2.3.3"
   shared_preferences_linux:
     dependency: transitive
     description:
@@ -980,6 +988,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.99"
+  smart_auth:
+    dependency: transitive
+    description:
+      name: smart_auth
+      sha256: a25229b38c02f733d0a4e98d941b42bed91a976cb589e934895e60ccfa674cf6
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.1"
   socket_io_client:
     dependency: "direct main"
     description:
@@ -1116,6 +1132,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.2.2"
+  universal_platform:
+    dependency: transitive
+    description:
+      name: universal_platform
+      sha256: d315be0f6641898b280ffa34e2ddb14f3d12b1a37882557869646e0cc363d0cc
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0+1"
   url_launcher:
     dependency: "direct main"
     description:
@@ -1128,10 +1152,10 @@ packages:
     dependency: transitive
     description:
       name: url_launcher_android
-      sha256: "78cb6dea3e93148615109e58e42c35d1ffbf5ef66c44add673d0ab75f12ff3af"
+      sha256: "3dd2388cc0c42912eee04434531a26a82512b9cb1827e0214430c9bcbddfe025"
       url: "https://pub.dev"
     source: hosted
-    version: "6.0.37"
+    version: "6.0.38"
   url_launcher_ios:
     dependency: transitive
     description:
@@ -1272,10 +1296,10 @@ packages:
     dependency: transitive
     description:
       name: xdg_directories
-      sha256: e0b1147eec179d3911f1f19b59206448f78195ca1d20514134e10641b7d7fbff
+      sha256: f0c26453a2d47aa4c2570c6a033246a3fc62da2fe23c7ffdd0a7495086dc0247
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.1"
+    version: "1.0.2"
   xml:
     dependency: transitive
     description:

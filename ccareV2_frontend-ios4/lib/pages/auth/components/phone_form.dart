@@ -73,18 +73,23 @@ class phoneFormState extends State<PhoneForm> {
                         fontSize: 14.sp,
                       ),
                     ),
-                    SizedBox(
+                    Container(
                       width: MediaQuery.of(context).size.width * 0.70,
                       child: TextFormField(
-                        // hint: "Mobile Number",
+                        style: TextStyle(
+                            backgroundColor: Colors.white,
+                            color: kPrimaryColor),
                         obscureText: false,
                         keyboardType: TextInputType.number,
                         controller: phoneController,
-                        // color: kPrimaryColor,
-                        // backgroundColor: Colors.white,
                         decoration: InputDecoration(
                           hintText: "Mobile Number",
                         ),
+                        onChanged: (value) {
+                          setState(() {
+                            phoneController.text == value;
+                          });
+                        },
 
                         textAlign: TextAlign.center,
                         maxLength: 10,
@@ -99,16 +104,16 @@ class phoneFormState extends State<PhoneForm> {
                 ),
                 SizedBox(height: SizeConfig.screenHeight * 0.06),
                 GestureDetector(
-                  onTap: phoneController.text.length != 10
-                      ? null
-                      : () async {
+                  onTap: phoneController.text.length == 10
+                      ? () async {
                           print('LOGIN BUTTON CLICKED');
                           FocusManager.instance.primaryFocus?.unfocus();
 
                           widget.phoneVerificationState(phoneController.text);
                           // widget.cubit.verifyPhone(phone);
                           // CubitProvider.of<UserCubit>(widget.context).verifyPhone(phone);
-                        },
+                        }
+                      : null,
                   // shape: RoundedRectangleBorder(
                   //     borderRadius: BorderRadius.circular(30)),
                   // padding: const EdgeInsets.all(0),

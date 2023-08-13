@@ -15,7 +15,8 @@ class PatientReportHistoryScreen extends StatefulWidget {
   final MainCubit mainCubit;
   final String patientID;
 
-  const PatientReportHistoryScreen({Key? key, required this.mainCubit, required this.patientID})
+  const PatientReportHistoryScreen(
+      {Key? key, required this.mainCubit, required this.patientID})
       : super(key: key);
   @override
   _PatientReportHistoryScreenState createState() =>
@@ -81,7 +82,11 @@ class _PatientReportHistoryScreenState
           log('DATA > patient_history_screen.dart > FUNCTION_NAME > 77 > state.error: ${state.error}');
           return Scaffold(
             appBar: AppBar(
-              title: Text('Medical History'),
+              
+              title: Text(
+                'Medical History',
+                style: TextStyle(color: Colors.white),
+              ),
               backgroundColor: kPrimaryColor,
             ),
             body: Container(
