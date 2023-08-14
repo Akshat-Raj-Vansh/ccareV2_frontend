@@ -42,7 +42,11 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: kPrimaryColor,
-        title: Text('Add Patient'),
+        title: Text(
+          'Add Patient',
+          style: TextStyle(fontSize: 16.sp, color: Colors.white),
+        ),
+        iconTheme: IconThemeData(color: Colors.white),
       ),
       body: BlocConsumer<MainCubit, MainState>(
         bloc: widget.cubit,
@@ -72,7 +76,8 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
               TextFormField(
                 keyboardType: TextInputType.text,
                 onSaved: (newValue) => name = newValue!,
-                validator: (value) => value!.isEmpty ? "Name is required" : null,
+                validator: (value) =>
+                    value!.isEmpty ? "Name is required" : null,
                 decoration: const InputDecoration(
                   labelText: "Full Name",
                   hintText: "Enter your Full Name",

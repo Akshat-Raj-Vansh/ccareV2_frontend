@@ -155,7 +155,7 @@ class PatientDetails {
       age: map['age'],
       gender: map['gender'],
       contactNumber: map['contactNumber'],
-      address: map['address'],
+      address: map['address'] ?? "",
       status: EStatus.values.firstWhere(
           (element) => element.toString() == "EStatus." + map["status"]),
     );

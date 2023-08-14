@@ -410,19 +410,19 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
 
   _buildPatienEmergencyButton() => Align(
         alignment: Alignment.bottomCenter,
-        child: InkWell(
-          onTap: () async {
-            _showAmbRequired("EBUTTON");
-            setState(() {});
-          },
-          child: Container(
-            width: SizeConfig.screenWidth,
-            margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 50),
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(5),
-                border: Border.all(color: Colors.red)),
+        child: Container(
+          width: SizeConfig.screenWidth,
+          margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(5),
+              border: Border.all(color: Colors.red)),
+          child: GestureDetector(
+            onTap: () async {
+              _showAmbRequired("EBUTTON");
+              setState(() {});
+            },
             child: Text(
               "Press here if you require Emergency AID",
               style: TextStyle(color: Colors.red, fontSize: 12.sp),
@@ -607,7 +607,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                                 border: Border.all(color: kPrimaryColor)),
                             child: display[index].question_type ==
                                     QuestionType.SELECTION
-                                ? Wrap(children: [
+                                ? Wrap(direction: Axis.horizontal, children: [
                                     Text(display[index].options[(i ~/ 2)],
                                         style: optionStyles),
                                     display[index].options[i ~/ 2] != "next"
@@ -835,9 +835,11 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
               _currentStatus != "UGT" &&
               _doctorAccepted)
             ElevatedButton.icon(
-                // color: Theme.of(context).primaryColor,
-                // shape: RoundedRectangleBorder(
-                //     borderRadius: BorderRadius.circular(20)),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: kPrimaryColor,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20)),
+                ),
                 onPressed: () async {
                   //print(_emergency);
                   if (!_emergency) {
@@ -859,20 +861,22 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                   !_emergency ? "Emergency" : "Change Status",
                   style: TextStyle(color: Colors.white, fontSize: 12.sp),
                 )),
-          // ElevatedButton.icon(
-          //     color: Theme.of(context).primaryColor,
-          //     shape: RoundedRectangleBorder(
-          //         borderRadius: BorderRadius.circular(20)),
-          //     onPressed: () async {
-          //       _assessAgain = true;
-          //       CubitProvider.of<MainCubit>(context).getQuestions();
-          //     },
-          //     icon: Icon(
-          //       FontAwesomeIcons.stethoscope,
-          //       color: Colors.white,
-          //     ),
-          //     label: Text("Assess Again",
-          //         style: TextStyle(color: Colors.white, fontSize: 12.sp)))
+          ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: kPrimaryColor,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20)),
+              ),
+              onPressed: () async {
+                _assessAgain = true;
+                BlocProvider.of<MainCubit>(context).getQuestions();
+              },
+              icon: Icon(
+                FontAwesomeIcons.stethoscope,
+                color: Colors.white,
+              ),
+              label: Text("Assess Again",
+                  style: TextStyle(color: Colors.white, fontSize: 12.sp)))
         ]),
       ));
 

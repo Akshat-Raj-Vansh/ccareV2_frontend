@@ -16,7 +16,6 @@ import 'package:ccarev2_frontend/utils/constants.dart';
 import 'package:ccarev2_frontend/utils/size_config.dart';
 import 'package:flutter/material.dart';
 
-
 class HomeScreenSpoke extends StatefulWidget {
   final MainCubit mainCubit;
   final UserCubit userCubit;
@@ -40,7 +39,8 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
     super.initState();
     BlocProvider.of<MainCubit>(context).getAllPatients();
     BlocProvider.of<MainCubit>(context).getAllPatientRequests();
-    NotificationController().configure(widget.mainCubit, UserType.SPOKE, context);
+    NotificationController()
+        .configure(widget.mainCubit, UserType.SPOKE, context);
     NotificationController().fcmHandler();
     BlocProvider.of<MainCubit>(context).fetchToken();
   }
@@ -97,9 +97,10 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
       appBar: AppBar(
         title: Text(
           'CardioCare - SPOKE',
-          style: TextStyle(fontSize: 16.sp),
+          style: TextStyle(fontSize: 16.sp, color: Colors.white),
         ),
         backgroundColor: kPrimaryColor,
+        iconTheme: IconThemeData(color: Colors.white),
       ),
       body: BlocConsumer<MainCubit, MainState>(
         builder: (_, state) {
@@ -329,8 +330,8 @@ class _HomeScreenSpokeState extends State<HomeScreenSpoke> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (ctx) => AddPatientScreen(
-                          BlocProvider.of<MainCubit>(context)),
+                      builder: (ctx) =>
+                          AddPatientScreen(BlocProvider.of<MainCubit>(context)),
                     ));
               },
             ),

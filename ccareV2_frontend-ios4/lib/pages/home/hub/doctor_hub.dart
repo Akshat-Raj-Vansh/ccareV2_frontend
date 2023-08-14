@@ -17,7 +17,6 @@ import 'package:sizer/sizer.dart';
 import 'package:ccarev2_frontend/utils/size_config.dart';
 import 'package:flutter/material.dart';
 
-
 class HomeScreenHub extends StatefulWidget {
   final MainCubit mainCubit;
   final UserCubit userCubit;
@@ -89,7 +88,7 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
         appBar: AppBar(
           title: Text(
             'CardioCare - HUB',
-            style: TextStyle(fontSize: 16.sp),
+            style: TextStyle(fontSize: 16.sp, color: Colors.white),
           ),
           backgroundColor: kPrimaryColor,
           actions: [
@@ -133,7 +132,10 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
                     ) ??
                     false;
               },
-              icon: Icon(Icons.logout),
+              icon: Icon(
+                Icons.logout,
+                color: Colors.white,
+              ),
             ),
           ],
         ),

@@ -71,7 +71,9 @@ class _PatientListState extends State<PatientList> {
     SizeConfig().init(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text('CardioCare - My Patients'),
+        title: Text('CardioCare - My Patients',
+            style: TextStyle(fontSize: 16.sp, color: Colors.white)),
+        iconTheme: IconThemeData(color: Colors.white),
         backgroundColor: kPrimaryColor,
         leading: IconButton(
           onPressed: () {

@@ -21,6 +21,7 @@ class _SelfAssessmentState extends State<SelfAssessment> {
   List<String> answers = [];
   int length = 1;
   TextStyle styles = TextStyle(color: Colors.white, fontSize: 14.sp);
+  TextStyle optionStyles = TextStyle(color: kPrimaryColor, fontSize: 14.sp);
   EdgeInsets pad = const EdgeInsets.symmetric(vertical: 5, horizontal: 15);
   BoxDecoration decA = const BoxDecoration(
       color: kPrimaryColor,
@@ -52,23 +53,21 @@ class _SelfAssessmentState extends State<SelfAssessment> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.white,
-          shadowColor: Colors.white,
+          backgroundColor: kPrimaryColor,
           title: Text(
             "CardioCare - Self Analysis",
-            textAlign: TextAlign.left,
             style: TextStyle(
-              color: kPrimaryColor,
+              color: Colors.white,
               fontSize: 16.sp,
-              fontWeight: FontWeight.bold,
             ),
           ),
+          centerTitle: false,
           leading: widget.from == "homescreen"
               ? IconButton(
                   onPressed: () {
                     Navigator.of(context).pop(true);
                   },
-                  icon: Icon(Icons.arrow_back, color: kPrimaryColor),
+                  icon: Icon(Icons.arrow_back, color: Colors.white),
                 )
               : null,
           actions: [
@@ -79,7 +78,7 @@ class _SelfAssessmentState extends State<SelfAssessment> {
                 },
                 child: Text(
                   'Skip',
-                  style: TextStyle(color: kPrimaryColor),
+                  style: TextStyle(color: Colors.white),
                 ),
               ),
           ],
@@ -177,25 +176,25 @@ class _SelfAssessmentState extends State<SelfAssessment> {
                               style: styles,
                             )),
                       ),
-                      // Align(
-                      //     alignment: Alignment.bottomRight,
-                      //     child: display[index].answers.length == 1
-                      //         ? Container(
-                      //             padding: pad,
-                      //             decoration: decB,
-                      //             margin: EdgeInsets.only(right: 10, top: 10),
-                      //             child: Text(display[index].answers[0],
-                      //                 style: styles))
-                      //         : Wrap(
-                      //             children: List<Widget>.generate(
-                      //                 answers.length,
-                      //                 (i) => Container(
-                      //                     padding: pad,
-                      //                     margin: const EdgeInsets.only(
-                      //                         right: 10, top: 10),
-                      //                     decoration: decB,
-                      //                     child: Text(display[index].answers[i],
-                      //                         style: styles)))))
+                      Align(
+                          alignment: Alignment.bottomRight,
+                          child: display[index].answers.length == 1
+                              ? Container(
+                                  padding: pad,
+                                  decoration: decB,
+                                  margin: EdgeInsets.only(right: 10, top: 10),
+                                  child: Text(display[index].answers[0],
+                                      style: styles))
+                              : Wrap(
+                                  children: List<Widget>.generate(
+                                      answers.length,
+                                      (i) => Container(
+                                          padding: pad,
+                                          margin: const EdgeInsets.only(
+                                              right: 10, top: 10),
+                                          decoration: decB,
+                                          child: Text(display[index].answers[i],
+                                              style: styles)))))
                     ]);
                   }
                   //print("here");
@@ -293,12 +292,13 @@ class _SelfAssessmentState extends State<SelfAssessment> {
                         child: Container(
                             margin: EdgeInsets.only(right: 10, top: 10),
                             padding: pad,
-                            decoration: decC,
+                            decoration: BoxDecoration(
+                                border: Border.all(color: kPrimaryColor)),
                             child: display[index].question_type ==
                                     QuestionType.SELECTION
                                 ? Wrap(children: [
                                     Text(display[index].options[(i ~/ 2)],
-                                        style: styles),
+                                        style: optionStyles),
                                     display[index].options[i ~/ 2] != "next"
                                         ? Icon(Icons.check,
                                             color: answers.contains(
@@ -311,7 +311,7 @@ class _SelfAssessmentState extends State<SelfAssessment> {
                                           )
                                   ])
                                 : Text(display[index].options[(i ~/ 2)],
-                                    style: styles)),
+                                    style: optionStyles)),
                       );
                     } else
                       return SizedBox(height: 10);

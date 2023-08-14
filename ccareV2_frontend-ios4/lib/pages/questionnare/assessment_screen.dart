@@ -37,23 +37,18 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.white,
-          shadowColor: Colors.white,
+          backgroundColor: kPrimaryColor,
+          iconTheme: IconThemeData(color: Colors.white),
           title: Text(
             "CardioCare - Patient Assessment",
-            textAlign: TextAlign.left,
-            style: TextStyle(
-              color: kPrimaryColor,
-              fontSize: 16.sp,
-              fontWeight: FontWeight.bold,
-            ),
+            style: TextStyle(fontSize: 16.sp, color: Colors.white),
           ),
-          leading: IconButton(
-            onPressed: () {
-              Navigator.of(context).pop(true);
-            },
-            icon: Icon(Icons.arrow_back, color: kPrimaryColor),
-          ),
+          // leading: IconButton(
+          //   onPressed: () {
+          //     Navigator.of(context).pop(true);
+          //   },
+          //   icon: Icon(Icons.arrow_back, color: kPrimaryColor),
+          // ),
         ),
         body: buildbody(context));
   }

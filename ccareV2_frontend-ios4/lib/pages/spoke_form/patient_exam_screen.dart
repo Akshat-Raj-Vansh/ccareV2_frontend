@@ -18,7 +18,10 @@ class PatientExamScreen extends StatefulWidget {
   PatientDetails? patientDetails;
 
   PatientExamScreen(
-      {Key? key, required this.patientDetails ,required this.mainCubit, required this.user})
+      {Key? key,
+      required this.patientDetails,
+      required this.mainCubit,
+      required this.user})
       : super(key: key);
   @override
   _PatientExamScreenState createState() => _PatientExamScreenState();
@@ -174,7 +177,9 @@ class _PatientExamScreenState extends State<PatientExamScreen>
       backgroundColor: Colors.white,
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
-        title: Text('Examination Form'),
+        title: Text('Examination Form',
+            style: TextStyle(fontSize: 16.sp, color: Colors.white)),
+        iconTheme: IconThemeData(color: Colors.white),
         backgroundColor: kPrimaryColor,
         actions: [
           if (_currentIndex != 0 && !noReport && widget.user == UserType.SPOKE)
@@ -210,7 +215,10 @@ class _PatientExamScreenState extends State<PatientExamScreen>
               //print('Refresh button pressed');
               _fetchReport();
             },
-            icon: Icon(Icons.refresh),
+            icon: Icon(
+              Icons.refresh,
+              color: Colors.white,
+            ),
           ),
         ],
         bottom: TabBar(

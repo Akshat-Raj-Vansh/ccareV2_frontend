@@ -308,7 +308,11 @@ class _PatientReportScreenState extends State<PatientReportScreen>
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('Medical Form'),
+        title: Text(
+          'Medical Form',
+          style: TextStyle(fontSize: 16.sp, color: Colors.white),
+        ),
+        iconTheme: IconThemeData(color: Colors.white),
         backgroundColor: kPrimaryColor,
         actions: [
           if (_currentIndex != 0 && widget.user == UserType.SPOKE)
@@ -343,7 +347,10 @@ class _PatientReportScreenState extends State<PatientReportScreen>
               //print('Refresh button pressed');
               _fetchReport();
             },
-            icon: Icon(Icons.refresh),
+            icon: Icon(
+              Icons.refresh,
+              color: Colors.white,
+            ),
           ),
         ],
         bottom: TabBar(

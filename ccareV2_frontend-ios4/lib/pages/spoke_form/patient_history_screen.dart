@@ -82,7 +82,6 @@ class _PatientReportHistoryScreenState
           log('DATA > patient_history_screen.dart > FUNCTION_NAME > 77 > state.error: ${state.error}');
           return Scaffold(
             appBar: AppBar(
-              
               title: Text(
                 'Medical History',
                 style: TextStyle(color: Colors.white),
@@ -120,7 +119,9 @@ class _PatientReportHistoryScreenState
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('Medical History'),
+        title: Text('Medical History',
+            style: TextStyle(fontSize: 16.sp, color: Colors.white)),
+        iconTheme: IconThemeData(color: Colors.white),
         backgroundColor: kPrimaryColor,
         actions: [
           IconButton(
@@ -138,64 +139,65 @@ class _PatientReportHistoryScreenState
         child: Padding(
           padding:
               EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
-          child: Column(
-            children: [
-              SizedBox(height: SizeConfig.screenHeight * 0.02),
-              Expanded(
-                  child: FixedTimeline.tileBuilder(
-                builder: TimelineTileBuilder.connectedFromStyle(
-                  contentsAlign: ContentsAlign.basic,
-                  oppositeContentsBuilder: (context, index) => Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                        DateTime.fromMillisecondsSinceEpoch(
-                                int.parse(reports[index].report_time))
-                            .toString()
-                            .split(' ')[0],
-                        style: TextStyle(fontSize: 12.sp)),
-                  ),
-                  contentsBuilder: (context, index) => InkWell(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ReportOverview(
-                              reports[index],
-                            ),
-                          ));
-                    },
-                    child: Card(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                SizedBox(height: SizeConfig.screenHeight * 0.02),
+                FixedTimeline.tileBuilder(
+                  builder: TimelineTileBuilder.connectedFromStyle(
+                    contentsAlign: ContentsAlign.basic,
+                    oppositeContentsBuilder: (context, index) => Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
                           DateTime.fromMillisecondsSinceEpoch(
                                   int.parse(reports[index].report_time))
                               .toString()
-                              .split(' ')[1],
-                          style: TextStyle(fontSize: 12.sp),
+                              .split(' ')[0],
+                          style: TextStyle(fontSize: 12.sp)),
+                    ),
+                    contentsBuilder: (context, index) => InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ReportOverview(
+                                reports[index],
+                              ),
+                            ));
+                      },
+                      child: Card(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            DateTime.fromMillisecondsSinceEpoch(
+                                    int.parse(reports[index].report_time))
+                                .toString()
+                                .split(' ')[1],
+                            style: TextStyle(fontSize: 12.sp),
+                          ),
                         ),
                       ),
                     ),
+                    connectorStyleBuilder: (context, index) {
+                      if (index == 0)
+                        return ConnectorStyle.solidLine;
+                      else
+                        return ConnectorStyle.dashedLine;
+                    },
+                    indicatorStyleBuilder: (context, index) {
+                      if (index == 0)
+                        return IndicatorStyle.dot;
+                      else
+                        return IndicatorStyle.outlined;
+                    },
+                    itemCount: reports.length,
                   ),
-                  connectorStyleBuilder: (context, index) {
-                    if (index == 0)
-                      return ConnectorStyle.solidLine;
-                    else
-                      return ConnectorStyle.dashedLine;
-                  },
-                  indicatorStyleBuilder: (context, index) {
-                    if (index == 0)
-                      return IndicatorStyle.dot;
-                    else
-                      return IndicatorStyle.outlined;
-                  },
-                  itemCount: reports.length,
                 ),
-              )),
-              // _buildReportDetails(),
-              // _buildReport(),
-              SizedBox(height: SizeConfig.screenHeight * 0.02),
-            ],
+                // _buildReportDetails(),
+                // _buildReport(),
+                SizedBox(height: SizeConfig.screenHeight * 0.02),
+              ],
+            ),
           ),
         ),
       ),

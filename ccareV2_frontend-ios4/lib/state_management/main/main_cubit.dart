@@ -89,7 +89,7 @@ class MainCubit extends Cubit<MainState> {
     //   return;
     // }
     Future.delayed(Duration(milliseconds: 50), () {
-      emit(TokenLoadedState(token!.value));
+      // emit(TokenLoadedState(token!.value));
     });
   }
 
@@ -192,7 +192,7 @@ class MainCubit extends Cubit<MainState> {
     if (result.isError) {
       print(
           'LOG > main_cubit.dart > fetchHubPatientDetails > 140 > result.asError!.error: ${result.asError!.error}');
-      emit(NoPatientAccepted(result.asError!.error as String, 'HUB PATIENTS'));
+      // emit(NoPatientAccepted(result.asError!.error as String, 'HUB PATIENTS'));
       return;
     }
     print(
@@ -208,7 +208,7 @@ class MainCubit extends Cubit<MainState> {
     if (result.isError) {
       print(
           'LOG > main_cubit.dart > fetchHubRequests > 140 > result.asError!.error: ${result.asError!.error}');
-      emit(NoPatientRequested(result.asError!.error as String, 'HUB REQUESTS'));
+      // emit(NoPatientRequested(result.asError!.error as String, 'HUB REQUESTS'));
       return;
     }
     print(

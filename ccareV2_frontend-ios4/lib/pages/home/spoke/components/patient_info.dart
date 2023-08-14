@@ -21,6 +21,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
 import 'package:flutter/cupertino.dart';
 
+import '../../../../services/Notifications/notificationContoller.dart';
+
 class PatientInfo extends StatefulWidget {
   final String patientID;
   final MainCubit mainCubit;
@@ -28,7 +30,10 @@ class PatientInfo extends StatefulWidget {
   final IHomePageAdapter homePageAdapter;
 
   const PatientInfo(
-      {Key? key, required this.patientID, required this.mainCubit, required this.homePageAdapter})
+      {Key? key,
+      required this.patientID,
+      required this.mainCubit,
+      required this.homePageAdapter})
       : super(key: key);
 
   @override
@@ -36,6 +41,7 @@ class PatientInfo extends StatefulWidget {
 }
 
 class _PatientInfoState extends State<PatientInfo> {
+  final notificationController = NotificationController();
   EDetails? eDetails;
   bool _emergency = false;
   bool _patientAccepted = false;
@@ -51,9 +57,9 @@ class _PatientInfoState extends State<PatientInfo> {
   void initState() {
     super.initState();
     widget.mainCubit.patientInfoLoading();
-    // widget.mainCubit.fetchEmergencyDetails(patientID: widget.patientID);
-    // NotificationController.configure(widget.mainCubit, UserType.SPOKE, context);
-    // NotificationController.fcmHandler();
+    widget.mainCubit.fetchEmergencyDetails(patientID: widget.patientID);
+    notificationController.configure(widget.mainCubit, UserType.SPOKE, context);
+    notificationController.fcmHandler();
     widget.mainCubit.fetchToken();
   }
 
@@ -123,7 +129,11 @@ class _PatientInfoState extends State<PatientInfo> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('CardioCare - SPOKE'),
+        title: Text(
+          'CardioCare - SPOKE',
+          style: TextStyle(fontSize: 16.sp, color: Colors.white),
+        ),
+        iconTheme: IconThemeData(color: Colors.white),
         backgroundColor: kPrimaryColor,
         leading: IconButton(
             onPressed: () {
@@ -431,7 +441,7 @@ class _PatientInfoState extends State<PatientInfo> {
             if (_patientAccepted && _ugt) _buildPatientReportButton(),
             if (_patientAccepted && _ugt) _buildPatientExamButton(),
             if (_patientAccepted && _ugt && !_hubAccepted) _buildHubList(),
-            //   if (_hubAccepted) _buildChatButton(),
+            if (_hubAccepted) _buildChatButton(),
             if (_hubAccepted) _buildResponseButton(),
             if (_patientAccepted && _ugt) _buildNewReportButton(),
             if (_patientAccepted && _ugt) _buildPatientReportHistoryButton(),
@@ -442,7 +452,7 @@ class _PatientInfoState extends State<PatientInfo> {
             //   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             //   child: Text(
             //     "Patients",
-            //     style: TextStyle(fontSize :18.sp),
+            //     style: TextStyle(fontSize: 18.sp),
             //   ),
             // ),
             // _buildMedications(),
@@ -450,7 +460,7 @@ class _PatientInfoState extends State<PatientInfo> {
             //   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             //   child: Text(
             //     "Useful Resources",
-            //     style: TextStyle(fontSize :18.sp),
+            //     style: TextStyle(fontSize: 18.sp),
             //   ),
             // ),
             // _buildResources(),
@@ -562,7 +572,7 @@ class _PatientInfoState extends State<PatientInfo> {
                 builder: (cTX) => ResponseScreen(
                   mainCubit: widget.mainCubit,
                   user: UserType.SPOKE,
-                  patientDetails: eDetails!.patientDetails!, 
+                  patientDetails: eDetails!.patientDetails!,
                 ),
               ));
         },
@@ -833,7 +843,7 @@ class _PatientInfoState extends State<PatientInfo> {
   //                 color: Colors.lightBlue[100],
   //                 borderRadius: BorderRadius.circular(20)),
   //             child: ListTile(
-  //                 leading: Text(res[index], style: TextStyle(fontSize :12.sp))),
+  //                 leading: Text(res[index], style: TextStyle(fontSize: 12.sp))),
   //           );
   //         }));
 
@@ -852,9 +862,10 @@ class _PatientInfoState extends State<PatientInfo> {
   //                 color: Colors.lightBlue[100],
   //                 borderRadius: BorderRadius.circular(20)),
   //             child: ListTile(
-  //               leading: Text(patients[index], style: TextStyle(fontSize :12.sp)),
-  //               trailing:
-  //                   Text(time_patients[index], style: TextStyle(fontSize :12.sp)),
+  //               leading:
+  //                   Text(patients[index], style: TextStyle(fontSize: 12.sp)),
+  //               trailing: Text(time_patients[index],
+  //                   style: TextStyle(fontSize: 12.sp)),
   //             ),
   //           );
   //         }));
