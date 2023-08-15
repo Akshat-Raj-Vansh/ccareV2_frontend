@@ -29,6 +29,13 @@ class _SelfAssessmentState extends State<SelfAssessment> {
           topLeft: Radius.circular(30),
           topRight: Radius.circular(30),
           bottomRight: Radius.circular(30)));
+
+  BoxDecoration selectedOptionDec = BoxDecoration(
+      color: Colors.blue.shade600,
+      borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(30),
+          topRight: Radius.circular(30),
+          bottomRight: Radius.circular(30)));
   BoxDecoration decC = const BoxDecoration(
       color: kPrimaryColor,
       borderRadius: BorderRadius.only(
@@ -145,21 +152,26 @@ class _SelfAssessmentState extends State<SelfAssessment> {
 
   buildbody(BuildContext context) {
     print(display);
-    return Padding(
-      padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
-      child: Column(
-        children: [
-          Container(
-            margin: const EdgeInsets.symmetric(vertical: 10),
-            padding: pad,
-            decoration: decA,
-            child: Text(
-              "Please enter correct inputs to ensure proper results",
-              style: styles,
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
+        child: Column(
+          children: [
+            Container(
+              margin: const EdgeInsets.symmetric(vertical: 10),
+              // padding: pad,
+              // decoration: decA,
+              child: Text(
+                "Please enter correct inputs to ensure proper results",
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.black, fontSize: 13.sp),
+              ),
             ),
-          ),
-          SingleChildScrollView(
-            child: ListView.separated(
+            const SizedBox(
+              height: 10,
+            ),
+            ListView.separated(
+                physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 separatorBuilder: (context, index) => SizedBox(height: 20),
                 itemBuilder: (context, index) {
@@ -181,7 +193,7 @@ class _SelfAssessmentState extends State<SelfAssessment> {
                           child: display[index].answers.length == 1
                               ? Container(
                                   padding: pad,
-                                  decoration: decB,
+                                  decoration: selectedOptionDec,
                                   margin: EdgeInsets.only(right: 10, top: 10),
                                   child: Text(display[index].answers[0],
                                       style: styles))
@@ -192,7 +204,7 @@ class _SelfAssessmentState extends State<SelfAssessment> {
                                           padding: pad,
                                           margin: const EdgeInsets.only(
                                               right: 10, top: 10),
-                                          decoration: decB,
+                                          decoration: selectedOptionDec,
                                           child: Text(display[index].answers[i],
                                               style: styles)))))
                     ]);
@@ -215,11 +227,13 @@ class _SelfAssessmentState extends State<SelfAssessment> {
                                     .map((e) =>
                                         display[index].options.indexOf(e))
                                     .toList();
+                                print("==== ANS ====");
+                                print(answers);
                                 indexes.sort();
                                 answers = indexes
                                     .map((e) => display[index].options[e])
                                     .toList();
-                                //print(answers.join(','));
+                                // print(answers.join(','));
                                 try {
                                   display.add(widget.questions.firstWhere(
                                       (element) =>
@@ -231,13 +245,21 @@ class _SelfAssessmentState extends State<SelfAssessment> {
                                 } //think about the when logic incase
                               } else if (display[index].options[i ~/ 2] !=
                                   "next") {
-                                if (!answers
+                                if (display[index].options[i ~/ 2] == "none") {
+                                  answers.clear();
+                                  answers.add('none');
+                                } else if (answers
                                     .contains(display[index].options[i ~/ 2])) {
-                                  answers.add(display[index].options[i ~/ 2]);
-                                } else {
                                   answers.removeWhere((element) =>
                                       element ==
                                       display[index].options[i ~/ 2]);
+                                  print(answers);
+                                } else {
+                                  if (answers.contains("none")) {
+                                    answers.remove("none");
+                                  }
+                                  answers.add(display[index].options[i ~/ 2]);
+                                  print(answers);
                                 }
                               }
 
@@ -301,7 +323,7 @@ class _SelfAssessmentState extends State<SelfAssessment> {
                                         style: optionStyles),
                                     display[index].options[i ~/ 2] != "next"
                                         ? Icon(Icons.check,
-                                            color: answers.contains(
+                                            color: !answers.contains(
                                                     display[index]
                                                         .options[i ~/ 2])
                                                 ? Colors.white
@@ -334,8 +356,8 @@ class _SelfAssessmentState extends State<SelfAssessment> {
                       ]);
                 },
                 itemCount: display.length),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

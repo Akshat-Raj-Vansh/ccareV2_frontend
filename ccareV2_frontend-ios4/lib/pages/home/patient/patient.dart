@@ -77,6 +77,12 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
           topLeft: Radius.circular(30),
           topRight: Radius.circular(30),
           bottomLeft: Radius.circular(30)));
+  BoxDecoration selectedOptionDec = BoxDecoration(
+      color: Colors.blue.shade600,
+      borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(30),
+          topRight: Radius.circular(30),
+          bottomRight: Radius.circular(30)));
   dynamic currentState = null;
   @override
   void initState() {
@@ -559,13 +565,21 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                                 } //think about the when logic incase
                               } else if (display[index].options[i ~/ 2] !=
                                   "next") {
-                                if (!answers
+                                if (display[index].options[i ~/ 2] == "none") {
+                                  answers.clear();
+                                  answers.add('none');
+                                } else if (answers
                                     .contains(display[index].options[i ~/ 2])) {
-                                  answers.add(display[index].options[i ~/ 2]);
-                                } else {
                                   answers.removeWhere((element) =>
                                       element ==
                                       display[index].options[i ~/ 2]);
+                                  print(answers);
+                                } else {
+                                  if (answers.contains("none")) {
+                                    answers.remove("none");
+                                  }
+                                  answers.add(display[index].options[i ~/ 2]);
+                                  print(answers);
                                 }
                               }
 
@@ -612,7 +626,7 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                                         style: optionStyles),
                                     display[index].options[i ~/ 2] != "next"
                                         ? Icon(Icons.check,
-                                            color: answers.contains(
+                                            color: !answers.contains(
                                                     display[index]
                                                         .options[i ~/ 2])
                                                 ? Colors.white
@@ -801,10 +815,10 @@ class _PatientHomeUIState extends State<PatientHomeUI> {
                       onPressed: _makingPhoneCall,
                       icon: Icon(Icons.phone),
                       label: Text("CALL")),
-                  TextButton.icon(
-                      onPressed: () => {}, //print("CANCEL"),
-                      icon: Icon(Icons.info),
-                      label: Text("Spoke Doctor"))
+                  // TextButton.icon(
+                  //     onPressed: () => {}, //print("CANCEL"),
+                  //     icon: Icon(Icons.info),
+                  //     label: Text("Spoke Doctor"))
                 ],
               ),
               SizedBox(
