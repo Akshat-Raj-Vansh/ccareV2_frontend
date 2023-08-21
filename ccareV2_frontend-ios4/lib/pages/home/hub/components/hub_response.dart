@@ -21,7 +21,10 @@ class ResponseScreen extends StatefulWidget {
   final PatientDetails patientDetails;
 
   const ResponseScreen(
-      {Key? key, required this.mainCubit, required this.user, required this.patientDetails})
+      {Key? key,
+      required this.mainCubit,
+      required this.user,
+      required this.patientDetails})
       : super(key: key);
   @override
   _ResponseScreenState createState() => _ResponseScreenState();
@@ -33,7 +36,7 @@ class _ResponseScreenState extends State<ResponseScreen>
   bool editReport = false;
   bool clickImage = false;
   late String imagePath;
-  late MainState currentState;
+  MainState? currentState;
   final List<Tab> _myTabs = [
     Tab(
       child: Text('Overview'),
@@ -182,8 +185,12 @@ class _ResponseScreenState extends State<ResponseScreen>
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('Spoke & Hub'),
+        title: Text(
+          'Spoke & Hub',
+          style: TextStyle(color: Colors.white),
+        ),
         backgroundColor: kPrimaryColor,
+        iconTheme: IconThemeData(color: Colors.white),
         actions: [
           if (_currentIndex != 0)
             editReport
@@ -1027,7 +1034,8 @@ class _ResponseScreenState extends State<ResponseScreen>
                       isDense: false,
                       onChanged: (newValue) {
                         setState(() {
-                          hubResponse.ecg.st_depression.lateral_lead = newValue!;
+                          hubResponse.ecg.st_depression.lateral_lead =
+                              newValue!;
                         });
                       },
                       items: YN.values.map((YN value) {
@@ -1932,6 +1940,7 @@ class _ResponseScreenState extends State<ResponseScreen>
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<TabController>('_tabController', _tabController));
+    properties.add(
+        DiagnosticsProperty<TabController>('_tabController', _tabController));
   }
 }

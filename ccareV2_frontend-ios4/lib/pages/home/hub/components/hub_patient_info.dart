@@ -43,8 +43,12 @@ class _HubPatientInfoState extends State<HubPatientInfo> {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          title: Text(widget.details.patientDetails!.name),
+          title: Text(
+            widget.details.patientDetails!.name,
+            style: TextStyle(color: Colors.white),
+          ),
           backgroundColor: kPrimaryColor,
+          iconTheme: IconThemeData(color: Colors.white),
         ),
         body: BlocConsumer<MainCubit, MainState>(
             bloc: widget.mainCubit,

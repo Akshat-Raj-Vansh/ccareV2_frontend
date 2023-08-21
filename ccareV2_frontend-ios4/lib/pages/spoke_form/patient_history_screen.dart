@@ -87,6 +87,7 @@ class _PatientReportHistoryScreenState
                 style: TextStyle(color: Colors.white),
               ),
               backgroundColor: kPrimaryColor,
+              iconTheme: IconThemeData(color: Colors.white),
             ),
             body: Container(
               color: Colors.white,
