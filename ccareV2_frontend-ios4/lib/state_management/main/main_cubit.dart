@@ -32,7 +32,10 @@ class MainCubit extends Cubit<MainState> {
           NewErrorState(result.asError!.error as String, "QuestionnaireState"));
       return;
     }
-    emit(QuestionnaireState(result.asValue!.value));
+
+    if (!isClosed) {
+      emit(QuestionnaireState(result.asValue!.value));
+    }
   }
 
   selfAssessment() async {
@@ -45,7 +48,9 @@ class MainCubit extends Cubit<MainState> {
       emit(ErrorState(result.asError!.error as String));
       return;
     }
-    emit(SelfAssessmentState(result.asValue!.value));
+    if (!isClosed) {
+      emit(SelfAssessmentState(result.asValue!.value));
+    }
   }
 
   loadMessages(String patientID) async {
@@ -60,7 +65,10 @@ class MainCubit extends Cubit<MainState> {
     }
     print(
         'LOG > main_cubit.dart > 39 > result.asValue!.value.last: ${result.asValue!.value.last}');
-    emit(MessagesLoadedState(result.asValue!.value));
+
+    if (!isClosed) {
+      emit(MessagesLoadedState(result.asValue!.value));
+    }
   }
 
   recentHistory() async {
@@ -74,7 +82,10 @@ class MainCubit extends Cubit<MainState> {
       emit(NewErrorState(result.asError!.error as String, "PreviousHistory"));
       return;
     }
-    emit(PreviousHistory(result.asValue!.value));
+
+    if (!isClosed) {
+      emit(PreviousHistory(result.asValue!.value));
+    }
   }
 
   fetchToken() async {
@@ -101,7 +112,10 @@ class MainCubit extends Cubit<MainState> {
       emit(NoResponseState(result.asError!.error as String));
       return;
     }
-    emit(AssessmentLoaded(result.asValue!.value));
+
+    if (!isClosed) {
+      emit(AssessmentLoaded(result.asValue!.value));
+    }
   }
 
   notify(String action, bool ambRequired, loc.Location location,
@@ -121,7 +135,10 @@ class MainCubit extends Cubit<MainState> {
       emit(ErrorState(result.asError!.error as String));
       return;
     }
-    emit(EmergencyState(result.asValue!.value));
+
+    if (!isClosed) {
+      emit(EmergencyState(result.asValue!.value));
+    }
   }
 
   acceptRequest(String patientID) async {
@@ -131,7 +148,10 @@ class MainCubit extends Cubit<MainState> {
       emit(ErrorState("Invalid ID of patient!"));
       return;
     }
-    emit(AcceptState(patientID));
+
+    if (!isClosed) {
+      emit(AcceptState(patientID));
+    }
   }
 
   showAcceptNotif(String patientID) async {
@@ -140,7 +160,10 @@ class MainCubit extends Cubit<MainState> {
       emit(ErrorState("Invalid ID of patient"));
       return;
     }
-    emit(ShowNotificationDialogState(patientID));
+
+    if (!isClosed) {
+      emit(ShowNotificationDialogState(patientID));
+    }
   }
 
   acceptPatientBySpoke(String patientID) async {
@@ -153,7 +176,10 @@ class MainCubit extends Cubit<MainState> {
       emit(ErrorState(result.asError!.error as String));
       return;
     }
-    emit(PatientAccepted(result.asValue!.value));
+
+    if (!isClosed) {
+      emit(PatientAccepted(result.asValue!.value));
+    }
   }
 
   getPatientReportingTime(String patientID) async {
@@ -166,7 +192,9 @@ class MainCubit extends Cubit<MainState> {
       emit(ErrorState(result.asError!.error as String));
       return;
     }
-    emit(ReportingTimeFetched(result.asValue!.value));
+    if (!isClosed) {
+      emit(ReportingTimeFetched(result.asValue!.value));
+    }
   }
 
   acceptPatientByHub(String patientID) async {
@@ -182,7 +210,9 @@ class MainCubit extends Cubit<MainState> {
     }
     print(
         'LOG > main_cubit.dart > acceptPatientByHub > 129 > result.asValue!.value: ${result.asValue!.value}');
-    emit(AcceptState(patientID));
+    if (!isClosed) {
+      emit(AcceptState(patientID));
+    }
   }
 
   fetchHubPatientDetails() async {
@@ -197,7 +227,9 @@ class MainCubit extends Cubit<MainState> {
     }
     print(
         'LOG > main_cubit.dart > fetchHubPatientDetails > 129 > result.asValue!.value: ${result.asValue!.value}');
-    emit(HubPatientsLoaded(result.asValue!.value));
+    if (!isClosed) {
+      emit(HubPatientsLoaded(result.asValue!.value));
+    }
   }
 
   fetchHubRequests() async {
@@ -213,7 +245,9 @@ class MainCubit extends Cubit<MainState> {
     }
     print(
         'LOG > main_cubit.dart > fetchHubRequests > 140 > result.asValue!.value: ${result.asValue!.value}');
-    emit(HubRequestsLoaded(result.asValue!.value));
+    if (!isClosed) {
+      emit(HubRequestsLoaded(result.asValue!.value));
+    }
   }
 
   getAllPatients() async {
@@ -226,7 +260,9 @@ class MainCubit extends Cubit<MainState> {
       emit(ErrorState(result.asError!.error as String));
       return;
     }
-    emit(PatientsLoaded(result.asValue!.value));
+    if (!isClosed) {
+      emit(PatientsLoaded(result.asValue!.value));
+    }
   }
 
   getAllPatientRequests() async {
@@ -237,7 +273,9 @@ class MainCubit extends Cubit<MainState> {
       emit(ErrorState(result.asError!.error as String));
       return;
     }
-    emit(RequestsLoaded(result.asValue!.value));
+    if (!isClosed) {
+      emit(RequestsLoaded(result.asValue!.value));
+    }
   }
 
   fetchPatientReportHistory(String patientID) async {
@@ -251,7 +289,9 @@ class MainCubit extends Cubit<MainState> {
     }
     List<treat.TreatmentReport> reports = result.asValue!.value;
 
-    emit(PatientReportHistoryFetched(reports));
+    if (!isClosed) {
+      emit(PatientReportHistoryFetched(reports));
+    }
   }
 
   fetchPatientReport(String? patientID) async {
@@ -263,9 +303,13 @@ class MainCubit extends Cubit<MainState> {
       emit(NoReportState("No report exists"));
       return;
     }
-    // log('LOG > main_cubit.dart > fetchPatientReport > 164 > result.asValue!.value["currentReport"]: ${result.asValue!.value["currentReport"]}');
-    emit(PatientReportFetched(MixReport(result.asValue!.value["currentReport"],
-        result.asValue!.value["previousReport"])));
+
+    if (!isClosed) {
+      // log('LOG > main_cubit.dart > fetchPatientReport > 164 > result.asValue!.value["currentReport"]: ${result.asValue!.value["currentReport"]}');
+      emit(PatientReportFetched(MixReport(
+          result.asValue!.value["currentReport"],
+          result.asValue!.value["previousReport"])));
+    }
   }
 
   editPatientReport() async {
@@ -298,7 +342,10 @@ class MainCubit extends Cubit<MainState> {
       emit(ErrorState(result.asError!.error as String));
       return;
     }
-    emit(PatientReportSaved("Saved"));
+
+    if (!isClosed) {
+      emit(PatientReportSaved("Saved"));
+    }
   }
 
   uploadChatImage(XFile image) async {
@@ -309,7 +356,9 @@ class MainCubit extends Cubit<MainState> {
       emit(ErrorState(result.asError!.error as String));
       return;
     }
-    emit(ChatImageUploaded(result.asValue!.value));
+    if (!isClosed) {
+      emit(ChatImageUploaded(result.asValue!.value));
+    }
   }
 
   caseClose(String patientID) async {
@@ -321,7 +370,10 @@ class MainCubit extends Cubit<MainState> {
       emit(ErrorState(result.asError!.error as String));
       return;
     }
-    emit(CaseClosedState(result.asValue!.value));
+
+    if (!isClosed) {
+      emit(CaseClosedState(result.asValue!.value));
+    }
   }
 
   addPatient(PatientProfile patientProfile, String phone_number) async {
@@ -333,7 +385,10 @@ class MainCubit extends Cubit<MainState> {
       emit(ErrorState(result.asError!.error as String));
       return;
     }
-    emit(PatientAdded());
+
+    if (!isClosed) {
+      emit(PatientAdded());
+    }
   }
 
   fetchResponse(String patientID) async {
@@ -345,7 +400,10 @@ class MainCubit extends Cubit<MainState> {
     }
     HubResponse hub = result.asValue!.value["hubResponse"];
     SpokeResponse spoke = result.asValue!.value["spokeResponse"];
-    emit(ResponsesLoaded(hub, spoke));
+
+    if (!isClosed) {
+      emit(ResponsesLoaded(hub, spoke));
+    }
   }
 
   editResponse() async {
@@ -363,7 +421,10 @@ class MainCubit extends Cubit<MainState> {
       emit(ErrorState(result.asError!.error as String));
       return;
     }
-    emit(HubResponseUpdated(result.asValue!.value));
+
+    if (!isClosed) {
+      emit(HubResponseUpdated(result.asValue!.value));
+    }
   }
 
   updateSpokeResponse(String patientID, SpokeResponse spokeResponse) async {
@@ -374,7 +435,10 @@ class MainCubit extends Cubit<MainState> {
       emit(ErrorState(result.asError!.error as String));
       return;
     }
-    emit(SpokeResponseUpdated(result.asValue!.value));
+
+    if (!isClosed) {
+      emit(SpokeResponseUpdated(result.asValue!.value));
+    }
   }
 
   fetchImage(String patientID) async {
@@ -385,7 +449,9 @@ class MainCubit extends Cubit<MainState> {
       emit(ErrorState(result.asError!.error as String));
       return;
     }
-    emit(ImageLoaded(result.asValue!.value));
+    if (!isClosed) {
+      emit(ImageLoaded(result.asValue!.value));
+    }
   }
 
   viewPatientReport() async {
@@ -404,7 +470,9 @@ class MainCubit extends Cubit<MainState> {
       emit(ErrorState(result.asError!.error as String));
       return;
     }
-    emit(PatientReportSaved("Saved"));
+    if (!isClosed) {
+      emit(PatientReportSaved("Saved"));
+    }
   }
 
   fetchPatientExamReport(String patientID) async {
@@ -421,7 +489,9 @@ class MainCubit extends Cubit<MainState> {
       emit(ErrorState(result.asError!.error as String));
       return;
     }
-    emit(PatientExamReportFetched(result.asValue!.value));
+    if (!isClosed) {
+      emit(PatientExamReportFetched(result.asValue!.value));
+    }
   }
 
   editPatientExamReport() async {
@@ -448,7 +518,9 @@ class MainCubit extends Cubit<MainState> {
       emit(ErrorState(result.asError!.error as String));
       return;
     }
-    emit(PatientExamReportSaved("Saved"));
+    if (!isClosed) {
+      emit(PatientExamReportSaved("Saved"));
+    }
   }
 
   editExaminationReport(bool val) async {
@@ -469,7 +541,9 @@ class MainCubit extends Cubit<MainState> {
       return;
     }
     print(result.asValue!.value);
-    emit(PatientAccepted(result.asValue!.value));
+    if (!isClosed) {
+      emit(PatientAccepted(result.asValue!.value));
+    }
   }
 
   doctorAccepted(loc.Location location) async {
@@ -478,7 +552,9 @@ class MainCubit extends Cubit<MainState> {
       emit(ErrorState("Details not fetched!"));
       return;
     }
-    emit(DoctorAccepted(location));
+    if (!isClosed) {
+      emit(DoctorAccepted(location));
+    }
   }
 
   driverAccepted(loc.Location location) async {
@@ -487,7 +563,9 @@ class MainCubit extends Cubit<MainState> {
       emit(ErrorState("Location Error!"));
       return;
     }
-    emit(DriverAccepted(location));
+    if (!isClosed) {
+      emit(DriverAccepted(location));
+    }
   }
 
   getAllHubDoctors() async {
@@ -500,7 +578,10 @@ class MainCubit extends Cubit<MainState> {
       emit(ErrorState(result.asError!.error as String));
       return;
     }
-    emit(AllHubDoctorsState(result.asValue!.value));
+
+    if (!isClosed) {
+      emit(AllHubDoctorsState(result.asValue!.value));
+    }
   }
 
   spokeStatusFetched(String status) async {
@@ -518,7 +599,10 @@ class MainCubit extends Cubit<MainState> {
       emit(ErrorState(result.asError!.error as String));
       return;
     }
-    emit(ConsultHub(result.asValue!.value));
+
+    if (!isClosed) {
+      emit(ConsultHub(result.asValue!.value));
+    }
   }
 
   fetchEmergencyDetails({String? patientID}) async {
@@ -534,7 +618,9 @@ class MainCubit extends Cubit<MainState> {
       return;
     }
     Future.delayed(Duration(microseconds: 500));
-    emit(DetailsLoaded(result.asValue!.value));
+    if (!isClosed) {
+      emit(DetailsLoaded(result.asValue!.value));
+    }
   }
 
   statusUpdate(String status, {String? patientID}) async {
@@ -546,7 +632,10 @@ class MainCubit extends Cubit<MainState> {
       emit(ErrorState(result.asError!.error as String));
       return;
     }
-    emit(NormalState(result.asValue!.value));
+    if (!isClosed) {
+      emit(NormalState(result.asValue!.value));
+    }
+
     //can emit a state
   }
 
@@ -559,9 +648,12 @@ class MainCubit extends Cubit<MainState> {
       emit(ErrorState(result.asError!.error as String));
       return;
     }
-    emit(StatusFetched(result.asValue!.value));
-    Future.delayed(Duration(microseconds: 100));
-    emit(StatusFetched(result.asValue!.value));
+
+    if (!isClosed) {
+      emit(StatusFetched(result.asValue!.value));
+      Future.delayed(Duration(microseconds: 100));
+      emit(StatusFetched(result.asValue!.value));
+    }
   }
 
   generateNewReport(String patientID) async {
@@ -572,7 +664,10 @@ class MainCubit extends Cubit<MainState> {
       emit(ErrorState(result.asError!.error as String));
       return;
     }
-    emit(NewReportGenerated(result.asValue!.value));
+
+    if (!isClosed) {
+      emit(NewReportGenerated(result.asValue!.value));
+    }
   }
 
   chatLoading() async {

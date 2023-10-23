@@ -24,7 +24,6 @@ class UserCubit extends Cubit<UserState> {
     emit(LoginInProcessState());
     final result = await userAPI.loginNew(credential);
     print('Result: ' + result.toString());
-
     _setResultOfAuthStateNew(result);
   }
 

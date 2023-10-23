@@ -147,11 +147,13 @@ class PatientDetails {
   }
 
   factory PatientDetails.fromMap(Map<String, dynamic> map) {
+    print("======= PATIENT MAP ======");
+    print(map);
     return PatientDetails(
       id: map['id'],
       name: map['name'],
       location: Location.fromMap(map['location']),
-      action: map['action'],
+      action: map['action'] ?? "",
       age: map['age'],
       gender: map['gender'],
       contactNumber: map['contactNumber'],

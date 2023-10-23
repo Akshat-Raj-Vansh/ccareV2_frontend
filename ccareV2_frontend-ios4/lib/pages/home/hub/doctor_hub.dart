@@ -140,6 +140,8 @@ class _HomeScreenHubState extends State<HomeScreenHub> {
           ],
         ),
         body: BlocConsumer<MainCubit, MainState>(builder: (_, state) {
+          print("====== STATE =====");
+          print(state);
           if (state is HubPatientsLoaded) {
             print('LOG > doctor_hub.dart > 139 > state: ${state.toString()}');
             currentState = state;
